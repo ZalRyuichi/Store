@@ -402,7 +402,9 @@ if (savedRole && ROLE_LABEL[savedRole]) {
   document.getElementById('home-role-chip').textContent = ROLE_LABEL[savedRole];
 }
 
-loadSaldo();
+function onApiReady() {
+  loadSaldo();
+}
 
 let selectedProduct = null;
 

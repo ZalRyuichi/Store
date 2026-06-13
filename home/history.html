@@ -123,7 +123,11 @@
 <script>
 const savedUserName = localStorage.getItem('pg_user') || 'User';
 document.getElementById('home-username').textContent = savedUserName;
-loadSaldo();
+
+function onApiReady() {
+  loadSaldo();
+  loadHistory();
+}
 
 async function loadHistory() {
   try {
@@ -219,8 +223,6 @@ async function loadHistory() {
 
   } catch { toast('Gagal Memuat Riwayat', 'error'); }
 }
-
-loadHistory();
 </script>
 </body>
 </html>

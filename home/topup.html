@@ -199,7 +199,10 @@
 <script>
 const savedUserName = localStorage.getItem('pg_user') || 'User';
 document.getElementById('home-username').textContent = savedUserName;
-loadSaldo();
+
+function onApiReady() {
+  loadSaldo();
+}
 
 const amountInput = document.getElementById('topup-amount');
 const sumAmount = document.getElementById('sum-amount');
