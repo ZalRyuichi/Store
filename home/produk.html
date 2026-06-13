@@ -32,8 +32,8 @@
   .role-card.vipfull .role-icon { background: #FEF3F2; color: #DC2626; }
   .role-card.reseller .role-icon { background: #F0FDF4; color: #16A34A; }
   .role-card.admin .role-icon { background: #FAF5FF; color: #9333EA; }
-  .role-name { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
-  .role-price { font-size: 13px; font-weight: 700; color: var(--blue); }
+  .role-name { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+  .role-price { font-size: 15px; font-weight: 700; color: var(--blue); }
 
   /* ─── Detail Sheet ─── */
   .detail-section { margin-top: 16px; }
@@ -77,6 +77,7 @@
   .quick-icon.purple { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
   .quick-icon.red    { background: linear-gradient(135deg, #EF4444, #B91C1C); }
   .quick-icon.cyan   { background: linear-gradient(135deg, #06B6D4, #0891B2); }
+  .quick-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--dark); }
 
   /* ─── Apk Banner (Xyz / Pegasus) ─── */
   .apk-banner {
@@ -212,8 +213,8 @@
     font-size: 16px; margin: 0 auto 8px;
   }
   .ptero-card.unlimited .ptero-icon { background: #FFFBEB; color: #D97706; }
-  .ptero-ram { font-weight: 800; font-size: 13px; margin-bottom: 3px; color: #111827; }
-  .ptero-price { font-size: 12px; font-weight: 700; color: #2563EB; }
+  .ptero-ram { font-weight: 600; font-size: 13px; margin-bottom: 3px; color: #111827; }
+  .ptero-price { font-size: 15px; font-weight: 700; color: #2563EB; }
   .ptero-card.unlimited .ptero-price { color: #D97706; }
   .ptero-badge {
     position: absolute; top: -8px; right: 6px;
@@ -695,16 +696,124 @@ const ROLE_DATA = {
   'ptero-unlimited': { name: 'Panel Ptero Unlimited',  price: 15000, ptero: true, ram: 'Unlimited' }
 };
 
+const ROLE_DATA = {
+  'member':           { name: 'Member',           price: 25000,  app: 'pegasus', benefit: ['Akses Fitur Dasar'], vip: false },
+  'vip-no-update':    { name: 'Vip No Update',    price: 50000,  app: 'pegasus', benefit: ['Akses Setengah Fitur Vip'], vip: true, vipNote: 'Akses Sebagian Fitur Vip' },
+  'vip-full-update':  { name: 'Vip Full Update',  price: 100000, app: 'pegasus', benefit: ['Akses Full Fitur Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'reseller':         { name: 'Reseller',          price: 200000, app: 'pegasus', benefit: ['Akses Full Fitur Vip', 'Bisa Jualan Role Vip No Update Dan Full Update'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'admin':            { name: 'Admin',             price: 300000, app: 'pegasus', benefit: ['Akses Full Fitur Aplikasi', 'Akses Full Fitur Vip', 'Bisa Jualin Role Vip No Update, Full Update Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'xyz-member-1m':    { name: 'Member (1 Bulan)',  price: 25000,  app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Selama 1 Bulan'], vip: false },
+  'xyz-member-permanen': { name: 'Member (Permanen)', price: 50000, app: 'xyz',   benefit: ['Akses Fitur Aplikasi Xyz Permanen'], vip: false },
+  'xyz-reseller':     { name: 'Reseller',          price: 130000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualan Role Member 1 Bulan Dan Permanen'], vip: false },
+  'ptero-1gb':       { name: 'Panel Ptero 1GB',       price: 1000,  ptero: true, ram: '1 GB' },
+  'ptero-2gb':       { name: 'Panel Ptero 2GB',       price: 2000,  ptero: true, ram: '2 GB' },
+  'ptero-3gb':       { name: 'Panel Ptero 3GB',       price: 3000,  ptero: true, ram: '3 GB' },
+  'ptero-4gb':       { name: 'Panel Ptero 4GB',       price: 4000,  ptero: true, ram: '4 GB' },
+  'ptero-5gb':       { name: 'Panel Ptero 5GB',       price: 5000,  ptero: true, ram: '5 GB' },
+  'ptero-6gb':       { name: 'Panel Ptero 6GB',       price: 6000,  ptero: true, ram: '6 GB' },
+  'ptero-7gb':       { name: 'Panel Ptero 7GB',       price: 8000,  ptero: true, ram: '7 GB' },
+  'ptero-8gb':       { name: 'Panel Ptero 8GB',       price: 8000,  ptero: true, ram: '8 GB' },
+  'ptero-9gb':       { name: 'Panel Ptero 9GB',       price: 9000,  ptero: true, ram: '9 GB' },
+  'ptero-10gb':      { name: 'Panel Ptero 10GB',      price: 10000, ptero: true, ram: '10 GB' },
+  'ptero-unlimited': { name: 'Panel Ptero Unlimited',  price: 15000, ptero: true, ram: 'Unlimited' }
+};
+
 const BASIC_FEATURES = [
-// biar gw yg isi
+  ['Bug WhatsApp', 'fa-solid fa-bug'],
+  ['DDoS Panel', 'fa-solid fa-network-wired'],
+  ['Spam Pairing', 'fa-solid fa-paper-plane'],
+  ['WhatsApp Call', 'fa-solid fa-phone'],
+  ['Spam NGL', 'fa-solid fa-comment-dots'],
+  ['Downloader (Tiktok, Pin, Instagram)', 'fa-solid fa-download'],
+  ['iPhone Quote', 'fa-solid fa-quote-left'],
+  ['Remini Ai', 'fa-solid fa-wand-magic-sparkles'],
+  ['Nik Parse', 'fa-solid fa-id-card'],
+  ['Comment FB', 'fa-brands fa-facebook'],
+  ['Fake Group', 'fa-solid fa-users'],
+  ['Lobby FF', 'fa-solid fa-gamepad'],
+  ['Lobby ML', 'fa-solid fa-gamepad'],
+  ['Fake Story', 'fa-solid fa-book-open'],
+  ['Fake Threads', 'fa-brands fa-threads'],
+  ['QC Card', 'fa-solid fa-id-badge'],
+  ['Sticker Meme', 'fa-solid fa-icons'],
+  ['Brat Anime', 'fa-solid fa-face-grin-squint'],
+  ['Meme Ustadz', 'fa-solid fa-mosque'],
+  ['Blur Face', 'fa-solid fa-eye-slash'],
+  ['Remove BG', 'fa-solid fa-eraser'],
+  ['Wasted', 'fa-solid fa-skull'],
+  ['Wanted', 'fa-solid fa-bullhorn'],
+  ['Nonton Donghua', 'fa-solid fa-clapperboard'],
+  ['Nonton Anime', 'fa-solid fa-tv'],
+  ['Al-Quran', 'fa-solid fa-book-quran'],
+  ['Hadist', 'fa-solid fa-book'],
+  ['Music', 'fa-solid fa-music'],
+  ['Crosshair', 'fa-solid fa-crosshairs'],
+  ['Cek Keamanan Device', 'fa-solid fa-shield-halved']
 ];
 
 const VIP_FEATURES = [
-// biar gw yg isi
+  ['Buat Web Jadi Apk', 'fa-solid fa-mobile-screen-button'],
+  ['Kunci Perangkat Korban', 'fa-solid fa-lock'],
+  ['Getarkan Perangkat Korban', 'fa-solid fa-mobile-alt'],
+  ['Ambil Lokasi Korban', 'fa-solid fa-location-dot'],
+  ['Pantau Kamera Depan Dan Belakang Perangkat Korban', 'fa-solid fa-camera'],
+  ['Matikan Dan Hidupkan Senter Perangkat Korban', 'fa-solid fa-lightbulb'],
+  ['Ganti Wallpaper Perangkat Korban', 'fa-solid fa-image'],
+  ['Putar Suara Pada Perangkat Korban', 'fa-solid fa-volume-up'],
+  ['Pantau SMS Perangkat Korban', 'fa-regular fa-message'],
+  ['Melihat Foto Galeri Perangkat Korban', 'fa-regular fa-images'],
+  ['Melihat List Kontak Perangkat Korban', 'fa-solid fa-address-book'],
+  ['Menghapus File Korban', 'fa-solid fa-trash-can'],
+  ['Pantau Layar Perangkat Korban', 'fa-solid fa-desktop'],
+  ['Putar Video Di Perangkat Korban', 'fa-solid fa-video'],
+  ['Panggil Nomer Pada Perangkat Korban', 'fa-solid fa-phone'],
+  ['Kunci Perangkat Korban Dan Bisa Chatan Sama Korban', 'fa-solid fa-comment-dots'],
+  ['Rekam Suara Pada Perangkat Korban', 'fa-solid fa-microphone'],
+  ['List Aplikasi Pada Perangkat Korban', 'fa-solid fa-list'],
+  ['Blokir Aplikasi Pada Perangkat Korban', 'fa-solid fa-ban'],
+  ['Buka Aplikasi Pada Perangkat Korban', 'fa-solid fa-rocket'],
+  ['Teks Layar', 'fa-solid fa-text-height']
 ];
 
 const XYZ_FEATURES = [
-// biar gw yg isi
+  ['Anti Uninstall Apk Phishing', 'fa-solid fa-shield-halved'],
+  ['Matikan Hidupkan Senter Perangkat Korban', 'fa-solid fa-lightbulb'],
+  ['Play Video Full Layar Di Perangkat Korban', 'fa-solid fa-video'],
+  ['Ganti Wallpaper Perangkat Korban', 'fa-solid fa-image'],
+  ['Kunci Perangkat Korban', 'fa-solid fa-lock'],
+  ['Putar Suara Pada Perangkat Korban', 'fa-solid fa-volume-up'],
+  ['Getarkan Perangkat Korban', 'fa-solid fa-mobile-alt'],
+  ['Kirim Suara Google Ke Perangkat Korban', 'fa-solid fa-message'],
+  ['Atur Kecerahan Perangkat Korban', 'fa-solid fa-sun'],
+  ['Atur Volume Perangkat Korban', 'fa-solid fa-volume-high'],
+  ['Kirim Teks Layar Pada Perangkat Korban', 'fa-solid fa-text-height'],
+  ['Buka Website Pada Perangkat Korban', 'fa-solid fa-globe'],
+  ['Spam Dialog Pada Perangkat Korban', 'fa-solid fa-comment-dots'],
+  ['SOS Pada Perangkat Korban', 'fa-solid fa-bell'],
+  ['Pantau Kamera Depan Dan Belakang Pada Perangkat Korban', 'fa-solid fa-camera'],
+  ['Pantau Layar Dan Bisa Kontrol Perangkat Korban', 'fa-solid fa-desktop'],
+  ['Ambil Foto Depan Dan Belakang Pada Perangkat Korban', 'fa-solid fa-camera-retro'],
+  ['Ambil Paste Pada Keyboard Korban', 'fa-solid fa-keyboard'],
+  ['Scan Wifi Terdekat Pada Perangkat Korban', 'fa-solid fa-wifi'],
+  ['Cari Cell Tower Pada Perangkat Korban', 'fa-solid fa-tower-cell'],
+  ['Melihat Histori Chrome Perangkat Korban', 'fa-solid fa-clock-rotate-left'],
+  ['Ambil Lokasi Perangkat Korban', 'fa-solid fa-location-dot'],
+  ['Melihat Kontak Pada Perangkat Korban', 'fa-solid fa-address-book'],
+  ['Link Foto (Tampil di Layar Korban)', 'fa-solid fa-image'],
+  ['Spam Notifikasi Pada Perangkat Korban', 'fa-solid fa-bell'],
+  ['Spam Toast Pada Perangkat Korban', 'fa-solid fa-toast'],
+  ['Ganti Tema Aplikasi Phising Menjadi (WA dll)', 'fa-solid fa-palette'],
+  ['Rekam Suara Korban', 'fa-solid fa-microphone'],
+  ['Melihat Log WiFi Perangkat Korban', 'fa-solid fa-wifi'],
+  ['Melihat Akun Pada Perangkat Korban Seperti Akun Google Atau Email', 'fa-solid fa-users'],
+  ['Melihat Log Panggilan Pada Perangkat Korban', 'fa-solid fa-phone'],
+  ['Melihat Foto Galeri Korban', 'fa-solid fa-images'],
+  ['Blokir Aplikasi Korban Sehingga Korban Tidak Bisa Membuka Aplikasi Yang Di Blokir', 'fa-solid fa-ban'],
+  ['Buka Aplikasi Korban', 'fa-solid fa-rocket'],
+  ['Uninstall Aplikasi Yang Ada Di Perangkat Korban', 'fa-solid fa-trash-can'],
+  ['Hapus, Download Dan Masukin File Pada Perangkat Korban', 'fa-solid fa-folder'],
+  ['Panggil Nomer Pada Perangkat Korban', 'fa-solid fa-phone'],
+  ['Sembunyikan Aplikasi Phising Atau Korban', 'fa-solid fa-eye-slash']
 ];
 
 const PTERO_SPECS = [
@@ -968,7 +1077,7 @@ let _accountTx = null;
     <div class="detail-price-box" style="margin-bottom:14px;text-align:left">
       <div style="font-size:12px;color:var(--blue);font-weight:600">
         <i class="fa-solid fa-circle-info" style="margin-right:5px"></i>
-        Pembayaran berhasil! Masukkan username & password untuk akun aplikasi kamu. Data ini akan dikirim ke developer untuk pembuatan akun.
+        Pembayaran Berhasil! Masukkan Username & Password Untuk Akun Aplikasi Kamu. Data Ini Akan Dikirim Ke Developer Untuk Pembuatan Akun.
       </div>
     </div>
 
