@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Top Up Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="shared.css"/>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-logo" href="/dashboard">
+    <div class="logo-icon">
+      <i class="fa-solid fa-store" style="color:#fff;font-size:14px"></i>
+    </div>
+    <div class="logo-text">Zal <span>Яyuichi</span></div>
+  </a>
+  <button class="btn-logout" onclick="logout()">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Logout
+  </button>
+</nav>
+
+<main>
+
+  <div class="saldo-card">
+    <div class="saldo-top-row">
+      <div class="saldo-chip"><i class="fa-solid fa-circle-check"></i> Verified</div>
+      <div class="saldo-logo">PayGet</div>
+    </div>
+    <div class="saldo-mid">
+      <div class="saldo-label">Saldo Kamu</div>
+      <div class="saldo-amount" id="saldo-display">Rp —</div>
+    </div>
+    <div class="saldo-bottom-row">
+      <div class="saldo-user">
+        <i class="fa-solid fa-circle-user" style="opacity:0.85"></i>
+        <span id="home-username">—</span>
+      </div>
+      <div class="saldo-actions">
+        <div class="saldo-btn"><i class="fa-solid fa-clock-rotate-left"></i> History</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="page-head">
+      <i class="fa-solid fa-wallet"></i>
+      <div class="card-title">Top Up Saldo</div>
+    </div>
+    <div class="card-sub">Pilih nominal atau masukkan jumlah sesuai kebutuhanmu</div>
+
+    <label>Pilih Nominal Cepat</label>
+    <div class="amount-presets" id="amount-presets">
+      <button type="button" class="amount-chip" data-val="10000">Rp 10rb</button>
+      <button type="button" class="amount-chip" data-val="25000">Rp 25rb</button>
+      <button type="button" class="amount-chip" data-val="50000">Rp 50rb</button>
+      <button type="button" class="amount-chip" data-val="100000">Rp 100rb</button>
+      <button type="button" class="amount-chip" data-val="200000">Rp 200rb</button>
+      <button type="button" class="amount-chip" data-val="500000">Rp 500rb</button>
+    </div>
+
+    <div class="form-group">
+      <label>Atau Masukkan Nominal Sendiri</label>
+      <div class="input-prefix-wrap">
+        <div class="prefix">Rp</div>
+        <input type="number" id="topup-amount" placeholder="50000" min="1000" step="1000"/>
+      </div>
+      <div class="form-hint">Minimal Rp 1.000</div>
+    </div>
+
+    <label>Metode Pembayaran</label>
+    <div class="pay-method">
+      <div class="pay-method-icon"><i class="fa-solid fa-qrcode"></i></div>
+      <div class="pay-method-info">
+        <div class="pay-method-name">QRIS</div>
+        <div class="pay-method-desc">Bayar pakai e-wallet atau m-banking apa saja</div>
+      </div>
+      <i class="fa-solid fa-circle-check pay-method-check"></i>
+    </div>
+
+    <div class="summary-box">
+      <div class="summary-row">
+        <span>Nominal Top Up</span>
+        <span id="sum-amount">Rp 0</span>
+      </div>
+      <div class="summary-row">
+        <span>Biaya Admin</span>
+        <span>Gratis</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total Bayar</span>
+        <span id="sum-total">Rp 0</span>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="btn-topup" onclick="doTopup()" style="width:100%; justify-content:center;">
+      <i class="fa-solid fa-qrcode"></i>
+      <span id="btn-topup-text">Buat QRIS</span>
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="page-head">
+      <i class="fa-solid fa-circle-info"></i>
+      <div class="card-title">Informasi</div>
+    </div>
+    <div class="info-list">
+      <div class="info-row">
+        <div class="info-icon"><i class="fa-solid fa-bolt"></i></div>
+        <div>
+          <div class="info-row-title">Proses Otomatis</div>
+          <div class="info-row-desc">Saldo masuk otomatis maksimal 1 menit setelah pembayaran QRIS berhasil.</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon"><i class="fa-solid fa-lock"></i></div>
+        <div>
+          <div class="info-row-title">Transaksi Aman</div>
+          <div class="info-row-desc">Setiap transaksi terenkripsi dan tercatat di riwayat history-mu.</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon"><i class="fa-solid fa-headset"></i></div>
+        <div>
+          <div class="info-row-title">Butuh Bantuan?</div>
+          <div class="info-row-desc">Hubungi admin via Telegram jika saldo belum masuk lebih dari 10 menit.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<nav class="bottom-nav">
+  <a class="bnav-item" href="/dashboard">
+    <i class="fa-solid fa-house"></i>
+    <span class="bnav-label">Home</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item active" href="/home/topup.html">
+    <i class="fa-solid fa-wallet"></i>
+    <span class="bnav-label">Top Up</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item" href="/home/produk.html">
+    <i class="fa-solid fa-bag-shopping"></i>
+    <span class="bnav-label">Produk</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item" href="/home/history.html">
+    <i class="fa-solid fa-clock-rotate-left"></i>
+    <span class="bnav-label">History</span>
+    <div class="bnav-dot"></div>
+  </a>
+</nav>
+
+<div class="overlay" id="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="modal-title" id="modal-title">Scan QRIS</div>
+    <div class="modal-sub" id="modal-sub">Scan QR Di Bawah Ini Untuk Membayar</div>
+    <div class="qr-wrap"><div id="qr-canvas"></div></div>
+    <div class="amount-display">
+      <div class="amount-label">Total Pembayaran</div>
+      <div class="amount-val" id="modal-amount">—</div>
+    </div>
+    <div class="order-id" id="modal-orderid">—</div>
+    <div class="timer-box" id="timer-box">
+      <i class="fa-regular fa-clock"></i>
+      Berlaku <span id="timer-display">--:--</span>
+    </div>
+    <div class="status-row waiting" id="modal-status">
+      <div class="pulse"></div>
+      <span id="modal-status-text">Menunggu Pembayaran...</span>
+    </div>
+    <button class="btn-cancel" id="btn-cancel" onclick="doCancel()">
+      <i class="fa-solid fa-ban"></i>
+      <span id="btn-cancel-text">Batalkan Transaksi</span>
+    </button>
+  </div>
+</div>
+
+<div class="notif-overlay" id="notif-overlay">
+  <div class="notif-box">
+    <div class="notif-icon-wrap" id="notif-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
+    <div class="notif-title" id="notif-title"></div>
+    <div class="notif-desc" id="notif-desc"></div>
+    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()">OK</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+const savedUserName = localStorage.getItem('pg_user') || 'User';
+document.getElementById('home-username').textContent = savedUserName;
+loadSaldo();
+
+const amountInput = document.getElementById('topup-amount');
+const sumAmount = document.getElementById('sum-amount');
+const sumTotal = document.getElementById('sum-total');
+const presets = document.querySelectorAll('.amount-chip');
+
+function updateSummary() {
+  const val = parseInt(amountInput.value) || 0;
+  sumAmount.textContent = rupiah(val);
+  sumTotal.textContent = rupiah(val);
+  presets.forEach(p => p.classList.toggle('active', parseInt(p.dataset.val) === val));
+}
+presets.forEach(p => {
+  p.addEventListener('click', () => {
+    amountInput.value = p.dataset.val;
+    updateSummary();
+  });
+});
+amountInput.addEventListener('input', updateSummary);
+
+async function doTopup() {
+  const amount = parseInt(document.getElementById('topup-amount').value);
+  if (!amount || amount < 1000) { toast('Nominal Minimal Rp 1.000', 'error'); return; }
+  const btn = document.getElementById('btn-topup');
+  const btnText = document.getElementById('btn-topup-text');
+  btn.disabled = true; btnText.textContent = '';
+  const sp = document.createElement('div'); sp.className = 'spinner'; btn.appendChild(sp);
+  try {
+    const res = await fetch(apiUrl('/api/topup'), { method: 'POST', headers: H, body: JSON.stringify({ amount }) });
+    const data = await res.json();
+    if (data.ok) {
+      openModal(data.transaction, 'Top Up ' + rupiah(amount), 'Scan QRIS Untuk Melanjutkan Pembayaran');
+      toast('QRIS Berhasil Dibuat', 'success');
+    } else {
+      toast(data.message || 'Gagal Membuat Transaksi', 'error');
+    }
+  } catch { toast('Koneksi Gagal', 'error'); }
+  finally { btn.disabled = false; btnText.textContent = 'Buat QRIS'; sp.remove(); }
+}
+</script>
+</body>
+</html>

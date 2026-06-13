@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Produk Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+  .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 8px; }
+  .role-card {
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    background: var(--white);
+  }
+  .role-card:hover { border-color: var(--blue); box-shadow: 0 2px 12px rgba(37,99,235,0.1); transform: translateY(-2px); }
+  .role-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--blue-l); color: var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; margin: 0 auto 10px;
+  }
+  .role-card.member .role-icon  { background: #F1F5F9; color: #475569; }
+  .role-card.vipnoupdate .role-icon { background: #FFFBEB; color: #B45309; }
+  .role-card.vipfull .role-icon { background: #FEF3F2; color: #DC2626; }
+  .role-card.reseller .role-icon { background: #F0FDF4; color: #16A34A; }
+  .role-card.admin .role-icon { background: #FAF5FF; color: #9333EA; }
+  .role-name { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .role-price { font-size: 13px; font-weight: 700; color: var(--blue); }
+
+  .detail-section { margin-top: 16px; }
+  .detail-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--slate); margin-bottom: 8px; display:flex; align-items:center; gap:6px; }
+  .detail-price-box {
+    background: var(--blue-l); border: 1px solid #BFDBFE; border-radius: var(--radius);
+    padding: 14px; text-align: center; margin-bottom: 4px;
+  }
+  .detail-price-val { font-size: 22px; font-weight: 800; color: var(--blue); }
+  .detail-price-sub { font-size: 11px; color: var(--slate); margin-top: 2px; }
+  .benefit-row { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; padding: 6px 0; }
+  .benefit-row i { color: var(--green); margin-top: 2px; font-size: 11px; }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+  .feature-pill {
+    display: flex; align-items: center; gap: 7px;
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 7px 9px; font-size: 11px; font-weight: 500;
+    background: var(--bg);
+  }
+  .feature-pill i { color: var(--blue); font-size: 11px; width: 14px; text-align: center; }
+
+  .detail-overlay {
+    position: fixed; inset: 0;
+    background: rgba(15,23,42,0.5);
+    display: none; align-items: flex-end; justify-content: center;
+    z-index: 90; backdrop-filter: blur(4px);
+  }
+  .detail-overlay.show { display: flex; animation: fadeIn 0.2s ease; }
+  .detail-sheet {
+    background: var(--white); border-radius: 20px 20px 0 0;
+    width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto;
+    padding: 20px 22px 90px; position: relative;
+    animation: slideUp 0.3s cubic-bezier(.16,1,.3,1);
+  }
+  .detail-close {
+    position: absolute; top: 14px; right: 14px;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    width: 30px; height: 30px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: var(--slate);
+  }
+  .detail-close:hover { background: #FEF2F2; color: var(--red); border-color: #FECACA; }
+  .detail-title { font-size: 17px; font-weight: 800; margin-bottom: 2px; padding-right: 36px; }
+  .detail-sub { font-size: 12px; color: var(--slate); margin-bottom: 12px; }
+  .detail-footer {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    max-width: 480px; margin: 0 auto;
+    background: var(--white); border-top: 1px solid var(--border);
+    padding: 12px 16px; z-index: 95; display: none;
+  }
+  .detail-footer.show { display: block; }
+  .detail-footer .btn-primary { width: 100%; justify-content: center; }
+
+  /* Pterodactyl Section */
+  .ptero-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 8px; }
+  .ptero-card {
+    border: 2px solid var(--border); border-radius: var(--radius);
+    padding: 12px 10px; cursor: pointer; transition: all 0.2s;
+    text-align: center; background: var(--white); position: relative;
+  }
+  .ptero-card:hover { border-color: #16A34A; box-shadow: 0 2px 12px rgba(22,163,74,0.15); transform: translateY(-2px); }
+  .ptero-card.unlimited { border-color: #F59E0B; }
+  .ptero-card.unlimited:hover { border-color: #D97706; box-shadow: 0 2px 12px rgba(245,158,11,0.2); }
+  .ptero-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: #F0FDF4; color: #16A34A;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; margin: 0 auto 8px;
+  }
+  .ptero-card.unlimited .ptero-icon { background: #FFFBEB; color: #D97706; }
+  .ptero-ram { font-weight: 800; font-size: 13px; margin-bottom: 3px; color: #111827; }
+  .ptero-price { font-size: 12px; font-weight: 700; color: #16A34A; }
+  .ptero-card.unlimited .ptero-price { color: #D97706; }
+  .ptero-badge {
+    position: absolute; top: -8px; right: 6px;
+    background: #F59E0B; color: #fff; font-size: 9px; font-weight: 700;
+    padding: 2px 6px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .spec-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .spec-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px;
+    padding: 6px 10px; font-size: 11px; font-weight: 600; color: #15803D;
+  }
+  .spec-pill i { font-size: 11px; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-logo" href="/dashboard">
+    <div class="logo-icon">
+      <i class="fa-solid fa-store" style="color:#fff;font-size:14px"></i>
+    </div>
+    <div class="logo-text">Zal <span>Яyuichi</span></div>
+  </a>
+  <button class="btn-logout" onclick="logout()">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Logout
+  </button>
+</nav>
+
+<main>
+
+  <div class="saldo-card">
+    <div class="saldo-top-row">
+      <div class="saldo-chip">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="home-role-chip">Verified</span>
+      </div>
+      <div class="saldo-logo">Produk</div>
+    </div>
+    <div class="saldo-mid">
+      <div class="saldo-label">Saldo Kamu</div>
+      <div class="saldo-amount" id="saldo-display">Rp —</div>
+    </div>
+    <div class="saldo-bottom-row">
+      <div class="saldo-user">
+        <i class="fa-solid fa-circle-user"></i>
+        <span id="home-username">—</span>
+      </div>
+      <div class="saldo-actions">
+        <button class="saldo-btn" onclick="window.location.href='topup.html'">
+          <i class="fa-solid fa-plus"></i> Top Up
+        </button>
+        <button class="saldo-btn" onclick="window.location.href='history.html'">
+          <i class="fa-solid fa-clock-rotate-left"></i> Riwayat
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <div class="qa-item" onclick="window.location.href='topup.html'">
+      <div class="qa-icon" style="background:#EFF6FF;color:#2563EB"><i class="fa-solid fa-wallet"></i></div>
+      <div class="qa-label">Top Up</div>
+    </div>
+    <div class="qa-item" onclick="document.querySelector('.ptero-card')?.closest('.card')?.scrollIntoView({behavior:'smooth'})">
+      <div class="qa-icon" style="background:#F0FDF4;color:#16A34A"><i class="fa-solid fa-server"></i></div>
+      <div class="qa-label">Panel</div>
+    </div>
+    <div class="qa-item" onclick="window.location.href='history.html'">
+      <div class="qa-icon" style="background:#FFF7ED;color:#EA580C"><i class="fa-solid fa-receipt"></i></div>
+      <div class="qa-label">Transaksi</div>
+    </div>
+    <div class="qa-item" onclick="document.querySelector('.role-grid')?.closest('.card')?.scrollIntoView({behavior:'smooth'})">
+      <div class="qa-icon" style="background:#FAF5FF;color:#9333EA"><i class="fa-solid fa-bag-shopping"></i></div>
+      <div class="qa-label">Produk</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="page-head">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <div class="card-title">Pegasus-X Яyuichi Apk</div>
+    </div>
+    <div class="card-sub">Pilih Role Untuk Lihat Detail & Beli</div>
+
+    <div class="role-grid">
+      <div class="role-card member" onclick="openDetail('member')">
+        <div class="role-icon"><i class="fa-solid fa-user"></i></div>
+        <div class="role-name">Member</div>
+        <div class="role-price">Rp 25.000</div>
+      </div>
+      <div class="role-card vipnoupdate" onclick="openDetail('vip-no-update')">
+        <div class="role-icon"><i class="fa-solid fa-star-half-stroke"></i></div>
+        <div class="role-name">Vip No Update</div>
+        <div class="role-price">Rp 50.000</div>
+      </div>
+      <div class="role-card vipfull" onclick="openDetail('vip-full-update')">
+        <div class="role-icon"><i class="fa-solid fa-star"></i></div>
+        <div class="role-name">Vip Full Update</div>
+        <div class="role-price">Rp 100.000</div>
+      </div>
+      <div class="role-card reseller" onclick="openDetail('reseller')">
+        <div class="role-icon"><i class="fa-solid fa-shop"></i></div>
+        <div class="role-name">Reseller</div>
+        <div class="role-price">Rp 200.000</div>
+      </div>
+      <div class="role-card admin" onclick="openDetail('admin')">
+        <div class="role-icon"><i class="fa-solid fa-crown"></i></div>
+        <div class="role-name">Admin</div>
+        <div class="role-price">Rp 300.000</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="page-head">
+      <i class="fa-solid fa-server" style="color:#16A34A"></i>
+      <div class="card-title">Panel Pterodactyl</div>
+    </div>
+    <div class="card-sub">Server Private · Anti Intip · Anti Kemaling · Garansi 20 Hari</div>
+
+    <div class="spec-row">
+      <div class="spec-pill"><i class="fa-solid fa-lock"></i>Server Private</div>
+      <div class="spec-pill"><i class="fa-solid fa-eye-slash"></i>Anti Intip</div>
+      <div class="spec-pill"><i class="fa-solid fa-shield-halved"></i>Anti Kemaling</div>
+      <div class="spec-pill"><i class="fa-solid fa-rotate"></i>1× Replace</div>
+    </div>
+
+    <div class="ptero-grid" style="margin-top:14px">
+      <div class="ptero-card" onclick="openDetail('ptero-1gb')">
+        <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
+        <div class="ptero-ram">1 GB</div>
+        <div class="ptero-price">Rp 1.000</div>
+      </div>
+      <div class="ptero-card" onclick="openDetail('ptero-2gb')">
+        <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
+        <div class="ptero-ram">2 GB</div>
+        <div class="ptero-price">Rp 2.000</div>
+      </div>
+      <div class="ptero-card" onclick="openDetail('ptero-3gb')">
+        <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
+        <div class="ptero-ram">3 GB</div>
+        <div class="ptero-price">Rp 3.000</div>
+      </div>
+      <div class="ptero-card" onclick="openDetail('ptero-4gb')">
+        <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
+        <div class="ptero-ram">4 GB</div>
+        <div class="ptero-price">Rp 4.000</div>
+      </div>
+      <div class="ptero-card" onclick="openDetail('ptero-5gb')">
+        <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
+        <div class="ptero-ram">5 GB</div>
+        <div class="ptero-price">Rp 5.000</div>
+      </div>
+      <div class="ptero-card" onclick="openDetail('ptero-6gb')">
+        <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
+        <div class="ptero-ram">6 GB</div>
+        <div class="ptero-price">Rp 6.000</div>
+      </div>
+      <div class="ptero-card" onclick="openDetail('ptero-7gb')">
+        <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
+        <div class="ptero-ram">7 GB</div>
+        <div class="ptero-price">Rp 8.000</div>
+      </div>
+      <div class="ptero-card" onclick="openDetail('ptero-8gb')">
+        <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
+        <div class="ptero-ram">8 GB</div>
+        <div class="ptero-price">Rp 8.000</div>
+      </div>
+      <div class="ptero-card" onclick="openDetail('ptero-9gb')">
+        <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
+        <div class="ptero-ram">9 GB</div>
+        <div class="ptero-price">Rp 9.000</div>
+      </div>
+      <div class="ptero-card" onclick="openDetail('ptero-10gb')">
+        <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
+        <div class="ptero-ram">10 GB</div>
+        <div class="ptero-price">Rp 10.000</div>
+      </div>
+      <div class="ptero-card unlimited" onclick="openDetail('ptero-unlimited')">
+        <div class="ptero-badge">Best</div>
+        <div class="ptero-icon"><i class="fa-solid fa-infinity"></i></div>
+        <div class="ptero-ram">Unlimited</div>
+        <div class="ptero-price">Rp 15.000</div>
+      </div>
+    </div>
+  </div>
+
+<nav class="bottom-nav">
+  <a class="bnav-item" href="/dashboard">
+    <i class="fa-solid fa-house"></i>
+    <span class="bnav-label">Home</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item" href="/home/topup.html">
+    <i class="fa-solid fa-wallet"></i>
+    <span class="bnav-label">Top Up</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item active" href="/home/produk.html">
+    <i class="fa-solid fa-bag-shopping"></i>
+    <span class="bnav-label">Produk</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item" href="/home/history.html">
+    <i class="fa-solid fa-clock-rotate-left"></i>
+    <span class="bnav-label">History</span>
+    <div class="bnav-dot"></div>
+  </a>
+</nav>
+
+<!-- Detail Sheet -->
+<div class="detail-overlay" id="detail-overlay" onclick="if(event.target===this) closeDetail()">
+  <div class="detail-sheet">
+    <button class="detail-close" onclick="closeDetail()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="detail-title" id="detail-title">—</div>
+    <div class="detail-sub">Pegasus-X Яyuichi Apk</div>
+
+    <div class="detail-price-box">
+      <div class="detail-price-val" id="detail-price">Rp —</div>
+      <div class="detail-price-sub">Permanen Full Update</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title"><i class="fa-solid fa-gift"></i> Keuntungan</div>
+      <div id="detail-benefit"></div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title"><i class="fa-solid fa-layer-group"></i> Fitur Dasar Aplikasi</div>
+      <div class="feature-grid" id="detail-features-basic"></div>
+    </div>
+
+    <div class="detail-section" id="vip-feature-section">
+      <div class="detail-section-title"><i class="fa-solid fa-crown"></i> Fitur Vip</div>
+      <div class="feature-grid" id="detail-features-vip"></div>
+    </div>
+  </div>
+</div>
+
+<div class="detail-footer" id="detail-footer">
+  <button class="btn-primary" id="btn-beli" onclick="doBeli()">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span id="btn-beli-text">Beli Sekarang</span>
+  </button>
+</div>
+
+<div class="overlay" id="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="modal-title" id="modal-title">Scan QRIS</div>
+    <div class="modal-sub" id="modal-sub">Scan QR Di Bawah Ini Untuk Membayar</div>
+    <div class="qr-wrap"><div id="qr-canvas"></div></div>
+    <div class="amount-display">
+      <div class="amount-label">Total Pembayaran</div>
+      <div class="amount-val" id="modal-amount">—</div>
+    </div>
+    <div class="order-id" id="modal-orderid">—</div>
+    <div class="timer-box" id="timer-box">
+      <i class="fa-regular fa-clock"></i>
+      Berlaku <span id="timer-display">--:--</span>
+    </div>
+    <div class="status-row waiting" id="modal-status">
+      <div class="pulse"></div>
+      <span id="modal-status-text">Menunggu Pembayaran...</span>
+    </div>
+    <button class="btn-cancel" id="btn-cancel" onclick="doCancel()">
+      <i class="fa-solid fa-ban"></i>
+      <span id="btn-cancel-text">Batalkan Transaksi</span>
+    </button>
+  </div>
+</div>
+
+<div class="notif-overlay" id="notif-overlay">
+  <div class="notif-box">
+    <div class="notif-icon-wrap" id="notif-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
+    <div class="notif-title" id="notif-title"></div>
+    <div class="notif-desc" id="notif-desc"></div>
+    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()">OK</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+const savedUserName = localStorage.getItem('pg_user') || 'User';
+document.getElementById('home-username').textContent = savedUserName;
+
+const ROLE_LABEL = {
+  'member': 'Member', 'vip-no-update': 'VIP No Update',
+  'vip-full-update': 'VIP Full', 'reseller': 'Reseller', 'admin': 'Admin'
+};
+const savedRole = localStorage.getItem('pg_role');
+if (savedRole && ROLE_LABEL[savedRole]) {
+  document.getElementById('home-role-chip').textContent = ROLE_LABEL[savedRole];
+}
+
+loadSaldo();
+
+let selectedProduct = null;
+
+const ROLE_DATA = {
+  'member': {
+    name: 'Member', price: 25000,
+    benefit: ['Akses Fitur Dasar'],
+    vip: false
+  },
+  'vip-no-update': {
+    name: 'Vip No Update', price: 50000,
+    benefit: ['Akses Setengah Fitur Vip'],
+    vip: true, vipNote: 'Akses Sebagian Fitur Vip'
+  },
+  'vip-full-update': {
+    name: 'Vip Full Update', price: 100000,
+    benefit: ['Akses Full Fitur Vip'],
+    vip: true, vipNote: 'Akses Full Fitur Vip'
+  },
+  'reseller': {
+    name: 'Reseller', price: 200000,
+    benefit: ['Akses Full Fitur Vip', 'Bisa Jualan Role Vip No Update Dan Full Update'],
+    vip: true, vipNote: 'Akses Full Fitur Vip'
+  },
+  'admin': {
+    name: 'Admin', price: 300000,
+    benefit: ['Akses Full Fitur Aplikasi', 'Akses Full Fitur Vip', 'Bisa Jualin Role Vip No Update, Full Update Dan Reseller'],
+    vip: true, vipNote: 'Akses Full Fitur Vip'
+  },
+  'ptero-1gb':        { name: 'Panel Pterodactyl 1GB',        price: 1000,  ptero: true, ram: '1 GB' },
+  'ptero-2gb':        { name: 'Panel Pterodactyl 2GB',        price: 2000,  ptero: true, ram: '2 GB' },
+  'ptero-3gb':        { name: 'Panel Pterodactyl 3GB',        price: 3000,  ptero: true, ram: '3 GB' },
+  'ptero-4gb':        { name: 'Panel Pterodactyl 4GB',        price: 4000,  ptero: true, ram: '4 GB' },
+  'ptero-5gb':        { name: 'Panel Pterodactyl 5GB',        price: 5000,  ptero: true, ram: '5 GB' },
+  'ptero-6gb':        { name: 'Panel Pterodactyl 6GB',        price: 6000,  ptero: true, ram: '6 GB' },
+  'ptero-7gb':        { name: 'Panel Pterodactyl 7GB',        price: 8000,  ptero: true, ram: '7 GB' },
+  'ptero-8gb':        { name: 'Panel Pterodactyl 8GB',        price: 8000,  ptero: true, ram: '8 GB' },
+  'ptero-9gb':        { name: 'Panel Pterodactyl 9GB',        price: 9000,  ptero: true, ram: '9 GB' },
+  'ptero-10gb':       { name: 'Panel Pterodactyl 10GB',       price: 10000, ptero: true, ram: '10 GB' },
+  'ptero-unlimited':  { name: 'Panel Pterodactyl Unlimited',  price: 15000, ptero: true, ram: 'Unlimited' }
+};
+
+const BASIC_FEATURES = [
+  ['Spam Pairing','fa-solid fa-paper-plane'],
+  ['WhatsApp Call','fa-solid fa-phone'],
+  ['Spam NGL','fa-solid fa-comment-dots'],
+  ['Downloader (Tiktok, Pin, Instagram)','fa-solid fa-download'],
+  ['iPhone Quote','fa-solid fa-quote-left'],
+  ['Remini Ai','fa-solid fa-wand-magic-sparkles'],
+  ['Nik Parse','fa-solid fa-id-card'],
+  ['Comment FB','fa-brands fa-facebook'],
+  ['Fake Group','fa-solid fa-users'],
+  ['Lobby FF','fa-solid fa-gamepad'],
+  ['Lobby ML','fa-solid fa-gamepad'],
+  ['Fake Story','fa-solid fa-book-open'],
+  ['Fake Threads','fa-brands fa-threads'],
+  ['QC Card','fa-solid fa-id-badge'],
+  ['Sticker Meme','fa-solid fa-icons'],
+  ['Brat Anime','fa-solid fa-face-grin-squint'],
+  ['Meme Ustadz','fa-solid fa-mosque'],
+  ['Blur Face','fa-solid fa-eye-slash'],
+  ['Remove BG','fa-solid fa-eraser'],
+  ['Wasted','fa-solid fa-skull'],
+  ['Wanted','fa-solid fa-bullhorn'],
+  ['Nonton Donghua','fa-solid fa-clapperboard'],
+  ['Nonton Anime','fa-solid fa-tv'],
+  ['Al-Quran','fa-solid fa-book-quran'],
+  ['Hadist','fa-solid fa-book'],
+  ['Music','fa-solid fa-music'],
+  ['Crosshair','fa-solid fa-crosshairs'],
+  ['Cek Keamanan Device','fa-solid fa-shield-halved']
+];
+
+const VIP_FEATURES = [
+  ['Buat Web Jadi Apk', 'fa-solid fa-mobile-screen-button'],
+];
+
+function renderFeaturePills(container, list) {
+  container.innerHTML = list.map(([name, icon]) => `
+    <div class="feature-pill"><i class="${icon}"></i>${name}</div>
+  `).join('');
+}
+
+const PTERO_SPECS = [
+  ['Server Private', 'fa-solid fa-lock'],
+  ['Anti Intip', 'fa-solid fa-eye-slash'],
+  ['Anti Kemaling', 'fa-solid fa-shield-halved'],
+  ['Garansi 20 Hari', 'fa-solid fa-calendar-check'],
+  ['1× Replace', 'fa-solid fa-rotate'],
+  ['Panel Pterodactyl', 'fa-solid fa-server'],
+];
+
+function openDetail(id) {
+  const role = ROLE_DATA[id];
+  if (!role) return;
+  selectedProduct = id;
+
+  document.getElementById('detail-title').textContent = role.name;
+  document.getElementById('detail-price').textContent = rupiah(role.price);
+
+  const vipSection = document.getElementById('vip-feature-section');
+  const basicSection = document.getElementById('detail-features-basic').closest('.detail-section');
+
+  if (role.ptero) {
+    // Pterodactyl detail
+    document.querySelector('.detail-price-sub').textContent = 'RAM ' + role.ram;
+    document.getElementById('detail-benefit').innerHTML = [
+      'Server Private Dedicated',
+      'Anti Intip & Anti Kemaling',
+      'Garansi 20 Hari dengan 1× Replace',
+      'RAM ' + role.ram
+    ].map(b => `
+      <div class="benefit-row"><i class="fa-solid fa-circle-check"></i><span>${b}</span></div>
+    `).join('');
+    renderFeaturePills(document.getElementById('detail-features-basic'), PTERO_SPECS);
+    vipSection.style.display = 'none';
+  } else {
+    document.querySelector('.detail-price-sub').textContent = 'Permanen Full Update';
+    document.getElementById('detail-benefit').innerHTML = role.benefit.map(b => `
+      <div class="benefit-row"><i class="fa-solid fa-circle-check"></i><span>${b}</span></div>
+    `).join('');
+    renderFeaturePills(document.getElementById('detail-features-basic'), BASIC_FEATURES);
+    if (role.vip) {
+      vipSection.style.display = '';
+      renderFeaturePills(document.getElementById('detail-features-vip'), VIP_FEATURES);
+    } else {
+      vipSection.style.display = 'none';
+    }
+  }
+
+  document.getElementById('detail-overlay').classList.add('show');
+  document.getElementById('detail-footer').classList.add('show');
+}
+
+function closeDetail() {
+  document.getElementById('detail-overlay').classList.remove('show');
+  document.getElementById('detail-footer').classList.remove('show');
+}
+
+async function doBeli() {
+  if (!selectedProduct) { toast('Pilih Produk Dulu', 'error'); return; }
+  const role = ROLE_DATA[selectedProduct];
+  if (!role) return;
+
+  // Panel Pterodactyl → cek saldo dulu
+  if (role.ptero) {
+    const btn = document.getElementById('btn-beli');
+    const btnText = document.getElementById('btn-beli-text');
+    btn.disabled = true; btnText.textContent = '';
+    const sp = document.createElement('div'); sp.className = 'spinner'; btn.appendChild(sp);
+    try {
+      const res = await fetch(apiUrl('/api/panel/check'), { method: 'POST', headers: H, body: JSON.stringify({ product_id: selectedProduct }) });
+      const data = await res.json();
+      if (!data.ok) { toast(data.message || 'Gagal cek saldo', 'error'); return; }
+
+      closeDetail();
+
+      if (data.sufficient) {
+        openPanelForm(selectedProduct, data.product, data.balance);
+      } else {
+        toast(`Saldo Kurang ${rupiah(data.kurang)}, Buat QRIS...`, 'warning');
+        const qRes = await fetch(apiUrl('/api/panel/topup-buy'), { method: 'POST', headers: H, body: JSON.stringify({ product_id: selectedProduct }) });
+        const qData = await qRes.json();
+        if (qData.ok) {
+          openModal(qData.transaction, 'Top Up · ' + data.product.name, 'Scan QRIS Untuk Bayar Panel');
+        } else {
+          toast(qData.message || 'Gagal Buat QRIS', 'error');
+        }
+      }
+    } catch { toast('Koneksi Gagal', 'error'); }
+    finally { btn.disabled = false; btnText.textContent = 'Beli Sekarang'; sp.remove(); }
+    return;
+  }
+
+  const btn = document.getElementById('btn-beli');
+  const btnText = document.getElementById('btn-beli-text');
+  btn.disabled = true; btnText.textContent = '';
+  const sp = document.createElement('div'); sp.className = 'spinner'; btn.appendChild(sp);
+  try {
+    const res = await fetch(apiUrl('/api/buy'), { method: 'POST', headers: H, body: JSON.stringify({ product_id: selectedProduct }) });
+    const data = await res.json();
+    if (data.ok) {
+      closeDetail();
+      openModal(data.transaction, 'Beli ' + (data.transaction.product_name || ''), 'Scan QRIS untuk melanjutkan pembayaran');
+      toast('QRIS berhasil dibuat', 'success');
+    } else {
+      toast(data.message || 'Gagal Membuat Transaksi', 'error');
+    }
+  } catch { toast('Koneksi gagal', 'error'); }
+  finally { btn.disabled = false; btnText.textContent = 'Beli Sekarang'; sp.remove(); }
+}
+
+let _panelProduct = null;
+
+function openPanelForm(product_id, product, balance) {
+  _panelProduct = product_id;
+  document.getElementById('pf-product-name').textContent = product.name;
+  document.getElementById('pf-saldo').textContent = rupiah(balance);
+  document.getElementById('pf-harga').textContent = rupiah(product.price);
+  document.getElementById('pf-username').value = '';
+  document.getElementById('panel-form-overlay').classList.add('show');
+  document.getElementById('panel-form-footer').style.display = 'block';
+}
+
+function closePanelForm() {
+  document.getElementById('panel-form-overlay').classList.remove('show');
+  document.getElementById('panel-form-footer').style.display = 'none';
+  _panelProduct = null;
+}
+
+async function submitPanelForm() {
+  const uname = document.getElementById('pf-username').value.trim();
+  if (!uname) { toast('Username wajib diisi', 'error'); return; }
+  if (!/^[a-zA-Z0-9_]{3,20}$/.test(uname)) { toast('Username: 3-20 karakter, huruf/angka/_', 'error'); return; }
+
+  const btn = document.getElementById('pf-submit-btn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
+
+  try {
+    const res = await fetch(apiUrl('/api/panel/buy'), {
+      method: 'POST', headers: H,
+      body: JSON.stringify({ product_id: _panelProduct, panel_username: uname }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      closePanelForm();
+      showPanelResult(data.panel, data.saldo_sisa);
+      loadSaldo();
+    } else {
+      toast(data.message || 'Gagal Membuat Panel', 'error');
+    }
+  } catch { toast('Koneksi gagal', 'error'); }
+  finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-server"></i> Buat Panel Sekarang'; }
+}
+
+function showPanelResult(panel, sisaSaldo) {
+  document.getElementById('pr-server').textContent  = panel.serverName;
+  document.getElementById('pr-email').textContent   = panel.panelUsername;
+  document.getElementById('pr-pass').textContent    = panel.password;
+  document.getElementById('pr-pkg').textContent     = panel.package.replace('ptero-', '').toUpperCase() + ' RAM';
+  document.getElementById('pr-saldo').textContent   = rupiah(sisaSaldo);
+  document.getElementById('panel-result-overlay').classList.add('show');
+  document.getElementById('panel-result-footer').style.display = 'block';
+}
+
+function closePanelResult() {
+  document.getElementById('panel-result-overlay').classList.remove('show');
+  document.getElementById('panel-result-footer').style.display = 'none';
+}
+
+function copyText(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => toast('Disalin!', 'success'));
+}
+</script>
+<!-- ── Panel Form Modal (saldo cukup) ──────────────────────────────────── -->
+<div class="detail-overlay" id="panel-form-overlay" onclick="if(event.target===this)closePanelForm()">
+  <div class="detail-sheet">
+    <button class="detail-close" onclick="closePanelForm()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="detail-title"><i class="fa-solid fa-server" style="color:#16A34A;margin-right:8px"></i>Buat Akun Panel</div>
+    <div class="detail-sub" id="pf-product-name">—</div>
+
+    <div class="detail-price-box" style="background:#F0FDF4;border-color:#BBF7D0;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#15803D;font-weight:600">
+        <span>Saldo Kamu</span><span id="pf-saldo">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#15803D;font-weight:600;margin-top:4px">
+        <span>Harga Panel</span><span id="pf-harga">—</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div>
+        <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:6px">
+          <i class="fa-solid fa-user" style="color:#16A34A;margin-right:5px"></i>Username Panel
+        </label>
+        <input id="pf-username" type="text" placeholder="contoh: ryuichi123"
+          style="width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"
+          onfocus="this.style.borderColor='#16A34A'" onblur="this.style.borderColor='var(--border)'">
+        <div style="font-size:10px;color:var(--slate);margin-top:4px">3-20 karakter, huruf/angka/underscore</div>
+      </div>
+
+    </div>
+
+    <div style="height:80px"></div>
+  </div>
+</div>
+<div style="position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--white);border-top:1px solid var(--border);padding:12px 16px;z-index:96;display:none" id="panel-form-footer">
+  <button id="pf-submit-btn" onclick="submitPanelForm()"
+    style="width:100%;background:#16A34A;color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+    <i class="fa-solid fa-server"></i> Buat Panel Sekarang
+  </button>
+</div>
+
+<!-- ── Panel Result Modal ──────────────────────────────────────────────── -->
+<div class="detail-overlay" id="panel-result-overlay">
+  <div class="detail-sheet">
+    <div style="text-align:center;padding:10px 0 16px">
+      <div style="width:54px;height:54px;border-radius:16px;background:#F0FDF4;color:#16A34A;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 10px">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <div style="font-size:17px;font-weight:800;color:#15803D">Panel Berhasil Dibuat!</div>
+      <div style="font-size:12px;color:var(--slate);margin-top:4px">Simpan data berikut, jangan kasih ke orang lain</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+      <div style="background:#F8FAFC;border:1px solid var(--border);border-radius:12px;padding:12px 14px">
+        <div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Server Name</div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span id="pr-server" style="font-weight:700;font-size:13px"></span>
+          <button onclick="copyText('pr-server')" style="background:none;border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;color:var(--slate)"><i class="fa-solid fa-copy"></i></button>
+        </div>
+      </div>
+      <div style="background:#F8FAFC;border:1px solid var(--border);border-radius:12px;padding:12px 14px">
+        <div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Username Panel</div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span id="pr-email" style="font-weight:700;font-size:13px"></span>
+          <button onclick="copyText('pr-email')" style="background:none;border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;color:var(--slate)"><i class="fa-solid fa-copy"></i></button>
+        </div>
+      </div>
+      <div style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:12px;padding:12px 14px">
+        <div style="font-size:10px;font-weight:700;color:#92400E;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Password Panel</div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span id="pr-pass" style="font-weight:800;font-size:14px;font-family:monospace;color:#D97706"></span>
+          <button onclick="copyText('pr-pass')" style="background:none;border:1px solid #FED7AA;border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;color:#92400E"><i class="fa-solid fa-copy"></i></button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:10px 12px;text-align:center">
+          <div style="font-size:10px;color:#15803D;font-weight:600">Package</div>
+          <div id="pr-pkg" style="font-weight:800;font-size:13px;color:#15803D"></div>
+        </div>
+        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:10px 12px;text-align:center">
+          <div style="font-size:10px;color:var(--blue);font-weight:600">Sisa Saldo</div>
+          <div id="pr-saldo" style="font-weight:800;font-size:13px;color:var(--blue)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:80px"></div>
+  </div>
+</div>
+<div style="position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--white);border-top:1px solid var(--border);padding:12px 16px;z-index:96;display:none" id="panel-result-footer">
+  <button onclick="closePanelResult()" style="width:100%;background:var(--blue);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer">
+    OK, Sudah Disimpan
+  </button>
+</div>
+
+</body>
+</html>

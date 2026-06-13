@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>History Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="shared.css"/>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-logo" href="/dashboard">
+    <div class="logo-icon">
+      <i class="fa-solid fa-store" style="color:#fff;font-size:14px"></i>
+    </div>
+    <div class="logo-text">Zal <span>Яyuichi</span></div>
+  </a>
+  <button class="btn-logout" onclick="logout()">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Logout
+  </button>
+</nav>
+
+<main>
+
+  <div class="saldo-card">
+    <div class="saldo-top-row">
+      <div class="saldo-chip"><i class="fa-solid fa-circle-check"></i> Verified</div>
+      <div class="saldo-logo">PayGet</div>
+    </div>
+    <div class="saldo-mid">
+      <div class="saldo-label">Saldo Kamu</div>
+      <div class="saldo-amount" id="saldo-display">Rp —</div>
+    </div>
+    <div class="saldo-bottom-row">
+      <div class="saldo-user">
+        <i class="fa-solid fa-circle-user" style="opacity:0.85"></i>
+        <span id="home-username">—</span>
+      </div>
+      <div class="saldo-actions">
+        <button class="saldo-btn" onclick="window.location.href='topup.html'">
+          <i class="fa-solid fa-plus"></i> Top Up
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hist-stats" id="hist-stats">
+    <div class="hist-stat-item">
+      <div class="hist-stat-icon blue"><i class="fa-solid fa-receipt"></i></div>
+      <div>
+        <div class="hist-stat-val" id="stat-total">0</div>
+        <div class="hist-stat-label">Total Transaksi</div>
+      </div>
+    </div>
+    <div class="hist-stat-item">
+      <div class="hist-stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+      <div>
+        <div class="hist-stat-val" id="stat-success">0</div>
+        <div class="hist-stat-label">Berhasil</div>
+      </div>
+    </div>
+    <div class="hist-stat-item">
+      <div class="hist-stat-icon amber"><i class="fa-solid fa-clock"></i></div>
+      <div>
+        <div class="hist-stat-val" id="stat-pending">0</div>
+        <div class="hist-stat-label">Menunggu</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="page-head">
+      <i class="fa-solid fa-clock-rotate-left"></i>
+      <div class="card-title">Riwayat Transaksi</div>
+    </div>
+    <div class="card-sub">Semua Transaksi Yang Pernah Dibuat</div>
+    <div id="history-content">
+      <div class="empty-state">
+        <i class="fa-regular fa-circle-question" style="font-size:34px;opacity:0.4;margin-bottom:10px;display:block"></i>
+        <p>Memuat Riwayat...</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<nav class="bottom-nav">
+  <a class="bnav-item" href="/dashboard">
+    <i class="fa-solid fa-house"></i>
+    <span class="bnav-label">Home</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item" href="/home/topup.html">
+    <i class="fa-solid fa-wallet"></i>
+    <span class="bnav-label">Top Up</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item" href="/home/produk.html">
+    <i class="fa-solid fa-bag-shopping"></i>
+    <span class="bnav-label">Produk</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item active" href="/home/history.html">
+    <i class="fa-solid fa-clock-rotate-left"></i>
+    <span class="bnav-label">History</span>
+    <div class="bnav-dot"></div>
+  </a>
+</nav>
+
+<div class="notif-overlay" id="notif-overlay">
+  <div class="notif-box">
+    <div class="notif-icon-wrap" id="notif-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
+    <div class="notif-title" id="notif-title"></div>
+    <div class="notif-desc" id="notif-desc"></div>
+    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()">OK</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+const savedUserName = localStorage.getItem('pg_user') || 'User';
+document.getElementById('home-username').textContent = savedUserName;
+loadSaldo();
+
+async function loadHistory() {
+  try {
+    const res = await fetch(apiUrl('/api/history'), { headers: H });
+    const data = await res.json();
+    const container = document.getElementById('history-content');
+    if (!data.ok || !data.transactions.length) {
+      container.innerHTML = `<div class="empty-state">
+        <i class="fa-regular fa-circle" style="font-size:34px;opacity:0.4;margin-bottom:10px;display:block"></i>
+        <p>Belum Ada Transaksi</p>
+      </div>`;
+      return;
+    }
+
+    document.getElementById('stat-total').textContent = data.transactions.length;
+    document.getElementById('stat-success').textContent = data.transactions.filter(t => t.status === 'completed').length;
+    document.getElementById('stat-pending').textContent = data.transactions.filter(t => t.status === 'pending').length;
+
+    const statusInfo = s => ({
+      completed: { icon: 'fa-circle-check',     text: 'Berhasil',   cls: 'completed' },
+      pending:   { icon: 'fa-clock',             text: 'Menunggu',   cls: 'pending'   },
+      cancelled: { icon: 'fa-circle-xmark',      text: 'Dibatalkan', cls: 'cancelled' },
+    }[s] || { icon: 'fa-circle-exclamation', text: 'Gagal', cls: 'cancelled' });
+
+    const typeIcon = tx => {
+      if (tx.type === 'topup')       return '<i class="fa-solid fa-wallet"></i>';
+      if (tx.type === 'panel')       return '<i class="fa-solid fa-server"></i>';
+      if (tx.type === 'panel_topup') return '<i class="fa-solid fa-server"></i>';
+      return '<i class="fa-solid fa-bag-shopping"></i>';
+    };
+
+    const typeLabel = tx => {
+      if (tx.type === 'topup')       return 'Top Up Saldo';
+      if (tx.type === 'panel')       return 'Panel Pterodactyl';
+      if (tx.type === 'panel_topup') return 'Top Up · Panel (QRIS)';
+      return tx.product_name || 'Pembelian';
+    };
+
+    container.innerHTML = data.transactions.map(tx => {
+      const st = statusInfo(tx.status);
+      const isPanel = tx.type === 'panel' && tx.panelDetail;
+      const p = tx.panelDetail;
+
+      return `
+      <div style="border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;background:var(--white)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div class="hist-type-icon ${tx.type==='topup' ? 'green' : 'blue'}">${typeIcon(tx)}</div>
+            <div>
+              <div style="font-size:11px;font-family:monospace;color:var(--slate);margin-bottom:4px">${tx.order_id}</div>
+              <div style="font-weight:700;font-size:13px;margin-bottom:2px">${typeLabel(tx)}</div>
+            </div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-weight:800;font-size:14px;${tx.type==='topup'?'color:var(--green)':'color:var(--red)'}">${tx.type==='topup'?'+':'-'}${rupiah(tx.amount)}</div>
+            <div><span class="badge ${st.cls}"><i class="fa-solid ${st.icon}"></i> ${st.text}</span></div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--slate);margin-top:6px">${new Date(tx.created_at).toLocaleString('id-ID')}</div>
+
+        ${isPanel ? `
+        <div style="margin-top:10px;padding:10px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px">
+          <div style="font-size:11px;font-weight:800;color:#15803D;margin-bottom:8px;display:flex;align-items:center;gap:5px">
+            <i class="fa-solid fa-server"></i> Info Panel
+          </div>
+          <div style="display:grid;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:11px">
+              <span style="color:var(--slate)">Server</span>
+              <span style="font-weight:700;font-family:monospace">${p.serverName}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px">
+              <span style="color:var(--slate)">Email</span>
+              <span style="font-weight:700">${p.email}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;align-items:center">
+              <span style="color:var(--slate)">Password</span>
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-weight:800;font-family:monospace;color:#D97706;background:#FFF7ED;padding:2px 7px;border-radius:6px">${p.password}</span>
+                <button onclick="navigator.clipboard.writeText('${p.password}').then(()=>toast('Disalin!','success'))"
+                  style="background:none;border:1px solid #FED7AA;border-radius:6px;padding:2px 6px;font-size:10px;cursor:pointer;color:#92400E">
+                  <i class="fa-solid fa-copy"></i>
+                </button>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px">
+              <span style="color:var(--slate)">Package</span>
+              <span style="font-weight:700;color:#15803D">${p.package.replace('ptero-','').toUpperCase()} RAM</span>
+            </div>
+          </div>
+        </div>` : ''}
+      </div>`;
+    }).join('');
+
+  } catch { toast('Gagal Memuat Riwayat', 'error'); }
+}
+
+loadHistory();
+</script>
+</body>
+</html>

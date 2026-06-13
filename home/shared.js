@@ -1,0 +1,246 @@
+// ─── API BASE URL ──────────────────────────────────────────────────────────
+// Otomatis baca dari api.txt di GitHub raw (di-cache ke localStorage)
+// api.txt isi cuma 1 baris: https://xxxx.trycloudflare.com
+
+const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
+let API_BASE = "";
+
+async function loadApiBase() {
+  try {
+    // Coba ambil dari localStorage cache dulu (biar ga nunggu setiap load)
+    const cached = localStorage.getItem("pg_api_base");
+    if (cached) API_BASE = cached.trim();
+
+    // Fetch fresh dari GitHub raw setiap load
+    const res = await fetch(API_TXT_URL + "?t=" + Date.now());
+    if (res.ok) {
+      const url = (await res.text()).trim();
+      if (url && url.startsWith("http")) {
+        API_BASE = url;
+        localStorage.setItem("pg_api_base", url);
+      }
+    }
+  } catch {
+    // Fallback ke cache kalau offline
+    const cached = localStorage.getItem("pg_api_base");
+    if (cached) API_BASE = cached.trim();
+  }
+}
+
+function apiUrl(path) {
+  return API_BASE ? `${API_BASE}${path}` : path;
+}
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+
+const TOKEN = localStorage.getItem('pg_token');
+if (!TOKEN) window.location.href = '/login.html';
+
+const H = { 'Content-Type': 'application/json', 'x-auth-token': TOKEN };
+let pollInterval = null;
+let timerInterval = null;
+let currentTx = null;
+let _notifCallback = null;
+
+const savedUser = localStorage.getItem('pg_user') || 'User';
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadApiBase();
+  const nameEl = document.getElementById('profile-name-el');
+  if (nameEl) nameEl.textContent = savedUser;
+  if (typeof onApiReady === 'function') onApiReady();
+});
+
+function logout() {
+  localStorage.removeItem('pg_token');
+  localStorage.removeItem('pg_user');
+  window.location.href = '/login.html';
+}
+
+function rupiah(n) { return 'Rp ' + Number(n).toLocaleString('id-ID'); }
+function formatCountdown(s) {
+  const m = Math.floor(s / 60);
+  return `${String(m).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+}
+
+async function loadSaldo() {
+  try {
+    const res = await fetch(apiUrl('/api/balance'), { headers: H });
+    const data = await res.json();
+    if (data.ok) {
+      const el = document.getElementById('saldo-display');
+      if (el) el.textContent = rupiah(data.balance ?? 0);
+    }
+  } catch {}
+}
+
+function toast(msg, type = 'info') {
+  const icons = {
+    success: '<i class="fa-solid fa-circle-check" style="color:#16a34a"></i>',
+    error:   '<i class="fa-solid fa-circle-xmark" style="color:#dc2626"></i>',
+    info:    '<i class="fa-solid fa-circle-info" style="color:#2563eb"></i>',
+    warning: '<i class="fa-solid fa-triangle-exclamation" style="color:#d97706"></i>'
+  };
+  const titles = { success: 'Berhasil', error: 'Gagal', info: 'Info', warning: 'Perhatian' };
+  document.getElementById('notif-icon-wrap').innerHTML = icons[type] || icons.info;
+  document.getElementById('notif-icon-wrap').className = `notif-icon-wrap ${type}`;
+  document.getElementById('notif-title').textContent = titles[type] || 'Info';
+  document.getElementById('notif-title').className = `notif-title ${type}`;
+  document.getElementById('notif-desc').textContent = msg;
+  document.getElementById('notif-btn-ok').className = `notif-btn-ok ${type}`;
+  document.getElementById('notif-overlay').classList.add('show');
+}
+function closeNotif() {
+  document.getElementById('notif-overlay').classList.remove('show');
+  if (_notifCallback) { _notifCallback(); _notifCallback = null; }
+}
+
+function startTimer(expiredAt) {
+  stopTimer();
+  const timerBox = document.getElementById('timer-box');
+  const timerDisplay = document.getElementById('timer-display');
+  function tick() {
+    const rem = Math.floor((new Date(expiredAt) - Date.now()) / 1000);
+    if (rem <= 0) {
+      timerDisplay.textContent = '00:00';
+      timerBox.className = 'timer-box urgent';
+      stopTimer();
+      if (currentTx && currentTx.status === 'pending') {
+        setModalStatus('expired');
+        toast('Transaksi Sudah Expired', 'warning');
+        document.getElementById('btn-cancel').disabled = true;
+        stopPolling();
+      }
+      return;
+    }
+    timerDisplay.textContent = formatCountdown(rem);
+    timerBox.className = rem <= 60 ? 'timer-box urgent' : 'timer-box';
+  }
+  tick();
+  timerInterval = setInterval(tick, 1000);
+}
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+function openModal(tx, titleText, subText) {
+  currentTx = tx;
+  document.getElementById('modal-title').textContent = titleText || 'Scan QRIS';
+  document.getElementById('modal-sub').textContent   = subText || 'Scan QR Di Bawah Untuk Membayar';
+  document.getElementById('modal-amount').textContent = rupiah(tx.total_payment || tx.amount);
+  document.getElementById('modal-orderid').textContent = 'Order ID: ' + tx.order_id;
+  const canvas = document.getElementById('qr-canvas');
+  canvas.innerHTML = '';
+  new QRCode(canvas, { text: tx.qr_string, width: 180, height: 180, correctLevel: QRCode.CorrectLevel.M });
+  document.getElementById('btn-cancel').disabled = false;
+  document.getElementById('btn-cancel-text').textContent = 'Batalkan Transaksi';
+  setModalStatus('waiting');
+  if (tx.expired_at) startTimer(tx.expired_at);
+  document.getElementById('modal-overlay').classList.add('show');
+  startPolling(tx.order_id);
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('show');
+  stopPolling(); stopTimer(); currentTx = null;
+}
+function setModalStatus(s) {
+  const row = document.getElementById('modal-status');
+  const map = {
+    waiting:   { cls: 'waiting',   html: '<div class="pulse"></div><span>Menunggu Pembayaran...</span>' },
+    done:      { cls: 'done',      html: '<i class="fa-solid fa-circle-check"></i><span>Pembayaran Berhasil!</span>' },
+    cancelled: { cls: 'cancelled', html: '<i class="fa-solid fa-circle-xmark"></i><span>Transaksi Dibatalkan</span>' },
+    expired:   { cls: 'cancelled', html: '<i class="fa-solid fa-clock"></i><span>Transaksi Expired</span>' },
+  };
+  const m = map[s] || map.waiting;
+  row.className = 'status-row ' + m.cls;
+  row.innerHTML = m.html;
+}
+
+function startPolling(order_id) {
+  stopPolling();
+  pollInterval = setInterval(async () => {
+    try {
+      const res = await fetch(apiUrl(`/api/status/${order_id}`), { headers: H });
+      const data = await res.json();
+      if (data.ok) {
+        if (data.transaction.status === 'completed') {
+          setModalStatus('done');
+          toast('Pembayaran Berhasil Diterima!', 'success');
+          stopPolling(); stopTimer();
+          document.getElementById('btn-cancel').disabled = true;
+          document.getElementById('timer-box').className = 'timer-box done';
+          loadSaldo();
+        } else if (data.transaction.status === 'cancelled') {
+          setModalStatus('cancelled');
+          stopPolling(); stopTimer();
+          document.getElementById('btn-cancel').disabled = true;
+        }
+      }
+    } catch {}
+  }, 4000);
+}
+function stopPolling() {
+  if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+}
+
+async function doCancel() {
+  if (!currentTx) return;
+  const btn = document.getElementById('btn-cancel');
+  const btnText = document.getElementById('btn-cancel-text');
+  btn.disabled = true; btnText.textContent = 'Membatalkan...';
+  try {
+    const res = await fetch(apiUrl('/api/cancel'), { method: 'POST', headers: H, body: JSON.stringify({ order_id: currentTx.order_id }) });
+    const data = await res.json();
+    if (data.ok) {
+      setModalStatus('cancelled');
+      toast('Transaksi Berhasil Dibatalkan', 'info');
+      stopPolling(); stopTimer();
+      document.getElementById('timer-box').className = 'timer-box done';
+    } else {
+      toast(data.message || 'Gagal Membatalkan Transaksi', 'error');
+      btn.disabled = false; btnText.textContent = 'Batalkan Transaksi';
+    }
+  } catch {
+    toast('Koneksi Gagal', 'error');
+    btn.disabled = false; btnText.textContent = 'Batalkan Transaksi';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ov = document.getElementById('modal-overlay');
+  if (ov) ov.addEventListener('click', e => { if (e.target === ov) closeModal(); });
+
+  // Inject admin contact FAB
+  if (!document.getElementById('contact-fab')) {
+    const fab = document.createElement('button');
+    fab.id = 'contact-fab';
+    fab.className = 'contact-fab';
+    fab.innerHTML = '<i class="fa-solid fa-headset"></i>';
+    fab.onclick = () => document.getElementById('contact-panel').classList.toggle('show');
+
+    const panel = document.createElement('div');
+    panel.id = 'contact-panel';
+    panel.className = 'contact-panel';
+    panel.innerHTML = `
+      <div class="contact-panel-title">Hubungi Admin</div>
+      <a class="contact-item" href="https://t.me/ZalRyuichi" target="_blank">
+        <div class="contact-item-icon tg"><i class="fa-brands fa-telegram"></i></div> Telegram
+      </a>
+      <a class="contact-item" href="https://wa.me/6285809456224" target="_blank">
+        <div class="contact-item-icon wa"><i class="fa-brands fa-whatsapp"></i></div> WhatsApp
+      </a>
+      <a class="contact-item" href="https://tiktok.com/@zal_ryuichi" target="_blank">
+        <div class="contact-item-icon tt"><i class="fa-brands fa-tiktok"></i></div> TikTok
+      </a>
+      <a class="contact-item" href="https://instagram.com/zal_ryuichi" target="_blank">
+        <div class="contact-item-icon ig"><i class="fa-brands fa-instagram"></i></div> Instagram
+      </a>
+    `;
+
+    document.body.appendChild(panel);
+    document.body.appendChild(fab);
+
+    document.addEventListener('click', e => {
+      if (!panel.contains(e.target) && !fab.contains(e.target)) panel.classList.remove('show');
+    });
+  }
+});
