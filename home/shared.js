@@ -6,10 +6,13 @@ const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api
 let API_BASE = "";
 
 async function loadApiBase() {
+  const CACHE_TTL = 10 * 60 * 1000; // 10 menit
   try {
-    // Coba ambil dari localStorage cache dulu (biar ga nunggu setiap load)
-    const cached = localStorage.getItem("pg_api_base");
-    if (cached) API_BASE = cached.trim();
+    // Cek cache + TTL — kalau masih fresh, pakai dulu sambil fetch berjalan
+    const cached   = localStorage.getItem("pg_api_base");
+    const cachedAt = parseInt(localStorage.getItem("pg_api_base_ts") || "0");
+    const cacheOk  = cached && (Date.now() - cachedAt < CACHE_TTL);
+    if (cacheOk) API_BASE = cached.trim();
 
     // Fetch fresh dari GitHub raw setiap load
     const res = await fetch(API_TXT_URL + "?t=" + Date.now());
@@ -18,10 +21,11 @@ async function loadApiBase() {
       if (url && url.startsWith("http")) {
         API_BASE = url;
         localStorage.setItem("pg_api_base", url);
+        localStorage.setItem("pg_api_base_ts", Date.now().toString());
       }
     }
   } catch {
-    // Fallback ke cache kalau offline
+    // Fallback ke cache kalau offline (tanpa peduli TTL)
     const cached = localStorage.getItem("pg_api_base");
     if (cached) API_BASE = cached.trim();
   }
@@ -62,15 +66,24 @@ function formatCountdown(s) {
   return `${String(m).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 }
 
-async function loadSaldo() {
+async function loadSaldo(retry = 2) {
   try {
     const res = await fetch(apiUrl('/api/balance'), { headers: H });
+    if (res.status === 401 || res.status === 403) { logout(); return; }
     const data = await res.json();
     if (data.ok) {
       const el = document.getElementById('saldo-display');
       if (el) el.textContent = rupiah(data.balance ?? 0);
     }
-  } catch {}
+  } catch {
+    // Kalau gagal (URL Cloudflare expired?), reload API base dulu lalu retry
+    if (retry > 0) {
+      localStorage.removeItem("pg_api_base_ts"); // force fresh fetch
+      await loadApiBase();
+      return loadSaldo(retry - 1);
+    }
+    toast('Gagal memuat saldo, coba refresh', 'error');
+  }
 }
 
 function toast(msg, type = 'info') {
