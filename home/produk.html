@@ -55,6 +55,72 @@
   }
   .feature-pill i { color: var(--blue); font-size: 11px; width: 14px; text-align: center; }
 
+  /* ─── Quick Actions (dashboard style) ─── */
+  .quick-item {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px 6px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    text-decoration: none; color: var(--dark);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    transition: transform 0.15s, box-shadow 0.15s;
+    flex: 0 0 22%; min-width: 80px; scroll-snap-align: start;
+  }
+  .quick-item:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+  .quick-icon {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: #fff;
+  }
+  .quick-icon.blue   { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
+  .quick-icon.green  { background: linear-gradient(135deg, #10B981, #059669); }
+  .quick-icon.amber  { background: linear-gradient(135deg, #F59E0B, #D97706); }
+  .quick-icon.purple { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+  .quick-icon.red    { background: linear-gradient(135deg, #EF4444, #B91C1C); }
+  .quick-icon.cyan   { background: linear-gradient(135deg, #06B6D4, #0891B2); }
+
+  /* ─── Apk Banner (Xyz / Pegasus) ─── */
+  .apk-banner {
+    border-radius: 16px;
+    padding: 18px 20px;
+    color: #fff;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .apk-banner::before {
+    content: '';
+    position: absolute; top: -30px; right: -30px;
+    width: 100px; height: 100px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+  }
+  .apk-banner::after {
+    content: '';
+    position: absolute; bottom: -20px; left: 20px;
+    width: 70px; height: 70px; border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+  }
+  .apk-banner.xyz    { background: linear-gradient(135deg, #6D28D9 0%, #4C1D95 100%); }
+  .apk-banner.pegasus { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%); }
+  .apk-banner-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .apk-banner-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: #fff; flex-shrink: 0;
+  }
+  .apk-banner-label { font-size: 16px; font-weight: 800; color: #fff; }
+  .apk-banner-sub { font-size: 11px; color: rgba(255,255,255,0.65); }
+  .apk-banner-pills { display: flex; flex-wrap: wrap; gap: 6px; position: relative; z-index: 1; }
+  .apk-banner-pill {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.9);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .apk-banner-pill i { font-size: 9px; }
+
   .detail-overlay {
     position: fixed; inset: 0;
     background: rgba(15,23,42,0.5);
@@ -252,22 +318,30 @@
   </div>
 
   <div class="quick-actions">
-    <div class="qa-item" onclick="window.location.href='topup.html'">
-      <div class="qa-icon" style="background:#EFF6FF;color:#2563EB"><i class="fa-solid fa-wallet"></i></div>
-      <div class="qa-label">Top Up</div>
-    </div>
-    <div class="qa-item" onclick="document.getElementById('ptero').scrollIntoView({behavior:'smooth'})">
-      <div class="qa-icon" style="background:#EFF6FF;color:#2563EB"><i class="fa-solid fa-server"></i></div>
-      <div class="qa-label">Panel Ptero</div>
-    </div>
-    <div class="qa-item" onclick="document.getElementById('xyz').scrollIntoView({behavior:'smooth'})">
-      <div class="qa-icon" style="background:#FAF5FF;color:#9333EA"><i class="fa-solid fa-mobile-screen-button"></i></div>
-      <div class="qa-label">Apk Xyz</div>
-    </div>
-    <div class="qa-item" onclick="document.getElementById('pegasus').scrollIntoView({behavior:'smooth'})">
-      <div class="qa-icon" style="background:#FFF7ED;color:#EA580C"><i class="fa-solid fa-bag-shopping"></i></div>
-      <div class="qa-label">Apk Pegasus</div>
-    </div>
+    <a class="quick-item" href="topup.html">
+      <div class="quick-icon blue"><i class="fa-solid fa-wallet"></i></div>
+      <div class="quick-label">Top Up</div>
+    </a>
+    <a class="quick-item" href="#pegasus" onclick="event.preventDefault();document.getElementById('pegasus').scrollIntoView({behavior:'smooth'})">
+      <div class="quick-icon green"><i class="fa-solid fa-mobile-screen-button"></i></div>
+      <div class="quick-label">Apk Pegasus</div>
+    </a>
+    <a class="quick-item" href="#xyz" onclick="event.preventDefault();document.getElementById('xyz').scrollIntoView({behavior:'smooth'})">
+      <div class="quick-icon cyan"><i class="fa-solid fa-mobile-screen-button"></i></div>
+      <div class="quick-label">Apk Xyz</div>
+    </a>
+    <a class="quick-item" href="#ptero" onclick="event.preventDefault();document.getElementById('ptero').scrollIntoView({behavior:'smooth'})">
+      <div class="quick-icon red"><i class="fa-solid fa-server"></i></div>
+      <div class="quick-label">Panel Ptero</div>
+    </a>
+    <a class="quick-item" href="history.html">
+      <div class="quick-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
+      <div class="quick-label">History</div>
+    </a>
+    <a class="quick-item" href="https://t.me/ZalRyuichi" target="_blank">
+      <div class="quick-icon purple"><i class="fa-brands fa-telegram"></i></div>
+      <div class="quick-label">Bantuan</div>
+    </a>
   </div>
 
   <!-- ── Panel Ptero (paling atas, warna dashboard) ─── -->
@@ -323,7 +397,7 @@
       <div class="ptero-card" onclick="openDetail('ptero-7gb')">
         <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
         <div class="ptero-ram">7 GB</div>
-        <div class="ptero-price">Rp 8.000</div>
+        <div class="ptero-price">Rp 7.000</div>
       </div>
       <div class="ptero-card" onclick="openDetail('ptero-8gb')">
         <div class="ptero-icon"><i class="fa-solid fa-server"></i></div>
@@ -351,11 +425,21 @@
 
   <!-- ── Apk Xyz ─── -->
   <div class="card" id="xyz" style="margin-top:14px">
-    <div class="page-head">
-      <i class="fa-solid fa-mobile-screen-button" style="color:#9333EA"></i>
-      <div class="card-title">Apk Xyz</div>
+    <div class="apk-banner xyz">
+      <div class="apk-banner-top">
+        <div class="apk-banner-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+        <div>
+          <div class="apk-banner-label">Apk Xyz</div>
+          <div class="apk-banner-sub">Akses Fitur Lengkap · Member & Reseller</div>
+        </div>
+      </div>
+      <div class="apk-banner-pills">
+        <div class="apk-banner-pill"><i class="fa-solid fa-image"></i>Ganti Wallpaper</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-user"></i>Member 1 Bulan</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-infinity"></i>Member Permanen</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-shop"></i>Reseller</div>
+      </div>
     </div>
-    <div class="card-sub">Pilih Role Untuk Lihat Detail & Beli</div>
 
     <div class="role-grid">
       <div class="role-card" onclick="openDetail('xyz-member-1m')" style="--ic-bg:#F1F5F9;--ic-fg:#475569">
@@ -381,11 +465,22 @@
 
   <!-- ── Apk Pegasus ─── -->
   <div class="card" id="pegasus" style="margin-top:14px">
-    <div class="page-head">
-      <i class="fa-solid fa-bag-shopping"></i>
-      <div class="card-title">Apk Pegasus</div>
+    <div class="apk-banner pegasus">
+      <div class="apk-banner-top">
+        <div class="apk-banner-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+        <div>
+          <div class="apk-banner-label">Apk Pegasus</div>
+          <div class="apk-banner-sub">Fitur Lengkap · Permanen Full Update</div>
+        </div>
+      </div>
+      <div class="apk-banner-pills">
+        <div class="apk-banner-pill"><i class="fa-solid fa-user"></i>Member</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-star-half-stroke"></i>Vip No Update</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-star"></i>Vip Full Update</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-shop"></i>Reseller</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-crown"></i>Admin</div>
+      </div>
     </div>
-    <div class="card-sub">Pilih Role Untuk Lihat Detail & Beli</div>
 
     <div class="role-grid">
       <div class="role-card member" onclick="openDetail('member')">
@@ -601,101 +696,15 @@ const ROLE_DATA = {
 };
 
 const BASIC_FEATURES = [
-  ['Bug WhatsApp', 'fa-solid fa-bug'],
-  ['DDoS Panel', 'fa-solid fa-network-wired'],
-  ['Spam Pairing', 'fa-solid fa-paper-plane'],
-  ['WhatsApp Call', 'fa-solid fa-phone'],
-  ['Spam NGL', 'fa-solid fa-comment-dots'],
-  ['Downloader (Tiktok, Pin, Instagram)', 'fa-solid fa-download'],
-  ['iPhone Quote', 'fa-solid fa-quote-left'],
-  ['Remini Ai', 'fa-solid fa-wand-magic-sparkles'],
-  ['Nik Parse', 'fa-solid fa-id-card'],
-  ['Comment FB', 'fa-brands fa-facebook'],
-  ['Fake Group', 'fa-solid fa-users'],
-  ['Lobby FF', 'fa-solid fa-gamepad'],
-  ['Lobby ML', 'fa-solid fa-gamepad'],
-  ['Fake Story', 'fa-solid fa-book-open'],
-  ['Fake Threads', 'fa-brands fa-threads'],
-  ['QC Card', 'fa-solid fa-id-badge'],
-  ['Sticker Meme', 'fa-solid fa-icons'],
-  ['Brat Anime', 'fa-solid fa-face-grin-squint'],
-  ['Meme Ustadz', 'fa-solid fa-mosque'],
-  ['Blur Face', 'fa-solid fa-eye-slash'],
-  ['Remove BG', 'fa-solid fa-eraser'],
-  ['Wasted', 'fa-solid fa-skull'],
-  ['Wanted', 'fa-solid fa-bullhorn'],
-  ['Nonton Donghua', 'fa-solid fa-clapperboard'],
-  ['Nonton Anime', 'fa-solid fa-tv'],
-  ['Al-Quran', 'fa-solid fa-book-quran'],
-  ['Hadist', 'fa-solid fa-book'],
-  ['Music', 'fa-solid fa-music'],
-  ['Crosshair', 'fa-solid fa-crosshairs'],
-  ['Cek Keamanan Device', 'fa-solid fa-shield-halved']
+// biar gw yg isi
 ];
 
 const VIP_FEATURES = [
-  ['Buat Web Jadi Apk', 'fa-solid fa-mobile-screen-button'],
-  ['Kunci Perangkat Korban', 'fa-solid fa-lock'],
-  ['Getarkan Perangkat Korban', 'fa-solid fa-mobile-alt'],
-  ['Ambil Lokasi Korban', 'fa-solid fa-location-dot'],
-  ['Pantau Kamera Depan Dan Belakang Perangkat Korban', 'fa-solid fa-camera'],
-  ['Matikan Dan Hidupkan Senter Perangkat Korban', 'fa-solid fa-lightbulb'],
-  ['Ganti Wallpaper Perangkat Korban', 'fa-solid fa-image'],
-  ['Putar Suara Pada Perangkat Korban', 'fa-solid fa-volume-up'],
-  ['Pantau SMS Perangkat Korban', 'fa-regular fa-message'],
-  ['Melihat Foto Galeri Perangkat Korban', 'fa-regular fa-images'],
-  ['Melihat List Kontak Perangkat Korban', 'fa-solid fa-address-book'],
-  ['Menghapus File Korban', 'fa-solid fa-trash-can'],
-  ['Pantau Layar Perangkat Korban', 'fa-solid fa-desktop'],
-  ['Putar Video Di Perangkat Korban', 'fa-solid fa-video'],
-  ['Panggil Nomer Pada Perangkat Korban', 'fa-solid fa-phone'],
-  ['Kunci Perangkat Korban Dan Bisa Chatan Sama Korban', 'fa-solid fa-comment-dots'],
-  ['Rekam Suara Pada Perangkat Korban', 'fa-solid fa-microphone'],
-  ['List Aplikasi Pada Perangkat Korban', 'fa-solid fa-list'],
-  ['Blokir Aplikasi Pada Perangkat Korban', 'fa-solid fa-ban'],
-  ['Buka Aplikasi Pada Perangkat Korban', 'fa-solid fa-rocket'],
-  ['Teks Layar', 'fa-solid fa-text-height']
+// biar gw yg isi
 ];
 
 const XYZ_FEATURES = [
-  ['Anti Uninstall Apk Phishing', 'fa-solid fa-shield-halved'],
-  ['Matikan Hidupkan Senter Perangkat Korban', 'fa-solid fa-lightbulb'],
-  ['Play Video Full Layar Di Perangkat Korban', 'fa-solid fa-video'],
-  ['Ganti Wallpaper Perangkat Korban', 'fa-solid fa-image'],
-  ['Kunci Perangkat Korban', 'fa-solid fa-lock'],
-  ['Putar Suara Pada Perangkat Korban', 'fa-solid fa-volume-up'],
-  ['Getarkan Perangkat Korban', 'fa-solid fa-mobile-alt'],
-  ['Kirim Suara Google Ke Perangkat Korban', 'fa-solid fa-message'],
-  ['Atur Kecerahan Perangkat Korban', 'fa-solid fa-sun'],
-  ['Atur Volume Perangkat Korban', 'fa-solid fa-volume-high'],
-  ['Kirim Teks Layar Pada Perangkat Korban', 'fa-solid fa-text-height'],
-  ['Buka Website Pada Perangkat Korban', 'fa-solid fa-globe'],
-  ['Spam Dialog Pada Perangkat Korban', 'fa-solid fa-comment-dots'],
-  ['SOS Pada Perangkat Korban', 'fa-solid fa-bell'],
-  ['Pantau Kamera Depan Dan Belakang Pada Perangkat Korban', 'fa-solid fa-camera'],
-  ['Pantau Layar Dan Bisa Kontrol Perangkat Korban', 'fa-solid fa-desktop'],
-  ['Ambil Foto Depan Dan Belakang Pada Perangkat Korban', 'fa-solid fa-camera-retro'],
-  ['Ambil Paste Pada Keyboard Korban', 'fa-solid fa-keyboard'],
-  ['Scan Wifi Terdekat Pada Perangkat Korban', 'fa-solid fa-wifi'],
-  ['Cari Cell Tower Pada Perangkat Korban', 'fa-solid fa-tower-cell'],
-  ['Melihat Histori Chrome Perangkat Korban', 'fa-solid fa-clock-rotate-left'],
-  ['Ambil Lokasi Perangkat Korban', 'fa-solid fa-location-dot'],
-  ['Melihat Kontak Pada Perangkat Korban', 'fa-solid fa-address-book'],
-  ['Link Foto (Tampil di Layar Korban)', 'fa-solid fa-image'],
-  ['Spam Notifikasi Pada Perangkat Korban', 'fa-solid fa-bell'],
-  ['Spam Toast Pada Perangkat Korban', 'fa-solid fa-toast'],
-  ['Ganti Tema Aplikasi Phising Menjadi (WA dll)', 'fa-solid fa-palette'],
-  ['Rekam Suara Korban', 'fa-solid fa-microphone'],
-  ['Melihat Log WiFi Perangkat Korban', 'fa-solid fa-wifi'],
-  ['Melihat Akun Pada Perangkat Korban Seperti Akun Google Atau Email', 'fa-solid fa-users'],
-  ['Melihat Log Panggilan Pada Perangkat Korban', 'fa-solid fa-phone'],
-  ['Melihat Foto Galeri Korban', 'fa-solid fa-images'],
-  ['Blokir Aplikasi Korban Sehingga Korban Tidak Bisa Membuka Aplikasi Yang Di Blokir', 'fa-solid fa-ban'],
-  ['Buka Aplikasi Korban', 'fa-solid fa-rocket'],
-  ['Uninstall Aplikasi Yang Ada Di Perangkat Korban', 'fa-solid fa-trash-can'],
-  ['Hapus, Download Dan Masukin File Pada Perangkat Korban', 'fa-solid fa-folder'],
-  ['Panggil Nomer Pada Perangkat Korban', 'fa-solid fa-phone'],
-  ['Sembunyikan Aplikasi Phising Atau Korban', 'fa-solid fa-eye-slash']
+// biar gw yg isi
 ];
 
 const PTERO_SPECS = [
