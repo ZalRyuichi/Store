@@ -696,13 +696,19 @@
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
 let API_BASE = "";
 async function loadApiBase() {
+  const CACHE_TTL = 10 * 60 * 1000; // 10 menit
   try {
-    const cached = localStorage.getItem("pg_api_base");
-    if (cached) API_BASE = cached.trim();
+    const cached   = localStorage.getItem("pg_api_base");
+    const cachedAt = parseInt(localStorage.getItem("pg_api_base_ts") || "0");
+    if (cached && (Date.now() - cachedAt < CACHE_TTL)) API_BASE = cached.trim();
     const r = await fetch(API_TXT_URL + "?t=" + Date.now());
     if (r.ok) {
       const u = (await r.text()).trim();
-      if (u && u.startsWith("http")) { API_BASE = u; localStorage.setItem("pg_api_base", u); }
+      if (u && u.startsWith("http")) {
+        API_BASE = u;
+        localStorage.setItem("pg_api_base", u);
+        localStorage.setItem("pg_api_base_ts", Date.now().toString());
+      }
     }
   } catch { const c = localStorage.getItem("pg_api_base"); if (c) API_BASE = c.trim(); }
 }
@@ -726,14 +732,21 @@ function logout() {
 
 function rupiah(n) { return 'Rp ' + Number(n).toLocaleString('id-ID'); }
 
-async function loadSaldo() {
+async function loadSaldo(retry = 2) {
   try {
     const res = await fetch(apiUrl('/api/balance'), { headers: H });
+    if (res.status === 401 || res.status === 403) { logout(); return; }
     const data = await res.json();
     if (data.ok) {
       document.getElementById('saldo-display').textContent = rupiah(data.balance ?? 0);
     }
-  } catch {}
+  } catch {
+    if (retry > 0) {
+      localStorage.removeItem("pg_api_base_ts");
+      await loadApiBase();
+      return loadSaldo(retry - 1);
+    }
+  }
 }
 
 loadApiBase().then(() => loadSaldo());
