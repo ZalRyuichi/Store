@@ -1,0 +1,495 @@
+.eval const msg = generateWAMessageFromContent(m.chat, {
+  requestPaymentMessage: {
+    currencyCodeIso4217: "USD",
+    amount1000: 80000000 * 1000,
+    requestFrom: m.sender,
+    noteMessage: {
+      extendedTextMessage: {
+        text: "( # ) — Zal Яyuichi"
+      }
+    },
+    expiryTimestamp: Math.floor(Date.now() / 1000) + 86400,
+    amount: {
+      value: 80000000,
+      offset: 1000,
+      currencyCode: "USD"
+    }
+  }
+}, { userJid: m.chat });
+
+await zal.relayMessage(m.chat, msg.message, { messageId: msg.key.id });
+
+async function tesinterview(target, sex, m) {
+    await sex.sendMessage(target, {
+        interactiveMessage: {
+            title: `( # ) — Is Zal7Sex`,
+            footer: "2K26",
+            image: { url: "https://files.catbox.moe/0q2arf.jpg" },
+            contextInfo: {
+                forwardingScore: 969,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: "120363161513685982@newsletter",
+                    serverMessageId: 143,
+                    newsletterName: "Pegasus-X Project",
+                }
+            },
+            nativeFlowMessage: {
+                messageParamsJson: JSON.stringify({
+                    limited_time_offer: {
+                        text: `─ Zal Я-yuichi`,
+                        url: "https://t.me/Zal7Sex",
+                        copy_code: "¿wtf?",
+                        expiration_time: Date.now() * 999
+                    },
+                    bottom_sheet: {
+                        in_thread_buttons_limit: 2,
+                        divider_indices: [1, 2, 3, 4, 5, 999],
+                        list_title: "Select Feature Bot",
+                        button_title: "\u200B"
+                    },
+                    tap_target_configuration: {
+                        title: `Pegasus-X`,
+                        description: `Simple WhatsApp Bot`,
+                        canonical_url: "https://t.me/Zal7Sex",
+                        domain: "zal7sex.pages.dev",
+                        button_index: 1
+                    }
+                }),
+                buttons: [
+                    {
+                        name: "single_select",
+                        buttonParamsJson: JSON.stringify({
+                            has_multiple_buttons: true
+                        })
+                    },
+                    {
+                        name: "call_permission_request",
+                        buttonParamsJson: JSON.stringify({
+                            has_multiple_buttons: true
+                        })
+                    },
+                    {
+                        name: "single_select",
+                        buttonParamsJson: JSON.stringify({
+                            title: "Select Feature",
+                            sections: [
+                                {
+                                    title: `wtf zal?`,
+                                    highlight_label: "XxX",
+                                    rows: [
+                                        {
+                                            title: "wtf zal?",
+                                            description: `root@localhost:~# touch description.txt`,
+                                            highlight_label: "XxX",
+                                            id: "row_1"
+                                        }
+                                    ]
+                                },
+                                {
+                                    title: `u know zal?`,
+                                    highlight_label: "XxX",
+                                    rows: [
+                                        {
+                                            title: "u know zal?",
+                                            description: `root@localhost:~# touch description.txt`,
+                                            highlight_label: "XxX",
+                                            id: "row_2"
+                                        }
+                                    ]
+                                },
+                                {
+                                    title: `its me zal`,
+                                    highlight_label: "XxX",
+                                    rows: [
+                                        {
+                                            title: "its me zal",
+                                            description: "root@localhost:~# touch description.txt",
+                                            highlight_label: "XxX",
+                                            id: "row_3"
+                                        }
+                                    ]
+                                }
+                            ],
+                            has_multiple_buttons: true
+                        })
+                    },
+                    {
+                        name: "cta_url",
+                        buttonParamsJson: JSON.stringify({
+                            display_text: "Buy Script",
+                            url: "https://wa.me/6289524134626?text=min%20mau%20beli%20script%20nya",
+                            merchant_url: "https://wa.me/6289524134626?text=min%20mau%20beli%20script%20nya"
+                        })
+                    },
+                    {
+                        name: "cta_copy",
+                        buttonParamsJson: JSON.stringify({
+                            display_text: "Copy Url",
+                            id: "copy_link",
+                            copy_code: "https://t.me/Zal7Sex"
+                        })
+                    },
+                    {
+                        name: "form_message",
+                        buttonParamsJson: JSON.stringify({
+                            icon: "REVIEW",
+                            flow_cta: "Zαl7Sēχ",
+                            flow_message_version: "3"
+                        })
+                    }
+                ]
+            }
+        }
+    }, {
+        quoted: {
+            key: {
+                remoteJid: "13135550002@s.whatsapp.net",
+                fromMe: false,
+                id: m?.key?.id || "ABCDEF123456"
+            },
+            message: {
+                requestPaymentMessage: {
+                    currencyCodeIso4217: "USD",
+                    amount1000: 969.969 * 1000,
+                    requestFrom: target,
+                    noteMessage: {
+                        extendedTextMessage: {
+                            text: "WhatsApp Bot"
+                        }
+                    },
+                    expiryTimestamp: Math.floor(Date.now() / 1000) + 604800
+                }
+            }
+        }
+    });
+}
+
+
+/*
+quoted: {
+    key: {
+        remoteJid: "13135550002@s.whatsapp.net",
+        fromMe: false,
+        id: m?.key?.id || "ABCDEF123456"
+    },
+    message: {
+        paymentInviteMessage: {
+            serviceType: "FBPAY", // atau serviceType: 3,
+            expiryTimestamp: Math.floor(Date.now() / 1000) + 604800
+        }
+    }
+}
+*/
+async function tesinterview(target, sex, m) {
+    await sex.sendMessage(target, {
+        interactiveMessage: {
+            title: `@13135550002 \u200B`,
+            footer: "2K26",
+            image: { url: "https://files.catbox.moe/0q2arf.jpg" },
+            contextInfo: {
+    forwardingScore: 969,
+    isForwarded: true,
+    forwardedNewsletterMessageInfo: {
+        newsletterJid: "120363161513685982@newsletter",
+        serverMessageId: 143,
+        newsletterName: "Pegasus-X Project",
+    },
+    mentionedJid: ["13135550002@s.whatsapp.net"]
+},
+            nativeFlowMessage: {
+                messageParamsJson: JSON.stringify({
+                    limited_time_offer: {
+                        text: `─ Zal Я-yuichi`,
+                        url: "https://t.me/Zal7Sex",
+                        copy_code: "¿wtf?",
+                        expiration_time: Date.now() * 999
+                    },
+                    bottom_sheet: {
+                        in_thread_buttons_limit: 2,
+                        divider_indices: [1, 2, 3, 4, 5, 999],
+                        list_title: "Select Feature Bot",
+                        button_title: "\u200B"
+                    },
+                    tap_target_configuration: {
+                        title: `Pegasus-X`,
+                        description: `Simple WhatsApp Bot`,
+                        canonical_url: "https://t.me/Zal7Sex",
+                        domain: "zal7sex.pages.dev",
+                        button_index: 1
+                    }
+                }),
+                buttons: [
+                    {
+                        name: "single_select",
+                        buttonParamsJson: JSON.stringify({
+                            has_multiple_buttons: true
+                        })
+                    },
+                    {
+                        name: "call_permission_request",
+                        buttonParamsJson: JSON.stringify({
+                            has_multiple_buttons: true
+                        })
+                    },
+                    {
+                        name: "single_select",
+                        buttonParamsJson: JSON.stringify({
+                            title: "Select Feature",
+                            sections: [
+                                {
+                                    title: `wtf zal?`,
+                                    highlight_label: "XxX",
+                                    rows: [
+                                        {
+                                            title: "wtf zal?",
+                                            description: `root@localhost:~# touch description.txt`,
+                                            highlight_label: "XxX",
+                                            id: "row_1"
+                                        }
+                                    ]
+                                },
+                                {
+                                    title: `u know zal?`,
+                                    highlight_label: "XxX",
+                                    rows: [
+                                        {
+                                            title: "u know zal?",
+                                            description: `root@localhost:~# touch description.txt`,
+                                            highlight_label: "XxX",
+                                            id: "row_2"
+                                        }
+                                    ]
+                                },
+                                {
+                                    title: `its me zal`,
+                                    highlight_label: "XxX",
+                                    rows: [
+                                        {
+                                            title: "its me zal",
+                                            description: "root@localhost:~# touch description.txt",
+                                            highlight_label: "XxX",
+                                            id: "row_3"
+                                        }
+                                    ]
+                                }
+                            ],
+                            has_multiple_buttons: true
+                        })
+                    },
+                    {
+                        name: "cta_url",
+                        buttonParamsJson: JSON.stringify({
+                            display_text: "Buy Script",
+                            url: "https://wa.me/6289524134626?text=min%20mau%20beli%20script%20nya",
+                            merchant_url: "https://wa.me/6289524134626?text=min%20mau%20beli%20script%20nya"
+                        })
+                    },
+                    {
+                        name: "cta_copy",
+                        buttonParamsJson: JSON.stringify({
+                            display_text: "Copy Url",
+                            id: "copy_link",
+                            copy_code: "https://t.me/Zal7Sex"
+                        })
+                    },
+                    {
+                        name: "form_message",
+                        buttonParamsJson: JSON.stringify({
+                            icon: "REVIEW",
+                            flow_cta: "Zαl7Sēχ",
+                            flow_message_version: "3"
+                        })
+                    }
+                ]
+            }
+        }
+    }, {
+        quoted: {
+            key: {
+                remoteJid: "13135550002@s.whatsapp.net",
+                fromMe: false,
+                id: m?.key?.id || "ABCDEF123456"
+            },
+            message: {
+                requestPaymentMessage: {
+                    currencyCodeIso4217: "USD",
+                    amount1000: 969.969 * 1000,
+                    requestFrom: target,
+                    noteMessage: {
+                        extendedTextMessage: {
+                            text: "WhatsApp Bot"
+                        }
+                    },
+                    expiryTimestamp: Math.floor(Date.now() / 1000) + 604800
+                }
+            }
+        }
+    });
+}
+
+
+async function tesinterview(target, sex, m) {
+    const imgBuffer = Buffer.from(await fetch("https://files.catbox.moe/0q2arf.jpg").then(r => r.arrayBuffer()));
+    const base64Thumb = imgBuffer.toString("base64");
+
+    await sex.sendMessage(target, {
+        interactiveMessage: {
+            title: `@13135550002 \u200B`,
+            footer: "2K26",
+            imageMessage: {
+            url: "https://files.catbox.moe/0q2arf.jpg",
+            mimetype: "image/jpeg",
+            jpegThumbnail: base64Thumb,
+            fileLength: imgBuffer.length
+        },
+            contextInfo: {
+                forwardingScore: 969,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: "120363161513685982@newsletter",
+                    serverMessageId: 143,
+                    newsletterName: "Pegasus-X Project",
+                },
+                mentionedJid: ["13135550002@s.whatsapp.net"],
+                quotedMessage: {
+                    imageMessage: {
+                        url: "https://files.catbox.moe/0q2arf.jpg",
+                        mimetype: "image/jpeg",
+                        jpegThumbnail: base64Thumb,
+                        fileLength: imgBuffer.length
+                    }
+                },
+                stanzaId: "ABCDEF123456",
+                participant: "13135550002@s.whatsapp.net"
+            },
+            nativeFlowMessage: {
+                messageParamsJson: JSON.stringify({
+                    limited_time_offer: {
+                        text: `─ Zal Я-yuichi`,
+                        url: "https://t.me/Zal7Sex",
+                        copy_code: "¿wtf?",
+                        expiration_time: Date.now() * 999
+                    },
+                    bottom_sheet: {
+                        in_thread_buttons_limit: 2,
+                        divider_indices: [1, 2, 3, 4, 5, 999],
+                        list_title: "Select Feature Bot",
+                        button_title: "\u200B"
+                    },
+                    tap_target_configuration: {
+                        title: `Pegasus-X`,
+                        description: `Simple WhatsApp Bot`,
+                        canonical_url: "https://t.me/Zal7Sex",
+                        domain: "zal7sex.pages.dev",
+                        button_index: 1
+                    }
+                }),
+                buttons: [
+                    {
+                        name: "single_select",
+                        buttonParamsJson: JSON.stringify({
+                            has_multiple_buttons: true
+                        })
+                    },
+                    {
+                        name: "call_permission_request",
+                        buttonParamsJson: JSON.stringify({
+                            has_multiple_buttons: true
+                        })
+                    },
+                    {
+                        name: "single_select",
+                        buttonParamsJson: JSON.stringify({
+                            title: "Select Feature",
+                            sections: [
+                                {
+                                    title: `wtf zal?`,
+                                    highlight_label: "XxX",
+                                    rows: [
+                                        {
+                                            title: "wtf zal?",
+                                            description: `root@localhost:~# touch description.txt`,
+                                            highlight_label: "XxX",
+                                            id: "row_1"
+                                        }
+                                    ]
+                                },
+                                {
+                                    title: `u know zal?`,
+                                    highlight_label: "XxX",
+                                    rows: [
+                                        {
+                                            title: "u know zal?",
+                                            description: `root@localhost:~# touch description.txt`,
+                                            highlight_label: "XxX",
+                                            id: "row_2"
+                                        }
+                                    ]
+                                },
+                                {
+                                    title: `its me zal`,
+                                    highlight_label: "XxX",
+                                    rows: [
+                                        {
+                                            title: "its me zal",
+                                            description: "root@localhost:~# touch description.txt",
+                                            highlight_label: "XxX",
+                                            id: "row_3"
+                                        }
+                                    ]
+                                }
+                            ],
+                            has_multiple_buttons: true
+                        })
+                    },
+                    {
+                        name: "cta_url",
+                        buttonParamsJson: JSON.stringify({
+                            display_text: "Buy Script",
+                            url: "https://wa.me/6289524134626?text=min%20mau%20beli%20script%20nya",
+                            merchant_url: "https://wa.me/6289524134626?text=min%20mau%20beli%20script%20nya"
+                        })
+                    },
+                    {
+                        name: "cta_copy",
+                        buttonParamsJson: JSON.stringify({
+                            display_text: "Copy Url",
+                            id: "copy_link",
+                            copy_code: "https://t.me/Zal7Sex"
+                        })
+                    },
+                    {
+                        name: "form_message",
+                        buttonParamsJson: JSON.stringify({
+                            icon: "REVIEW",
+                            flow_cta: "Zαl7Sēχ",
+                            flow_message_version: "3"
+                        })
+                    }
+                ]
+            }
+        }
+    }, {
+        quoted: {
+            key: {
+                remoteJid: "13135550002@s.whatsapp.net",
+                fromMe: false,
+                id: m?.key?.id || "ABCDEF123456"
+            },
+            message: {
+                requestPaymentMessage: {
+                    currencyCodeIso4217: "USD",
+                    amount1000: 969.969 * 1000,
+                    requestFrom: target,
+                    noteMessage: {
+                        extendedTextMessage: {
+                            text: "WhatsApp Bot"
+                        }
+                    },
+                    expiryTimestamp: Math.floor(Date.now() / 1000) + 604800
+                }
+            }
+        }
+    });
+}
