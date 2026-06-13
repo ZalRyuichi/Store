@@ -152,7 +152,6 @@
     position: relative;
     overflow: hidden;
   }
-  /* dekorasi bulat besar kanan atas */
   .saldo-card::before {
     content: '';
     position: absolute;
@@ -161,7 +160,6 @@
     background: rgba(255,255,255,0.07);
     border-radius: 50%;
   }
-  /* dekorasi bulat kecil kanan bawah */
   .saldo-card::after {
     content: '';
     position: absolute;
@@ -233,7 +231,6 @@
   .saldo-btn:hover { background: rgba(255,255,255,0.25); }
   .saldo-btn i { font-size: 11px; }
 
-  /* Quick action row */
   .quick-actions {
     display: flex; gap: 10px; margin-bottom: 16px;
     overflow-x: auto; scroll-snap-type: x mandatory;
@@ -514,7 +511,6 @@
   .page-head i { font-size: 18px; color: var(--blue); }
   .page-head .card-title { margin-bottom: 0; }
 
-  /* Amount presets */
   .amount-presets {
     display: grid; grid-template-columns: repeat(3, 1fr);
     gap: 8px; margin-bottom: 16px;
@@ -552,7 +548,6 @@
   .pay-method-desc { font-size: 11px; color: var(--slate); }
   .pay-method-check { color: var(--blue); font-size: 16px; }
 
-  /* Info / benefit list */
   .info-list { display: flex; flex-direction: column; gap: 12px; }
   .info-row { display: flex; align-items: flex-start; gap: 12px; }
   .info-icon {
@@ -578,7 +573,6 @@
   }
   .summary-row.total span:last-child { color: var(--blue); }
 
-  /* History page */
   .hist-stats {
     display: grid; grid-template-columns: repeat(3, 1fr);
     gap: 10px; margin-bottom: 16px;

@@ -1,20 +1,14 @@
-// ─── API BASE URL ──────────────────────────────────────────────────────────
-// Otomatis baca dari api.txt di GitHub raw (di-cache ke localStorage)
-// api.txt isi cuma 1 baris: https://xxxx.trycloudflare.com
-
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
 let API_BASE = "";
 
 async function loadApiBase() {
-  const CACHE_TTL = 10 * 60 * 1000; // 10 menit
+  const CACHE_TTL = 1 * 60 * 1000;
   try {
-    // Cek cache + TTL — kalau masih fresh, pakai dulu sambil fetch berjalan
     const cached   = localStorage.getItem("pg_api_base");
     const cachedAt = parseInt(localStorage.getItem("pg_api_base_ts") || "0");
     const cacheOk  = cached && (Date.now() - cachedAt < CACHE_TTL);
     if (cacheOk) API_BASE = cached.trim();
 
-    // Fetch fresh dari GitHub raw setiap load
     const res = await fetch(API_TXT_URL + "?t=" + Date.now());
     if (res.ok) {
       const url = (await res.text()).trim();
@@ -25,7 +19,6 @@ async function loadApiBase() {
       }
     }
   } catch {
-    // Fallback ke cache kalau offline (tanpa peduli TTL)
     const cached = localStorage.getItem("pg_api_base");
     if (cached) API_BASE = cached.trim();
   }
@@ -34,8 +27,6 @@ async function loadApiBase() {
 function apiUrl(path) {
   return API_BASE ? `${API_BASE}${path}` : path;
 }
-
-// ─── AUTH ─────────────────────────────────────────────────────────────────────
 
 const TOKEN = localStorage.getItem('pg_token');
 if (!TOKEN) window.location.href = '/login.html';
@@ -76,9 +67,8 @@ async function loadSaldo(retry = 2) {
       if (el) el.textContent = rupiah(data.balance ?? 0);
     }
   } catch {
-    // Kalau gagal (URL Cloudflare expired?), reload API base dulu lalu retry
     if (retry > 0) {
-      localStorage.removeItem("pg_api_base_ts"); // force fresh fetch
+      localStorage.removeItem("pg_api_base_ts");
       await loadApiBase();
       return loadSaldo(retry - 1);
     }
@@ -244,7 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const ov = document.getElementById('modal-overlay');
   if (ov) ov.addEventListener('click', e => { if (e.target === ov) closeModal(); });
 
-  // Inject admin contact FAB
   if (!document.getElementById('contact-fab')) {
     const fab = document.createElement('button');
     fab.id = 'contact-fab';

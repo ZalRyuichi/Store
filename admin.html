@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
+    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
+    --white:  #FFFFFF; --bg:     #F8FAFC;
+    --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
+    --purple: #7C3AED; --purple-l: #F5F3FF;
+    --radius: 12px;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  /* NAV */
+  .top-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--purple);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-text { font-size: 15px; font-weight: 800; color: var(--dark); }
+  .logo-text span { color: var(--purple); }
+  .nav-right { display: flex; align-items: center; gap: 8px; }
+  .btn-back {
+    padding: 5px 12px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--slate);
+    font-family: 'Inter', sans-serif;
+    display: flex; align-items: center; gap: 5px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .btn-back:hover { background: var(--bg); }
+  .btn-logout {
+    padding: 5px 12px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--slate);
+    font-family: 'Inter', sans-serif;
+    display: flex; align-items: center; gap: 5px;
+    transition: all 0.15s;
+  }
+  .btn-logout:hover { background: #FEF2F2; color: var(--red); border-color: #FECACA; }
+
+  /* MAIN */
+  main {
+    max-width: 960px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .stat-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; color: #fff; margin-bottom: 4px;
+  }
+  .stat-icon.blue   { background: linear-gradient(135deg,#2563EB,#1D4ED8); }
+  .stat-icon.green  { background: linear-gradient(135deg,#10B981,#059669); }
+  .stat-icon.amber  { background: linear-gradient(135deg,#F59E0B,#D97706); }
+  .stat-icon.purple { background: linear-gradient(135deg,#7C3AED,#5B21B6); }
+  .stat-icon.red    { background: linear-gradient(135deg,#EF4444,#B91C1C); }
+  .stat-val { font-size: 22px; font-weight: 800; color: var(--dark); }
+  .stat-label { font-size: 11px; color: var(--slate); font-weight: 500; }
+
+  /* SECTION */
+  .section-title {
+    font-size: 14px; font-weight: 700; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title i { color: var(--purple); }
+
+  /* SEARCH */
+  .search-wrap {
+    position: relative; margin-bottom: 12px;
+  }
+  .search-wrap input {
+    width: 100%; padding: 9px 12px 9px 36px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    font-size: 13px; font-family: 'Inter', sans-serif;
+    background: var(--white); color: var(--dark);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-wrap input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.08); }
+  .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--slate); font-size: 13px; }
+
+  /* TABLE */
+  .table-wrap {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; min-width: 480px; }
+  thead th {
+    text-align: left; font-size: 11px; font-weight: 600;
+    color: var(--slate); padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.4px;
+    background: var(--bg);
+  }
+  tbody td {
+    padding: 11px 14px; border-bottom: 1px solid var(--border);
+    font-size: 12px; vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: #FAFBFF; }
+
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+  .badge.completed { background: #DCFCE7; color: #166534; }
+  .badge.pending   { background: #FEF9C3; color: #854D0E; }
+  .badge.cancelled { background: #FEF2F2; color: #991B1B; }
+  .badge.topup     { background: var(--blue-l); color: var(--blue-d); }
+  .badge.purchase  { background: var(--purple-l); color: var(--purple); }
+
+  .user-row-num {
+    width: 24px; height: 24px; border-radius: 6px;
+    background: var(--bg); border: 1px solid var(--border);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: var(--slate);
+  }
+
+  .empty-state {
+    text-align: center; padding: 32px; color: var(--slate);
+    font-size: 13px;
+  }
+  .empty-state i { font-size: 28px; opacity: 0.3; margin-bottom: 8px; display: block; }
+
+  /* ADMIN GATE */
+  #admin-gate {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 20px; background: var(--bg);
+  }
+  .gate-box {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 20px; padding: 36px 32px; width: 100%; max-width: 360px;
+    text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .gate-icon {
+    width: 56px; height: 56px; border-radius: 16px;
+    background: linear-gradient(135deg,#7C3AED,#5B21B6);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px; font-size: 22px; color: #fff;
+  }
+  .gate-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .gate-sub { font-size: 12px; color: var(--slate); margin-bottom: 24px; }
+  .gate-field { margin-bottom: 14px; text-align: left; }
+  .gate-field label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--dark); }
+  .gate-field input {
+    width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+    border-radius: var(--radius); font-size: 13px; font-family: 'Inter', sans-serif;
+    background: var(--bg); color: var(--dark); outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .gate-field input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.08); background: var(--white); }
+  .gate-btn {
+    width: 100%; padding: 11px; background: var(--purple); color: #fff;
+    border: none; border-radius: var(--radius); font-size: 13px; font-weight: 700;
+    font-family: 'Inter', sans-serif; cursor: pointer; transition: background 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .gate-btn:hover { background: #5B21B6; }
+  .gate-err { font-size: 12px; color: var(--red); margin-top: 10px; display: none; }
+
+  #admin-content { display: none; }
+
+  /* REFRESH BTN */
+  .btn-refresh {
+    padding: 6px 12px; background: var(--white); border: 1px solid var(--border);
+    border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer;
+    color: var(--slate); font-family: 'Inter', sans-serif;
+    display: inline-flex; align-items: center; gap: 5px;
+    transition: all 0.15s; margin-bottom: 12px;
+  }
+  .btn-refresh:hover { border-color: var(--purple); color: var(--purple); }
+  .btn-refresh.spinning i { animation: spin 0.6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* TABS */
+  .tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+  .tab-btn {
+    padding: 7px 16px; border-radius: 10px; border: 1px solid var(--border);
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    background: var(--white); color: var(--slate);
+    font-family: 'Inter', sans-serif; transition: all 0.15s;
+  }
+  .tab-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+</style>
+</head>
+<body>
+
+<!-- GATE (login prompt) -->
+<div id="admin-gate">
+  <div class="gate-box">
+    <div class="gate-icon"><i class="fa-solid fa-shield-halved"></i></div>
+    <div class="gate-title">Admin Panel</div>
+    <div class="gate-sub">Akses terbatas. Masukkan kredensial admin.</div>
+    <div class="gate-field">
+      <label>Username</label>
+      <input type="text" id="gate-user" placeholder="Username" autocomplete="off"/>
+    </div>
+    <div class="gate-field">
+      <label>Password</label>
+      <input type="password" id="gate-pass" placeholder="Password" onkeydown="if(event.key==='Enter') gateLogin()"/>
+    </div>
+    <button class="gate-btn" onclick="gateLogin()">
+      <i class="fa-solid fa-unlock-keyhole"></i> Masuk Admin
+    </button>
+    <div class="gate-err" id="gate-err">Username atau password salah.</div>
+  </div>
+</div>
+
+<!-- ADMIN CONTENT -->
+<div id="admin-content">
+
+  <nav class="top-nav">
+    <a class="nav-logo" href="/dashboard">
+      <div class="logo-icon">
+        <i class="fa-solid fa-shield-halved" style="color:#fff; font-size:14px;"></i>
+      </div>
+      <div class="logo-text">Admin <span>Panel</span></div>
+    </a>
+    <div class="nav-right">
+      <a class="btn-back" href="/dashboard">
+        <i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Dashboard
+      </a>
+      <button class="btn-logout" onclick="logout()">
+        <i class="fa-solid fa-right-from-bracket" style="font-size:11px;"></i> Logout
+      </button>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- STATS -->
+    <div class="stats-row" id="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+        <div class="stat-val" id="stat-total-users">—</div>
+        <div class="stat-label">Total User</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-arrow-trend-up"></i></div>
+        <div class="stat-val" id="stat-total-topup">—</div>
+        <div class="stat-label">Total Top Up</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon purple"><i class="fa-solid fa-bag-shopping"></i></div>
+        <div class="stat-val" id="stat-total-purchase">—</div>
+        <div class="stat-label">Total Pembelian</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon amber"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="stat-val" id="stat-completed">—</div>
+        <div class="stat-label">Transaksi Sukses</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon red"><i class="fa-solid fa-money-bill-wave"></i></div>
+        <div class="stat-val" id="stat-revenue">—</div>
+        <div class="stat-label">Revenue Masuk</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('users', this)"><i class="fa-solid fa-users"></i> Daftar User</button>
+      <button class="tab-btn" onclick="switchTab('transactions', this)"><i class="fa-solid fa-receipt"></i> Transaksi</button>
+    </div>
+
+    <!-- USERS TAB -->
+    <div id="tab-users">
+      <div class="section-title"><i class="fa-solid fa-users"></i> Daftar User Terdaftar</div>
+      <button class="btn-refresh" id="btn-refresh-users" onclick="loadData()">
+        <i class="fa-solid fa-rotate-right"></i> Refresh
+      </button>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search-users" placeholder="Cari username..." oninput="renderUsers()"/>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Username</th>
+              <th>Saldo</th>
+              <th>Daftar</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-users">
+            <tr><td colspan="4"><div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i>Memuat data...</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TRANSACTIONS TAB -->
+    <div id="tab-transactions" style="display:none;">
+      <div class="section-title"><i class="fa-solid fa-receipt"></i> Riwayat Transaksi</div>
+      <button class="btn-refresh" id="btn-refresh-tx" onclick="loadData()">
+        <i class="fa-solid fa-rotate-right"></i> Refresh
+      </button>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search-tx" placeholder="Cari user, produk, order ID..." oninput="renderTx()"/>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>User</th>
+              <th>Tipe</th>
+              <th>Produk</th>
+              <th>Jumlah</th>
+              <th>Status</th>
+              <th>Tanggal</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-tx">
+            <tr><td colspan="7"><div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i>Memuat data...</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
+let API_BASE = "";
+let usersData = {};
+let txData = {};
+
+async function loadApiBase() {
+  const CACHE_TTL = 1 * 60 * 1000;
+  try {
+    const cached   = localStorage.getItem("pg_api_base");
+    const cachedAt = parseInt(localStorage.getItem("pg_api_base_ts") || "0");
+    if (cached && (Date.now() - cachedAt < CACHE_TTL)) API_BASE = cached.trim();
+    const r = await fetch(API_TXT_URL + "?t=" + Date.now());
+    if (r.ok) {
+      const u = (await r.text()).trim();
+      if (u && u.startsWith("http")) {
+        API_BASE = u;
+        localStorage.setItem("pg_api_base", u);
+        localStorage.setItem("pg_api_base_ts", Date.now().toString());
+      }
+    }
+  } catch { const c = localStorage.getItem("pg_api_base"); if (c) API_BASE = c.trim(); }
+}
+
+function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
+
+// ---- GATE ----
+function gateLogin() {
+  const u = document.getElementById('gate-user').value.trim();
+  const p = document.getElementById('gate-pass').value.trim();
+  const err = document.getElementById('gate-err');
+  if (u === 'Zal' && p === '969') {
+    document.getElementById('admin-gate').style.display = 'none';
+    document.getElementById('admin-content').style.display = 'block';
+    loadData();
+  } else {
+    err.style.display = 'block';
+    document.getElementById('gate-pass').value = '';
+    setTimeout(() => err.style.display = 'none', 3000);
+  }
+}
+
+function logout() {
+  localStorage.removeItem('pg_token');
+  localStorage.removeItem('pg_user');
+  window.location.href = '/login';
+}
+
+// ---- TAB ----
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-users').style.display = tab === 'users' ? 'block' : 'none';
+  document.getElementById('tab-transactions').style.display = tab === 'transactions' ? 'block' : 'none';
+}
+
+// ---- DATA ----
+async function loadData() {
+  const TOKEN = localStorage.getItem('pg_token');
+  if (!TOKEN) return;
+  const H = { 'Content-Type': 'application/json', 'x-auth-token': TOKEN };
+
+  try {
+    await loadApiBase();
+
+    const [uRes, tRes] = await Promise.all([
+      fetch(apiUrl('/api/admin/users'), { headers: H }),
+      fetch(apiUrl('/api/admin/transactions'), { headers: H })
+    ]);
+
+    if (uRes.ok) {
+      const uData = await uRes.json();
+      usersData = uData.users || uData || {};
+    }
+    if (tRes.ok) {
+      const tData = await tRes.json();
+      txData = tData.transactions || tData || {};
+    }
+  } catch (e) {
+    console.error('API error, using demo data', e);
+  }
+
+  renderStats();
+  renderUsers();
+  renderTx();
+}
+
+function rupiah(n) { return 'Rp ' + Number(n).toLocaleString('id-ID'); }
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' }) + ' ' +
+         d.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+}
+
+function renderStats() {
+  const users = Object.entries(usersData);
+  const txs   = Object.values(txData);
+
+  const totalTopup    = txs.filter(t => t.type === 'topup' && t.status === 'completed').reduce((s, t) => s + (t.amount || 0), 0);
+  const totalPurchase = txs.filter(t => t.type === 'purchase').length;
+  const completed     = txs.filter(t => t.status === 'completed').length;
+  const revenue       = txs.filter(t => t.status === 'completed').reduce((s, t) => s + (t.amount || 0), 0);
+
+  document.getElementById('stat-total-users').textContent   = users.length;
+  document.getElementById('stat-total-topup').textContent   = rupiah(totalTopup);
+  document.getElementById('stat-total-purchase').textContent = totalPurchase;
+  document.getElementById('stat-completed').textContent      = completed;
+  document.getElementById('stat-revenue').textContent        = rupiah(revenue);
+}
+
+function renderUsers() {
+  const q = (document.getElementById('search-users').value || '').toLowerCase();
+  const tbody = document.getElementById('tbody-users');
+  const entries = Object.entries(usersData).filter(([u]) => u !== 'Zal');
+  const filtered = q ? entries.filter(([u]) => u.toLowerCase().includes(q)) : entries;
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fa-solid fa-inbox"></i>Tidak ada user ditemukan.</div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(([username, data], i) => `
+    <tr>
+      <td><span class="user-row-num">${i + 1}</span></td>
+      <td><b>${escHtml(username)}</b></td>
+      <td>${rupiah(data.balance ?? 0)}</td>
+      <td style="color:var(--slate);">${fmtDate(data.created_at)}</td>
+    </tr>
+  `).join('');
+}
+
+function renderTx() {
+  const q = (document.getElementById('search-tx').value || '').toLowerCase();
+  const tbody = document.getElementById('tbody-tx');
+  const entries = Object.values(txData).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const filtered = q ? entries.filter(t =>
+    (t.user || '').toLowerCase().includes(q) ||
+    (t.order_id || '').toLowerCase().includes(q) ||
+    (t.product_name || '').toLowerCase().includes(q)
+  ) : entries;
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="fa-solid fa-inbox"></i>Tidak ada transaksi ditemukan.</div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(t => `
+    <tr>
+      <td style="font-size:10px; color:var(--slate); font-family:monospace;">${escHtml(t.order_id || '—')}</td>
+      <td><b>${escHtml(t.user || '—')}</b></td>
+      <td><span class="badge ${t.type === 'topup' ? 'topup' : 'purchase'}">${t.type === 'topup' ? 'Top Up' : 'Beli'}</span></td>
+      <td>${escHtml(t.product_name || (t.type === 'topup' ? 'Top Up Saldo' : '—'))}</td>
+      <td style="font-weight:600;">${rupiah(t.amount || 0)}</td>
+      <td><span class="badge ${t.status}">${t.status === 'completed' ? 'Sukses' : t.status === 'pending' ? 'Pending' : 'Dibatalkan'}</span></td>
+      <td style="color:var(--slate); font-size:11px;">${fmtDate(t.created_at)}</td>
+    </tr>
+  `).join('');
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ---- INIT ----
+// Check if already logged in as Zal from main session
+const pgUser = localStorage.getItem('pg_user');
+if (pgUser === 'Zal' && localStorage.getItem('pg_token')) {
+  document.getElementById('admin-gate').style.display = 'none';
+  document.getElementById('admin-content').style.display = 'block';
+  loadData();
+}
+</script>
+</body>
+</html>

@@ -534,10 +534,16 @@
   </div>
   <div class="logo-text">Zal <span>Яyuichi</span></div>
 </a>
-  <button class="btn-logout" onclick="logout()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-    Logout
-  </button>
+  <div style="display:flex; align-items:center; gap:8px;">
+    <a id="btn-admin" href="/admin.html" style="display:none; padding:5px 12px; background:none; border:1px solid #DDD6FE; border-radius:8px; font-size:12px; font-weight:500; cursor:pointer; color:#6D28D9; font-family:'Inter',sans-serif; align-items:center; gap:5px; text-decoration:none; transition:all 0.15s;">
+      <i class="fa-solid fa-shield-halved" style="font-size:11px;"></i>
+      Admin
+    </a>
+    <button class="btn-logout" onclick="logout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </div>
 </nav>
 
 <div class="banner-wrapper">
@@ -575,11 +581,11 @@
   </a>
   <a class="quick-item" href="/home/produk.html#pegasus">
     <div class="quick-icon green"><i class="fa-solid fa-mobile-screen-button"></i></div>
-    <div class="quick-label">Apk Pegasus</div>
+    <div class="quick-label">Apk Pegasus-X</div>
   </a>
   <a class="quick-item" href="/home/produk.html#xyz">
     <div class="quick-icon cyan"><i class="fa-solid fa-mobile-screen-button"></i></div>
-    <div class="quick-label">Apk Xyz</div>
+    <div class="quick-label">Apk XyzXRat</div>
   </a>
   <a class="quick-item" href="/home/produk.html#ptero">
     <div class="quick-icon red"><i class="fa-solid fa-server"></i></div>
@@ -599,7 +605,7 @@
   <div class="promo-card">
     <div class="promo-text">
       <div class="promo-title"><i class="fa-solid fa-fire" style="color:#F59E0B; margin-right:6px;"></i>Promo Top Up Hari Ini</div>
-      <div class="promo-sub">Top up sekarang, makin gampang transaksi</div>
+      <div class="promo-sub">Top Up Sekarang, Makin Gampang Transaksi</div>
     </div>
     <a class="promo-cta" href="/home/topup.html">Top Up</a>
   </div>
@@ -622,27 +628,27 @@
       <a class="section-link" href="/home/produk.html">Lihat Semua</a>
     </div>
     <div class="card" style="display:flex; flex-direction:column; gap:10px;">
-      <a href="/home/produk.html" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--dark);">
-        <div class="quick-icon blue" style="flex-shrink:0;"><i class="fa-solid fa-gamepad"></i></div>
+      <a href="/home/produk.html#pegasus" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--dark);">
+        <div class="quick-icon blue" style="flex-shrink:0;"><i class="fa-solid fa-mobile-screen-button"></i></div>
         <div style="flex:1;">
-          <div style="font-size:13px; font-weight:600;">Top Up Game</div>
-          <div style="font-size:11px; color:var(--slate);">Diamond, UC, dan lainnya</div>
+          <div style="font-size:13px; font-weight:600;">Aplikasi Premium</div>
+          <div style="font-size:11px; color:var(--slate);">Pegasus-X & XyzXRat</div>
         </div>
         <i class="fa-solid fa-chevron-right" style="color:var(--slate); font-size:12px;"></i>
       </a>
-      <a href="/home/produk.html" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--dark); border-top:1px solid var(--border); padding-top:10px;">
-        <div class="quick-icon green" style="flex-shrink:0;"><i class="fa-solid fa-signal"></i></div>
+      <a href="/home/produk.html#wa" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--dark); border-top:1px solid var(--border); padding-top:10px;">
+        <div class="quick-icon green" style="flex-shrink:0;"><i class="fa-brands fa-whatsapp"></i></div>
         <div style="flex:1;">
-          <div style="font-size:13px; font-weight:600;">Paket Data & Pulsa</div>
-          <div style="font-size:11px; color:var(--slate);">Semua operator</div>
+          <div style="font-size:13px; font-weight:600;">Bot WhatsApp</div>
+          <div style="font-size:11px; color:var(--slate);">Otomatisasi & fitur lengkap</div>
         </div>
         <i class="fa-solid fa-chevron-right" style="color:var(--slate); font-size:12px;"></i>
       </a>
-      <a href="/home/produk.html" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--dark); border-top:1px solid var(--border); padding-top:10px;">
-        <div class="quick-icon amber" style="flex-shrink:0;"><i class="fa-solid fa-tv"></i></div>
+      <a href="/home/produk.html#ptero" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--dark); border-top:1px solid var(--border); padding-top:10px;">
+        <div class="quick-icon red" style="flex-shrink:0;"><i class="fa-solid fa-server"></i></div>
         <div style="flex:1;">
-          <div style="font-size:13px; font-weight:600;">Voucher & Aplikasi</div>
-          <div style="font-size:11px; color:var(--slate);">Streaming, premium apps</div>
+          <div style="font-size:13px; font-weight:600;">Panel Server</div>
+          <div style="font-size:11px; color:var(--slate);">Pterodactyl & hosting</div>
         </div>
         <i class="fa-solid fa-chevron-right" style="color:var(--slate); font-size:12px;"></i>
       </a>
@@ -696,7 +702,7 @@
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
 let API_BASE = "";
 async function loadApiBase() {
-  const CACHE_TTL = 10 * 60 * 1000; // 10 menit
+  const CACHE_TTL = 1 * 60 * 1000;
   try {
     const cached   = localStorage.getItem("pg_api_base");
     const cachedAt = parseInt(localStorage.getItem("pg_api_base_ts") || "0");
@@ -723,6 +729,11 @@ const H = { 'Content-Type':'application/json', 'x-auth-token': TOKEN };
 const savedUser = localStorage.getItem('pg_user') || 'User';
 document.getElementById('profile-name-el').textContent = savedUser;
 document.getElementById('home-username').textContent = savedUser;
+
+if (savedUser === 'Zal') {
+  const btnAdmin = document.getElementById('btn-admin');
+  btnAdmin.style.display = 'inline-flex';
+}
 
 function logout() {
   localStorage.removeItem('pg_token');
@@ -751,7 +762,6 @@ async function loadSaldo(retry = 2) {
 
 loadApiBase().then(() => loadSaldo());
 
-// === Banner Slider ===
 (function(){
   const slides = document.getElementById('banner-slides');
   const dotsWrap = document.getElementById('banner-dots');
@@ -776,7 +786,6 @@ loadApiBase().then(() => loadSaldo());
   }
   resetAuto();
 
-  // swipe gesture
   const banner = document.getElementById('banner-inner');
   let startX = 0, deltaX = 0, dragging = false;
   banner.addEventListener('touchstart', e => {

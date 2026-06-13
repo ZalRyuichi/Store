@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <link rel="stylesheet" href="shared.css"/>
 <style>
-  /* ─── Role Cards ─── */
   .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 8px; }
   .role-card {
     border: 2px solid var(--border);
@@ -35,7 +34,6 @@
   .role-name { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
   .role-price { font-size: 15px; font-weight: 700; color: var(--blue); }
 
-  /* ─── Detail Sheet ─── */
   .detail-section { margin-top: 16px; }
   .detail-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--slate); margin-bottom: 8px; display:flex; align-items:center; gap:6px; }
   .detail-price-box {
@@ -55,7 +53,6 @@
   }
   .feature-pill i { color: var(--blue); font-size: 11px; width: 14px; text-align: center; }
 
-  /* ─── Quick Actions (dashboard style) ─── */
   .quick-item {
     background: var(--white); border: 1px solid var(--border);
     border-radius: 14px; padding: 14px 6px;
@@ -79,7 +76,6 @@
   .quick-icon.cyan   { background: linear-gradient(135deg, #06B6D4, #0891B2); }
   .quick-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--dark); }
 
-  /* ─── Apk Banner (Xyz / Pegasus) ─── */
   .apk-banner {
     border-radius: 16px;
     padding: 18px 20px;
@@ -153,7 +149,6 @@
   .detail-footer.show { display: block; }
   .detail-footer .btn-primary { width: 100%; justify-content: center; }
 
-  /* ─── Panel Ptero Card (dark dashboard style) ─── */
   .ptero-section-header {
     background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
     border-radius: 16px;
@@ -222,7 +217,6 @@
     padding: 2px 6px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.3px;
   }
 
-  /* ─── Payment Method Picker ─── */
   .pay-method-overlay {
     position: fixed; inset: 0;
     background: rgba(15,23,42,0.5);
@@ -325,11 +319,11 @@
     </a>
     <a class="quick-item" href="#pegasus" onclick="event.preventDefault();document.getElementById('pegasus').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon green"><i class="fa-solid fa-mobile-screen-button"></i></div>
-      <div class="quick-label">Apk Pegasus</div>
+      <div class="quick-label">Apk Pegasus-X</div>
     </a>
     <a class="quick-item" href="#xyz" onclick="event.preventDefault();document.getElementById('xyz').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon cyan"><i class="fa-solid fa-mobile-screen-button"></i></div>
-      <div class="quick-label">Apk Xyz</div>
+      <div class="quick-label">Apk XyzXRat</div>
     </a>
     <a class="quick-item" href="#ptero" onclick="event.preventDefault();document.getElementById('ptero').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon red"><i class="fa-solid fa-server"></i></div>
@@ -345,7 +339,6 @@
     </a>
   </div>
 
-  <!-- ── Panel Ptero (paling atas, warna dashboard) ─── -->
   <div class="card" id="ptero">
     <div class="ptero-section-header">
       <div class="ptero-header-top">
@@ -424,13 +417,12 @@
     </div>
   </div>
 
-  <!-- ── Apk Xyz ─── -->
   <div class="card" id="xyz" style="margin-top:14px">
     <div class="apk-banner xyz">
       <div class="apk-banner-top">
         <div class="apk-banner-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
         <div>
-          <div class="apk-banner-label">Apk Xyz</div>
+          <div class="apk-banner-label">Apk XyzXRat</div>
           <div class="apk-banner-sub">Akses Fitur Lengkap · Member & Reseller</div>
         </div>
       </div>
@@ -464,13 +456,12 @@
     </div>
   </div>
 
-  <!-- ── Apk Pegasus ─── -->
   <div class="card" id="pegasus" style="margin-top:14px">
     <div class="apk-banner pegasus">
       <div class="apk-banner-top">
         <div class="apk-banner-icon"><i class="fa-solid fa-bag-shopping"></i></div>
         <div>
-          <div class="apk-banner-label">Apk Pegasus</div>
+          <div class="apk-banner-label">Apk Pegasus-X</div>
           <div class="apk-banner-sub">Fitur Lengkap · Permanen Full Update</div>
         </div>
       </div>
@@ -537,7 +528,6 @@
   </a>
 </nav>
 
-<!-- ── Detail Sheet ─────────────────────────────── -->
 <div class="detail-overlay" id="detail-overlay" onclick="if(event.target===this) closeDetail()">
   <div class="detail-sheet">
     <button class="detail-close" onclick="closeDetail()"><i class="fa-solid fa-xmark"></i></button>
@@ -573,7 +563,6 @@
   </button>
 </div>
 
-<!-- ── Payment Method Picker (Xyz & Pegasus) ─── -->
 <div class="pay-method-overlay" id="pay-method-overlay" onclick="if(event.target===this)closePayMethod()">
   <div class="pay-method-sheet">
     <button class="pay-method-close" onclick="closePayMethod()"><i class="fa-solid fa-xmark"></i></button>
@@ -593,7 +582,7 @@
         <div class="pay-method-icon"><i class="fa-solid fa-qrcode"></i></div>
         <div class="pay-method-info">
           <div class="pay-method-name">Bayar Pakai QRIS</div>
-          <div class="pay-method-desc">Generate QRIS buat bayar langsung</div>
+          <div class="pay-method-desc">Buat QRIS Dan Bayar Langsung</div>
         </div>
         <i class="fa-solid fa-chevron-right pay-method-arrow"></i>
       </button>
@@ -601,14 +590,13 @@
   </div>
 </div>
 
-<!-- ── QRIS Modal ─────────────────────────────── -->
 <div class="overlay" id="modal-overlay">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">
       <i class="fa-solid fa-xmark"></i>
     </button>
     <div class="modal-title" id="modal-title">Scan QRIS</div>
-    <div class="modal-sub" id="modal-sub">Scan QR Di Bawah Ini Untuk Membayar</div>
+    <div class="modal-sub" id="modal-sub">Scan QRIS Di Bawah Ini Untuk Membayar</div>
     <div class="qr-wrap"><div id="qr-canvas"></div></div>
     <div class="qr-actions">
       <button type="button" class="qr-action-btn" onclick="downloadQR()">
@@ -697,101 +685,15 @@ const ROLE_DATA = {
 };
 
 const BASIC_FEATURES = [
-  ['Bug WhatsApp', 'fa-solid fa-bug'],
-  ['DDoS Panel', 'fa-solid fa-network-wired'],
-  ['Spam Pairing', 'fa-solid fa-paper-plane'],
-  ['WhatsApp Call', 'fa-solid fa-phone'],
-  ['Spam NGL', 'fa-solid fa-comment-dots'],
-  ['Downloader (Tiktok, Pin, Instagram)', 'fa-solid fa-download'],
-  ['iPhone Quote', 'fa-solid fa-quote-left'],
-  ['Remini Ai', 'fa-solid fa-wand-magic-sparkles'],
-  ['Nik Parse', 'fa-solid fa-id-card'],
-  ['Comment FB', 'fa-brands fa-facebook'],
-  ['Fake Group', 'fa-solid fa-users'],
-  ['Lobby FF', 'fa-solid fa-gamepad'],
-  ['Lobby ML', 'fa-solid fa-gamepad'],
-  ['Fake Story', 'fa-solid fa-book-open'],
-  ['Fake Threads', 'fa-brands fa-threads'],
-  ['QC Card', 'fa-solid fa-id-badge'],
-  ['Sticker Meme', 'fa-solid fa-icons'],
-  ['Brat Anime', 'fa-solid fa-face-grin-squint'],
-  ['Meme Ustadz', 'fa-solid fa-mosque'],
-  ['Blur Face', 'fa-solid fa-eye-slash'],
-  ['Remove BG', 'fa-solid fa-eraser'],
-  ['Wasted', 'fa-solid fa-skull'],
-  ['Wanted', 'fa-solid fa-bullhorn'],
-  ['Nonton Donghua', 'fa-solid fa-clapperboard'],
-  ['Nonton Anime', 'fa-solid fa-tv'],
-  ['Al-Quran', 'fa-solid fa-book-quran'],
-  ['Hadist', 'fa-solid fa-book'],
-  ['Music', 'fa-solid fa-music'],
-  ['Crosshair', 'fa-solid fa-crosshairs'],
-  ['Cek Keamanan Device', 'fa-solid fa-shield-halved']
+// biar gw yg isi
 ];
 
 const VIP_FEATURES = [
-  ['Buat Web Jadi Apk', 'fa-solid fa-mobile-screen-button'],
-  ['Kunci Perangkat Korban', 'fa-solid fa-lock'],
-  ['Getarkan Perangkat Korban', 'fa-solid fa-mobile-alt'],
-  ['Ambil Lokasi Korban', 'fa-solid fa-location-dot'],
-  ['Pantau Kamera Depan Dan Belakang Perangkat Korban', 'fa-solid fa-camera'],
-  ['Matikan Dan Hidupkan Senter Perangkat Korban', 'fa-solid fa-lightbulb'],
-  ['Ganti Wallpaper Perangkat Korban', 'fa-solid fa-image'],
-  ['Putar Suara Pada Perangkat Korban', 'fa-solid fa-volume-up'],
-  ['Pantau SMS Perangkat Korban', 'fa-regular fa-message'],
-  ['Melihat Foto Galeri Perangkat Korban', 'fa-regular fa-images'],
-  ['Melihat List Kontak Perangkat Korban', 'fa-solid fa-address-book'],
-  ['Menghapus File Korban', 'fa-solid fa-trash-can'],
-  ['Pantau Layar Perangkat Korban', 'fa-solid fa-desktop'],
-  ['Putar Video Di Perangkat Korban', 'fa-solid fa-video'],
-  ['Panggil Nomer Pada Perangkat Korban', 'fa-solid fa-phone'],
-  ['Kunci Perangkat Korban Dan Bisa Chatan Sama Korban', 'fa-solid fa-comment-dots'],
-  ['Rekam Suara Pada Perangkat Korban', 'fa-solid fa-microphone'],
-  ['List Aplikasi Pada Perangkat Korban', 'fa-solid fa-list'],
-  ['Blokir Aplikasi Pada Perangkat Korban', 'fa-solid fa-ban'],
-  ['Buka Aplikasi Pada Perangkat Korban', 'fa-solid fa-rocket'],
-  ['Teks Layar', 'fa-solid fa-text-height']
+// biar gw yg isi
 ];
 
 const XYZ_FEATURES = [
-  ['Anti Uninstall Apk Phishing', 'fa-solid fa-shield-halved'],
-  ['Matikan Hidupkan Senter Perangkat Korban', 'fa-solid fa-lightbulb'],
-  ['Play Video Full Layar Di Perangkat Korban', 'fa-solid fa-video'],
-  ['Ganti Wallpaper Perangkat Korban', 'fa-solid fa-image'],
-  ['Kunci Perangkat Korban', 'fa-solid fa-lock'],
-  ['Putar Suara Pada Perangkat Korban', 'fa-solid fa-volume-up'],
-  ['Getarkan Perangkat Korban', 'fa-solid fa-mobile-alt'],
-  ['Kirim Suara Google Ke Perangkat Korban', 'fa-solid fa-message'],
-  ['Atur Kecerahan Perangkat Korban', 'fa-solid fa-sun'],
-  ['Atur Volume Perangkat Korban', 'fa-solid fa-volume-high'],
-  ['Kirim Teks Layar Pada Perangkat Korban', 'fa-solid fa-text-height'],
-  ['Buka Website Pada Perangkat Korban', 'fa-solid fa-globe'],
-  ['Spam Dialog Pada Perangkat Korban', 'fa-solid fa-comment-dots'],
-  ['SOS Pada Perangkat Korban', 'fa-solid fa-bell'],
-  ['Pantau Kamera Depan Dan Belakang Pada Perangkat Korban', 'fa-solid fa-camera'],
-  ['Pantau Layar Dan Bisa Kontrol Perangkat Korban', 'fa-solid fa-desktop'],
-  ['Ambil Foto Depan Dan Belakang Pada Perangkat Korban', 'fa-solid fa-camera-retro'],
-  ['Ambil Paste Pada Keyboard Korban', 'fa-solid fa-keyboard'],
-  ['Scan Wifi Terdekat Pada Perangkat Korban', 'fa-solid fa-wifi'],
-  ['Cari Cell Tower Pada Perangkat Korban', 'fa-solid fa-tower-cell'],
-  ['Melihat Histori Chrome Perangkat Korban', 'fa-solid fa-clock-rotate-left'],
-  ['Ambil Lokasi Perangkat Korban', 'fa-solid fa-location-dot'],
-  ['Melihat Kontak Pada Perangkat Korban', 'fa-solid fa-address-book'],
-  ['Link Foto (Tampil di Layar Korban)', 'fa-solid fa-image'],
-  ['Spam Notifikasi Pada Perangkat Korban', 'fa-solid fa-bell'],
-  ['Spam Toast Pada Perangkat Korban', 'fa-solid fa-toast'],
-  ['Ganti Tema Aplikasi Phising Menjadi (WA dll)', 'fa-solid fa-palette'],
-  ['Rekam Suara Korban', 'fa-solid fa-microphone'],
-  ['Melihat Log WiFi Perangkat Korban', 'fa-solid fa-wifi'],
-  ['Melihat Akun Pada Perangkat Korban Seperti Akun Google Atau Email', 'fa-solid fa-users'],
-  ['Melihat Log Panggilan Pada Perangkat Korban', 'fa-solid fa-phone'],
-  ['Melihat Foto Galeri Korban', 'fa-solid fa-images'],
-  ['Blokir Aplikasi Korban Sehingga Korban Tidak Bisa Membuka Aplikasi Yang Di Blokir', 'fa-solid fa-ban'],
-  ['Buka Aplikasi Korban', 'fa-solid fa-rocket'],
-  ['Uninstall Aplikasi Yang Ada Di Perangkat Korban', 'fa-solid fa-trash-can'],
-  ['Hapus, Download Dan Masukin File Pada Perangkat Korban', 'fa-solid fa-folder'],
-  ['Panggil Nomer Pada Perangkat Korban', 'fa-solid fa-phone'],
-  ['Sembunyikan Aplikasi Phising Atau Korban', 'fa-solid fa-eye-slash']
+// biar gw yg isi
 ];
 
 const PTERO_SPECS = [
@@ -829,7 +731,7 @@ function openDetail(id) {
     renderFeaturePills(document.getElementById('detail-features-basic'), PTERO_SPECS);
     vipSection.style.display = 'none';
   } else if (role.app === 'xyz') {
-    document.getElementById('detail-sub-label').textContent = 'Apk Xyz';
+    document.getElementById('detail-sub-label').textContent = 'Apk XyzXRat';
     document.getElementById('detail-price-sub').textContent = role.name.includes('1 Bulan') ? '1 Bulan' : 'Permanen';
     document.getElementById('detail-benefit').innerHTML = role.benefit.map(b =>
       `<div class="benefit-row"><i class="fa-solid fa-circle-check"></i><span>${b}</span></div>`).join('');
@@ -837,7 +739,7 @@ function openDetail(id) {
     renderFeaturePills(document.getElementById('detail-features-basic'), XYZ_FEATURES);
     vipSection.style.display = 'none';
   } else {
-    document.getElementById('detail-sub-label').textContent = 'Apk Pegasus';
+    document.getElementById('detail-sub-label').textContent = 'Apk Pegasus-X';
     document.getElementById('detail-price-sub').textContent = 'Permanen Full Update';
     document.getElementById('basic-feature-title').innerHTML = '<i class="fa-solid fa-layer-group"></i> Fitur Dasar Aplikasi';
     document.getElementById('detail-benefit').innerHTML = role.benefit.map(b =>
@@ -860,22 +762,18 @@ function closeDetail() {
   document.getElementById('detail-footer').classList.remove('show');
 }
 
-// ─── Tombol Beli → logika berbeda per tipe produk ───
 async function onBeliClick() {
   if (!selectedProduct) { toast('Pilih Produk Dulu', 'error'); return; }
   const role = ROLE_DATA[selectedProduct];
   if (!role) return;
 
   if (role.ptero) {
-    // Panel → cek saldo otomatis (flow lama)
     await doBeliPtero();
     return;
   }
 
-  // Apk Xyz / Pegasus → tampilkan pilihan metode bayar
   closeDetail();
 
-  // Update preview saldo
   try {
     const res = await fetch(apiUrl('/api/user/saldo'), { headers: H });
     const data = await res.json();
@@ -891,15 +789,13 @@ function closePayMethod() {
   document.getElementById('pay-method-overlay').classList.remove('show');
 }
 
-// ─── Bayar pakai Saldo (Xyz/Pegasus) ───
 async function doBeliSaldo() {
   if (!selectedProduct) return;
   const role = ROLE_DATA[selectedProduct];
   closePayMethod();
 
-  // Cek saldo cukup
   if (currentSaldoVal < role.price) {
-    toast(`Saldo Kurang ${rupiah(role.price - currentSaldoVal)}, Pakai QRIS aja`, 'error');
+    toast(`Saldo Kurang ${rupiah(role.price - currentSaldoVal)}, Pakai QRIS Aja`, 'error');
     return;
   }
 
@@ -912,7 +808,7 @@ async function doBeliSaldo() {
     const data = await res.json();
     if (data.ok) {
       loadSaldo();
-      await sendTelegramNotif(role, data.transaction, 'saldo');
+      // Notif telegram sudah dikirim dari backend /api/buy/saldo — tidak perlu call lagi
       toast('Pembelian Berhasil!', 'success');
       setTimeout(() => openAccountForm(data.transaction), 500);
     } else {
@@ -921,7 +817,6 @@ async function doBeliSaldo() {
   } catch { toast('Koneksi Gagal', 'error'); }
 }
 
-// ─── Bayar pakai QRIS (Xyz/Pegasus) ───
 async function doBeliQris() {
   if (!selectedProduct) return;
   const role = ROLE_DATA[selectedProduct];
@@ -938,15 +833,14 @@ async function doBeliQris() {
         await sendTelegramNotif(role, tx, 'qris');
         openAccountForm(tx);
       };
-      openModal(data.transaction, 'Beli ' + (data.transaction.product_name || ''), 'Scan QRIS untuk melanjutkan pembayaran');
-      toast('QRIS berhasil dibuat', 'success');
+      openModal(data.transaction, 'Beli ' + (data.transaction.product_name || ''), 'Scan QRIS Untuk Melanjutkan Pembayaran');
+      toast('QRIS Berhasil Dibuat', 'success');
     } else {
       toast(data.message || 'Gagal Membuat Transaksi', 'error');
     }
   } catch { toast('Koneksi gagal', 'error'); }
 }
 
-// ─── Panel Ptero (cek saldo otomatis) ───
 async function doBeliPtero() {
   const role = ROLE_DATA[selectedProduct];
   const btn = document.getElementById('btn-beli');
@@ -959,7 +853,7 @@ async function doBeliPtero() {
       body: JSON.stringify({ product_id: selectedProduct })
     });
     const data = await res.json();
-    if (!data.ok) { toast(data.message || 'Gagal cek saldo', 'error'); return; }
+    if (!data.ok) { toast(data.message || 'Gagal Cek Saldo', 'error'); return; }
 
     closeDetail();
 
@@ -982,7 +876,6 @@ async function doBeliPtero() {
   finally { btn.disabled = false; btnText.textContent = 'Beli Sekarang'; sp.remove(); }
 }
 
-// ─── Kirim Notif Telegram ───
 async function sendTelegramNotif(role, tx, method) {
   try {
     await fetch(apiUrl('/api/notify/telegram'), {
@@ -1045,7 +938,6 @@ async function submitAccountForm() {
 let _accountTx = null;
 </script>
 
-<!-- ── Account Form ─────────────────────────────── -->
 <div class="detail-overlay" id="account-form-overlay" onclick="if(event.target===this)closeAccountForm()">
   <div class="detail-sheet">
     <button class="detail-close" onclick="closeAccountForm()"><i class="fa-solid fa-xmark"></i></button>
@@ -1088,7 +980,6 @@ let _accountTx = null;
   </button>
 </div>
 
-<!-- ── Panel Form ─────────────────────────────── -->
 <script>
 function openPanelForm(product_id, product, balance) {
   _panelProduct = product_id;
@@ -1106,7 +997,7 @@ function closePanelForm() {
 }
 async function submitPanelForm() {
   const uname = document.getElementById('pf-username').value.trim();
-  if (!uname) { toast('Username wajib diisi', 'error'); return; }
+  if (!uname) { toast('Username Wajib Diisi', 'error'); return; }
   if (!/^[a-zA-Z0-9_]{3,20}$/.test(uname)) { toast('Username: 3-20 karakter, huruf/angka/_', 'error'); return; }
 
   const btn = document.getElementById('pf-submit-btn');
@@ -1120,7 +1011,6 @@ async function submitPanelForm() {
     const data = await res.json();
     if (data.ok) {
       closePanelForm();
-      // Kirim notif telegram untuk panel
       const role = ROLE_DATA[_panelProduct];
       await sendTelegramNotif(role, { order_id: data.panel?.serverName || '—' }, 'saldo');
       showPanelResult(data.panel, data.saldo_sisa);
@@ -1183,7 +1073,6 @@ let _panelProduct = null;
   </button>
 </div>
 
-<!-- ── Panel Result ─────────────────────────────── -->
 <div class="detail-overlay" id="panel-result-overlay">
   <div class="detail-sheet">
     <div style="text-align:center;padding:10px 0 16px">
@@ -1191,7 +1080,7 @@ let _panelProduct = null;
         <i class="fa-solid fa-circle-check"></i>
       </div>
       <div style="font-size:17px;font-weight:800;color:#1D4ED8">Panel Berhasil Dibuat!</div>
-      <div style="font-size:12px;color:var(--slate);margin-top:4px">Simpan data berikut, jangan kasih ke orang lain</div>
+      <div style="font-size:12px;color:var(--slate);margin-top:4px">Simpan Data Berikut, Jangan Kasih Ke Orang Lain</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
       <div style="background:#F8FAFC;border:1px solid var(--border);border-radius:12px;padding:12px 14px">
