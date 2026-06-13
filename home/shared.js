@@ -142,6 +142,27 @@ function closeModal() {
   document.getElementById('modal-overlay').classList.remove('show');
   stopPolling(); stopTimer(); currentTx = null;
 }
+
+function downloadQR() {
+  const canvas = document.querySelector('#qr-canvas canvas');
+  if (!canvas) { toast('QR Belum Siap', 'error'); return; }
+  const link = document.createElement('a');
+  link.download = 'QRIS-' + (currentTx?.order_id || 'payment') + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+function zoomQR() {
+  const srcCanvas = document.querySelector('#qr-canvas canvas');
+  if (!srcCanvas) { toast('QR Belum Siap', 'error'); return; }
+  const target = document.getElementById('qr-zoom-canvas');
+  target.innerHTML = '';
+  new QRCode(target, { text: currentTx.qr_string, width: 280, height: 280, correctLevel: QRCode.CorrectLevel.M });
+  document.getElementById('qr-zoom-overlay').classList.add('show');
+}
+function closeZoomQR() {
+  document.getElementById('qr-zoom-overlay').classList.remove('show');
+}
 function setModalStatus(s) {
   const row = document.getElementById('modal-status');
   const map = {
@@ -169,6 +190,7 @@ function startPolling(order_id) {
           document.getElementById('btn-cancel').disabled = true;
           document.getElementById('timer-box').className = 'timer-box done';
           loadSaldo();
+          if (typeof onPaymentCompleted === 'function') onPaymentCompleted(data.transaction);
         } else if (data.transaction.status === 'cancelled') {
           setModalStatus('cancelled');
           stopPolling(); stopTimer();

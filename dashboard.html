@@ -98,8 +98,10 @@
 
   .quick-actions {
     max-width: 900px; margin: 16px auto 0; padding: 0 20px;
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
   }
+  .quick-actions::-webkit-scrollbar { display: none; }
   .quick-item {
     background: var(--white); border: 1px solid var(--border);
     border-radius: 14px; padding: 14px 6px;
@@ -107,6 +109,7 @@
     text-decoration: none; color: var(--dark);
     box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     transition: transform 0.15s, box-shadow 0.15s;
+    flex: 0 0 22%; min-width: 80px; scroll-snap-align: start;
   }
   .quick-item:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
   .quick-icon {
@@ -118,6 +121,8 @@
   .quick-icon.green  { background: linear-gradient(135deg, #10B981, #059669); }
   .quick-icon.amber  { background: linear-gradient(135deg, #F59E0B, #D97706); }
   .quick-icon.purple { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+  .quick-icon.red    { background: linear-gradient(135deg, #EF4444, #B91C1C); }
+  .quick-icon.cyan   { background: linear-gradient(135deg, #06B6D4, #0891B2); }
   .quick-label { font-size: 11px; font-weight: 600; text-align: center; }
 
   .promo-banner {
@@ -568,9 +573,17 @@
     <div class="quick-icon blue"><i class="fa-solid fa-wallet"></i></div>
     <div class="quick-label">Top Up</div>
   </a>
-  <a class="quick-item" href="/home/produk.html">
-    <div class="quick-icon green"><i class="fa-solid fa-bag-shopping"></i></div>
-    <div class="quick-label">Produk</div>
+  <a class="quick-item" href="/home/produk.html#pegasus">
+    <div class="quick-icon green"><i class="fa-solid fa-mobile-screen-button"></i></div>
+    <div class="quick-label">Apk Pegasus</div>
+  </a>
+  <a class="quick-item" href="/home/produk.html#xyz">
+    <div class="quick-icon cyan"><i class="fa-solid fa-mobile-screen-button"></i></div>
+    <div class="quick-label">Apk Xyz</div>
+  </a>
+  <a class="quick-item" href="/home/produk.html#ptero">
+    <div class="quick-icon red"><i class="fa-solid fa-server"></i></div>
+    <div class="quick-label">Panel Ptero</div>
   </a>
   <a class="quick-item" href="/home/history.html">
     <div class="quick-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
@@ -597,7 +610,7 @@
   <div class="panel active" id="panel-home">
     <div class="saldo-card">
       <div class="saldo-label">Saldo Kamu</div>
-      <div class="saldo-amount" id="saldo-display">Rp —</div>
+      <div class="saldo-amount" id="saldo-display">Rp 0</div>
       <div class="saldo-user">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;opacity:0.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <span id="home-username">—</span>

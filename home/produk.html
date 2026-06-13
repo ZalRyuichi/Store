@@ -145,7 +145,7 @@
     </div>
     <div class="saldo-mid">
       <div class="saldo-label">Saldo Kamu</div>
-      <div class="saldo-amount" id="saldo-display">Rp —</div>
+      <div class="saldo-amount" id="saldo-display">Rp 0</div>
     </div>
     <div class="saldo-bottom-row">
       <div class="saldo-user">
@@ -170,7 +170,7 @@
     </div>
     <div class="qa-item" onclick="document.querySelector('.ptero-card')?.closest('.card')?.scrollIntoView({behavior:'smooth'})">
       <div class="qa-icon" style="background:#F0FDF4;color:#16A34A"><i class="fa-solid fa-server"></i></div>
-      <div class="qa-label">Panel</div>
+      <div class="qa-label">Panel Ptero</div>
     </div>
     <div class="qa-item" onclick="window.location.href='history.html'">
       <div class="qa-icon" style="background:#FFF7ED;color:#EA580C"><i class="fa-solid fa-receipt"></i></div>
@@ -182,7 +182,7 @@
     </div>
   </div>
 
-  <div class="card">
+  <div class="card" id="pegasus">
     <div class="page-head">
       <i class="fa-solid fa-bag-shopping"></i>
       <div class="card-title">Pegasus-X Яyuichi Apk</div>
@@ -218,7 +218,36 @@
     </div>
   </div>
 
-  <div class="card" style="margin-top:14px">
+  <div class="card" id="xyz" style="margin-top:14px">
+    <div class="page-head">
+      <i class="fa-solid fa-mobile-screen-button" style="color:#9333EA"></i>
+      <div class="card-title">Aplikasi Xyz</div>
+    </div>
+    <div class="card-sub">Pilih Role Untuk Lihat Detail & Beli</div>
+
+    <div class="role-grid">
+      <div class="role-card" onclick="openDetail('xyz-member-1m')" style="--ic-bg:#F1F5F9;--ic-fg:#475569">
+        <div class="role-icon" style="background:#F1F5F9;color:#475569"><i class="fa-solid fa-user-clock"></i></div>
+        <div class="role-name">Member</div>
+        <div class="role-price" style="font-size:11px;color:var(--slate);font-weight:600;margin-bottom:2px">1 Bulan</div>
+        <div class="role-price">Rp 25.000</div>
+      </div>
+      <div class="role-card" onclick="openDetail('xyz-member-permanen')">
+        <div class="role-icon" style="background:#FFFBEB;color:#B45309"><i class="fa-solid fa-user"></i></div>
+        <div class="role-name">Member</div>
+        <div class="role-price" style="font-size:11px;color:var(--slate);font-weight:600;margin-bottom:2px">Permanen</div>
+        <div class="role-price">Rp 50.000</div>
+      </div>
+      <div class="role-card" onclick="openDetail('xyz-reseller')">
+        <div class="role-icon" style="background:#F0FDF4;color:#16A34A"><i class="fa-solid fa-shop"></i></div>
+        <div class="role-name">Reseller</div>
+        <div class="role-price" style="font-size:11px;color:var(--slate);font-weight:600;margin-bottom:2px">Permanen</div>
+        <div class="role-price">Rp 130.000</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="ptero" style="margin-top:14px">
     <div class="page-head">
       <i class="fa-solid fa-server" style="color:#16A34A"></i>
       <div class="card-title">Panel Pterodactyl</div>
@@ -359,6 +388,14 @@
     <div class="modal-title" id="modal-title">Scan QRIS</div>
     <div class="modal-sub" id="modal-sub">Scan QR Di Bawah Ini Untuk Membayar</div>
     <div class="qr-wrap"><div id="qr-canvas"></div></div>
+    <div class="qr-actions">
+      <button type="button" class="qr-action-btn" onclick="downloadQR()">
+        <i class="fa-solid fa-download"></i> Download QRIS
+      </button>
+      <button type="button" class="qr-action-btn" onclick="zoomQR()">
+        <i class="fa-solid fa-magnifying-glass-plus"></i> Perbesar
+      </button>
+    </div>
     <div class="amount-display">
       <div class="amount-label">Total Pembayaran</div>
       <div class="amount-val" id="modal-amount">—</div>
@@ -377,6 +414,13 @@
       <span id="btn-cancel-text">Batalkan Transaksi</span>
     </button>
   </div>
+</div>
+
+<div class="qr-zoom-overlay" id="qr-zoom-overlay" onclick="closeZoomQR()">
+  <div class="qr-zoom-box">
+    <div id="qr-zoom-canvas"></div>
+  </div>
+  <button class="qr-zoom-close" onclick="closeZoomQR()"><i class="fa-solid fa-xmark"></i></button>
 </div>
 
 <div class="notif-overlay" id="notif-overlay">
@@ -407,6 +451,7 @@ function onApiReady() {
 }
 
 let selectedProduct = null;
+let onPaymentCompleted = null;
 
 const ROLE_DATA = {
   'member': {
@@ -433,6 +478,21 @@ const ROLE_DATA = {
     name: 'Admin', price: 300000,
     benefit: ['Akses Full Fitur Aplikasi', 'Akses Full Fitur Vip', 'Bisa Jualin Role Vip No Update, Full Update Dan Reseller'],
     vip: true, vipNote: 'Akses Full Fitur Vip'
+  },
+  'xyz-member-1m': {
+    name: 'Member (1 Bulan)', price: 25000, app: 'xyz',
+    benefit: ['Akses Fitur Aplikasi Xyz Selama 1 Bulan'],
+    vip: false
+  },
+  'xyz-member-permanen': {
+    name: 'Member (Permanen)', price: 50000, app: 'xyz',
+    benefit: ['Akses Fitur Aplikasi Xyz Permanen'],
+    vip: false
+  },
+  'xyz-reseller': {
+    name: 'Reseller', price: 130000, app: 'xyz',
+    benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualan Role Member 1 Bulan Dan Permanen'],
+    vip: false
   },
   'ptero-1gb':        { name: 'Panel Pterodactyl 1GB',        price: 1000,  ptero: true, ram: '1 GB' },
   'ptero-2gb':        { name: 'Panel Pterodactyl 2GB',        price: 2000,  ptero: true, ram: '2 GB' },
@@ -482,6 +542,10 @@ const VIP_FEATURES = [
   ['Buat Web Jadi Apk', 'fa-solid fa-mobile-screen-button'],
 ];
 
+const XYZ_FEATURES = [
+  ['Ganti Wallpaper', 'fa-solid fa-image'],
+];
+
 function renderFeaturePills(container, list) {
   container.innerHTML = list.map(([name, icon]) => `
     <div class="feature-pill"><i class="${icon}"></i>${name}</div>
@@ -521,8 +585,19 @@ function openDetail(id) {
     `).join('');
     renderFeaturePills(document.getElementById('detail-features-basic'), PTERO_SPECS);
     vipSection.style.display = 'none';
+  } else if (role.app === 'xyz') {
+    document.querySelector('.detail-sub').textContent = 'Aplikasi Xyz';
+    document.querySelector('.detail-price-sub').textContent = role.name.includes('1 Bulan') ? '1 Bulan' : 'Permanen';
+    document.getElementById('detail-benefit').innerHTML = role.benefit.map(b => `
+      <div class="benefit-row"><i class="fa-solid fa-circle-check"></i><span>${b}</span></div>
+    `).join('');
+    document.querySelector('#detail-features-basic').closest('.detail-section').querySelector('.detail-section-title').innerHTML = '<i class="fa-solid fa-layer-group"></i> Fitur Aplikasi';
+    renderFeaturePills(document.getElementById('detail-features-basic'), XYZ_FEATURES);
+    vipSection.style.display = 'none';
   } else {
+    document.querySelector('.detail-sub').textContent = 'Pegasus-X Яyuichi Apk';
     document.querySelector('.detail-price-sub').textContent = 'Permanen Full Update';
+    document.querySelector('#detail-features-basic').closest('.detail-section').querySelector('.detail-section-title').innerHTML = '<i class="fa-solid fa-layer-group"></i> Fitur Dasar Aplikasi';
     document.getElementById('detail-benefit').innerHTML = role.benefit.map(b => `
       <div class="benefit-row"><i class="fa-solid fa-circle-check"></i><span>${b}</span></div>
     `).join('');
@@ -546,6 +621,7 @@ function closeDetail() {
 
 async function doBeli() {
   if (!selectedProduct) { toast('Pilih Produk Dulu', 'error'); return; }
+  onPaymentCompleted = null;
   const role = ROLE_DATA[selectedProduct];
   if (!role) return;
 
@@ -588,6 +664,7 @@ async function doBeli() {
     const data = await res.json();
     if (data.ok) {
       closeDetail();
+      onPaymentCompleted = (tx) => openAccountForm(tx);
       openModal(data.transaction, 'Beli ' + (data.transaction.product_name || ''), 'Scan QRIS untuk melanjutkan pembayaran');
       toast('QRIS berhasil dibuat', 'success');
     } else {
@@ -597,7 +674,96 @@ async function doBeli() {
   finally { btn.disabled = false; btnText.textContent = 'Beli Sekarang'; sp.remove(); }
 }
 
-let _panelProduct = null;
+function openAccountForm(tx) {
+  _accountTx = tx;
+  document.getElementById('af-product-name').textContent = tx.product_name || '—';
+  document.getElementById('af-username').value = '';
+  document.getElementById('af-password').value = '';
+  document.getElementById('account-form-overlay').classList.add('show');
+  document.getElementById('account-form-footer').style.display = 'block';
+}
+
+function closeAccountForm() {
+  document.getElementById('account-form-overlay').classList.remove('show');
+  document.getElementById('account-form-footer').style.display = 'none';
+}
+
+async function submitAccountForm() {
+  const uname = document.getElementById('af-username').value.trim();
+  const pass  = document.getElementById('af-password').value.trim();
+  if (!uname || !pass) { toast('Username Dan Password Wajib Diisi', 'error'); return; }
+  if (!_accountTx) { toast('Transaksi Tidak Ditemukan', 'error'); return; }
+
+  const btn = document.getElementById('af-submit-btn');
+  btn.disabled = true;
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = '<div class="spinner"></div>';
+
+  try {
+    const res = await fetch(apiUrl('/api/account/submit'), {
+      method: 'POST', headers: H,
+      body: JSON.stringify({ order_id: _accountTx.order_id, app_username: uname, app_password: pass }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      closeAccountForm();
+      closeModal();
+      toast('Data Sudah Terkirim Ke Developer, Silahkan Chat Developer Untuk Meminta Data Akun', 'success');
+    } else {
+      toast(data.message || 'Gagal Mengirim Data', 'error');
+    }
+  } catch { toast('Koneksi Gagal', 'error'); }
+  finally { btn.disabled = false; btn.innerHTML = originalHtml; }
+}
+
+let _accountTx = null;
+</script>
+
+<!-- ── Account Creation Form (Pegasus/Xyz) ─────────────────────────────── -->
+<div class="detail-overlay" id="account-form-overlay" onclick="if(event.target===this)closeAccountForm()">
+  <div class="detail-sheet">
+    <button class="detail-close" onclick="closeAccountForm()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="detail-title"><i class="fa-solid fa-user-shield" style="color:var(--blue);margin-right:8px"></i>Buat Akun Aplikasi</div>
+    <div class="detail-sub" id="af-product-name">—</div>
+
+    <div class="detail-price-box" style="margin-bottom:14px;text-align:left">
+      <div style="font-size:12px;color:var(--blue);font-weight:600">
+        <i class="fa-solid fa-circle-info" style="margin-right:5px"></i>
+        Pembayaran berhasil! Masukkan username & password untuk akun aplikasi kamu. Data ini akan dikirim ke developer untuk pembuatan akun.
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div>
+        <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:6px">
+          <i class="fa-solid fa-user" style="color:var(--blue);margin-right:5px"></i>Username Aplikasi
+        </label>
+        <input id="af-username" type="text" placeholder="contoh: ryuichi123"
+          style="width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"
+          onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:6px">
+          <i class="fa-solid fa-lock" style="color:var(--blue);margin-right:5px"></i>Password Aplikasi
+        </label>
+        <input id="af-password" type="text" placeholder="Buat Password"
+          style="width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"
+          onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'">
+        <div style="font-size:10px;color:var(--slate);margin-top:4px">Username & password ini dipakai untuk login ke aplikasi yang kamu beli.</div>
+      </div>
+    </div>
+
+    <div style="height:80px"></div>
+  </div>
+</div>
+<div style="position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--white);border-top:1px solid var(--border);padding:12px 16px;z-index:96;display:none" id="account-form-footer">
+  <button id="af-submit-btn" onclick="submitAccountForm()"
+    style="width:100%;background:var(--blue);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+    <i class="fa-solid fa-paper-plane"></i> Kirim Data Akun
+  </button>
+</div>
+<script>
+
 
 function openPanelForm(product_id, product, balance) {
   _panelProduct = product_id;
