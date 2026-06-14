@@ -953,6 +953,17 @@ async function doBeliPtero() {
       });
       const qData = await qRes.json();
       if (qData.ok) {
+        const _pteroProduct  = data.product;
+        const _pteroProduct2 = selectedProduct;
+        onPaymentCompleted = async (_tx) => {
+          // Setelah bayar QRIS → saldo sudah ter-topup → langsung buka form username panel
+          closeModal();
+          // Refresh saldo supaya data.balance akurat
+          const balRes = await fetch(apiUrl('/api/balance'), { headers: H });
+          const balData = await balRes.json();
+          const newBalance = balData.ok ? balData.balance : (_pteroProduct.price);
+          openPanelForm(_pteroProduct2, _pteroProduct, newBalance);
+        };
         openModal(qData.transaction, 'Top Up · ' + data.product.name, 'Scan QRIS Untuk Bayar Panel');
       } else {
         toast(qData.message || 'Gagal Buat QRIS', 'error');
