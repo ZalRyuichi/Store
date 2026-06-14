@@ -319,15 +319,15 @@
     </a>
     <a class="quick-item" href="#pegasus" onclick="event.preventDefault();document.getElementById('pegasus').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon green"><i class="fa-solid fa-mobile-screen-button"></i></div>
-      <div class="quick-label">Apk Pegasus-X</div>
+      <div class="quick-label">Pegasus-X</div>
     </a>
     <a class="quick-item" href="#xyz" onclick="event.preventDefault();document.getElementById('xyz').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon cyan"><i class="fa-solid fa-mobile-screen-button"></i></div>
-      <div class="quick-label">Apk XyzXRat</div>
+      <div class="quick-label">XyzXRat</div>
     </a>
     <a class="quick-item" href="#ptero" onclick="event.preventDefault();document.getElementById('ptero').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon red"><i class="fa-solid fa-server"></i></div>
-      <div class="quick-label">Panel Ptero</div>
+      <div class="quick-label">Panel</div>
     </a>
     <a class="quick-item" href="history.html">
       <div class="quick-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
@@ -344,7 +344,7 @@
       <div class="ptero-header-top">
         <div class="ptero-header-icon"><i class="fa-solid fa-server"></i></div>
         <div>
-          <div class="ptero-header-label">Panel Ptero</div>
+          <div class="ptero-header-label">Panel Pterodactyl</div>
           <div class="ptero-header-sub">Server Private · Garansi 20 Hari · 1× Replace</div>
         </div>
       </div>
@@ -422,12 +422,12 @@
       <div class="apk-banner-top">
         <div class="apk-banner-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
         <div>
-          <div class="apk-banner-label">Apk XyzXRat</div>
+          <div class="apk-banner-label">Aplikasi XyzXRat</div>
           <div class="apk-banner-sub">Akses Fitur Lengkap · Member & Reseller</div>
         </div>
       </div>
       <div class="apk-banner-pills">
-        <div class="apk-banner-pill"><i class="fa-solid fa-image"></i>Ganti Wallpaper</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-binoculars"></i> Sadap Jarak Jauh</div>
         <div class="apk-banner-pill"><i class="fa-solid fa-user"></i>Member 1 Bulan</div>
         <div class="apk-banner-pill"><i class="fa-solid fa-infinity"></i>Member Permanen</div>
         <div class="apk-banner-pill"><i class="fa-solid fa-shop"></i>Reseller</div>
@@ -461,7 +461,7 @@
       <div class="apk-banner-top">
         <div class="apk-banner-icon"><i class="fa-solid fa-bag-shopping"></i></div>
         <div>
-          <div class="apk-banner-label">Apk Pegasus-X</div>
+          <div class="apk-banner-label">Aplikasi Pegasus-X</div>
           <div class="apk-banner-sub">Fitur Lengkap · Permanen Full Update</div>
         </div>
       </div>
@@ -817,7 +817,7 @@ function openDetail(id) {
     renderFeaturePills(document.getElementById('detail-features-basic'), PTERO_SPECS);
     vipSection.style.display = 'none';
   } else if (role.app === 'xyz') {
-    document.getElementById('detail-sub-label').textContent = 'Apk XyzXRat';
+    document.getElementById('detail-sub-label').textContent = 'XyzXRat';
     document.getElementById('detail-price-sub').textContent = role.name.includes('1 Bulan') ? '1 Bulan' : 'Permanen';
     document.getElementById('detail-benefit').innerHTML = role.benefit.map(b =>
       `<div class="benefit-row"><i class="fa-solid fa-circle-check"></i><span>${b}</span></div>`).join('');
@@ -825,7 +825,7 @@ function openDetail(id) {
     renderFeaturePills(document.getElementById('detail-features-basic'), XYZ_FEATURES);
     vipSection.style.display = 'none';
   } else {
-    document.getElementById('detail-sub-label').textContent = 'Apk Pegasus-X';
+    document.getElementById('detail-sub-label').textContent = 'Pegasus-X';
     document.getElementById('detail-price-sub').textContent = 'Permanen Full Update';
     document.getElementById('basic-feature-title').innerHTML = '<i class="fa-solid fa-layer-group"></i> Fitur Dasar Aplikasi';
     document.getElementById('detail-benefit').innerHTML = role.benefit.map(b =>
