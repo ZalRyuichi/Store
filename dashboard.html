@@ -1009,7 +1009,7 @@ function renderSholat(jadwal, kota, periode, tanggal) {
   const now = nowWIB();
 
   const tanggalWIB = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-  meta.textContent = `${kota} • ${tanggalWIB} • ${periode} WIB`;
+  meta.textContent = `${kota} • ${tanggalWIB} • WIB`;
 
   // Tentukan waktu aktif: waktu sholat terakhir yang sudah lewat
   let aktifKey = null;
