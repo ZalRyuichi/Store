@@ -332,19 +332,33 @@ function renderResult(r) {
   resultEl.style.display = 'block';
 }
 
-function triggerDownload(url, filename) {
+async function triggerDownload(url, filename) {
   if (!url) return;
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.target = '_blank';
-  a.rel = 'noopener';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Gagal fetch');
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+  } catch {
+    // fallback: buka di tab baru jika fetch gagal (CORS)
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
 }
 </script>
 
 </body>
-  </html>
-  
+</html>
