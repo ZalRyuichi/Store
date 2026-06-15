@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const nameEl = document.getElementById('profile-name-el');
   if (nameEl) nameEl.textContent = savedUser;
   if (typeof onApiReady === 'function') onApiReady();
+  refreshSewaBotFloating();
 });
 
 function logout() {
@@ -74,6 +75,33 @@ async function loadSaldo(retry = 2) {
     }
     toast('Gagal memuat saldo, coba refresh', 'error');
   }
+}
+
+// Tampilkan / sembunyikan tombol mengambang "Sewa Bot WhatsApp"
+// sesuai status masa aktif sewa bot user. Dipanggil otomatis saat
+// halaman dimuat, dan juga bisa dipanggil ulang setelah pembelian.
+async function refreshSewaBotFloating() {
+  if (location.pathname.toLowerCase().endsWith('whatsapp.html')) return;
+  try {
+    const res = await fetch(apiUrl('/api/sewabot/info'), { headers: H });
+    if (!res.ok) return;
+    const data = await res.json();
+
+    let btn = document.getElementById('sewabot-fab');
+    if (data.ok && data.active) {
+      if (!btn) {
+        btn = document.createElement('a');
+        btn.id = 'sewabot-fab';
+        btn.className = 'sewabot-fab';
+        btn.title = 'Sewa Bot WhatsApp';
+        btn.innerHTML = '<i class="fa-brands fa-whatsapp"></i>';
+        btn.href = 'whatsapp.html';
+        document.body.appendChild(btn);
+      }
+    } else if (btn) {
+      btn.remove();
+    }
+  } catch {}
 }
 
 function toast(msg, type = 'info') {

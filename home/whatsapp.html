@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sewa Bot WhatsApp</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+  .wa-hero {
+    background: linear-gradient(135deg, #064E3B 0%, #047857 50%, #065F46 100%);
+    border-radius: 20px;
+    padding: 22px 20px;
+    color: #fff;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 32px rgba(4,120,87,0.35);
+    position: relative;
+    overflow: hidden;
+  }
+  .wa-hero::before {
+    content: '';
+    position: absolute; top: -45px; right: -45px;
+    width: 160px; height: 160px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  .wa-hero-top { display:flex; align-items:center; gap:12px; position:relative; z-index:1; margin-bottom: 14px; }
+  .wa-hero-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(255,255,255,0.18);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .wa-hero-title { font-size: 16px; font-weight: 800; }
+  .wa-hero-sub { font-size: 11px; opacity: 0.75; }
+  .wa-hero-status { position:relative; z-index:1; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 12px; }
+  .wa-hero-label { font-size: 11px; opacity: 0.65; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
+  .wa-hero-value { font-size: 18px; font-weight: 800; }
+
+  .wa-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 700;
+  }
+  .wa-badge.online  { background: #DCFCE7; color: #166534; }
+  .wa-badge.offline { background: #FEF2F2; color: #991B1B; }
+  .wa-badge i { font-size: 9px; }
+  .wa-badge.online i  { color: #16A34A; }
+  .wa-badge.offline i { color: #DC2626; }
+
+  .wa-session-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+  }
+  .wa-session-row:last-of-type { border-bottom: none; }
+  .wa-session-key { font-size: 12px; color: var(--slate); font-weight: 500; }
+  .wa-session-val { font-size: 13px; font-weight: 700; color: var(--dark); }
+
+  .btn-danger {
+    padding: 11px 22px; background: #FEF2F2; color: var(--red);
+    border: 1px solid #FECACA; border-radius: var(--radius);
+    font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif;
+    cursor: pointer; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 7px;
+    width: 100%; justify-content: center; margin-top: 14px;
+  }
+  .btn-danger:hover { background: #FEE2E2; }
+  .btn-danger:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .empty-box {
+    text-align: center; padding: 28px 12px; color: var(--slate);
+  }
+  .empty-box i { font-size: 32px; margin-bottom: 10px; display:block; color: var(--border); }
+  .empty-box-title { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+  .empty-box-desc { font-size: 12px; line-height: 1.5; }
+
+  /* Pairing code overlay */
+  .pairing-overlay {
+    position: fixed; inset: 0;
+    background: rgba(15,23,42,0.55);
+    display: none; align-items: center; justify-content: center;
+    z-index: 110; backdrop-filter: blur(4px);
+  }
+  .pairing-overlay.show { display: flex; animation: fadeIn 0.2s ease; }
+  .pairing-box {
+    background: var(--white); border-radius: 18px;
+    width: 90%; max-width: 360px; padding: 24px 22px;
+    text-align: center; position: relative;
+  }
+  .pairing-close {
+    position: absolute; top: 12px; right: 12px;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    width: 28px; height: 28px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: var(--slate);
+  }
+  .pairing-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .pairing-sub { font-size: 11.5px; color: var(--slate); margin-bottom: 16px; line-height: 1.5; }
+  .pairing-code {
+    font-size: 28px; font-weight: 800; letter-spacing: 6px;
+    color: #047857; background: #ECFDF5; border: 1.5px dashed #6EE7B7;
+    border-radius: 12px; padding: 14px 8px; margin-bottom: 14px;
+    font-family: monospace;
+  }
+  .pairing-steps { text-align: left; font-size: 11.5px; color: var(--slate); line-height: 1.7; }
+  .pairing-steps b { color: var(--dark); }
+  .pairing-waiting {
+    margin-top: 14px; font-size: 11.5px; color: var(--slate);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-logo" href="/dashboard">
+    <div class="logo-icon">
+      <i class="fa-solid fa-store" style="color:#fff;font-size:14px"></i>
+    </div>
+    <div class="logo-text">Zal <span>Яyuichi</span></div>
+  </a>
+  <button class="btn-logout" onclick="logout()">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Logout
+  </button>
+</nav>
+
+<main>
+
+  <div class="wa-hero">
+    <div class="wa-hero-top">
+      <div class="wa-hero-icon"><i class="fa-brands fa-whatsapp"></i></div>
+      <div>
+        <div class="wa-hero-title">Sewa Bot WhatsApp</div>
+        <div class="wa-hero-sub">Bot Pribadi · 1 Nomor / User · Fitur Stiker</div>
+      </div>
+    </div>
+    <div class="wa-hero-status">
+      <div class="wa-hero-label">Masa Aktif Sewa Bot</div>
+      <div class="wa-hero-value" id="wa-expired">Memuat...</div>
+    </div>
+  </div>
+
+  <!-- BELUM AKTIF / SUDAH HABIS -->
+  <div class="card" id="status-inactive" style="display:none">
+    <div class="empty-box">
+      <i class="fa-solid fa-clock-rotate-left"></i>
+      <div class="empty-box-title">Sewa Bot Belum Aktif</div>
+      <div class="empty-box-desc">Kamu Belum Punya Atau Masa Sewa Bot WhatsApp Kamu Sudah Habis. Beli / Perpanjang Dulu Untuk Mulai Pakai Bot.</div>
+    </div>
+    <a class="btn-primary" href="produk.html#wa" style="width:100%; justify-content:center; text-decoration:none;">
+      <i class="fa-solid fa-cart-shopping"></i> Sewa / Perpanjang Sekarang
+    </a>
+  </div>
+
+  <!-- SUDAH AKTIF -->
+  <div id="status-active" style="display:none">
+
+    <!-- FORM PAIRING (Belum Punya Sesi) -->
+    <div class="card" id="wa-form" style="display:none">
+      <div class="page-head">
+        <i class="fa-solid fa-link"></i>
+        <div class="card-title">Hubungkan Nomor WhatsApp</div>
+      </div>
+      <div class="card-sub">Masukkan Nomor WhatsApp Yang Mau Dijadikan Bot. Setiap User Hanya Bisa Menghubungkan <b>1 Nomor</b>.</div>
+
+      <div class="form-group">
+        <label>Nomor WhatsApp</label>
+        <div class="input-prefix-wrap">
+          <div class="prefix">+62</div>
+          <input type="tel" id="wa-phone-input" placeholder="81234567890" inputmode="numeric"/>
+        </div>
+        <div class="form-hint">Masukkan Tanpa Angka 0 Di Depan, Contoh: 81234567890</div>
+      </div>
+
+      <button class="btn-primary" id="btn-pairing" onclick="doPairing()" style="width:100%; justify-content:center;">
+        <i class="fa-solid fa-link"></i>
+        <span id="btn-pairing-text">Hubungkan Sekarang</span>
+      </button>
+    </div>
+
+    <!-- SESI AKTIF -->
+    <div class="card" id="wa-session" style="display:none">
+      <div class="page-head">
+        <i class="fa-brands fa-whatsapp"></i>
+        <div class="card-title">Sesi Bot Kamu</div>
+      </div>
+      <div class="card-sub">Kelola Nomor Bot WhatsApp Yang Sudah Terhubung Ke Akun Kamu.</div>
+
+      <div class="wa-session-row">
+        <div class="wa-session-key">Nomor</div>
+        <div class="wa-session-val" id="wa-phone">—</div>
+      </div>
+      <div class="wa-session-row">
+        <div class="wa-session-key">Status</div>
+        <div id="wa-status-badge" class="wa-badge offline"><i class="fa-solid fa-circle"></i> —</div>
+      </div>
+
+      <button class="btn-danger" id="btn-delete-session" onclick="doDeleteSession()">
+        <i class="fa-solid fa-trash"></i>
+        <span id="btn-delete-text">Hapus Sesi & Putuskan Bot</span>
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="page-head">
+        <i class="fa-solid fa-circle-info"></i>
+        <div class="card-title">Cara Pakai</div>
+      </div>
+      <div class="info-list">
+        <div class="info-row">
+          <div class="info-icon"><i class="fa-solid fa-link"></i></div>
+          <div>
+            <div class="info-row-title">Hubungkan Nomor</div>
+            <div class="info-row-desc">Masukkan Nomor WhatsApp, Lalu Masukkan Kode Pairing Di WhatsApp Kamu (Perangkat Tertaut).</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon"><i class="fa-solid fa-image"></i></div>
+          <div>
+            <div class="info-row-title">Bikin Stiker</div>
+            <div class="info-row-desc">Reply Foto/Video Di Chat Yang Terhubung Ke Bot, Lalu Kirim Pesan <b>s</b> Untuk Mengubahnya Jadi Stiker.</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon"><i class="fa-solid fa-trash"></i></div>
+          <div>
+            <div class="info-row-title">Hapus / Ganti Nomor</div>
+            <div class="info-row-desc">Hapus Sesi Untuk Memutuskan Bot, Setelah Itu Kamu Bisa Hubungkan Nomor Lain.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<nav class="bottom-nav">
+  <a class="bnav-item" href="/dashboard">
+    <i class="fa-solid fa-house"></i>
+    <span class="bnav-label">Home</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item" href="/home/topup.html">
+    <i class="fa-solid fa-wallet"></i>
+    <span class="bnav-label">Top Up</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item" href="/home/produk.html">
+    <i class="fa-solid fa-bag-shopping"></i>
+    <span class="bnav-label">Produk</span>
+    <div class="bnav-dot"></div>
+  </a>
+  <a class="bnav-item" href="/home/history.html">
+    <i class="fa-solid fa-clock-rotate-left"></i>
+    <span class="bnav-label">History</span>
+    <div class="bnav-dot"></div>
+  </a>
+</nav>
+
+<!-- PAIRING CODE OVERLAY -->
+<div class="pairing-overlay" id="pairing-overlay">
+  <div class="pairing-box">
+    <button class="pairing-close" onclick="closePairingOverlay()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="pairing-title">Kode Pairing Kamu</div>
+    <div class="pairing-sub">Masukkan Kode Ini Di WhatsApp Dalam 60 Detik</div>
+    <div class="pairing-code" id="pairing-code">----</div>
+    <div class="pairing-steps">
+      1. Buka <b>WhatsApp</b> Di HP Kamu<br/>
+      2. Masuk Ke <b>Setelan → Perangkat Tertaut</b><br/>
+      3. Pilih <b>Tautkan Perangkat → Tautkan Dengan Nomor Telepon</b><br/>
+      4. Masukkan Kode Di Atas
+    </div>
+    <div class="pairing-waiting" id="pairing-waiting">
+      <div class="spinner" style="border-top-color:#047857;border-color:rgba(4,120,87,0.25)"></div>
+      Menunggu Bot Terhubung...
+    </div>
+  </div>
+</div>
+
+<div class="notif-overlay" id="notif-overlay">
+  <div class="notif-box">
+    <div class="notif-icon-wrap" id="notif-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
+    <div class="notif-title" id="notif-title"></div>
+    <div class="notif-desc" id="notif-desc"></div>
+    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()">OK</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+const savedUserName = localStorage.getItem('pg_user') || 'User';
+const nameEl = document.getElementById('home-username');
+if (nameEl) nameEl.textContent = savedUserName;
+
+let sessionPollInterval = null;
+
+function onApiReady() {
+  loadSewabotInfo();
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' +
+         d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+}
+
+async function loadSewabotInfo() {
+  try {
+    const res = await fetch(apiUrl('/api/sewabot/info'), { headers: H });
+    if (res.status === 401 || res.status === 403) { logout(); return; }
+    const data = await res.json();
+    if (!data.ok) { showInactive(); return; }
+
+    document.getElementById('wa-expired').textContent =
+      data.permanent ? 'Permanen' : (data.active ? fmtDate(data.expired_at) : 'Sudah Habis');
+
+    if (!data.active) { showInactive(); return; }
+    showActive(data);
+  } catch {
+    toast('Gagal Memuat Info Sewa Bot', 'error');
+  }
+}
+
+function showInactive() {
+  document.getElementById('status-active').style.display = 'none';
+  document.getElementById('status-inactive').style.display = 'block';
+}
+
+function showActive(data) {
+  document.getElementById('status-inactive').style.display = 'none';
+  document.getElementById('status-active').style.display = 'block';
+
+  if (data.session) {
+    document.getElementById('wa-form').style.display = 'none';
+    document.getElementById('wa-session').style.display = 'block';
+
+    document.getElementById('wa-phone').textContent = '+' + data.session.phone;
+
+    const isOnline = data.session.status === 'online';
+    const badge = document.getElementById('wa-status-badge');
+    badge.className = 'wa-badge ' + (isOnline ? 'online' : 'offline');
+    badge.innerHTML = `<i class="fa-solid fa-circle"></i> ${isOnline ? 'Terhubung' : 'Tidak Terhubung'}`;
+  } else {
+    document.getElementById('wa-session').style.display = 'none';
+    document.getElementById('wa-form').style.display = 'block';
+  }
+}
+
+async function doPairing() {
+  let phone = document.getElementById('wa-phone-input').value.trim();
+  if (!phone) { toast('Masukkan Nomor WhatsApp Dulu', 'error'); return; }
+
+  const btn = document.getElementById('btn-pairing');
+  const btnText = document.getElementById('btn-pairing-text');
+  btn.disabled = true; btnText.textContent = '';
+  const sp = document.createElement('div'); sp.className = 'spinner'; btn.appendChild(sp);
+
+  try {
+    const res = await fetch(apiUrl('/api/sewabot/pairing'), {
+      method: 'POST', headers: H, body: JSON.stringify({ phone })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      if (data.code === 'ALREADY_CONNECTED') {
+        toast('Nomor Sudah Terhubung!', 'success');
+        loadSewabotInfo();
+      } else {
+        showPairingCode(data.code);
+        startSessionPolling();
+      }
+    } else {
+      toast(data.message || 'Gagal Memulai Pairing', 'error');
+    }
+  } catch {
+    toast('Koneksi Gagal', 'error');
+  } finally {
+    btn.disabled = false; btnText.textContent = 'Hubungkan Sekarang'; sp.remove();
+  }
+}
+
+function showPairingCode(code) {
+  document.getElementById('pairing-code').textContent = code;
+  document.getElementById('pairing-waiting').style.display = 'flex';
+  document.getElementById('pairing-overlay').classList.add('show');
+}
+
+function closePairingOverlay() {
+  document.getElementById('pairing-overlay').classList.remove('show');
+  stopSessionPolling();
+}
+
+function startSessionPolling() {
+  stopSessionPolling();
+  sessionPollInterval = setInterval(async () => {
+    try {
+      const res = await fetch(apiUrl('/api/sewabot/info'), { headers: H });
+      const data = await res.json();
+      if (data.ok && data.active && data.session && data.session.status === 'online') {
+        stopSessionPolling();
+        closePairingOverlay();
+        toast('Bot Berhasil Terhubung!', 'success');
+        loadSewabotInfo();
+      }
+    } catch {}
+  }, 4000);
+}
+
+function stopSessionPolling() {
+  if (sessionPollInterval) { clearInterval(sessionPollInterval); sessionPollInterval = null; }
+}
+
+async function doDeleteSession() {
+  if (!window.confirm('Hapus Sesi Bot Ini? Bot Akan Offline Dan Kamu Bisa Hubungkan Nomor Baru Setelah Ini.')) return;
+
+  const btn = document.getElementById('btn-delete-session');
+  const btnText = document.getElementById('btn-delete-text');
+  btn.disabled = true; btnText.textContent = 'Menghapus...';
+
+  try {
+    const res = await fetch(apiUrl('/api/sewabot/delete'), { method: 'POST', headers: H });
+    const data = await res.json();
+    if (data.ok) {
+      toast('Sesi Bot Berhasil Dihapus', 'success');
+      loadSewabotInfo();
+    } else {
+      toast(data.message || 'Gagal Menghapus Sesi', 'error');
+    }
+  } catch {
+    toast('Koneksi Gagal', 'error');
+  } finally {
+    btn.disabled = false; btnText.textContent = 'Hapus Sesi & Putuskan Bot';
+  }
+}
+</script>
+</body>
+</html>

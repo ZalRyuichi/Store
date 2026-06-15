@@ -637,3 +637,20 @@
   .contact-item-icon.wa   { background: #25D366; }
   .contact-item-icon.tt   { background: #000000; }
   .contact-item-icon.ig   { background: linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4); }
+
+  /* Sewa Bot floating button */
+  .sewabot-fab {
+    position: fixed; left: 16px; bottom: 84px;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: #fff; border: none; cursor: pointer; text-decoration: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; box-shadow: 0 6px 18px rgba(37,211,102,0.45);
+    z-index: 50; transition: transform 0.2s;
+    animation: sewabotPulse 2.2s infinite;
+  }
+  .sewabot-fab:active { transform: scale(0.94); }
+  @keyframes sewabotPulse {
+    0%, 100% { box-shadow: 0 6px 18px rgba(37,211,102,0.45); }
+    50%      { box-shadow: 0 6px 24px rgba(37,211,102,0.8); }
+  }

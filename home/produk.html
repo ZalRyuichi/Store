@@ -329,6 +329,10 @@
       <div class="quick-icon red"><i class="fa-solid fa-server"></i></div>
       <div class="quick-label">Panel</div>
     </a>
+    <a class="quick-item" href="#wa" onclick="event.preventDefault();document.getElementById('wa').scrollIntoView({behavior:'smooth'})">
+      <div class="quick-icon green"><i class="fa-brands fa-whatsapp"></i></div>
+      <div class="quick-label">Sewa Bot</div>
+    </a>
     <a class="quick-item" href="history.html">
       <div class="quick-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
       <div class="quick-label">History</div>
@@ -499,6 +503,51 @@
         <div class="role-icon"><i class="fa-solid fa-crown"></i></div>
         <div class="role-name">Admin</div>
         <div class="role-price">Rp 300.000</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="wa" style="margin-top:14px">
+    <div class="apk-banner" style="background: linear-gradient(135deg, #064E3B 0%, #047857 100%);">
+      <div class="apk-banner-top">
+        <div class="apk-banner-icon"><i class="fa-brands fa-whatsapp"></i></div>
+        <div>
+          <div class="apk-banner-label">Sewa Bot WhatsApp</div>
+          <div class="apk-banner-sub">Bot Pribadi · Fitur Stiker · 1 Nomor / User</div>
+        </div>
+      </div>
+      <div class="apk-banner-pills">
+        <div class="apk-banner-pill"><i class="fa-solid fa-image"></i>Convert Stiker</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-lock"></i>Sesi Pribadi</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-tower-broadcast"></i>Status Online/Offline</div>
+      </div>
+    </div>
+
+    <div class="role-grid">
+      <div class="role-card" onclick="openDetail('sewabot-1hari')">
+        <div class="role-icon" style="background:#ECFDF5;color:#059669"><i class="fa-solid fa-bolt"></i></div>
+        <div class="role-name">1 Hari</div>
+        <div class="role-price">Rp 1.000</div>
+      </div>
+      <div class="role-card" onclick="openDetail('sewabot-1minggu')">
+        <div class="role-icon" style="background:#ECFDF5;color:#059669"><i class="fa-solid fa-calendar-week"></i></div>
+        <div class="role-name">1 Minggu</div>
+        <div class="role-price">Rp 5.000</div>
+      </div>
+      <div class="role-card" onclick="openDetail('sewabot-3minggu')">
+        <div class="role-icon" style="background:#ECFDF5;color:#059669"><i class="fa-solid fa-calendar-days"></i></div>
+        <div class="role-name">3 Minggu</div>
+        <div class="role-price">Rp 15.000</div>
+      </div>
+      <div class="role-card" onclick="openDetail('sewabot-1bulan')">
+        <div class="role-icon" style="background:#ECFDF5;color:#059669"><i class="fa-solid fa-calendar"></i></div>
+        <div class="role-name">1 Bulan</div>
+        <div class="role-price">Rp 20.000</div>
+      </div>
+      <div class="role-card" onclick="openDetail('sewabot-permanen')">
+        <div class="role-icon" style="background:#ECFDF5;color:#059669"><i class="fa-solid fa-infinity"></i></div>
+        <div class="role-name">Permanen</div>
+        <div class="role-price">Rp 50.000</div>
       </div>
     </div>
   </div>
@@ -681,8 +730,22 @@ const ROLE_DATA = {
   'ptero-8gb':       { name: 'Panel Ptero 8GB',       price: 8000,  ptero: true, ram: '8 GB' },
   'ptero-9gb':       { name: 'Panel Ptero 9GB',       price: 9000,  ptero: true, ram: '9 GB' },
   'ptero-10gb':      { name: 'Panel Ptero 10GB',      price: 10000, ptero: true, ram: '10 GB' },
-  'ptero-unlimited': { name: 'Panel Ptero Unlimited',  price: 15000, ptero: true, ram: 'Unlimited' }
+  'ptero-unlimited': { name: 'Panel Ptero Unlimited',  price: 15000, ptero: true, ram: 'Unlimited' },
+
+  'sewabot-1hari':    { name: 'Sewa Bot WhatsApp - 1 Hari',    price: 1000,  app: 'sewabot', days: 1,    benefit: ['Bot WhatsApp Pribadi Aktif Selama 1 Hari', 'Fitur Convert Stiker Foto/Video'] },
+  'sewabot-1minggu':  { name: 'Sewa Bot WhatsApp - 1 Minggu',  price: 5000,  app: 'sewabot', days: 7,    benefit: ['Bot WhatsApp Pribadi Aktif Selama 1 Minggu', 'Fitur Convert Stiker Foto/Video'] },
+  'sewabot-3minggu':  { name: 'Sewa Bot WhatsApp - 3 Minggu',  price: 15000, app: 'sewabot', days: 21,   benefit: ['Bot WhatsApp Pribadi Aktif Selama 3 Minggu', 'Fitur Convert Stiker Foto/Video'] },
+  'sewabot-1bulan':   { name: 'Sewa Bot WhatsApp - 1 Bulan',   price: 20000, app: 'sewabot', days: 30,   benefit: ['Bot WhatsApp Pribadi Aktif Selama 1 Bulan', 'Fitur Convert Stiker Foto/Video'] },
+  'sewabot-permanen': { name: 'Sewa Bot WhatsApp - Permanen',  price: 50000, app: 'sewabot', permanent: true, benefit: ['Bot WhatsApp Pribadi Aktif Selamanya', 'Fitur Convert Stiker Foto/Video', 'Tidak Perlu Perpanjang Lagi'] },
 };
+
+const SEWABOT_FEATURES = [
+  ['Convert Stiker', 'fa-solid fa-image'],
+  ['Sesi Pribadi', 'fa-solid fa-lock'],
+  ['Status Online/Offline', 'fa-solid fa-tower-broadcast'],
+  ['1 Nomor / User', 'fa-solid fa-user'],
+  ['Hapus Sesi Sendiri', 'fa-solid fa-trash'],
+];
 
 const BASIC_FEATURES = [
   ['Bug WhatsApp', 'fa-solid fa-bug'],
@@ -824,6 +887,14 @@ function openDetail(id) {
     document.getElementById('basic-feature-title').innerHTML = '<i class="fa-solid fa-layer-group"></i> Fitur Aplikasi';
     renderFeaturePills(document.getElementById('detail-features-basic'), XYZ_FEATURES);
     vipSection.style.display = 'none';
+  } else if (role.app === 'sewabot') {
+    document.getElementById('detail-sub-label').textContent = 'Sewa Bot WhatsApp';
+    document.getElementById('detail-price-sub').textContent = role.permanent ? 'Permanen' : (role.days + ' Hari');
+    document.getElementById('detail-benefit').innerHTML = role.benefit.map(b =>
+      `<div class="benefit-row"><i class="fa-solid fa-circle-check"></i><span>${b}</span></div>`).join('');
+    document.getElementById('basic-feature-title').innerHTML = '<i class="fa-solid fa-layer-group"></i> Fitur Bot';
+    renderFeaturePills(document.getElementById('detail-features-basic'), SEWABOT_FEATURES);
+    vipSection.style.display = 'none';
   } else {
     document.getElementById('detail-sub-label').textContent = 'Pegasus-X';
     document.getElementById('detail-price-sub').textContent = 'Permanen Full Update';
@@ -894,9 +965,14 @@ async function doBeliSaldo() {
     const data = await res.json();
     if (data.ok) {
       loadSaldo();
-      // Notif telegram sudah dikirim dari backend /api/buy/saldo — tidak perlu call lagi
-      toast('Pembelian Berhasil!', 'success');
-      setTimeout(() => openAccountForm(data.transaction), 500);
+      if (role.app === 'sewabot') {
+        toast('Sewa Bot Berhasil Diaktifkan! Yuk Hubungkan Nomor WhatsApp Kamu.', 'success');
+        refreshSewaBotFloating();
+      } else {
+        // Notif telegram sudah dikirim dari backend /api/buy/saldo — tidak perlu call lagi
+        toast('Pembelian Berhasil!', 'success');
+        setTimeout(() => openAccountForm(data.transaction), 500);
+      }
     } else {
       toast(data.message || 'Gagal Beli Pakai Saldo', 'error');
     }
@@ -917,7 +993,13 @@ async function doBeliQris() {
     if (data.ok) {
       onPaymentCompleted = async (tx) => {
         await sendTelegramNotif(role, tx, 'qris');
-        openAccountForm(tx);
+        if (role.app === 'sewabot') {
+          closeModal();
+          toast('Sewa Bot Berhasil Diaktifkan! Yuk Hubungkan Nomor WhatsApp Kamu.', 'success');
+          refreshSewaBotFloating();
+        } else {
+          openAccountForm(tx);
+        }
       };
       openModal(data.transaction, 'Beli ' + (data.transaction.product_name || ''), 'Scan QRIS Untuk Melanjutkan Pembayaran');
       toast('QRIS Berhasil Dibuat', 'success');

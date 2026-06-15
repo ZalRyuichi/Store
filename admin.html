@@ -239,6 +239,19 @@
     font-family: 'Inter', sans-serif; transition: all 0.15s;
   }
   .tab-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+
+  /* SEWA BOT */
+  .badge.online  { background: #DCFCE7; color: #166534; }
+  .badge.offline { background: #FEF2F2; color: #991B1B; }
+  .btn-row-delete {
+    padding: 5px 10px; background: #FEF2F2; color: var(--red);
+    border: 1px solid #FECACA; border-radius: 8px;
+    font-size: 11px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .btn-row-delete:hover { background: #FEE2E2; }
+  .btn-row-delete:disabled { opacity: 0.6; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -319,6 +332,7 @@
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('users', this)"><i class="fa-solid fa-users"></i> Daftar User</button>
       <button class="tab-btn" onclick="switchTab('transactions', this)"><i class="fa-solid fa-receipt"></i> Transaksi</button>
+      <button class="tab-btn" onclick="switchTab('sewabot', this)"><i class="fa-brands fa-whatsapp"></i> Sewa Bot</button>
     </div>
 
     <!-- USERS TAB -->
@@ -378,6 +392,35 @@
       </div>
     </div>
 
+    <!-- SEWA BOT TAB -->
+    <div id="tab-sewabot" style="display:none;">
+      <div class="section-title"><i class="fa-brands fa-whatsapp"></i> Sesi Bot WhatsApp (Sewa Bot)</div>
+      <button class="btn-refresh" id="btn-refresh-sewabot" onclick="loadData()">
+        <i class="fa-solid fa-rotate-right"></i> Refresh
+      </button>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search-sewabot" placeholder="Cari user atau nomor..." oninput="renderSewabot()"/>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Nomor</th>
+              <th>Status</th>
+              <th>Terhubung</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-sewabot">
+            <tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i>Memuat data...</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -386,6 +429,7 @@ const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api
 let API_BASE = "";
 let usersData = {};
 let txData = {};
+let sewabotData = [];
 
 async function loadApiBase() {
   const CACHE_TTL = 1 * 60 * 1000;
@@ -435,6 +479,7 @@ function switchTab(tab, btn) {
   btn.classList.add('active');
   document.getElementById('tab-users').style.display = tab === 'users' ? 'block' : 'none';
   document.getElementById('tab-transactions').style.display = tab === 'transactions' ? 'block' : 'none';
+  document.getElementById('tab-sewabot').style.display = tab === 'sewabot' ? 'block' : 'none';
 }
 
 // ---- DATA ----
@@ -446,9 +491,10 @@ async function loadData() {
   try {
     await loadApiBase();
 
-    const [uRes, tRes] = await Promise.all([
+    const [uRes, tRes, sRes] = await Promise.all([
       fetch(apiUrl('/api/admin/users'), { headers: H }),
-      fetch(apiUrl('/api/admin/transactions'), { headers: H })
+      fetch(apiUrl('/api/admin/transactions'), { headers: H }),
+      fetch(apiUrl('/api/admin/sewabot/sessions'), { headers: H })
     ]);
 
     if (uRes.ok) {
@@ -459,6 +505,10 @@ async function loadData() {
       const tData = await tRes.json();
       txData = tData.transactions || tData || {};
     }
+    if (sRes.ok) {
+      const sData = await sRes.json();
+      sewabotData = sData.sessions || [];
+    }
   } catch (e) {
     console.error('API error, using demo data', e);
   }
@@ -466,6 +516,7 @@ async function loadData() {
   renderStats();
   renderUsers();
   renderTx();
+  renderSewabot();
 }
 
 function rupiah(n) { return 'Rp ' + Number(n).toLocaleString('id-ID'); }
@@ -544,6 +595,64 @@ function renderTx() {
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderSewabot() {
+  const q = (document.getElementById('search-sewabot').value || '').toLowerCase();
+  const tbody = document.getElementById('tbody-sewabot');
+  const filtered = q ? sewabotData.filter(s =>
+    (s.userId || '').toLowerCase().includes(q) ||
+    (s.phone || '').toLowerCase().includes(q)
+  ) : sewabotData;
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-inbox"></i>Belum Ada Sesi Bot Sewa Bot.</div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((s, i) => {
+    const isOnline = s.status === 'online';
+    return `
+    <tr>
+      <td><span class="user-row-num">${i + 1}</span></td>
+      <td><b>${escHtml(s.userId || '—')}</b></td>
+      <td style="font-family:monospace;">+${escHtml(s.phone || '—')}</td>
+      <td><span class="badge ${isOnline ? 'online' : 'offline'}">${isOnline ? 'Online' : 'Offline'}</span></td>
+      <td style="color:var(--slate); font-size:11px;">${fmtDate(s.connectedAt)}</td>
+      <td>
+        <button class="btn-row-delete" onclick="deleteSewabotSession('${escHtml(s.sessionId)}', this)">
+          <i class="fa-solid fa-trash"></i> Hapus
+        </button>
+      </td>
+    </tr>
+  `;
+  }).join('');
+}
+
+async function deleteSewabotSession(sessionId, btn) {
+  if (!window.confirm(`Hapus Sesi Bot ${sessionId}? Bot Akan Diputus Dan Sesi Dihapus.`)) return;
+  const TOKEN = localStorage.getItem('pg_token');
+  const H = { 'Content-Type': 'application/json', 'x-auth-token': TOKEN };
+
+  btn.disabled = true;
+  const original = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menghapus...';
+
+  try {
+    const res = await fetch(apiUrl('/api/admin/sewabot/delete'), {
+      method: 'POST', headers: H, body: JSON.stringify({ sessionId })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      loadData();
+    } else {
+      alert(data.message || 'Gagal Menghapus Sesi');
+      btn.disabled = false; btn.innerHTML = original;
+    }
+  } catch (e) {
+    alert('Koneksi Gagal');
+    btn.disabled = false; btn.innerHTML = original;
+  }
 }
 
 // ---- INIT ----
