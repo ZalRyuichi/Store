@@ -1045,7 +1045,7 @@ document.getElementById('sholat-input').addEventListener('keydown', function(e) 
 loadSholat('jakarta');
 // ─────────────────────────────────────────────────────────────────────────────
 
-
+document.addEventListener('click', e => {
   const panel = document.getElementById('contact-panel');
   const fab = document.getElementById('contact-fab');
   if (panel.classList.contains('show') && !panel.contains(e.target) && !fab.contains(e.target)) {
