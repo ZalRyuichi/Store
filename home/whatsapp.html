@@ -109,23 +109,68 @@
     display: flex; align-items: center; justify-content: center; gap: 8px;
   }
 
-  #wa-country-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23475569' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 6px center;
-    padding-right: 20px !important;
+  /* Country picker button */
+  .country-picker-btn {
+    display: flex; align-items: center; gap: 4px;
+    padding: 8px 10px; border: none; background: transparent;
+    font-weight: 700; color: var(--dark); cursor: pointer;
+    font-size: 14px; font-family: 'Inter', sans-serif;
+    white-space: nowrap; flex-shrink: 0;
+    border-right: 1px solid var(--border);
   }
+  .country-picker-btn:hover { background: rgba(0,0,0,0.03); }
+  .country-picker-btn svg { opacity: 0.45; }
 
-  #wa-country-select:hover {
-    background-color: rgba(0,0,0,0.02);
+  /* Country modal */
+  .country-modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(15,23,42,0.5);
+    display: none; align-items: flex-end; justify-content: center;
+    z-index: 200; backdrop-filter: blur(4px);
   }
-
-  #wa-country-select:focus {
+  .country-modal-overlay.show { display: flex; }
+  .country-modal-box {
+    background: var(--white); border-radius: 20px 20px 0 0;
+    width: 100%; max-width: 480px;
+    padding: 20px 16px 32px; max-height: 70vh;
+    display: flex; flex-direction: column;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(60px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  .country-modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .country-modal-title { font-size: 15px; font-weight: 700; }
+  .country-modal-close {
+    width: 28px; height: 28px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--slate); font-size: 12px;
+  }
+  .country-search-input {
+    width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+    border-radius: 10px; font-size: 13px; font-family: 'Inter', sans-serif;
+    margin-bottom: 12px; box-sizing: border-box;
     outline: none;
   }
+  .country-search-input:focus { border-color: #047857; }
+  .country-list {
+    overflow-y: auto; flex: 1;
+  }
+  .country-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 6px; cursor: pointer; border-radius: 8px;
+    font-size: 13px; font-weight: 500;
+    border-bottom: 1px solid var(--border);
+  }
+  .country-item:last-child { border-bottom: none; }
+  .country-item:hover { background: #F0FDF4; }
+  .country-item.selected { background: #ECFDF5; color: #047857; font-weight: 700; }
+  .country-item-code { font-weight: 700; color: #047857; font-size: 13px; }
 </style>
 </head>
 <body>
@@ -185,29 +230,10 @@
       <div class="form-group">
         <label>Nomor WhatsApp</label>
         <div class="input-prefix-wrap">
-          <select id="wa-country-select" style="padding:8px 8px;border:none;background:transparent;font-weight:600;color:var(--dark);cursor:pointer;font-size:14px;">
-            <option value="62">+62 Indonesia</option>
-            <option value="60">+60 Malaysia</option>
-            <option value="63">+63 Philippines</option>
-            <option value="66">+66 Thailand</option>
-            <option value="65">+65 Singapore</option>
-            <option value="84">+84 Vietnam</option>
-            <option value="855">+855 Cambodia</option>
-            <option value="856">+856 Laos</option>
-            <option value="95">+95 Myanmar</option>
-            <option value="1">+1 USA/Canada</option>
-            <option value="44">+44 UK</option>
-            <option value="61">+61 Australia</option>
-            <option value="81">+81 Japan</option>
-            <option value="886">+886 Taiwan</option>
-            <option value="852">+852 Hong Kong</option>
-            <option value="853">+853 Macau</option>
-            <option value="90">+90 Turkey</option>
-            <option value="7">+7 Russia</option>
-            <option value="971">+971 UAE</option>
-            <option value="966">+966 Saudi Arabia</option>
-          </select>
-          <div class="prefix" id="wa-prefix-display">+62</div>
+          <button class="country-picker-btn" id="wa-country-btn" onclick="openCountryModal()" type="button">
+            <span id="wa-prefix-display">+62</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
           <input type="tel" id="wa-phone-input" placeholder="81234567890" inputmode="numeric"/>
         </div>
         <div class="form-hint" id="wa-hint-text">Masukkan Tanpa Angka 0 Di Depan, Contoh: 81234567890</div>
@@ -329,6 +355,18 @@
   </div>
 </div>
 
+<!-- COUNTRY PICKER MODAL -->
+<div class="country-modal-overlay" id="country-modal" onclick="if(event.target===this)closeCountryModal()">
+  <div class="country-modal-box">
+    <div class="country-modal-header">
+      <div class="country-modal-title">Pilih Kode Negara</div>
+      <button class="country-modal-close" onclick="closeCountryModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <input class="country-search-input" id="country-search" placeholder="Cari negara..." autocomplete="off"/>
+    <div class="country-list" id="country-list"></div>
+  </div>
+</div>
+
 <script src="shared.js"></script>
 <script>
 const savedUserName = localStorage.getItem('pg_user') || 'User';
@@ -390,22 +428,72 @@ function showActive(data) {
   }
 }
 
-// Handle country selection
-const countrySelect = document.getElementById('wa-country-select');
-if (countrySelect) {
-  countrySelect.addEventListener('change', (e) => {
-    const code = e.target.value;
-    const selectedOption = e.target.options[e.target.selectedIndex];
-    const display = selectedOption.textContent.split(' ')[0]; // Get "+XX" part
-    document.getElementById('wa-prefix-display').textContent = display;
-  });
+// Country picker modal
+const COUNTRIES = [
+  { code: '62',  label: 'Indonesia' },
+  { code: '60',  label: 'Malaysia' },
+  { code: '63',  label: 'Philippines' },
+  { code: '66',  label: 'Thailand' },
+  { code: '65',  label: 'Singapore' },
+  { code: '84',  label: 'Vietnam' },
+  { code: '855', label: 'Cambodia' },
+  { code: '856', label: 'Laos' },
+  { code: '95',  label: 'Myanmar' },
+  { code: '1',   label: 'USA/Canada' },
+  { code: '44',  label: 'UK' },
+  { code: '61',  label: 'Australia' },
+  { code: '81',  label: 'Japan' },
+  { code: '886', label: 'Taiwan' },
+  { code: '852', label: 'Hong Kong' },
+  { code: '853', label: 'Macau' },
+  { code: '90',  label: 'Turkey' },
+  { code: '7',   label: 'Russia' },
+  { code: '971', label: 'UAE' },
+  { code: '966', label: 'Saudi Arabia' },
+];
+
+let selectedCountryCode = '62';
+
+function renderCountryList(filter = '') {
+  const list = document.getElementById('country-list');
+  const q = filter.toLowerCase();
+  const filtered = COUNTRIES.filter(c =>
+    c.label.toLowerCase().includes(q) || c.code.includes(q)
+  );
+  list.innerHTML = filtered.map(c => `
+    <div class="country-item ${c.code === selectedCountryCode ? 'selected' : ''}"
+         onclick="selectCountry('${c.code}', '${c.label}')">
+      <span>${c.label}</span>
+      <span class="country-item-code">+${c.code}</span>
+    </div>
+  `).join('');
 }
+
+function openCountryModal() {
+  document.getElementById('country-search').value = '';
+  renderCountryList();
+  document.getElementById('country-modal').classList.add('show');
+}
+
+function closeCountryModal() {
+  document.getElementById('country-modal').classList.remove('show');
+}
+
+function selectCountry(code, label) {
+  selectedCountryCode = code;
+  document.getElementById('wa-prefix-display').textContent = '+' + code;
+  closeCountryModal();
+}
+
+document.getElementById('country-search')?.addEventListener('input', e => {
+  renderCountryList(e.target.value);
+});
 
 async function doPairing() {
   let phone = document.getElementById('wa-phone-input').value.trim();
   if (!phone) { toast('Masukkan Nomor WhatsApp Dulu', 'error'); return; }
 
-  const countryCode = document.getElementById('wa-country-select').value;
+  const countryCode = selectedCountryCode;
   const fullPhone = countryCode + phone;
 
   const btn = document.getElementById('btn-pairing');
