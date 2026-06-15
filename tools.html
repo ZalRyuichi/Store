@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
+    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
+    --white:  #FFFFFF; --bg:     #F8FAFC;
+    --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
+    --radius: 12px;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  .top-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-back {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--dark);
+  }
+  .nav-back-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--bg); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: var(--slate);
+    transition: all 0.15s;
+  }
+  .nav-back:hover .nav-back-icon { background: var(--blue-l); color: var(--blue); border-color: #BFDBFE; }
+  .nav-title { font-size: 15px; font-weight: 700; }
+
+  main {
+    max-width: 900px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+  }
+
+  .page-head { margin-bottom: 16px; }
+  .page-head-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .page-head-sub { font-size: 12px; color: var(--slate); }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .tool-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--dark); text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .tool-box:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+  .tool-box-icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: #fff;
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
+  }
+  .tool-box-label { font-size: 13px; font-weight: 700; }
+  .tool-box-desc { font-size: 11px; color: var(--slate); }
+
+  .empty-note {
+    text-align: center; padding: 30px 0; color: var(--slate); font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-back" href="/dashboard">
+    <div class="nav-back-icon"><i class="fa-solid fa-arrow-left"></i></div>
+    <div class="nav-title">Tools</div>
+  </a>
+</nav>
+
+<main>
+  <div class="page-head">
+    <div class="page-head-title">Tools & Utilitas</div>
+    <div class="page-head-sub">Pilih tools yang mau kamu pakai</div>
+  </div>
+
+  <div class="tools-grid">
+    <a class="tool-box" href="/home/downloader.html">
+      <div class="tool-box-icon"><i class="fa-solid fa-download"></i></div>
+      <div class="tool-box-label">Downloader</div>
+      <div class="tool-box-desc">Download video & audio</div>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>

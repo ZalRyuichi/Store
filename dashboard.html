@@ -151,6 +151,28 @@
     white-space: nowrap;
   }
 
+  .tools-banner {
+    max-width: 900px; margin: 12px auto 0; padding: 0 20px;
+  }
+  .tools-card {
+    background: linear-gradient(135deg, #1E293B, #334155);
+    border-radius: 16px; padding: 16px 20px; color: #fff;
+    display: flex; align-items: center; gap: 14px;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(15,23,42,0.18);
+    transition: transform 0.15s;
+  }
+  .tools-card:active { transform: scale(0.98); }
+  .tools-card-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .tools-card-text { flex: 1; min-width: 0; }
+  .tools-card-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .tools-card-sub { font-size: 11px; opacity: 0.75; }
+
   .section-head {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 12px;
@@ -734,6 +756,17 @@
   </div>
 </div>
 
+<div class="tools-banner">
+  <a class="tools-card" href="/tools.html">
+    <div class="tools-card-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+    <div class="tools-card-text">
+      <div class="tools-card-title">Tools</div>
+      <div class="tools-card-sub">Downloader & utilitas lainnya</div>
+    </div>
+    <i class="fa-solid fa-chevron-right" style="opacity:0.6;"></i>
+  </a>
+</div>
+
 <!-- ─── Jadwal Sholat ─── -->
 <div class="sholat-section">
   <div class="sholat-card">
@@ -1009,7 +1042,7 @@ function renderSholat(jadwal, kota, periode, tanggal) {
   const now = nowWIB();
 
   const tanggalWIB = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-  meta.textContent = `${kota} • ${tanggalWIB} • WIB`;
+  meta.textContent = `${kota} • ${tanggalWIB}`;
 
   // Tentukan waktu aktif: waktu sholat terakhir yang sudah lewat
   let aktifKey = null;
