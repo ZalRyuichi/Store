@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Downloader</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
+    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
+    --white:  #FFFFFF; --bg:     #F8FAFC;
+    --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
+    --radius: 12px;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  .top-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-back {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--dark);
+  }
+  .nav-back-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--bg); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: var(--slate);
+    transition: all 0.15s;
+  }
+  .nav-back:hover .nav-back-icon { background: var(--blue-l); color: var(--blue); border-color: #BFDBFE; }
+  .nav-title { font-size: 15px; font-weight: 700; }
+
+  main {
+    max-width: 900px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+  }
+
+  .page-head { margin-bottom: 16px; }
+  .page-head-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .page-head-sub { font-size: 12px; color: var(--slate); }
+
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .platform-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--dark); text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .platform-box:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+  .platform-box-icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: #fff;
+  }
+  .platform-box-icon.tiktok { background: linear-gradient(135deg, #000000, #25292e); }
+  .platform-box-label { font-size: 13px; font-weight: 700; }
+  .platform-box-desc { font-size: 11px; color: var(--slate); }
+
+  .platform-box.disabled {
+    opacity: 0.5; cursor: not-allowed; pointer-events: none;
+  }
+  .platform-box-badge {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; color: var(--slate);
+    background: var(--bg); border: 1px solid var(--border);
+    padding: 2px 8px; border-radius: 20px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-back" href="/tools.html">
+    <div class="nav-back-icon"><i class="fa-solid fa-arrow-left"></i></div>
+    <div class="nav-title">Downloader</div>
+  </a>
+</nav>
+
+<main>
+  <div class="page-head">
+    <div class="page-head-title">Pilih Platform</div>
+    <div class="page-head-sub">Pilih platform video yang mau kamu download</div>
+  </div>
+
+  <div class="platform-grid">
+    <a class="platform-box" href="/home/tools/downloader-tiktok.html">
+      <div class="platform-box-icon tiktok"><i class="fa-brands fa-tiktok"></i></div>
+      <div class="platform-box-label">TikTok</div>
+      <div class="platform-box-desc">Tanpa watermark + MP3</div>
+    </a>
+
+    <div class="platform-box disabled">
+      <div class="platform-box-icon" style="background:linear-gradient(135deg,#94A3B8,#64748B);"><i class="fa-brands fa-instagram"></i></div>
+      <div class="platform-box-label">Instagram</div>
+      <span class="platform-box-badge">Segera</span>
+    </div>
+
+    <div class="platform-box disabled">
+      <div class="platform-box-icon" style="background:linear-gradient(135deg,#94A3B8,#64748B);"><i class="fa-brands fa-youtube"></i></div>
+      <div class="platform-box-label">YouTube</div>
+      <span class="platform-box-badge">Segera</span>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
