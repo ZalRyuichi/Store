@@ -747,7 +747,7 @@
       </div>
       <div class="sholat-search">
         <i class="fa-solid fa-location-dot"></i>
-        <input type="text" id="sholat-input" placeholder="Cari kota..." value="jakarta" autocomplete="off"/>
+        <input type="text" id="sholat-input" placeholder="Cari kota..." value="" autocomplete="off"/>
       </div>
     </div>
     <div id="sholat-grid" class="sholat-grid">
@@ -992,18 +992,24 @@ const SHOLAT_ORDER = [
 let sholatData = null;
 let sholatDebounce = null;
 
+// Waktu "sekarang" dipaksa ke WIB (Asia/Jakarta), tidak tergantung timezone device
+function nowWIB() {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }));
+}
+
 function parseTime(t) {
   const [h, m] = t.split(':').map(Number);
-  const now = new Date();
+  const now = nowWIB();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0);
 }
 
 function renderSholat(jadwal, kota, periode, tanggal) {
   const grid = document.getElementById('sholat-grid');
   const meta = document.getElementById('sholat-meta');
-  const now = new Date();
+  const now = nowWIB();
 
-  meta.textContent = `${kota} • ${tanggal} ${periode}`;
+  const tanggalWIB = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  meta.textContent = `${kota} • ${tanggalWIB} • ${periode} WIB`;
 
   // Tentukan waktu aktif: waktu sholat terakhir yang sudah lewat
   let aktifKey = null;
