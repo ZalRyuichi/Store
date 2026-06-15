@@ -741,10 +741,15 @@ const ROLE_DATA = {
 
 const SEWABOT_FEATURES = [
   ['Convert Stiker', 'fa-solid fa-image'],
+  ['Buat Sticker Brat', 'fa-solid fa-signature'],
+  ['Buat Sticker Brat Video', 'fa-solid fa-clapperboard'],
+  ['Buat Sticker Anime', 'fa-solid fa-cat'],
+  ['Buat iPhone Quote', 'fa-brands fa-apple'],
+  ['Ambil Foto 1× Lihat', 'fa-solid fa-eye'],  
   ['Sesi Pribadi', 'fa-solid fa-lock'],
   ['Status Online/Offline', 'fa-solid fa-tower-broadcast'],
   ['1 Nomor / User', 'fa-solid fa-user'],
-  ['Hapus Sesi Sendiri', 'fa-solid fa-trash'],
+  ['Hapus Sesi Sendiri', 'fa-solid fa-trash']
 ];
 
 const BASIC_FEATURES = [
@@ -1192,7 +1197,7 @@ async function submitPanelForm() {
       closePanelForm();
       const role = ROLE_DATA[_panelProduct];
       await sendTelegramNotif(role, { order_id: data.panel?.serverName || '—' }, 'saldo');
-      showPanelResult(data.panel, data.saldo_sisa);
+      showPanelResult(data.panel, data.saldo_sisa, data.panel_domain);
       loadSaldo();
     } else {
       toast(data.message || 'Gagal Membuat Panel', 'error');
@@ -1200,12 +1205,21 @@ async function submitPanelForm() {
   } catch { toast('Koneksi gagal', 'error'); }
   finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-server"></i> Buat Panel Sekarang'; }
 }
-function showPanelResult(panel, sisaSaldo) {
+function showPanelResult(panel, sisaSaldo, panelDomain) {
   document.getElementById('pr-server').textContent  = panel.serverName;
   document.getElementById('pr-email').textContent   = panel.panelUsername;
   document.getElementById('pr-pass').textContent    = panel.password;
   document.getElementById('pr-pkg').textContent     = panel.package.replace('ptero-', '').toUpperCase() + ' RAM';
   document.getElementById('pr-saldo').textContent   = rupiah(sisaSaldo);
+  const domainEl = document.getElementById('pr-domain-wrap');
+  const domainLink = document.getElementById('pr-domain-link');
+  if (panelDomain) {
+    domainLink.href = panelDomain;
+    domainLink.textContent = panelDomain;
+    domainEl.style.display = 'block';
+  } else {
+    domainEl.style.display = 'none';
+  }
   document.getElementById('panel-result-overlay').classList.add('show');
   document.getElementById('panel-result-footer').style.display = 'block';
 }
@@ -1292,6 +1306,10 @@ let _panelProduct = null;
           <div style="font-size:10px;color:var(--blue);font-weight:600">Sisa Saldo</div>
           <div id="pr-saldo" style="font-weight:800;font-size:13px;color:var(--blue)"></div>
         </div>
+      </div>
+      <div id="pr-domain-wrap" style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:12px 14px;display:none">
+        <div style="font-size:10px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px">Link Panel</div>
+        <a id="pr-domain-link" href="#" target="_blank" style="font-weight:700;font-size:13px;color:#16A34A;word-break:break-all;text-decoration:none;display:block">—</a>
       </div>
     </div>
     <div style="height:80px"></div>
