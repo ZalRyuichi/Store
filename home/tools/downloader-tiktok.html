@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TikTok Downloader</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
+    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
+    --white:  #FFFFFF; --bg:     #F8FAFC;
+    --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
+    --radius: 12px;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  .top-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-back {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--dark);
+  }
+  .nav-back-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--bg); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: var(--slate);
+    transition: all 0.15s;
+  }
+  .nav-back:hover .nav-back-icon { background: var(--blue-l); color: var(--blue); border-color: #BFDBFE; }
+  .nav-title { font-size: 15px; font-weight: 700; }
+
+  main {
+    max-width: 600px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+  }
+
+  .page-head { margin-bottom: 16px; }
+  .page-head-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; display:flex; align-items:center; gap:8px; }
+  .page-head-title i { color: #FE2C55; }
+  .page-head-sub { font-size: 12px; color: var(--slate); }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    margin-bottom: 16px;
+  }
+
+  label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+  .tt-input {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 11px 14px; font-size: 14px; font-family: 'Inter', sans-serif;
+    width: 100%; background: #FAFAFA; color: var(--dark); outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .tt-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); background: var(--white); }
+  .form-hint { font-size: 11px; color: var(--slate); margin-top: 6px; }
+
+  .btn-primary {
+    margin-top: 12px;
+    padding: 11px 22px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    width: 100%;
+  }
+  .btn-primary:hover { background: var(--blue-d); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+  .btn-primary:active { transform: scale(0.99); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .spinner { width: 13px; height: 13px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .tt-status {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 0; color: var(--slate); font-size: 12px;
+  }
+  .tt-status.error { color: var(--red); }
+  .tt-status i.spin { animation: spin 1s linear infinite; }
+
+  .tt-cover-wrap {
+    width: 100%; max-width: 200px; margin: 0 auto 16px;
+    aspect-ratio: 9 / 16; border-radius: 14px; overflow: hidden;
+    position: relative; background: var(--dark);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+  }
+  .tt-cover-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tt-cover-play {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.9); font-size: 30px; background: rgba(0,0,0,0.12);
+    pointer-events: none;
+  }
+
+  .tt-title { font-size: 13px; font-weight: 600; line-height: 1.55; margin-bottom: 14px; text-align: center; }
+
+  .tt-author-row {
+    display: flex; align-items: center; gap: 10px; padding: 12px 0;
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .tt-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: var(--border); }
+  .tt-author-info { flex: 1; min-width: 0; }
+  .tt-author-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tt-author-handle { font-size: 11px; color: var(--slate); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tt-region-badge {
+    font-size: 10px; font-weight: 700; color: var(--slate); background: var(--bg);
+    border: 1px solid var(--border); border-radius: 20px; padding: 3px 9px; flex-shrink: 0;
+  }
+
+  .tt-stats-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;
+  }
+  .tt-stat {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 6px; text-align: center;
+  }
+  .tt-stat i { font-size: 13px; color: var(--blue); margin-bottom: 4px; display: block; }
+  .tt-stat-val { font-size: 13px; font-weight: 700; }
+  .tt-stat-label { font-size: 10px; color: var(--slate); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+
+  .tt-meta-row {
+    display: flex; justify-content: space-between; gap: 10px;
+    font-size: 11px; color: var(--slate); margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .tt-meta-row span i { margin-right: 4px; }
+
+  .tt-actions { display: flex; flex-direction: column; gap: 10px; }
+  .btn-download {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px; border-radius: var(--radius); font-size: 13px; font-weight: 700;
+    text-decoration: none; cursor: pointer; border: none; font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+  }
+  .btn-download.video { background: var(--blue); color: #fff; }
+  .btn-download.video:hover { background: var(--blue-d); }
+  .btn-download.audio { background: var(--white); color: #047857; border: 1.5px solid #A7F3D0; }
+  .btn-download.audio:hover { background: #F0FDF4; }
+
+  .tt-dl-note { font-size: 10.5px; color: var(--slate); text-align: center; margin-top: 10px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-back" href="/home/downloader.html">
+    <div class="nav-back-icon"><i class="fa-solid fa-arrow-left"></i></div>
+    <div class="nav-title">Downloader</div>
+  </a>
+</nav>
+
+<main>
+  <div class="page-head">
+    <div class="page-head-title"><i class="fa-brands fa-tiktok"></i> TikTok Downloader</div>
+    <div class="page-head-sub">Download video TikTok tanpa watermark + audio MP3</div>
+  </div>
+
+  <div class="card">
+    <label for="tt-url">Link Video TikTok</label>
+    <input type="text" id="tt-url" class="tt-input" placeholder="https://vt.tiktok.com/..." autocomplete="off"/>
+    <div class="form-hint">Tempel link video TikTok, lalu tekan tombol Proses</div>
+    <button class="btn-primary" id="tt-submit">
+      <i class="fa-solid fa-magnifying-glass"></i> Proses
+    </button>
+  </div>
+
+  <div id="tt-status"></div>
+
+  <div class="card" id="tt-result" style="display:none;">
+    <div class="tt-cover-wrap">
+      <img id="tt-cover" src="" alt="Cover video"/>
+      <div class="tt-cover-play"><i class="fa-solid fa-circle-play"></i></div>
+    </div>
+
+    <div class="tt-title" id="tt-title">—</div>
+
+    <div class="tt-author-row">
+      <img id="tt-avatar" class="tt-avatar" src="" alt="Avatar"/>
+      <div class="tt-author-info">
+        <div class="tt-author-name" id="tt-author-name">—</div>
+        <div class="tt-author-handle" id="tt-author-handle">—</div>
+      </div>
+      <div class="tt-region-badge" id="tt-region">—</div>
+    </div>
+
+    <div class="tt-stats-grid">
+      <div class="tt-stat"><i class="fa-solid fa-eye"></i><div class="tt-stat-val" id="tt-views">—</div><div class="tt-stat-label">Views</div></div>
+      <div class="tt-stat"><i class="fa-solid fa-heart"></i><div class="tt-stat-val" id="tt-likes">—</div><div class="tt-stat-label">Likes</div></div>
+      <div class="tt-stat"><i class="fa-solid fa-comment"></i><div class="tt-stat-val" id="tt-comment">—</div><div class="tt-stat-label">Comment</div></div>
+      <div class="tt-stat"><i class="fa-solid fa-share"></i><div class="tt-stat-val" id="tt-share">—</div><div class="tt-stat-label">Share</div></div>
+      <div class="tt-stat"><i class="fa-solid fa-bookmark"></i><div class="tt-stat-val" id="tt-save">—</div><div class="tt-stat-label">Save</div></div>
+      <div class="tt-stat"><i class="fa-solid fa-download"></i><div class="tt-stat-val" id="tt-download">—</div><div class="tt-stat-label">Download</div></div>
+    </div>
+
+    <div class="tt-meta-row">
+      <span><i class="fa-solid fa-clock"></i><span id="tt-duration">—</span></span>
+      <span><i class="fa-solid fa-calendar"></i><span id="tt-taken-at">—</span></span>
+    </div>
+
+    <div class="tt-actions">
+      <button class="btn-download video" id="btn-dl-video">
+        <i class="fa-solid fa-video"></i> Download Video
+      </button>
+      <button class="btn-download audio" id="btn-dl-audio">
+        <i class="fa-solid fa-music"></i> Download MP3
+      </button>
+    </div>
+
+    <div class="tt-dl-note">
+      Jika file tidak otomatis tersimpan, video/audio akan terbuka di tab baru — tap & hold lalu pilih "Simpan/Download".
+    </div>
+  </div>
+</main>
+
+<script>
+const API_TT = 'https://api.nexray.eu.cc/downloader/tiktok?url=';
+
+const urlInput  = document.getElementById('tt-url');
+const submitBtn = document.getElementById('tt-submit');
+const statusEl  = document.getElementById('tt-status');
+const resultEl  = document.getElementById('tt-result');
+
+submitBtn.addEventListener('click', processUrl);
+urlInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') processUrl();
+});
+
+function setStatus(html, type) {
+  statusEl.className = 'tt-status' + (type === 'error' ? ' error' : '');
+  statusEl.innerHTML = html;
+}
+
+function setLoading(loading) {
+  submitBtn.disabled = loading;
+  submitBtn.innerHTML = loading
+    ? '<div class="spinner"></div> Memproses...'
+    : '<i class="fa-solid fa-magnifying-glass"></i> Proses';
+}
+
+async function processUrl() {
+  const url = urlInput.value.trim();
+  resultEl.style.display = 'none';
+
+  if (!url) {
+    setStatus('<i class="fa-solid fa-triangle-exclamation"></i> Masukkan link video TikTok dulu ya', 'error');
+    return;
+  }
+
+  setLoading(true);
+  setStatus('<i class="fa-solid fa-spinner spin"></i> Mengambil data video...', 'loading');
+
+  try {
+    const res = await fetch(API_TT + encodeURIComponent(url));
+    const data = await res.json();
+    if (!data || !data.status || !data.result) {
+      throw new Error('Gagal mengambil data. Pastikan link video benar.');
+    }
+    renderResult(data.result);
+    setStatus('', '');
+  } catch (e) {
+    setStatus(`<i class="fa-solid fa-triangle-exclamation"></i> ${e.message || 'Terjadi kesalahan, coba lagi'}`, 'error');
+  } finally {
+    setLoading(false);
+  }
+}
+
+function renderResult(r) {
+  document.getElementById('tt-cover').src = r.cover || '';
+  document.getElementById('tt-title').textContent = r.title || '(tanpa judul)';
+
+  const author = r.author || {};
+  document.getElementById('tt-avatar').src = author.avatar || '';
+  document.getElementById('tt-author-name').textContent = author.nickname || '—';
+  document.getElementById('tt-author-handle').textContent = author.fullname ? '@' + author.fullname : '—';
+  document.getElementById('tt-region').textContent = r.region || '—';
+
+  document.getElementById('tt-duration').textContent = r.duration || '—';
+  document.getElementById('tt-taken-at').textContent = r.taken_at || '—';
+
+  const stats = r.stats || {};
+  document.getElementById('tt-views').textContent   = stats.views   ?? '—';
+  document.getElementById('tt-likes').textContent   = stats.likes   ?? '—';
+  document.getElementById('tt-comment').textContent = stats.comment ?? '—';
+  document.getElementById('tt-share').textContent   = stats.share   ?? '—';
+  document.getElementById('tt-save').textContent    = stats.save    ?? '—';
+  document.getElementById('tt-download').textContent = stats.download ?? '—';
+
+  const videoUrl = r.data;
+  const audioUrl = r.music_info && r.music_info.url;
+  const id = r.id || 'tiktok';
+
+  const btnVideo = document.getElementById('btn-dl-video');
+  const btnAudio = document.getElementById('btn-dl-audio');
+
+  btnVideo.onclick = () => triggerDownload(videoUrl, `tiktok-${id}.mp4`);
+  btnAudio.onclick = () => triggerDownload(audioUrl, `tiktok-${id}.mp3`);
+
+  btnVideo.disabled = !videoUrl;
+  btnAudio.disabled = !audioUrl;
+  btnVideo.style.opacity = videoUrl ? '1' : '0.5';
+  btnAudio.style.opacity = audioUrl ? '1' : '0.5';
+
+  resultEl.style.display = 'block';
+}
+
+function triggerDownload(url, filename) {
+  if (!url) return;
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+</script>
+
+</body>
+  </html>
+  
