@@ -15,60 +15,34 @@
     --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
     --radius: 12px;
   }
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--dark);
-    min-height: 100vh;
-    padding-bottom: 40px;
-  }
-
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; padding-bottom: 40px; }
   .top-nav {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    padding: 0 20px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 0 20px; height: 56px;
+    display: flex; align-items: center;
+    position: sticky; top: 0; z-index: 10;
   }
-  .nav-back {
-    display: flex; align-items: center; gap: 10px;
-    text-decoration: none; color: var(--dark);
-  }
+  .nav-back { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--dark); }
   .nav-back-icon {
     width: 32px; height: 32px; border-radius: 8px;
     background: var(--bg); border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px; color: var(--slate);
-    transition: all 0.15s;
+    font-size: 13px; color: var(--slate); transition: all 0.15s;
   }
   .nav-back:hover .nav-back-icon { background: var(--blue-l); color: var(--blue); border-color: #BFDBFE; }
   .nav-title { font-size: 15px; font-weight: 700; }
-
-  main {
-    max-width: 900px;
-    margin: 20px auto 0;
-    padding: 0 20px;
-  }
-
+  main { max-width: 900px; margin: 20px auto 0; padding: 0 20px; }
   .page-head { margin-bottom: 16px; }
   .page-head-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
   .page-head-sub { font-size: 12px; color: var(--slate); }
-
   .tools-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 12px;
   }
   .tool-box {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px 14px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 14px;
     display: flex; flex-direction: column; align-items: center; gap: 10px;
     text-decoration: none; color: var(--dark); text-align: center;
     box-shadow: 0 1px 4px rgba(0,0,0,0.04);
@@ -79,14 +53,9 @@
     width: 48px; height: 48px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 18px; color: #fff;
-    background: linear-gradient(135deg, #2563EB, #1D4ED8);
   }
   .tool-box-label { font-size: 13px; font-weight: 700; }
   .tool-box-desc { font-size: 11px; color: var(--slate); }
-
-  .empty-note {
-    text-align: center; padding: 30px 0; color: var(--slate); font-size: 12px;
-  }
 </style>
 </head>
 <body>
@@ -106,9 +75,14 @@
 
   <div class="tools-grid">
     <a class="tool-box" href="/home/downloader.html">
-      <div class="tool-box-icon"><i class="fa-solid fa-download"></i></div>
+      <div class="tool-box-icon" style="background:linear-gradient(135deg,#2563EB,#1D4ED8);"><i class="fa-solid fa-download"></i></div>
       <div class="tool-box-label">Downloader</div>
       <div class="tool-box-desc">Download video & audio</div>
+    </a>
+    <a class="tool-box" href="/home/maker.html">
+      <div class="tool-box-icon" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);"><i class="fa-solid fa-palette"></i></div>
+      <div class="tool-box-label">Maker</div>
+      <div class="tool-box-desc">Buat gambar & konten</div>
     </a>
   </div>
 </main>

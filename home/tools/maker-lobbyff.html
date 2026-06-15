@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lobby Free Fire</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
+    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
+    --white:  #FFFFFF; --bg:     #F8FAFC;
+    --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
+    --radius: 12px;
+    --ff:     #FF6B00; --ff-d:   #CC5500;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+  .top-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .nav-back {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--dark);
+  }
+  .nav-back-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--bg); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: var(--slate); transition: all 0.15s;
+  }
+  .nav-back:hover .nav-back-icon { background: var(--blue-l); color: var(--blue); border-color: #BFDBFE; }
+  .nav-title { font-size: 15px; font-weight: 700; }
+
+  main { max-width: 600px; margin: 20px auto 0; padding: 0 20px; }
+
+  .page-head { margin-bottom: 16px; }
+  .page-head-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .page-head-title i { color: var(--ff); }
+  .page-head-sub { font-size: 12px; color: var(--slate); }
+
+  .card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 16px;
+  }
+
+  label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+  .ff-input {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 11px 14px; font-size: 14px; font-family: 'Inter', sans-serif;
+    width: 100%; background: #FAFAFA; color: var(--dark); outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .ff-input:focus { border-color: var(--ff); box-shadow: 0 0 0 3px rgba(255,107,0,0.1); background: var(--white); }
+  .form-hint { font-size: 11px; color: var(--slate); margin-top: 6px; }
+
+  .btn-primary {
+    margin-top: 12px; padding: 11px 22px;
+    background: linear-gradient(135deg, var(--ff), var(--ff-d));
+    color: #fff; border: none; border-radius: var(--radius);
+    font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    width: 100%; box-shadow: 0 4px 14px rgba(255,107,0,0.3);
+  }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-primary:active { transform: scale(0.99); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .spinner { width: 13px; height: 13px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .status {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 0; color: var(--slate); font-size: 12px;
+  }
+  .status.error { color: var(--red); }
+  .status i.spin { animation: spin 1s linear infinite; }
+
+  .result-card {
+    display: none; background: var(--white); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04); text-align: center;
+  }
+  .result-img {
+    width: 100%; border-radius: 12px; display: block;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    margin-bottom: 14px;
+  }
+  .btn-download {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 11px; border-radius: var(--radius); font-size: 13px; font-weight: 700;
+    cursor: pointer; border: none; font-family: 'Inter', sans-serif;
+    width: 100%; background: var(--green); color: #fff;
+    transition: all 0.15s; box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+  }
+  .btn-download:hover { filter: brightness(1.07); }
+  .btn-download:active { transform: scale(0.99); }
+  .btn-download:disabled { opacity: 0.6; cursor: not-allowed; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-back" href="/tools.html">
+    <div class="nav-back-icon"><i class="fa-solid fa-arrow-left"></i></div>
+    <div class="nav-title">Tools</div>
+  </a>
+</nav>
+
+<main>
+  <div class="page-head">
+    <div class="page-head-title"><i class="fa-solid fa-fire-flame-curved"></i> Lobby Free Fire</div>
+    <div class="page-head-sub">Generate fake lobby Free Fire dengan nickname kamu</div>
+  </div>
+
+  <div class="card">
+    <label for="ff-nick">Nickname</label>
+    <input type="text" id="ff-nick" class="ff-input" placeholder="Masukkan nickname FF..." autocomplete="off" maxlength="20"/>
+    <div class="form-hint">Nickname yang akan muncul di lobby</div>
+    <button class="btn-primary" id="ff-submit">
+      <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Lobby
+    </button>
+  </div>
+
+  <div id="ff-status"></div>
+
+  <div class="result-card" id="ff-result">
+    <img id="ff-img" class="result-img" src="" alt="Lobby FF"/>
+    <button class="btn-download" id="ff-dl">
+      <i class="fa-solid fa-download"></i> Download Gambar
+    </button>
+  </div>
+</main>
+
+<script>
+const API = 'https://api.nexray.eu.cc/maker/fakelobyff?nickname=';
+
+const nickInput = document.getElementById('ff-nick');
+const submitBtn = document.getElementById('ff-submit');
+const statusEl  = document.getElementById('ff-status');
+const resultEl  = document.getElementById('ff-result');
+const imgEl     = document.getElementById('ff-img');
+const dlBtn     = document.getElementById('ff-dl');
+
+submitBtn.addEventListener('click', generate);
+nickInput.addEventListener('keydown', e => { if (e.key === 'Enter') generate(); });
+
+function setStatus(html, type) {
+  statusEl.className = 'status' + (type === 'error' ? ' error' : '');
+  statusEl.innerHTML = html;
+}
+
+function setLoading(on) {
+  submitBtn.disabled = on;
+  submitBtn.innerHTML = on
+    ? '<div class="spinner"></div> Generating...'
+    : '<i class="fa-solid fa-wand-magic-sparkles"></i> Generate Lobby';
+}
+
+async function generate() {
+  const nick = nickInput.value.trim();
+  if (!nick) {
+    setStatus('<i class="fa-solid fa-triangle-exclamation"></i> Masukkan nickname dulu ya', 'error');
+    return;
+  }
+  resultEl.style.display = 'none';
+  setLoading(true);
+  setStatus('<i class="fa-solid fa-spinner spin"></i> Generating lobby...', '');
+
+  // tambah random param biar gambar ga sama tiap request
+  const bust = `&_=${Date.now()}_${Math.random().toString(36).slice(2)}`;
+  const url = API + encodeURIComponent(nick) + bust;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Gagal generate, coba lagi');
+    const blob = await res.blob();
+    if (!blob.type.startsWith('image/')) throw new Error('Respon bukan gambar');
+    const blobUrl = URL.createObjectURL(blob);
+    imgEl.src = blobUrl;
+    imgEl.onload = () => {
+      resultEl.style.display = 'block';
+      setStatus('', '');
+    };
+    dlBtn.onclick = function() { downloadBlob(blobUrl, `lobbyff-${nick}.png`, this); };
+  } catch(e) {
+    setStatus(`<i class="fa-solid fa-triangle-exclamation"></i> ${e.message}`, 'error');
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function downloadBlob(blobUrl, filename, btn) {
+  const origHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Mengunduh...';
+  try {
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } finally {
+    setTimeout(() => { btn.disabled = false; btn.innerHTML = origHtml; }, 1000);
+  }
+}
+</script>
+</body>
+</html>

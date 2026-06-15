@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>iPhone Quote</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
+    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
+    --white:  #FFFFFF; --bg:     #F8FAFC;
+    --red:    #EF4444; --green:  #10B981;
+    --radius: 12px;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+  .top-nav {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 0 20px; height: 56px;
+    display: flex; align-items: center;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .nav-back {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--dark);
+  }
+  .nav-back-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--bg); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: var(--slate); transition: all 0.15s;
+  }
+  .nav-back:hover .nav-back-icon { background: var(--blue-l); color: var(--blue); border-color: #BFDBFE; }
+  .nav-title { font-size: 15px; font-weight: 700; }
+
+  main { max-width: 600px; margin: 20px auto 0; padding: 0 20px; }
+
+  .page-head { margin-bottom: 16px; }
+  .page-head-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .page-head-title i { color: #555; }
+  .page-head-sub { font-size: 12px; color: var(--slate); }
+
+  .card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 16px;
+  }
+
+  label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+  .iq-textarea {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 11px 14px; font-size: 14px; font-family: 'Inter', sans-serif;
+    width: 100%; background: #FAFAFA; color: var(--dark); outline: none;
+    resize: vertical; min-height: 100px;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .iq-textarea:focus { border-color: var(--dark); box-shadow: 0 0 0 3px rgba(15,23,42,0.08); background: var(--white); }
+  .form-hint { font-size: 11px; color: var(--slate); margin-top: 6px; }
+
+  .btn-primary {
+    margin-top: 12px; padding: 11px 22px;
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    color: #fff; border: none; border-radius: var(--radius);
+    font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    width: 100%; box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  }
+  .btn-primary:hover { filter: brightness(1.15); }
+  .btn-primary:active { transform: scale(0.99); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .spinner { width: 13px; height: 13px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .status {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 0; color: var(--slate); font-size: 12px;
+  }
+  .status.error { color: var(--red); }
+  .status i.spin { animation: spin 1s linear infinite; }
+
+  .result-card {
+    display: none; background: var(--white); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04); text-align: center;
+  }
+  .result-img {
+    width: 100%; border-radius: 12px; display: block;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12); margin-bottom: 14px;
+  }
+  .btn-download {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 11px; border-radius: var(--radius); font-size: 13px; font-weight: 700;
+    cursor: pointer; border: none; font-family: 'Inter', sans-serif;
+    width: 100%; background: var(--green); color: #fff;
+    transition: all 0.15s; box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+  }
+  .btn-download:hover { filter: brightness(1.07); }
+  .btn-download:active { transform: scale(0.99); }
+  .btn-download:disabled { opacity: 0.6; cursor: not-allowed; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="nav-back" href="/tools.html">
+    <div class="nav-back-icon"><i class="fa-solid fa-arrow-left"></i></div>
+    <div class="nav-title">Tools</div>
+  </a>
+</nav>
+
+<main>
+  <div class="page-head">
+    <div class="page-head-title"><i class="fa-brands fa-apple"></i> iPhone Quote</div>
+    <div class="page-head-sub">Buat quote gaya iPhone dengan teks kamu sendiri</div>
+  </div>
+
+  <div class="card">
+    <label for="iq-text">Teks Quote</label>
+    <textarea id="iq-text" class="iq-textarea" placeholder="Tulis quote di sini..."></textarea>
+    <div class="form-hint">Teks yang akan ditampilkan dalam gaya iPhone</div>
+    <button class="btn-primary" id="iq-submit">
+      <i class="fa-brands fa-apple"></i> Generate Quote
+    </button>
+  </div>
+
+  <div id="iq-status"></div>
+
+  <div class="result-card" id="iq-result">
+    <img id="iq-img" class="result-img" src="" alt="iPhone Quote"/>
+    <button class="btn-download" id="iq-dl">
+      <i class="fa-solid fa-download"></i> Download Gambar
+    </button>
+  </div>
+</main>
+
+<script>
+const API = 'https://api.nexray.eu.cc/maker/iqc?text=';
+
+const textInput = document.getElementById('iq-text');
+const submitBtn = document.getElementById('iq-submit');
+const statusEl  = document.getElementById('iq-status');
+const resultEl  = document.getElementById('iq-result');
+const imgEl     = document.getElementById('iq-img');
+const dlBtn     = document.getElementById('iq-dl');
+
+submitBtn.addEventListener('click', generate);
+
+function setStatus(html, type) {
+  statusEl.className = 'status' + (type === 'error' ? ' error' : '');
+  statusEl.innerHTML = html;
+}
+
+function setLoading(on) {
+  submitBtn.disabled = on;
+  submitBtn.innerHTML = on
+    ? '<div class="spinner"></div> Generating...'
+    : '<i class="fa-brands fa-apple"></i> Generate Quote';
+}
+
+async function generate() {
+  const text = textInput.value.trim();
+  if (!text) {
+    setStatus('<i class="fa-solid fa-triangle-exclamation"></i> Masukkan teks quote dulu ya', 'error');
+    return;
+  }
+  resultEl.style.display = 'none';
+  setLoading(true);
+  setStatus('<i class="fa-solid fa-spinner spin"></i> Generating quote...', '');
+
+  const url = API + encodeURIComponent(text);
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Gagal generate, coba lagi');
+    const blob = await res.blob();
+    if (!blob.type.startsWith('image/')) throw new Error('Respon bukan gambar');
+    const blobUrl = URL.createObjectURL(blob);
+    imgEl.src = blobUrl;
+    imgEl.onload = () => {
+      resultEl.style.display = 'block';
+      setStatus('', '');
+    };
+    dlBtn.onclick = function() { downloadImg(blobUrl, `iphonequote.png`, this); };
+  } catch(e) {
+    setStatus(`<i class="fa-solid fa-triangle-exclamation"></i> ${e.message}`, 'error');
+  } finally {
+    setLoading(false);
+  }
+}
+
+function downloadImg(blobUrl, filename, btn) {
+  const origHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Mengunduh...';
+  const a = document.createElement('a');
+  a.href = blobUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => { btn.disabled = false; btn.innerHTML = origHtml; }, 1000);
+}
+</script>
+</body>
+</html>
