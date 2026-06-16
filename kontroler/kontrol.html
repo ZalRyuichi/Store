@@ -220,24 +220,71 @@
 <div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg"></span></div>
 
 <script>
+const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
+let API_BASE = "/api"; // Default fallback
+
+// Load API URL dari api.txt
+async function loadApiUrl() {
+  try {
+    const r = await fetch(API_TXT_URL + "?t=" + Date.now());
+    if (!r.ok) throw new Error("Gagal load api.txt");
+    const url = (await r.text()).trim();
+    if (url) API_BASE = url;
+    console.log('API_BASE loaded:', API_BASE);
+  } catch (err) {
+    console.warn("Gagal load api.txt, pakai fallback:", err.message);
+    API_BASE = "/api";
+  }
+  // Setelah load API URL, baru load devices
+  loadDevices();
+}
+
 // Cek auth
 if (!sessionStorage.getItem('kontroler_auth')) {
   window.location.href = '/kontroler/login_kontrol.html';
 }
 
 let selectedDeviceId = null;
+const token = sessionStorage.getItem('kontroler_token');
 
-// ── DUMMY DEVICES (ganti nanti dengan fetch API) ──────────────────────────────
-// Format: { id, name, status: 'online'|'offline' }
-const DEVICES = [
-  { id: 'device_001', name: 'Samsung Galaxy A55', status: 'online' },
-  { id: 'device_002', name: 'Xiaomi Redmi Note 12', status: 'offline' },
-];
-// ─────────────────────────────────────────────────────────────────────────────
+// ── Load devices dari API ──────────────────────────────────────────────────
+async function loadDevices() {
+  try {
+    console.log('Load devices dari:', `${API_BASE}/kontrol/devices`);
+    
+    const res = await fetch(`${API_BASE}/kontrol/devices`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-kontrol-token': token
+      },
+      credentials: 'include',
+    });
+    
+    if (!res.ok) {
+      if (res.status === 401) {
+        window.location.href = '/kontroler/login_kontrol.html';
+        return;
+      }
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+    
+    const data = await res.json();
+    if (data.ok && data.devices) {
+      renderDevices(data.devices);
+    } else {
+      renderDevices([]);
+    }
+  } catch (err) {
+    console.error("Gagal load devices:", err);
+    toast(`❌ Gagal load devices: ${err.message}`, 'error');
+    renderDevices([]);
+  }
+}
 
 function renderDevices(devices) {
   const list = document.getElementById('device-list');
-  if (!devices.length) {
+  if (!devices || !devices.length) {
     list.innerHTML = `<div class="empty-devices"><i class="fa-solid fa-mobile"></i>Belum ada device terdaftar</div>`;
     return;
   }
@@ -280,20 +327,40 @@ function closePanel() {
 
 async function sendCmd(cmd) {
   if (!selectedDeviceId) return;
-  toast(`Mengirim perintah: ${cmd}...`, 'info');
+  toast(`📤 Mengirim perintah: ${cmd}...`, 'info');
 
-  // ── TODO: ganti dengan fetch ke API lu ───────────────────────────────────
-  // Contoh:
-  // const res = await fetch(`/api/device/${selectedDeviceId}/${cmd}`, { method: 'POST', headers: { ... } });
-  // const data = await res.json();
-  // if (data.ok) toast('Perintah berhasil dikirim', 'success');
-  // else toast(data.message || 'Gagal', 'error');
-  // ─────────────────────────────────────────────────────────────────────────
+  try {
+    console.log('Send command:', `${API_BASE}/kontrol/device/${selectedDeviceId}/${cmd}`);
+    
+    const res = await fetch(`${API_BASE}/kontrol/device/${selectedDeviceId}/${cmd}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-kontrol-token': token
+      },
+      credentials: 'include',
+    });
 
-  // Dummy response
-  await new Promise(r => setTimeout(r, 800));
-  const labels = { flashlight: 'Flashlight di-toggle', lock: 'Device dikunci', unlock: 'Device dibuka' };
-  toast(labels[cmd] || 'Perintah dikirim', 'success');
+    if (res.status === 401) {
+      window.location.href = '/kontroler/login_kontrol.html';
+      return;
+    }
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+
+    const data = await res.json();
+    
+    if (data.ok) {
+      toast(`✅ ${data.message || `Perintah ${cmd} berhasil dikirim`}`, 'success');
+    } else {
+      toast(`❌ ${data.message || `Gagal kirim ${cmd}`}`, 'error');
+    }
+  } catch (err) {
+    console.error("Error sendCmd:", err);
+    toast(`❌ Gagal: ${err.message}`, 'error');
+  }
 }
 
 let toastTimer;
@@ -309,8 +376,8 @@ function toast(msg, type = 'info') {
   toastTimer = setTimeout(() => el.className = '', 2500);
 }
 
-// Load devices (saat ini dari dummy, nanti ganti fetch API)
-renderDevices(DEVICES);
+// Load API URL & devices saat halaman load
+window.addEventListener('load', loadApiUrl);
 </script>
 </body>
 </html>
