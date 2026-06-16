@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Kontrol Device</title>
+<title>Kontrol Device Page</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
@@ -39,61 +39,61 @@
     font-size: 10px; font-weight: 700;
     background: var(--blue-l); color: var(--blue);
   }
+  .logout-btn {
+    padding: 5px 12px; border-radius: 8px;
+    border: 1px solid var(--border); background: none;
+    font-size: 11px; font-weight: 600; color: var(--slate);
+    cursor: pointer; display: flex; align-items: center; gap: 5px;
+    font-family: 'Inter', sans-serif;
+  }
+  .logout-btn:hover { border-color: var(--red); color: var(--red); }
 
-  /* WRAP */
   .wrap { max-width: 500px; margin: 0 auto; padding: 20px 20px 0; }
 
-  /* DEVICE LIST */
-  .section-title { font-size: 13px; font-weight: 700; color: var(--slate); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .section-title { font-size: 11px; font-weight: 700; color: var(--slate); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
 
+  /* DEVICE LIST */
   .device-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
   .device-card {
     background: var(--white); border: 1.5px solid var(--border);
     border-radius: 14px; padding: 14px 16px;
     display: flex; align-items: center; gap: 13px;
     cursor: pointer; transition: all 0.15s;
-    text-decoration: none; color: var(--dark);
   }
-  .device-card:hover, .device-card.selected {
-    border-color: var(--blue);
-    background: var(--blue-l);
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-  }
+  .device-card:hover { border-color: var(--blue); background: var(--blue-l); }
+  .device-card.selected { border-color: var(--blue); background: var(--blue-l); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
   .device-icon {
     width: 42px; height: 42px; border-radius: 12px;
     background: linear-gradient(135deg, #2563EB, #1D4ED8);
     display: flex; align-items: center; justify-content: center;
     font-size: 18px; color: #fff; flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(37,99,235,0.3);
   }
   .device-info { flex: 1; min-width: 0; }
-  .device-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .device-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .device-id { font-size: 11px; color: var(--slate); }
   .device-status {
     padding: 3px 9px; border-radius: 20px;
-    font-size: 10px; font-weight: 700; display: flex; align-items: center; gap: 4px;
-    white-space: nowrap;
+    font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; gap: 4px; white-space: nowrap; flex-shrink: 0;
   }
   .device-status.online { background: #ECFDF5; color: #059669; }
   .device-status.offline { background: #F1F5F9; color: var(--slate); }
   .device-status .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-  .empty-devices {
+  .empty-box {
     text-align: center; padding: 32px 20px;
     background: var(--white); border: 1px dashed var(--border);
     border-radius: 14px; color: var(--slate); font-size: 13px;
   }
-  .empty-devices i { font-size: 28px; margin-bottom: 10px; display: block; opacity: 0.4; }
+  .empty-box i { font-size: 28px; margin-bottom: 10px; display: block; opacity: 0.35; }
 
   /* CONTROL PANEL */
-  .control-panel {
-    background: var(--white); border: 1.5px solid var(--border);
-    border-radius: 16px; overflow: hidden;
-    display: none;
-  }
+  .control-panel { background: var(--white); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; display: none; }
   .control-panel.show { display: block; }
 
   .cp-header {
-    background: linear-gradient(135deg, #0F172A, #1E3A5F, #2563EB);
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 60%, #2563EB 100%);
     padding: 16px 18px; color: #fff;
     display: flex; align-items: center; gap: 12px;
   }
@@ -104,7 +104,7 @@
     font-size: 17px; flex-shrink: 0;
   }
   .cp-header-text .cp-name { font-size: 14px; font-weight: 700; }
-  .cp-header-text .cp-id { font-size: 11px; opacity: 0.75; margin-top: 1px; }
+  .cp-header-text .cp-id  { font-size: 11px; opacity: 0.7; margin-top: 1px; }
   .cp-close {
     margin-left: auto; background: rgba(255,255,255,0.15); border: none;
     color: #fff; width: 30px; height: 30px; border-radius: 8px;
@@ -112,7 +112,7 @@
     cursor: pointer; font-size: 12px; flex-shrink: 0;
   }
 
-  .cp-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .cp-body { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
 
   .ctrl-btn {
     width: 100%; padding: 14px 16px;
@@ -123,19 +123,17 @@
     transition: all 0.15s; text-align: left;
   }
   .ctrl-btn:active { transform: scale(0.98); }
-  .ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   .ctrl-btn-icon {
     width: 40px; height: 40px; border-radius: 11px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
     font-size: 17px; color: #fff;
   }
-  .ctrl-btn-icon.amber  { background: linear-gradient(135deg, #F59E0B, #D97706); }
-  .ctrl-btn-icon.red    { background: linear-gradient(135deg, #EF4444, #B91C1C); }
-  .ctrl-btn-icon.green  { background: linear-gradient(135deg, #10B981, #059669); }
+  .ctrl-btn-icon.amber { background: linear-gradient(135deg, #F59E0B, #D97706); }
+  .ctrl-btn-icon.red   { background: linear-gradient(135deg, #EF4444, #B91C1C); }
+  .ctrl-btn-icon.green { background: linear-gradient(135deg, #10B981, #059669); }
   .ctrl-btn-text .ctrl-title { font-size: 13px; font-weight: 700; }
   .ctrl-btn-text .ctrl-sub   { font-size: 11px; color: var(--slate); margin-top: 1px; }
-  .ctrl-btn:hover { border-color: #CBD5E1; background: var(--bg); }
-
   .ctrl-btn.amber-btn:hover { border-color: #FCD34D; background: #FFFBEB; }
   .ctrl-btn.red-btn:hover   { border-color: #FCA5A5; background: #FEF2F2; }
   .ctrl-btn.green-btn:hover { border-color: #6EE7B7; background: #ECFDF5; }
@@ -147,7 +145,7 @@
     padding: 10px 18px; border-radius: 50px;
     font-size: 13px; font-weight: 600;
     box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-    transition: transform 0.3s ease, opacity 0.3s;
+    transition: transform 0.3s, opacity 0.3s;
     opacity: 0; z-index: 999; white-space: nowrap;
     display: flex; align-items: center; gap: 8px;
   }
@@ -155,6 +153,21 @@
   #toast.success i { color: var(--green); }
   #toast.error   i { color: var(--red); }
   #toast.info    i { color: #60A5FA; }
+
+  /* NOTIF OVERLAY */
+  .notif-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.45); backdrop-filter: blur(4px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px; }
+  .notif-overlay.show { display: flex; }
+  .notif-box { background: #fff; border-radius: 20px; padding: 28px 24px 22px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.18); }
+  .notif-icon { width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .notif-icon.error   { background: #FEF2F2; color: var(--red); }
+  .notif-icon.success { background: #ECFDF5; color: var(--green); }
+  .notif-icon.info    { background: var(--blue-l); color: var(--blue); }
+  .notif-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+  .notif-msg { font-size: 13px; color: var(--slate); line-height: 1.5; margin-bottom: 20px; }
+  .notif-ok { width: 100%; padding: 12px; border: none; border-radius: 11px; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; }
+  .notif-ok.error   { background: #FEF2F2; color: var(--red); }
+  .notif-ok.success { background: #ECFDF5; color: var(--green); }
+  .notif-ok.info    { background: var(--blue-l); color: var(--blue); }
 </style>
 </head>
 <body>
@@ -164,23 +177,21 @@
     <button class="back-btn" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
     <span class="nav-title">Kontrol Device</span>
   </div>
-  <span class="nav-badge"><i class="fa-solid fa-shield-halved"></i> Secure</span>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <span class="nav-badge"><i class="fa-solid fa-shield-halved"></i> Secure</span>
+    <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+  </div>
 </div>
 
 <div class="wrap">
 
-  <!-- PILIH DEVICE -->
   <div id="section-devices">
     <div class="section-title">Pilih Device</div>
     <div class="device-list" id="device-list">
-      <div class="empty-devices">
-        <i class="fa-solid fa-spinner fa-spin"></i>
-        Memuat daftar device...
-      </div>
+      <div class="empty-box"><i class="fa-solid fa-spinner fa-spin"></i>Memuat daftar device...</div>
     </div>
   </div>
 
-  <!-- CONTROL PANEL -->
   <div class="control-panel" id="control-panel">
     <div class="cp-header">
       <div class="cp-header-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
@@ -192,7 +203,7 @@
     </div>
     <div class="cp-body">
       <button class="ctrl-btn amber-btn" onclick="sendCmd('flashlight')">
-        <div class="ctrl-btn-icon amber"><i class="fa-solid fa-flashlight"></i></div>
+        <div class="ctrl-btn-icon amber"><i class="fa-solid fa-bolt"></i></div>
         <div class="ctrl-btn-text">
           <div class="ctrl-title">Toggle Flashlight</div>
           <div class="ctrl-sub">Nyalakan / matikan flashlight device</div>
@@ -217,9 +228,20 @@
 
 </div>
 
+<!-- NOTIF -->
+<div class="notif-overlay" id="notif-overlay">
+  <div class="notif-box">
+    <div class="notif-icon error" id="notif-icon"><i class="fa-solid fa-circle-xmark" id="notif-icon-i"></i></div>
+    <div class="notif-title" id="notif-title">Error</div>
+    <div class="notif-msg" id="notif-msg"></div>
+    <button class="notif-ok error" id="notif-ok" onclick="closeNotif()">OK</button>
+  </div>
+</div>
+
 <div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg"></span></div>
 
 <script>
+// ── API BASE (sama persis kayak login_kontrol.html) ───────────────────────────
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
 let API_BASE = "";
 
@@ -236,80 +258,75 @@ async function loadApiBase() {
 }
 
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
+// ─────────────────────────────────────────────────────────────────────────────
 
-if (!sessionStorage.getItem('kontroler_auth')) {
-  window.location.href = '/kontroler/login_kontrol.html';
+function getToken() { return sessionStorage.getItem('kontroler_token') || ''; }
+
+function showNotif(type, title, msg) {
+  const iconMap = { error: 'fa-circle-xmark', success: 'fa-circle-check', info: 'fa-circle-info' };
+  document.getElementById('notif-icon').className   = `notif-icon ${type}`;
+  document.getElementById('notif-icon-i').className = `fa-solid ${iconMap[type] || 'fa-circle-xmark'}`;
+  document.getElementById('notif-title').textContent = title;
+  document.getElementById('notif-msg').textContent   = msg;
+  document.getElementById('notif-ok').className      = `notif-ok ${type}`;
+  document.getElementById('notif-overlay').classList.add('show');
+}
+function closeNotif() { document.getElementById('notif-overlay').classList.remove('show'); }
+
+let toastTimer;
+function toast(msg, type = 'info') {
+  const el  = document.getElementById('toast');
+  const ico = el.querySelector('i');
+  const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
+  ico.className = `fa-solid ${icons[type] || icons.info}`;
+  document.getElementById('toast-msg').textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.className = '', 2500);
 }
 
 let selectedDeviceId = null;
-const token = sessionStorage.getItem('kontroler_token');
-
-async function loadDevices() {
-  try {
-    
-    
-    const res = await fetch(apiUrl('/api/kontrol/devices'), {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-kontrol-token': token
-      },
-      credentials: 'include',
-    });
-    
-    if (!res.ok) {
-      if (res.status === 401) {
-        window.location.href = '/kontroler/login_kontrol.html';
-        return;
-      }
-      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-    }
-    
-    const data = await res.json();
-    if (data.ok && data.devices) {
-      renderDevices(data.devices);
-    } else {
-      renderDevices([]);
-    }
-  } catch (err) {
-    console.error("Gagal load devices:", err);
-    toast(`Gagal Load Devices: ${err.message}`, 'error');
-    renderDevices([]);
-  }
-}
 
 function renderDevices(devices) {
   const list = document.getElementById('device-list');
-  if (!devices || !devices.length) {
-    list.innerHTML = `<div class="empty-devices"><i class="fa-solid fa-mobile"></i>Belum ada device terdaftar</div>`;
+  if (!devices.length) {
+    list.innerHTML = `<div class="empty-box"><i class="fa-solid fa-mobile"></i>Belum ada device terdaftar</div>`;
     return;
   }
   list.innerHTML = devices.map(d => `
-    <div class="device-card" onclick="selectDevice('${d.id}', '${d.name}')">
+    <div class="device-card" onclick="selectDevice('${d.id}', '${d.name}', this)">
       <div class="device-icon"><i class="fa-solid fa-mobile-screen"></i></div>
       <div class="device-info">
         <div class="device-name">${d.name}</div>
         <div class="device-id">ID: ${d.id}</div>
       </div>
-      <div class="device-status ${d.status}">
+      <div class="device-status ${d.status || 'offline'}">
         <span class="dot"></span> ${d.status === 'online' ? 'Online' : 'Offline'}
       </div>
     </div>
   `).join('');
 }
 
-function selectDevice(id, name) {
+async function loadDevices() {
+  try {
+    const res = await fetch(apiUrl('/api/kontrol/devices'), {
+      headers: { 'x-kontrol-token': getToken() }
+    });
+    if (res.status === 401) { sessionStorage.clear(); window.location.href = '/kontroler/login_kontrol.html'; return; }
+    const data = await res.json();
+    if (data.ok) renderDevices(data.devices || []);
+    else showNotif('error', 'Gagal Load Device', data.message || 'Terjadi kesalahan');
+  } catch (err) {
+    document.getElementById('device-list').innerHTML = `<div class="empty-box"><i class="fa-solid fa-wifi"></i>Gagal memuat device.<br>Cek koneksi kamu.</div>`;
+  }
+}
+
+function selectDevice(id, name, el) {
   selectedDeviceId = id;
-
-  // Highlight selected
   document.querySelectorAll('.device-card').forEach(c => c.classList.remove('selected'));
-  event.currentTarget.classList.add('selected');
-
-  // Update panel header
+  el.classList.add('selected');
   document.getElementById('cp-name').textContent = name;
-  document.getElementById('cp-id').textContent = 'ID: ' + id;
-
-  // Show panel
+  document.getElementById('cp-id').textContent   = 'ID: ' + id;
   const panel = document.getElementById('control-panel');
   panel.classList.add('show');
   setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
@@ -323,57 +340,50 @@ function closePanel() {
 
 async function sendCmd(cmd) {
   if (!selectedDeviceId) return;
-  toast(`📤 Mengirim perintah: ${cmd}...`, 'info');
+  const btns = document.querySelectorAll('.ctrl-btn');
+  btns.forEach(b => b.disabled = true);
+  toast('Mengirim perintah...', 'info');
 
   try {
-    
-    
     const res = await fetch(apiUrl(`/api/kontrol/device/${selectedDeviceId}/${cmd}`), {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-kontrol-token': token
-      },
-      credentials: 'include',
+      headers: { 'x-kontrol-token': getToken(), 'Content-Type': 'application/json' }
     });
-
-    if (res.status === 401) {
-      window.location.href = '/kontroler/login_kontrol.html';
-      return;
-    }
-
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-    }
-
+    if (res.status === 401) { sessionStorage.clear(); window.location.href = '/kontroler/login_kontrol.html'; return; }
     const data = await res.json();
-    
     if (data.ok) {
-      toast(`✅ ${data.message || `Perintah ${cmd} berhasil dikirim`}`, 'success');
+      const labels = { flashlight: 'Flashlight di-toggle', lock: 'Device berhasil dikunci', unlock: 'Device berhasil dibuka' };
+      toast(labels[cmd] || 'Perintah terkirim', 'success');
     } else {
-      toast(`❌ ${data.message || `Gagal kirim ${cmd}`}`, 'error');
+      showNotif('error', 'Gagal', data.message || 'Perintah gagal dikirim');
     }
   } catch (err) {
-    console.error("Error sendCmd:", err);
-    toast(`❌ Gagal: ${err.message}`, 'error');
+    showNotif('error', 'Koneksi Gagal', 'Tidak bisa terhubung ke server.');
+  } finally {
+    btns.forEach(b => b.disabled = false);
   }
 }
 
-let toastTimer;
-function toast(msg, type = 'info') {
-  const el  = document.getElementById('toast');
-  const ico = el.querySelector('i');
-  const sp  = document.getElementById('toast-msg');
-  const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
-  ico.className = `fa-solid ${icons[type] || icons.info}`;
-  sp.textContent = msg;
-  el.className = `show ${type}`;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.className = '', 2500);
+async function doLogout() {
+  try {
+    await fetch(apiUrl('/api/kontrol/logout'), {
+      method: 'POST',
+      headers: { 'x-kontrol-token': getToken() }
+    });
+  } catch {}
+  sessionStorage.removeItem('kontroler_auth');
+  sessionStorage.removeItem('kontroler_token');
+  window.location.href = '/kontroler/login_kontrol.html';
 }
 
-// Load API URL & devices saat halaman load
-window.addEventListener('load', async () => { await loadApiBase(); loadDevices(); });
+(async () => {
+  if (!sessionStorage.getItem('kontroler_auth') || !sessionStorage.getItem('kontroler_token')) {
+    window.location.href = '/kontroler/login_kontrol.html';
+    return;
+  }
+  await loadApiBase();
+  await loadDevices();
+})();
 </script>
 </body>
 </html>
