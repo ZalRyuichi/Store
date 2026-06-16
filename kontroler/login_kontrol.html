@@ -29,33 +29,20 @@
 
   /* BANNER */
   .banner {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    border-radius: 18px;
-    overflow: hidden;
-    position: relative;
-    background: var(--dark);
+    width: 100%; aspect-ratio: 16 / 9;
+    border-radius: 18px; overflow: hidden;
+    position: relative; background: var(--dark);
     box-shadow: 0 6px 24px rgba(0,0,0,0.18);
   }
-  .banner img {
-    width: 100%; height: 100%;
-    object-fit: cover; display: block;
-  }
+  .banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .banner-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(15,23,42,0.72) 100%);
     display: flex; flex-direction: column; justify-content: flex-end;
     padding: 18px 20px;
   }
-  .banner-title {
-    font-size: 18px; font-weight: 800; color: #fff;
-    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
-    margin-bottom: 3px;
-  }
-  .banner-sub {
-    font-size: 11px; color: rgba(255,255,255,0.72);
-    font-weight: 500;
-  }
+  .banner-title { font-size: 18px; font-weight: 800; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.5); margin-bottom: 3px; }
+  .banner-sub   { font-size: 11px; color: rgba(255,255,255,0.72); font-weight: 500; }
   .banner-badge {
     position: absolute; top: 12px; right: 12px;
     background: rgba(37,99,235,0.85); backdrop-filter: blur(6px);
@@ -67,16 +54,11 @@
 
   /* CARD */
   .card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px 22px 22px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 20px; padding: 24px 22px 22px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.06);
   }
-
-  .card-head {
-    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
-  }
+  .card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
   .card-icon {
     width: 44px; height: 44px; border-radius: 13px;
     background: linear-gradient(135deg, #2563EB, #1D4ED8);
@@ -87,14 +69,6 @@
   .card-head-text .card-title { font-size: 15px; font-weight: 800; }
   .card-head-text .card-sub   { font-size: 11px; color: var(--slate); margin-top: 1px; }
 
-  .err {
-    background: #FEF2F2; border: 1px solid #FECACA;
-    border-radius: 10px; padding: 10px 13px;
-    font-size: 12px; color: var(--red); font-weight: 500;
-    display: none; align-items: center; gap: 8px; margin-bottom: 14px;
-  }
-  .err.show { display: flex; }
-
   label { font-size: 11px; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.4px; display: block; margin-bottom: 7px; }
 
   .input-wrap { position: relative; margin-bottom: 14px; }
@@ -104,8 +78,7 @@
   }
   .eye-toggle {
     position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
-    color: var(--slate); font-size: 13px; cursor: pointer;
-    pointer-events: all;
+    color: var(--slate); font-size: 13px; cursor: pointer; pointer-events: all;
   }
   input {
     width: 100%; padding: 12px 38px;
@@ -121,8 +94,7 @@
     background: linear-gradient(135deg, #2563EB, #1D4ED8);
     color: #fff; border: none; border-radius: 11px;
     font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.15s;
+    cursor: pointer; transition: opacity 0.2s, transform 0.15s;
     display: flex; align-items: center; justify-content: center; gap: 8px;
     box-shadow: 0 4px 14px rgba(37,99,235,0.35);
   }
@@ -135,6 +107,58 @@
     text-decoration: none; font-weight: 500;
   }
   .back:hover { color: var(--blue); }
+
+  /* MODAL NOTIF */
+  .notif-overlay {
+    position: fixed; inset: 0;
+    background: rgba(15,23,42,0.5);
+    display: none; align-items: center; justify-content: center;
+    z-index: 200; backdrop-filter: blur(4px);
+    padding: 20px;
+  }
+  .notif-overlay.show { display: flex; animation: fadeIn 0.18s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .notif-box {
+    background: var(--white); border-radius: 20px;
+    width: 100%; max-width: 320px;
+    padding: 28px 24px 22px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    animation: popIn 0.22s ease;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.88); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+  }
+
+  .notif-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; margin: 0 auto 14px;
+  }
+  .notif-icon.error   { background: #FEF2F2; color: var(--red); }
+  .notif-icon.success { background: #F0FDF4; color: #16A34A; }
+  .notif-icon.warn    { background: #FFFBEB; color: #D97706; }
+
+  .notif-title {
+    font-size: 15px; font-weight: 800; color: var(--dark);
+    margin-bottom: 6px;
+  }
+  .notif-msg {
+    font-size: 12.5px; color: var(--slate);
+    line-height: 1.6; margin-bottom: 20px;
+  }
+  .notif-ok {
+    width: 100%; padding: 12px;
+    border: none; border-radius: 11px;
+    font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .notif-ok.error   { background: #FEF2F2; color: var(--red); border: 1px solid #FECACA; }
+  .notif-ok.success { background: linear-gradient(135deg, #2563EB, #1D4ED8); color: #fff; }
+  .notif-ok.warn    { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
+  .notif-ok:hover   { opacity: 0.85; }
 </style>
 </head>
 <body>
@@ -160,11 +184,6 @@
       </div>
     </div>
 
-    <div class="err" id="err-box">
-      <i class="fa-solid fa-circle-xmark"></i>
-      <span id="err-msg">Kode salah</span>
-    </div>
-
     <label>Kode Akses</label>
     <div class="input-wrap">
       <i class="fa-solid fa-key"></i>
@@ -173,7 +192,8 @@
     </div>
 
     <button class="btn" id="btn-login" onclick="doLogin()">
-      <i class="fa-solid fa-unlock"></i> Masuk
+      <i class="fa-solid fa-unlock"></i>
+      <span id="btn-text">Masuk</span>
     </button>
 
     <a href="/dashboard.html" class="back"><i class="fa-solid fa-arrow-left"></i> Kembali Ke Dashboard</a>
@@ -181,8 +201,32 @@
 
 </div>
 
+<!-- MODAL NOTIF -->
+<div class="notif-overlay" id="notif-overlay">
+  <div class="notif-box">
+    <div class="notif-icon" id="notif-icon"><i id="notif-icon-i" class="fa-solid fa-circle-xmark"></i></div>
+    <div class="notif-title" id="notif-title">Gagal</div>
+    <div class="notif-msg" id="notif-msg">Terjadi kesalahan.</div>
+    <button class="notif-ok" id="notif-ok" onclick="closeNotif()">OK</button>
+  </div>
+</div>
+
 <script>
-const ACCESS_CODE = 'ryuichi2025';
+function showNotif(type, title, msg) {
+  // type: 'error' | 'success' | 'warn'
+  const iconMap = { error: 'fa-circle-xmark', success: 'fa-circle-check', warn: 'fa-triangle-exclamation' };
+  document.getElementById('notif-icon').className   = `notif-icon ${type}`;
+  document.getElementById('notif-icon-i').className = `fa-solid ${iconMap[type] || 'fa-circle-xmark'}`;
+  document.getElementById('notif-title').textContent = title;
+  document.getElementById('notif-msg').textContent   = msg;
+  document.getElementById('notif-ok').className      = `notif-ok ${type}`;
+  document.getElementById('notif-overlay').classList.add('show');
+}
+
+function closeNotif() {
+  document.getElementById('notif-overlay').classList.remove('show');
+  document.getElementById('kode-input').focus();
+}
 
 function toggleEye() {
   const inp = document.getElementById('kode-input');
@@ -196,28 +240,46 @@ function toggleEye() {
   }
 }
 
-function doLogin() {
-  const val    = document.getElementById('kode-input').value.trim();
-  const errBox = document.getElementById('err-box');
-  const errMsg = document.getElementById('err-msg');
-  const btn    = document.getElementById('btn-login');
-  errBox.classList.remove('show');
+async function doLogin() {
+  const val     = document.getElementById('kode-input').value.trim();
+  const btn     = document.getElementById('btn-login');
+  const btnText = document.getElementById('btn-text');
 
   if (!val) {
-    errMsg.textContent = 'Kode tidak boleh kosong';
-    errBox.classList.add('show');
+    showNotif('warn', 'Kode Kosong', 'Kode akses tidak boleh kosong.');
     return;
   }
-  if (val !== ACCESS_CODE) {
-    errMsg.textContent = 'Kode akses salah, coba lagi';
-    errBox.classList.add('show');
-    document.getElementById('kode-input').value = '';
-    return;
-  }
-  sessionStorage.setItem('kontroler_auth', '1');
+
   btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memuat...';
-  setTimeout(() => window.location.href = '/kontroler/kontrol.html', 400);
+  btnText.textContent = 'Memverifikasi...';
+  btn.querySelector('i').className = 'fa-solid fa-spinner fa-spin';
+
+  try {
+    const res  = await fetch('/api/kontrol/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kode: val }),
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      sessionStorage.setItem('kontroler_auth', '1');
+      sessionStorage.setItem('kontroler_token', data.token);
+      showNotif('success', 'Berhasil Masuk', 'Kode akses valid. Mengalihkan...');
+      setTimeout(() => window.location.href = '/kontroler/kontrol.html', 1200);
+    } else {
+      document.getElementById('kode-input').value = '';
+      showNotif('error', 'Kode Salah', data.message || 'Kode akses salah, coba lagi.');
+      btn.disabled = false;
+      btnText.textContent = 'Masuk';
+      btn.querySelector('i').className = 'fa-solid fa-unlock';
+    }
+  } catch (err) {
+    showNotif('error', 'Koneksi Gagal', 'Tidak bisa terhubung ke server. Coba lagi.');
+    btn.disabled = false;
+    btnText.textContent = 'Masuk';
+    btn.querySelector('i').className = 'fa-solid fa-unlock';
+  }
 }
 
 document.getElementById('kode-input').addEventListener('keydown', e => {
