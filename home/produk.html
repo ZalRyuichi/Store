@@ -1450,7 +1450,11 @@ let _panelProduct = null;
     <div id="bug-step1">
       <div class="bug-sheet-title"><i class="fa-solid fa-bug" style="color:#7C3AED"></i> Jasa Bug WhatsApp</div>
       <div class="bug-sheet-sub">Rp 4.000 · Pilih metode pembayaran</div>
-      <div class="pay-methods">
+      <!-- Status Sender Step 1 -->
+      <div class="bug-sender-status" id="bug-sender-status-step1" style="margin-bottom:14px">
+        <i class="fa-solid fa-circle-notch fa-spin"></i> Mengecek ketersediaan sender...
+      </div>
+      <div class="pay-methods" id="bug-pay-methods">
         <button class="pay-method-btn saldo" onclick="bugPaySaldo()">
           <div class="pay-method-icon"><i class="fa-solid fa-wallet"></i></div>
           <div class="pay-method-info">
@@ -1530,11 +1534,6 @@ let _panelProduct = null;
       <div class="bug-sheet-title"><i class="fa-solid fa-crosshairs" style="color:#7C3AED"></i> Masukkan Target</div>
       <div class="bug-sheet-sub" id="bug-step3-sub">—</div>
 
-      <!-- Status Sender -->
-      <div class="bug-sender-status" id="bug-sender-status">
-        <i class="fa-solid fa-circle-notch fa-spin"></i> Mengecek sender...
-      </div>
-
       <!-- Input Nomer -->
       <div class="bug-input-wrap" id="bug-input-nomer-wrap" style="display:none">
         <label class="bug-input-label">Nomor Target (awali 62, tanpa +)</label>
@@ -1566,11 +1565,52 @@ let _bugPaid          = false;
 let _bugOrderId       = null;
 let _bugSenderOnline  = false;
 
-function openBugOrder() {
+async function openBugOrder() {
   _bugTab = 'nomer'; _bugType = null; _bugPaid = false; _bugOrderId = null;
+  _bugSenderOnline = false;
   bugSetStep(1);
-  document.getElementById('bug-saldo-preview').textContent = 'Saldo: ' + (saldoText || '—');
+
+  // Reset status sender step1
+  const sBox = document.getElementById('bug-sender-status-step1');
+  sBox.className = 'bug-sender-status';
+  sBox.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Mengecek ketersediaan sender...';
+
+  // Disable tombol bayar dulu selama pengecekan
+  const btnSaldo = document.querySelector('#bug-step1 .pay-method-btn.saldo');
+  const btnQris  = document.querySelector('#bug-step1 .pay-method-btn.qris');
+  if (btnSaldo) btnSaldo.disabled = true;
+  if (btnQris)  btnQris.disabled  = true;
+
+  document.getElementById('bug-saldo-preview').textContent = 'Saldo: Memuat...';
   document.getElementById('bug-overlay').classList.add('active');
+
+  // Fetch saldo & cek sender paralel
+  const [saldoRes, senderRes] = await Promise.allSettled([
+    fetch(apiUrl('/api/user/saldo'), { headers: H }).then(r => r.json()),
+    fetch(apiUrl('/api/bug/sender/status'), { headers: H }).then(r => r.json()),
+  ]);
+
+  // Update saldo
+  if (saldoRes.status === 'fulfilled') {
+    currentSaldoVal = saldoRes.value.saldo || 0;
+    document.getElementById('bug-saldo-preview').textContent = 'Saldo: ' + rupiah(currentSaldoVal);
+  } else {
+    document.getElementById('bug-saldo-preview').textContent = 'Saldo: Gagal Memuat';
+  }
+
+  // Update status sender
+  if (senderRes.status === 'fulfilled' && senderRes.value.online) {
+    _bugSenderOnline = true;
+    sBox.className = 'bug-sender-status online';
+    sBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> Sender Online — Siap menerima order';
+    if (btnSaldo) btnSaldo.disabled = false;
+    if (btnQris)  btnQris.disabled  = false;
+  } else {
+    _bugSenderOnline = false;
+    sBox.className = 'bug-sender-status offline';
+    sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Sender Offline — Order tidak tersedia saat ini';
+    // Tombol tetap disabled
+  }
 }
 
 function closeBugOrder() {
@@ -1647,28 +1687,6 @@ async function bugGoStep3() {
   const isNomer = ['spam_invisible','crash_iphone'].includes(_bugType);
   document.getElementById('bug-input-nomer-wrap').style.display = isNomer ? '' : 'none';
   document.getElementById('bug-input-group-wrap').style.display = isNomer ? 'none' : '';
-
-  // Cek status sender
-  const sBox = document.getElementById('bug-sender-status');
-  sBox.className = 'bug-sender-status';
-  sBox.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Mengecek sender...';
-  try {
-    const res  = await fetch(apiUrl('/api/bug/sender/status'), { headers:H });
-    const data = await res.json();
-    _bugSenderOnline = data.online;
-    if (data.online) {
-      sBox.className = 'bug-sender-status online';
-      sBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> Sender Online — Siap eksekusi';
-    } else {
-      sBox.className = 'bug-sender-status offline';
-      sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Sender Offline — Tidak bisa order saat ini';
-      document.getElementById('bug-btn-execute').disabled = true;
-    }
-  } catch {
-    sBox.className = 'bug-sender-status offline';
-    sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Gagal cek sender';
-    document.getElementById('bug-btn-execute').disabled = true;
-  }
 }
 
 async function bugExecute() {
@@ -1680,7 +1698,6 @@ async function bugExecute() {
   if (!target) return toast('Isi target dulu!', 'error');
   if (isNomer && !/^62\d{8,14}$/.test(target)) return toast('Format nomor salah! Awali 62', 'error');
   if (!isNomer && !target.includes('chat.whatsapp.com')) return toast('Link grup tidak valid!', 'error');
-  if (!_bugSenderOnline) return toast('Sender offline!', 'error');
 
   const btn = document.getElementById('bug-btn-execute');
   btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...';
