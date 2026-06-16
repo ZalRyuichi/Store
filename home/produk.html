@@ -265,6 +265,83 @@
   .pay-method-desc { font-size: 11px; color: var(--slate); }
   .pay-saldo-val { font-size: 12px; font-weight: 700; color: #2563EB; margin-top: 3px; }
   .pay-method-arrow { color: var(--slate); font-size: 12px; }
+
+  /* ── JASA BUG ─────────────────────────────────── */
+  .bug-overlay {
+    display:none;position:fixed;inset:0;z-index:999;
+    background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
+    align-items:flex-end;justify-content:center;
+  }
+  .bug-overlay.active { display:flex; }
+  .bug-sheet {
+    background:var(--white);width:100%;max-width:480px;
+    border-radius:20px 20px 0 0;padding:20px 18px 32px;
+    animation:slideUp .25s ease;max-height:90vh;overflow-y:auto;
+  }
+  @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+  .bug-sheet-title {
+    font-size:16px;font-weight:700;margin-bottom:4px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .bug-sheet-sub { font-size:12px;color:var(--slate);margin-bottom:18px; }
+  .bug-tab-row {
+    display:flex;gap:8px;margin-bottom:16px;
+    background:var(--bg);border-radius:10px;padding:4px;
+  }
+  .bug-tab {
+    flex:1;padding:9px;border-radius:8px;border:none;
+    background:transparent;font-size:12px;font-weight:600;
+    cursor:pointer;color:var(--slate);transition:.2s;
+  }
+  .bug-tab.active { background:var(--white);color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,.08); }
+  .bug-type-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px; }
+  .bug-type-card {
+    border:2px solid var(--border);border-radius:12px;
+    padding:14px 12px;cursor:pointer;transition:.2s;text-align:center;
+    background:var(--white);
+  }
+  .bug-type-card:hover { border-color:var(--blue);box-shadow:0 2px 10px rgba(37,99,235,.1); }
+  .bug-type-card.selected { border-color:var(--blue);background:var(--blue-l); }
+  .bug-type-icon {
+    width:40px;height:40px;border-radius:10px;
+    background:var(--blue-l);color:var(--blue);
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;margin:0 auto 8px;
+  }
+  .bug-type-name { font-size:12px;font-weight:700;margin-bottom:2px; }
+  .bug-type-desc { font-size:10px;color:var(--slate); }
+  .bug-input-wrap { margin-bottom:14px; }
+  .bug-input-label { font-size:11px;font-weight:600;color:var(--slate);margin-bottom:6px;display:block; }
+  .bug-input {
+    width:100%;border:1.5px solid var(--border);border-radius:10px;
+    padding:11px 13px;font-size:14px;outline:none;transition:.2s;
+    background:var(--bg);
+  }
+  .bug-input:focus { border-color:var(--blue);background:var(--white); }
+  .bug-sender-status {
+    display:flex;align-items:center;gap:6px;
+    font-size:11px;padding:8px 12px;border-radius:8px;margin-bottom:14px;
+  }
+  .bug-sender-status.online { background:#ECFDF5;color:#059669;border:1px solid #BBF7D0; }
+  .bug-sender-status.offline { background:#FEF2F2;color:#DC2626;border:1px solid #FECACA; }
+  .bug-btn-row { display:flex;gap:8px;margin-top:6px; }
+  .bug-btn-cancel {
+    flex:1;padding:12px;border-radius:10px;border:1.5px solid var(--border);
+    background:var(--white);font-size:13px;font-weight:600;cursor:pointer;color:var(--slate);
+  }
+  .bug-btn-next {
+    flex:2;padding:12px;border-radius:10px;border:none;
+    background:var(--blue);color:#fff;font-size:13px;font-weight:700;cursor:pointer;
+  }
+  .bug-btn-next:disabled { opacity:.5;cursor:not-allowed; }
+  .bug-step-bar {
+    display:flex;align-items:center;gap:6px;margin-bottom:16px;
+  }
+  .bug-step {
+    flex:1;height:3px;border-radius:2px;background:var(--border);transition:.3s;
+  }
+  .bug-step.done { background:var(--blue); }
+
 </style>
 </head>
 <body>
@@ -328,6 +405,10 @@
     <a class="quick-item" href="#ptero" onclick="event.preventDefault();document.getElementById('ptero').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon red"><i class="fa-solid fa-server"></i></div>
       <div class="quick-label">Panel</div>
+    </a>
+    <a class="quick-item" href="#jasabug" onclick="event.preventDefault();document.getElementById('jasabug').scrollIntoView({behavior:'smooth'})">
+      <div class="quick-icon purple"><i class="fa-solid fa-bug"></i></div>
+      <div class="quick-label">Jasa Bug</div>
     </a>
     <a class="quick-item" href="#wa" onclick="event.preventDefault();document.getElementById('wa').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon green"><i class="fa-brands fa-whatsapp"></i></div>
@@ -552,6 +633,38 @@
     </div>
   </div>
 
+  <!-- ── JASA BUG ──────────────────────────────── -->
+  <div class="card" id="jasabug" style="margin-top:14px">
+    <div class="apk-banner" style="background:linear-gradient(135deg,#7C3AED 0%,#4F46E5 100%)">
+      <div class="apk-banner-top">
+        <div class="apk-banner-icon"><i class="fa-solid fa-bug"></i></div>
+        <div>
+          <div class="apk-banner-label">Jasa Bug WhatsApp</div>
+          <div class="apk-banner-sub">Bug Nomer & Bug Group · Proses Otomatis</div>
+        </div>
+      </div>
+      <div class="apk-banner-pills">
+        <div class="apk-banner-pill"><i class="fa-solid fa-mobile-screen"></i>Bug Nomer</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-users"></i>Bug Group</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-bolt"></i>Instan</div>
+      </div>
+    </div>
+
+    <div class="role-grid" style="grid-template-columns:1fr">
+      <div class="role-card" onclick="openBugOrder()" style="display:flex;align-items:center;gap:14px;text-align:left">
+        <div class="role-icon" style="background:#F5F3FF;color:#7C3AED;flex-shrink:0">
+          <i class="fa-solid fa-bug"></i>
+        </div>
+        <div style="flex:1">
+          <div class="role-name">Jasa Bug WhatsApp</div>
+          <div style="font-size:11px;color:var(--slate);margin-top:2px">Bug Nomer & Group — Proses Otomatis</div>
+        </div>
+        <div class="role-price">Rp 4.000</div>
+      </div>
+    </div>
+  </div>
+
+
 </main>
 
 <nav class="bottom-nav">
@@ -755,101 +868,7 @@ const SEWABOT_FEATURES = [
 ];
 
 const BASIC_FEATURES = [
-  ['Bug WhatsApp', 'fa-solid fa-bug'],
-  ['DDoS Panel', 'fa-solid fa-network-wired'],
-  ['Spam Pairing', 'fa-solid fa-paper-plane'],
-  ['WhatsApp Call', 'fa-solid fa-phone'],
-  ['Spam NGL', 'fa-solid fa-comment-dots'],
-  ['Downloader (Tiktok, Pin, Instagram)', 'fa-solid fa-download'],
-  ['iPhone Quote', 'fa-solid fa-quote-left'],
-  ['Remini Ai', 'fa-solid fa-wand-magic-sparkles'],
-  ['Nik Parse', 'fa-solid fa-id-card'],
-  ['Comment FB', 'fa-brands fa-facebook'],
-  ['Fake Group', 'fa-solid fa-users'],
-  ['Lobby FF', 'fa-solid fa-gamepad'],
-  ['Lobby ML', 'fa-solid fa-gamepad'],
-  ['Fake Story', 'fa-solid fa-book-open'],
-  ['Fake Threads', 'fa-brands fa-threads'],
-  ['QC Card', 'fa-solid fa-id-badge'],
-  ['Sticker Meme', 'fa-solid fa-icons'],
-  ['Brat Anime', 'fa-solid fa-face-grin-squint'],
-  ['Meme Ustadz', 'fa-solid fa-mosque'],
-  ['Blur Face', 'fa-solid fa-eye-slash'],
-  ['Remove BG', 'fa-solid fa-eraser'],
-  ['Wasted', 'fa-solid fa-skull'],
-  ['Wanted', 'fa-solid fa-bullhorn'],
-  ['Nonton Donghua', 'fa-solid fa-clapperboard'],
-  ['Nonton Anime', 'fa-solid fa-tv'],
-  ['Al-Quran', 'fa-solid fa-book-quran'],
-  ['Hadist', 'fa-solid fa-book'],
-  ['Music', 'fa-solid fa-music'],
-  ['Crosshair', 'fa-solid fa-crosshairs'],
-  ['Cek Keamanan Device', 'fa-solid fa-shield-halved']
-];
-
-const VIP_FEATURES = [
-  ['Buat Web Jadi Apk', 'fa-solid fa-mobile-screen-button'],
-  ['Kunci Perangkat Korban', 'fa-solid fa-lock'],
-  ['Getarkan Perangkat Korban', 'fa-solid fa-mobile-alt'],
-  ['Ambil Lokasi Korban', 'fa-solid fa-location-dot'],
-  ['Pantau Kamera Depan Dan Belakang Perangkat Korban', 'fa-solid fa-camera'],
-  ['Matikan Dan Hidupkan Senter Perangkat Korban', 'fa-solid fa-lightbulb'],
-  ['Ganti Wallpaper Perangkat Korban', 'fa-solid fa-image'],
-  ['Putar Suara Pada Perangkat Korban', 'fa-solid fa-volume-up'],
-  ['Pantau SMS Perangkat Korban', 'fa-regular fa-message'],
-  ['Melihat Foto Galeri Perangkat Korban', 'fa-regular fa-images'],
-  ['Melihat List Kontak Perangkat Korban', 'fa-solid fa-address-book'],
-  ['Menghapus File Korban', 'fa-solid fa-trash-can'],
-  ['Pantau Layar Perangkat Korban', 'fa-solid fa-desktop'],
-  ['Putar Video Di Perangkat Korban', 'fa-solid fa-video'],
-  ['Panggil Nomer Pada Perangkat Korban', 'fa-solid fa-phone'],
-  ['Kunci Perangkat Korban Dan Bisa Chatan Sama Korban', 'fa-solid fa-comment-dots'],
-  ['Rekam Suara Pada Perangkat Korban', 'fa-solid fa-microphone'],
-  ['List Aplikasi Pada Perangkat Korban', 'fa-solid fa-list'],
-  ['Blokir Aplikasi Pada Perangkat Korban', 'fa-solid fa-ban'],
-  ['Buka Aplikasi Pada Perangkat Korban', 'fa-solid fa-rocket'],
-  ['Teks Layar', 'fa-solid fa-text-height']
-];
-
-const XYZ_FEATURES = [
-  ['Anti Uninstall Apk Phishing', 'fa-solid fa-shield-halved'],
-  ['Matikan Hidupkan Senter Perangkat Korban', 'fa-solid fa-lightbulb'],
-  ['Play Video Full Layar Di Perangkat Korban', 'fa-solid fa-video'],
-  ['Ganti Wallpaper Perangkat Korban', 'fa-solid fa-image'],
-  ['Kunci Perangkat Korban', 'fa-solid fa-lock'],
-  ['Putar Suara Pada Perangkat Korban', 'fa-solid fa-volume-up'],
-  ['Getarkan Perangkat Korban', 'fa-solid fa-mobile-alt'],
-  ['Kirim Suara Google Ke Perangkat Korban', 'fa-solid fa-message'],
-  ['Atur Kecerahan Perangkat Korban', 'fa-solid fa-sun'],
-  ['Atur Volume Perangkat Korban', 'fa-solid fa-volume-high'],
-  ['Kirim Teks Layar Pada Perangkat Korban', 'fa-solid fa-text-height'],
-  ['Buka Website Pada Perangkat Korban', 'fa-solid fa-globe'],
-  ['Spam Dialog Pada Perangkat Korban', 'fa-solid fa-comment-dots'],
-  ['SOS Pada Perangkat Korban', 'fa-solid fa-bell'],
-  ['Pantau Kamera Depan Dan Belakang Pada Perangkat Korban', 'fa-solid fa-camera'],
-  ['Pantau Layar Dan Bisa Kontrol Perangkat Korban', 'fa-solid fa-desktop'],
-  ['Ambil Foto Depan Dan Belakang Pada Perangkat Korban', 'fa-solid fa-camera-retro'],
-  ['Ambil Paste Pada Keyboard Korban', 'fa-solid fa-keyboard'],
-  ['Scan Wifi Terdekat Pada Perangkat Korban', 'fa-solid fa-wifi'],
-  ['Cari Cell Tower Pada Perangkat Korban', 'fa-solid fa-tower-cell'],
-  ['Melihat Histori Chrome Perangkat Korban', 'fa-solid fa-clock-rotate-left'],
-  ['Ambil Lokasi Perangkat Korban', 'fa-solid fa-location-dot'],
-  ['Melihat Kontak Pada Perangkat Korban', 'fa-solid fa-address-book'],
-  ['Link Foto (Tampil di Layar Korban)', 'fa-solid fa-image'],
-  ['Spam Notifikasi Pada Perangkat Korban', 'fa-solid fa-bell'],
-  ['Spam Toast Pada Perangkat Korban', 'fa-solid fa-toast'],
-  ['Ganti Tema Aplikasi Phising Menjadi (WA dll)', 'fa-solid fa-palette'],
-  ['Rekam Suara Korban', 'fa-solid fa-microphone'],
-  ['Melihat Log WiFi Perangkat Korban', 'fa-solid fa-wifi'],
-  ['Melihat Akun Pada Perangkat Korban Seperti Akun Google Atau Email', 'fa-solid fa-users'],
-  ['Melihat Log Panggilan Pada Perangkat Korban', 'fa-solid fa-phone'],
-  ['Melihat Foto Galeri Korban', 'fa-solid fa-images'],
-  ['Blokir Aplikasi Korban Sehingga Korban Tidak Bisa Membuka Aplikasi Yang Di Blokir', 'fa-solid fa-ban'],
-  ['Buka Aplikasi Korban', 'fa-solid fa-rocket'],
-  ['Uninstall Aplikasi Yang Ada Di Perangkat Korban', 'fa-solid fa-trash-can'],
-  ['Hapus, Download Dan Masukin File Pada Perangkat Korban', 'fa-solid fa-folder'],
-  ['Panggil Nomer Pada Perangkat Korban', 'fa-solid fa-phone'],
-  ['Sembunyikan Aplikasi Phising Atau Korban', 'fa-solid fa-eye-slash']
+// biar gw yg isi
 ];
 
 const PTERO_SPECS = [
@@ -1322,6 +1341,275 @@ let _panelProduct = null;
     OK, Sudah Disimpan
   </button>
 </div>
+
+
+<!-- ── MODAL JASA BUG ──────────────────────────── -->
+<div class="bug-overlay" id="bug-overlay" onclick="if(event.target===this)closeBugOrder()">
+  <div class="bug-sheet">
+    <div class="bug-step-bar">
+      <div class="bug-step done" id="bstep1"></div>
+      <div class="bug-step" id="bstep2"></div>
+      <div class="bug-step" id="bstep3"></div>
+    </div>
+
+    <!-- STEP 1: Bayar -->
+    <div id="bug-step1">
+      <div class="bug-sheet-title"><i class="fa-solid fa-bug" style="color:#7C3AED"></i> Jasa Bug WhatsApp</div>
+      <div class="bug-sheet-sub">Rp 4.000 · Pilih metode pembayaran</div>
+      <div class="pay-methods">
+        <button class="pay-method-btn saldo" onclick="bugPaySaldo()">
+          <div class="pay-method-icon"><i class="fa-solid fa-wallet"></i></div>
+          <div class="pay-method-info">
+            <div class="pay-method-name">Bayar Pakai Saldo</div>
+            <div class="pay-method-desc">Otomatis potong saldo kamu</div>
+            <div class="pay-saldo-val" id="bug-saldo-preview">Saldo: —</div>
+          </div>
+          <i class="fa-solid fa-chevron-right pay-method-arrow"></i>
+        </button>
+        <button class="pay-method-btn qris" onclick="bugPayQris()">
+          <div class="pay-method-icon"><i class="fa-solid fa-qrcode"></i></div>
+          <div class="pay-method-info">
+            <div class="pay-method-name">Bayar Pakai QRIS</div>
+            <div class="pay-method-desc">Buat QRIS Dan Bayar Langsung</div>
+          </div>
+          <i class="fa-solid fa-chevron-right pay-method-arrow"></i>
+        </button>
+      </div>
+      <div class="bug-btn-row" style="margin-top:14px">
+        <button class="bug-btn-cancel" onclick="closeBugOrder()">Batal</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Pilih Tipe -->
+    <div id="bug-step2" style="display:none">
+      <div class="bug-sheet-title"><i class="fa-solid fa-list" style="color:#7C3AED"></i> Pilih Jenis Bug</div>
+      <div class="bug-sheet-sub">Pilih target: Nomer atau Group</div>
+      <div class="bug-tab-row">
+        <button class="bug-tab active" id="btab-nomer" onclick="selectBugTab('nomer')">
+          <i class="fa-solid fa-mobile-screen"></i> Bug Nomer
+        </button>
+        <button class="bug-tab" id="btab-group" onclick="selectBugTab('group')">
+          <i class="fa-solid fa-users"></i> Bug Group
+        </button>
+      </div>
+
+      <!-- Nomer Types -->
+      <div id="bug-nomer-types">
+        <div class="bug-type-grid">
+          <div class="bug-type-card" id="btype-spam_invisible" onclick="selectBugType('spam_invisible')">
+            <div class="bug-type-icon"><i class="fa-solid fa-eye-slash"></i></div>
+            <div class="bug-type-name">Spam Invisible</div>
+            <div class="bug-type-desc">Spam pesan tak terlihat</div>
+          </div>
+          <div class="bug-type-card" id="btype-crash_iphone" onclick="selectBugType('crash_iphone')">
+            <div class="bug-type-icon"><i class="fa-brands fa-apple"></i></div>
+            <div class="bug-type-name">Crash iPhone</div>
+            <div class="bug-type-desc">Force close WA iPhone</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group Types -->
+      <div id="bug-group-types" style="display:none">
+        <div class="bug-type-grid">
+          <div class="bug-type-card" id="btype-delay_hard" onclick="selectBugType('delay_hard')">
+            <div class="bug-type-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+            <div class="bug-type-name">Delay Hard</div>
+            <div class="bug-type-desc">Delay berat di grup</div>
+          </div>
+          <div class="bug-type-card" id="btype-blank_group" onclick="selectBugType('blank_group')">
+            <div class="bug-type-icon"><i class="fa-regular fa-square"></i></div>
+            <div class="bug-type-name">Blank Group</div>
+            <div class="bug-type-desc">Blank message di grup</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bug-btn-row">
+        <button class="bug-btn-cancel" onclick="closeBugOrder()">Batal</button>
+        <button class="bug-btn-next" id="bug-btn-next2" onclick="bugGoStep3()" disabled>Lanjutkan</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Input Target -->
+    <div id="bug-step3" style="display:none">
+      <div class="bug-sheet-title"><i class="fa-solid fa-crosshairs" style="color:#7C3AED"></i> Masukkan Target</div>
+      <div class="bug-sheet-sub" id="bug-step3-sub">—</div>
+
+      <!-- Status Sender -->
+      <div class="bug-sender-status" id="bug-sender-status">
+        <i class="fa-solid fa-circle-notch fa-spin"></i> Mengecek sender...
+      </div>
+
+      <!-- Input Nomer -->
+      <div class="bug-input-wrap" id="bug-input-nomer-wrap" style="display:none">
+        <label class="bug-input-label">Nomor Target (awali 62, tanpa +)</label>
+        <input class="bug-input" id="bug-input-nomer" type="tel" placeholder="628xxxxxxxxx" oninput="this.value=this.value.replace(/[^0-9]/g,'')"/>
+      </div>
+
+      <!-- Input Group -->
+      <div class="bug-input-wrap" id="bug-input-group-wrap" style="display:none">
+        <label class="bug-input-label">Link Grup WhatsApp</label>
+        <input class="bug-input" id="bug-input-group" type="text" placeholder="https://chat.whatsapp.com/xxxxx"/>
+      </div>
+
+      <div class="bug-btn-row">
+        <button class="bug-btn-cancel" onclick="closeBugOrder()">Batal</button>
+        <button class="bug-btn-next" id="bug-btn-execute" onclick="bugExecute()">
+          <i class="fa-solid fa-bolt"></i> Eksekusi Bug
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BUG_PRODUCT_ID  = 'jasa-bug';
+const BUG_SENDER      = '6283168092874';
+let _bugTab           = 'nomer';
+let _bugType          = null;
+let _bugPaid          = false;
+let _bugOrderId       = null;
+let _bugSenderOnline  = false;
+
+function openBugOrder() {
+  _bugTab = 'nomer'; _bugType = null; _bugPaid = false; _bugOrderId = null;
+  bugSetStep(1);
+  document.getElementById('bug-saldo-preview').textContent = 'Saldo: ' + (saldoText || '—');
+  document.getElementById('bug-overlay').classList.add('active');
+}
+
+function closeBugOrder() {
+  document.getElementById('bug-overlay').classList.remove('active');
+}
+
+function bugSetStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('bug-step'+i).style.display = i === n ? '' : 'none';
+    document.getElementById('bstep'+i).classList.toggle('done', i <= n);
+  });
+}
+
+async function bugPaySaldo() {
+  const btn = event.currentTarget;
+  btn.disabled = true;
+  try {
+    const res  = await fetch(apiUrl('/api/bug/pay/saldo'), { method:'POST', headers:H });
+    const data = await res.json();
+    if (data.ok) {
+      _bugPaid = true; _bugOrderId = data.order_id;
+      bugSetStep(2);
+    } else {
+      toast(data.message || 'Gagal bayar', 'error');
+    }
+  } catch { toast('Koneksi gagal', 'error'); }
+  finally { btn.disabled = false; }
+}
+
+async function bugPayQris() {
+  try {
+    const res  = await fetch(apiUrl('/api/buy'), { method:'POST', headers:H, body:JSON.stringify({ product_id: BUG_PRODUCT_ID }) });
+    const data = await res.json();
+    if (!data.ok) return toast(data.message || 'Gagal buat QRIS', 'error');
+    closeBugOrder();
+    onPaymentCompleted = async (tx) => {
+      _bugPaid = true; _bugOrderId = tx.order_id;
+      document.getElementById('bug-overlay').classList.add('active');
+      bugSetStep(2);
+    };
+    openModal(data.transaction, 'Jasa Bug WhatsApp', 'Scan QRIS Untuk Melanjutkan');
+  } catch { toast('Koneksi gagal', 'error'); }
+}
+
+function selectBugTab(tab) {
+  _bugTab = tab; _bugType = null;
+  document.getElementById('btab-nomer').classList.toggle('active', tab==='nomer');
+  document.getElementById('btab-group').classList.toggle('active', tab==='group');
+  document.getElementById('bug-nomer-types').style.display = tab==='nomer' ? '' : 'none';
+  document.getElementById('bug-group-types').style.display = tab==='group' ? '' : 'none';
+  document.querySelectorAll('.bug-type-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('bug-btn-next2').disabled = true;
+}
+
+function selectBugType(type) {
+  _bugType = type;
+  document.querySelectorAll('.bug-type-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('btype-' + type)?.classList.add('selected');
+  document.getElementById('bug-btn-next2').disabled = false;
+}
+
+async function bugGoStep3() {
+  if (!_bugType) return;
+  bugSetStep(3);
+
+  const labels = {
+    spam_invisible: 'Spam Invisible — Masukkan nomor target',
+    crash_iphone:   'Crash iPhone — Masukkan nomor target',
+    delay_hard:     'Delay Hard — Masukkan link grup target',
+    blank_group:    'Blank Group — Masukkan link grup target',
+  };
+  document.getElementById('bug-step3-sub').textContent = labels[_bugType] || '—';
+
+  const isNomer = ['spam_invisible','crash_iphone'].includes(_bugType);
+  document.getElementById('bug-input-nomer-wrap').style.display = isNomer ? '' : 'none';
+  document.getElementById('bug-input-group-wrap').style.display = isNomer ? 'none' : '';
+
+  // Cek status sender
+  const sBox = document.getElementById('bug-sender-status');
+  sBox.className = 'bug-sender-status';
+  sBox.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Mengecek sender...';
+  try {
+    const res  = await fetch(apiUrl('/api/bug/sender/status'), { headers:H });
+    const data = await res.json();
+    _bugSenderOnline = data.online;
+    if (data.online) {
+      sBox.className = 'bug-sender-status online';
+      sBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> Sender Online — Siap eksekusi';
+    } else {
+      sBox.className = 'bug-sender-status offline';
+      sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Sender Offline — Tidak bisa order saat ini';
+      document.getElementById('bug-btn-execute').disabled = true;
+    }
+  } catch {
+    sBox.className = 'bug-sender-status offline';
+    sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Gagal cek sender';
+    document.getElementById('bug-btn-execute').disabled = true;
+  }
+}
+
+async function bugExecute() {
+  const isNomer = ['spam_invisible','crash_iphone'].includes(_bugType);
+  const target  = isNomer
+    ? document.getElementById('bug-input-nomer').value.trim()
+    : document.getElementById('bug-input-group').value.trim();
+
+  if (!target) return toast('Isi target dulu!', 'error');
+  if (isNomer && !/^62\d{8,14}$/.test(target)) return toast('Format nomor salah! Awali 62', 'error');
+  if (!isNomer && !target.includes('chat.whatsapp.com')) return toast('Link grup tidak valid!', 'error');
+  if (!_bugSenderOnline) return toast('Sender offline!', 'error');
+
+  const btn = document.getElementById('bug-btn-execute');
+  btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...';
+
+  try {
+    const res  = await fetch(apiUrl('/api/bug/execute'), {
+      method:'POST', headers:H,
+      body: JSON.stringify({ order_id: _bugOrderId, bug_type: _bugType, target })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      closeBugOrder();
+      showNotif('success', 'Bug Terkirim!', `Bug ${_bugType.replace('_',' ')} berhasil dikirim ke target.`);
+    } else {
+      toast(data.message || 'Gagal eksekusi', 'error');
+    }
+  } catch { toast('Koneksi gagal', 'error'); }
+  finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Eksekusi Bug'; }
+}
+
+let saldoText = 'Rp 0';
+const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
+</script>
 
 </body>
 </html>
