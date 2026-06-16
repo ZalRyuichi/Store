@@ -212,8 +212,23 @@
 </div>
 
 <script>
+const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
+let API_BASE = "/api"; // Default fallback
+
+// Load API URL dari api.txt
+async function loadApiUrl() {
+  try {
+    const r = await fetch(API_TXT_URL + "?t=" + Date.now());
+    if (!r.ok) throw new Error("Gagal load api.txt");
+    const url = (await r.text()).trim();
+    if (url) API_BASE = url;
+  } catch (err) {
+    console.warn("Gagal load api.txt dari GitHub, pakai fallback:", err.message);
+    API_BASE = "/api"; // fallback ke local
+  }
+}
+
 function showNotif(type, title, msg) {
-  // type: 'error' | 'success' | 'warn'
   const iconMap = { error: 'fa-circle-xmark', success: 'fa-circle-check', warn: 'fa-triangle-exclamation' };
   document.getElementById('notif-icon').className   = `notif-icon ${type}`;
   document.getElementById('notif-icon-i').className = `fa-solid ${iconMap[type] || 'fa-circle-xmark'}`;
@@ -255,7 +270,7 @@ async function doLogin() {
   btn.querySelector('i').className = 'fa-solid fa-spinner fa-spin';
 
   try {
-    const res  = await fetch('/api/kontrol/login', {
+    const res  = await fetch(`${API_BASE}/kontrol/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ kode: val }),
@@ -285,6 +300,9 @@ async function doLogin() {
 document.getElementById('kode-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') doLogin();
 });
+
+// Load API URL saat halaman load
+window.addEventListener('load', loadApiUrl);
 </script>
 </body>
 </html>
