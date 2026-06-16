@@ -657,7 +657,7 @@
         </div>
         <div style="flex:1">
           <div class="role-name">Jasa Bug WhatsApp</div>
-          <div style="font-size:11px;color:var(--slate);margin-top:2px">Bug Nomer & Group — Proses Otomatis</div>
+          <div style="font-size:11px;color:var(--slate);margin-top:2px">Bug Nomer & Group</div>
         </div>
         <div class="role-price">Rp 4.000</div>
       </div>
@@ -1602,13 +1602,13 @@ async function openBugOrder() {
   if (senderRes.status === 'fulfilled' && senderRes.value.online) {
     _bugSenderOnline = true;
     sBox.className = 'bug-sender-status online';
-    sBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> Sender Online — Siap menerima order';
+    sBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> Sender Online';
     if (btnSaldo) btnSaldo.disabled = false;
     if (btnQris)  btnQris.disabled  = false;
   } else {
     _bugSenderOnline = false;
     sBox.className = 'bug-sender-status offline';
-    sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Sender Offline — Order tidak tersedia saat ini';
+    sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Sender Offline, Order Tidak Tersedia Saat Ini';
     // Tombol tetap disabled
   }
 }
