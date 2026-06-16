@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Login Kontrol Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
+    --dark: #0F172A; --slate: #64748B; --border: #E2E8F0;
+    --white: #FFFFFF; --bg: #F8FAFC; --red: #EF4444;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 24px 20px;
+  }
+
+  .page-wrap {
+    width: 100%; max-width: 400px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+
+  /* BANNER */
+  .banner {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    background: var(--dark);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+  }
+  .banner img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .banner-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(15,23,42,0.72) 100%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 18px 20px;
+  }
+  .banner-title {
+    font-size: 18px; font-weight: 800; color: #fff;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+    margin-bottom: 3px;
+  }
+  .banner-sub {
+    font-size: 11px; color: rgba(255,255,255,0.72);
+    font-weight: 500;
+  }
+  .banner-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: rgba(37,99,235,0.85); backdrop-filter: blur(6px);
+    color: #fff; font-size: 10px; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px;
+    display: flex; align-items: center; gap: 5px;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.4);
+  }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 22px 22px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .card-head {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+  }
+  .card-icon {
+    width: 44px; height: 44px; border-radius: 13px;
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: #fff; flex-shrink: 0;
+    box-shadow: 0 3px 12px rgba(37,99,235,0.35);
+  }
+  .card-head-text .card-title { font-size: 15px; font-weight: 800; }
+  .card-head-text .card-sub   { font-size: 11px; color: var(--slate); margin-top: 1px; }
+
+  .err {
+    background: #FEF2F2; border: 1px solid #FECACA;
+    border-radius: 10px; padding: 10px 13px;
+    font-size: 12px; color: var(--red); font-weight: 500;
+    display: none; align-items: center; gap: 8px; margin-bottom: 14px;
+  }
+  .err.show { display: flex; }
+
+  label { font-size: 11px; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.4px; display: block; margin-bottom: 7px; }
+
+  .input-wrap { position: relative; margin-bottom: 14px; }
+  .input-wrap i {
+    position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+    color: var(--slate); font-size: 13px; pointer-events: none;
+  }
+  .eye-toggle {
+    position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+    color: var(--slate); font-size: 13px; cursor: pointer;
+    pointer-events: all;
+  }
+  input {
+    width: 100%; padding: 12px 38px;
+    border: 1.5px solid var(--border); border-radius: 11px;
+    font-size: 14px; font-family: 'Inter', sans-serif;
+    color: var(--dark); background: var(--bg);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); background: #fff; }
+
+  .btn {
+    width: 100%; padding: 13px;
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
+    color: #fff; border: none; border-radius: 11px;
+    font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .back {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    margin-top: 14px; font-size: 12px; color: var(--slate);
+    text-decoration: none; font-weight: 500;
+  }
+  .back:hover { color: var(--blue); }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- BANNER -->
+  <div class="banner">
+    <img src="../image/kontrol.jpg" alt="Kontrol Device" onerror="this.style.display='none'"/>
+    <div class="banner-overlay">
+      <div class="banner-title">Kontrol Device</div>
+      <div class="banner-sub">Remote Control Perangkat kamu</div>
+    </div>
+    <div class="banner-badge"><i class="fa-solid fa-shield-halved"></i> Secure Access</div>
+  </div>
+
+  <!-- FORM -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+      <div class="card-head-text">
+        <div class="card-title">Masuk ke Kontroler</div>
+        <div class="card-sub">Verifikasi Kode Akses</div>
+      </div>
+    </div>
+
+    <div class="err" id="err-box">
+      <i class="fa-solid fa-circle-xmark"></i>
+      <span id="err-msg">Kode salah</span>
+    </div>
+
+    <label>Kode Akses</label>
+    <div class="input-wrap">
+      <i class="fa-solid fa-key"></i>
+      <input type="password" id="kode-input" placeholder="Masukkan kode akses..." autocomplete="off"/>
+      <i class="fa-solid fa-eye eye-toggle" id="eye-toggle" onclick="toggleEye()"></i>
+    </div>
+
+    <button class="btn" id="btn-login" onclick="doLogin()">
+      <i class="fa-solid fa-unlock"></i> Masuk
+    </button>
+
+    <a href="/dashboard.html" class="back"><i class="fa-solid fa-arrow-left"></i> Kembali Ke Dashboard</a>
+  </div>
+
+</div>
+
+<script>
+const ACCESS_CODE = 'ryuichi2025';
+
+function toggleEye() {
+  const inp = document.getElementById('kode-input');
+  const ico = document.getElementById('eye-toggle');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    ico.className = 'fa-solid fa-eye-slash eye-toggle';
+  } else {
+    inp.type = 'password';
+    ico.className = 'fa-solid fa-eye eye-toggle';
+  }
+}
+
+function doLogin() {
+  const val    = document.getElementById('kode-input').value.trim();
+  const errBox = document.getElementById('err-box');
+  const errMsg = document.getElementById('err-msg');
+  const btn    = document.getElementById('btn-login');
+  errBox.classList.remove('show');
+
+  if (!val) {
+    errMsg.textContent = 'Kode tidak boleh kosong';
+    errBox.classList.add('show');
+    return;
+  }
+  if (val !== ACCESS_CODE) {
+    errMsg.textContent = 'Kode akses salah, coba lagi';
+    errBox.classList.add('show');
+    document.getElementById('kode-input').value = '';
+    return;
+  }
+  sessionStorage.setItem('kontroler_auth', '1');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memuat...';
+  setTimeout(() => window.location.href = '/kontroler/kontrol.html', 400);
+}
+
+document.getElementById('kode-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+</script>
+</body>
+</html>

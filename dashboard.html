@@ -578,7 +578,6 @@
   .contact-item-icon.tt { background: #000000; }
   .contact-item-icon.ig { background: linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4); }
 
-  /* ─── Jadwal Sholat ─────────────────────────────────────── */
   .sholat-section {
     max-width: 900px; margin: 16px auto 0; padding: 0 20px;
   }
@@ -654,9 +653,7 @@
   .sholat-waktu { font-size: 13px; font-weight: 700; color: var(--blue); font-variant-numeric: tabular-nums; }
   .sholat-loading { text-align: center; padding: 24px 0; color: var(--slate); font-size: 12px; }
   .sholat-loading i { display: block; font-size: 20px; margin-bottom: 6px; animation: spin 1s linear infinite; }
-  /* ─────────────────────────────────────────────────────────── */
 
-  /* Sewa Bot floating button */
   .sewabot-fab {
     position: fixed; left: 16px; bottom: 84px;
     width: 48px; height: 48px; border-radius: 50%;
@@ -783,7 +780,19 @@
   </a>
 </div>
 
-<!-- ─── Jadwal Sholat ─── -->
+<div class="tools-banner" style="margin-top:10px;">
+  <a class="tools-card" href="/kontroler/login_kontrol.html" style="background: linear-gradient(135deg, #0F172A 0%, #3B1F6B 60%, #7C3AED 100%); box-shadow: 0 6px 24px rgba(124,58,237,0.35);">
+    <div class="tools-card-left">
+      <div class="tools-card-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+      <div class="tools-card-text">
+        <div class="tools-card-title">Kontrol Device</div>
+        <div class="tools-card-sub">Flashlight, Lock &amp; Unlock Device Jarak Jauh</div>
+      </div>
+    </div>
+    <i class="fa-solid fa-chevron-right tools-card-arrow"></i>
+  </a>
+</div>
+
 <div class="sholat-section">
   <div class="sholat-card">
     <div class="sholat-header">
@@ -905,6 +914,7 @@ async function loadApiBase() {
     }
   } catch { const c = localStorage.getItem("pg_api_base"); if (c) API_BASE = c.trim(); }
 }
+
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
 </script>
 <script>
