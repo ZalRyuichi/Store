@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kontrol Device</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
+    --dark: #0F172A; --slate: #64748B; --border: #E2E8F0;
+    --white: #FFFFFF; --bg: #F8FAFC;
+    --green: #10B981; --red: #EF4444; --amber: #F59E0B;
+    --radius: 14px;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; padding-bottom: 40px; }
+
+  /* NAV */
+  .top-nav {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 0 20px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .nav-left { display: flex; align-items: center; gap: 10px; }
+  .back-btn {
+    width: 34px; height: 34px; border-radius: 10px;
+    border: 1px solid var(--border); background: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--slate); font-size: 13px;
+    transition: all 0.15s;
+  }
+  .back-btn:hover { background: var(--bg); }
+  .nav-title { font-size: 15px; font-weight: 800; }
+  .nav-badge {
+    padding: 3px 9px; border-radius: 20px;
+    font-size: 10px; font-weight: 700;
+    background: var(--blue-l); color: var(--blue);
+  }
+
+  /* WRAP */
+  .wrap { max-width: 500px; margin: 0 auto; padding: 20px 20px 0; }
+
+  /* DEVICE LIST */
+  .section-title { font-size: 13px; font-weight: 700; color: var(--slate); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
+
+  .device-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .device-card {
+    background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 13px;
+    cursor: pointer; transition: all 0.15s;
+    text-decoration: none; color: var(--dark);
+  }
+  .device-card:hover, .device-card.selected {
+    border-color: var(--blue);
+    background: var(--blue-l);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+  .device-icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: #fff; flex-shrink: 0;
+  }
+  .device-info { flex: 1; min-width: 0; }
+  .device-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .device-id { font-size: 11px; color: var(--slate); }
+  .device-status {
+    padding: 3px 9px; border-radius: 20px;
+    font-size: 10px; font-weight: 700; display: flex; align-items: center; gap: 4px;
+    white-space: nowrap;
+  }
+  .device-status.online { background: #ECFDF5; color: #059669; }
+  .device-status.offline { background: #F1F5F9; color: var(--slate); }
+  .device-status .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  .empty-devices {
+    text-align: center; padding: 32px 20px;
+    background: var(--white); border: 1px dashed var(--border);
+    border-radius: 14px; color: var(--slate); font-size: 13px;
+  }
+  .empty-devices i { font-size: 28px; margin-bottom: 10px; display: block; opacity: 0.4; }
+
+  /* CONTROL PANEL */
+  .control-panel {
+    background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    display: none;
+  }
+  .control-panel.show { display: block; }
+
+  .cp-header {
+    background: linear-gradient(135deg, #0F172A, #1E3A5F, #2563EB);
+    padding: 16px 18px; color: #fff;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .cp-header-icon {
+    width: 40px; height: 40px; border-radius: 11px;
+    background: rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+  }
+  .cp-header-text .cp-name { font-size: 14px; font-weight: 700; }
+  .cp-header-text .cp-id { font-size: 11px; opacity: 0.75; margin-top: 1px; }
+  .cp-close {
+    margin-left: auto; background: rgba(255,255,255,0.15); border: none;
+    color: #fff; width: 30px; height: 30px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 12px; flex-shrink: 0;
+  }
+
+  .cp-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+
+  .ctrl-btn {
+    width: 100%; padding: 14px 16px;
+    border-radius: 12px; border: 1.5px solid var(--border);
+    background: var(--white); cursor: pointer;
+    display: flex; align-items: center; gap: 13px;
+    font-family: 'Inter', sans-serif; color: var(--dark);
+    transition: all 0.15s; text-align: left;
+  }
+  .ctrl-btn:active { transform: scale(0.98); }
+  .ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .ctrl-btn-icon {
+    width: 40px; height: 40px; border-radius: 11px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; color: #fff;
+  }
+  .ctrl-btn-icon.amber  { background: linear-gradient(135deg, #F59E0B, #D97706); }
+  .ctrl-btn-icon.red    { background: linear-gradient(135deg, #EF4444, #B91C1C); }
+  .ctrl-btn-icon.green  { background: linear-gradient(135deg, #10B981, #059669); }
+  .ctrl-btn-text .ctrl-title { font-size: 13px; font-weight: 700; }
+  .ctrl-btn-text .ctrl-sub   { font-size: 11px; color: var(--slate); margin-top: 1px; }
+  .ctrl-btn:hover { border-color: #CBD5E1; background: var(--bg); }
+
+  .ctrl-btn.amber-btn:hover { border-color: #FCD34D; background: #FFFBEB; }
+  .ctrl-btn.red-btn:hover   { border-color: #FCA5A5; background: #FEF2F2; }
+  .ctrl-btn.green-btn:hover { border-color: #6EE7B7; background: #ECFDF5; }
+
+  /* TOAST */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: #1E293B; color: #fff;
+    padding: 10px 18px; border-radius: 50px;
+    font-size: 13px; font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    transition: transform 0.3s ease, opacity 0.3s;
+    opacity: 0; z-index: 999; white-space: nowrap;
+    display: flex; align-items: center; gap: 8px;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  #toast.success i { color: var(--green); }
+  #toast.error   i { color: var(--red); }
+  #toast.info    i { color: #60A5FA; }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <div class="nav-left">
+    <button class="back-btn" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
+    <span class="nav-title">Kontrol Device</span>
+  </div>
+  <span class="nav-badge"><i class="fa-solid fa-shield-halved"></i> Secure</span>
+</div>
+
+<div class="wrap">
+
+  <!-- PILIH DEVICE -->
+  <div id="section-devices">
+    <div class="section-title">Pilih Device</div>
+    <div class="device-list" id="device-list">
+      <div class="empty-devices">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        Memuat daftar device...
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROL PANEL -->
+  <div class="control-panel" id="control-panel">
+    <div class="cp-header">
+      <div class="cp-header-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+      <div class="cp-header-text">
+        <div class="cp-name" id="cp-name">Device</div>
+        <div class="cp-id" id="cp-id">ID: —</div>
+      </div>
+      <button class="cp-close" onclick="closePanel()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cp-body">
+      <button class="ctrl-btn amber-btn" onclick="sendCmd('flashlight')">
+        <div class="ctrl-btn-icon amber"><i class="fa-solid fa-flashlight"></i></div>
+        <div class="ctrl-btn-text">
+          <div class="ctrl-title">Toggle Flashlight</div>
+          <div class="ctrl-sub">Nyalakan / matikan flashlight device</div>
+        </div>
+      </button>
+      <button class="ctrl-btn red-btn" onclick="sendCmd('lock')">
+        <div class="ctrl-btn-icon red"><i class="fa-solid fa-lock"></i></div>
+        <div class="ctrl-btn-text">
+          <div class="ctrl-title">Lock Device</div>
+          <div class="ctrl-sub">Kunci layar device dari jarak jauh</div>
+        </div>
+      </button>
+      <button class="ctrl-btn green-btn" onclick="sendCmd('unlock')">
+        <div class="ctrl-btn-icon green"><i class="fa-solid fa-lock-open"></i></div>
+        <div class="ctrl-btn-text">
+          <div class="ctrl-title">Unlock Device</div>
+          <div class="ctrl-sub">Buka kunci layar device dari jarak jauh</div>
+        </div>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg"></span></div>
+
+<script>
+// Cek auth
+if (!sessionStorage.getItem('kontroler_auth')) {
+  window.location.href = '/kontroler/login_kontrol.html';
+}
+
+let selectedDeviceId = null;
+
+// ── DUMMY DEVICES (ganti nanti dengan fetch API) ──────────────────────────────
+// Format: { id, name, status: 'online'|'offline' }
+const DEVICES = [
+  { id: 'device_001', name: 'Samsung Galaxy A55', status: 'online' },
+  { id: 'device_002', name: 'Xiaomi Redmi Note 12', status: 'offline' },
+];
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderDevices(devices) {
+  const list = document.getElementById('device-list');
+  if (!devices.length) {
+    list.innerHTML = `<div class="empty-devices"><i class="fa-solid fa-mobile"></i>Belum ada device terdaftar</div>`;
+    return;
+  }
+  list.innerHTML = devices.map(d => `
+    <div class="device-card" onclick="selectDevice('${d.id}', '${d.name}')">
+      <div class="device-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+      <div class="device-info">
+        <div class="device-name">${d.name}</div>
+        <div class="device-id">ID: ${d.id}</div>
+      </div>
+      <div class="device-status ${d.status}">
+        <span class="dot"></span> ${d.status === 'online' ? 'Online' : 'Offline'}
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectDevice(id, name) {
+  selectedDeviceId = id;
+
+  // Highlight selected
+  document.querySelectorAll('.device-card').forEach(c => c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+
+  // Update panel header
+  document.getElementById('cp-name').textContent = name;
+  document.getElementById('cp-id').textContent = 'ID: ' + id;
+
+  // Show panel
+  const panel = document.getElementById('control-panel');
+  panel.classList.add('show');
+  setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+}
+
+function closePanel() {
+  document.getElementById('control-panel').classList.remove('show');
+  document.querySelectorAll('.device-card').forEach(c => c.classList.remove('selected'));
+  selectedDeviceId = null;
+}
+
+async function sendCmd(cmd) {
+  if (!selectedDeviceId) return;
+  toast(`Mengirim perintah: ${cmd}...`, 'info');
+
+  // ── TODO: ganti dengan fetch ke API lu ───────────────────────────────────
+  // Contoh:
+  // const res = await fetch(`/api/device/${selectedDeviceId}/${cmd}`, { method: 'POST', headers: { ... } });
+  // const data = await res.json();
+  // if (data.ok) toast('Perintah berhasil dikirim', 'success');
+  // else toast(data.message || 'Gagal', 'error');
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // Dummy response
+  await new Promise(r => setTimeout(r, 800));
+  const labels = { flashlight: 'Flashlight di-toggle', lock: 'Device dikunci', unlock: 'Device dibuka' };
+  toast(labels[cmd] || 'Perintah dikirim', 'success');
+}
+
+let toastTimer;
+function toast(msg, type = 'info') {
+  const el  = document.getElementById('toast');
+  const ico = el.querySelector('i');
+  const sp  = document.getElementById('toast-msg');
+  const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
+  ico.className = `fa-solid ${icons[type] || icons.info}`;
+  sp.textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.className = '', 2500);
+}
+
+// Load devices (saat ini dari dummy, nanti ganti fetch API)
+renderDevices(DEVICES);
+</script>
+</body>
+</html>
