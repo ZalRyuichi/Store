@@ -213,21 +213,21 @@
 
 <script>
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
-let API_BASE = "/api"; // Default fallback
+let API_BASE = "";
 
-// Load API URL dari api.txt
-async function loadApiUrl() {
+async function loadApiBase() {
   try {
+    const cached = localStorage.getItem("pg_api_base");
+    if (cached) API_BASE = cached.trim();
     const r = await fetch(API_TXT_URL + "?t=" + Date.now());
-    if (!r.ok) throw new Error("Gagal load api.txt");
-    const url = (await r.text()).trim();
-    if (url) API_BASE = url;
-    console.log('API_BASE loaded:', API_BASE);
-  } catch (err) {
-    console.warn("Gagal load api.txt dari GitHub, pakai fallback:", err.message);
-    API_BASE = "/api"; // fallback ke local
-  }
+    if (r.ok) {
+      const u = (await r.text()).trim();
+      if (u && u.startsWith("http")) { API_BASE = u; localStorage.setItem("pg_api_base", u); }
+    }
+  } catch { const c = localStorage.getItem("pg_api_base"); if (c) API_BASE = c.trim(); }
 }
+
+function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
 
 function showNotif(type, title, msg) {
   const iconMap = { error: 'fa-circle-xmark', success: 'fa-circle-check', warn: 'fa-triangle-exclamation' };
@@ -270,20 +270,14 @@ async function doLogin() {
   btnText.textContent = 'Memverifikasi...';
   btn.querySelector('i').className = 'fa-solid fa-spinner fa-spin';
 
+  await loadApiBase();
+
   try {
-    console.log('Login ke:', `${API_BASE}/kontrol/login`);
-    
-    const res  = await fetch(`${API_BASE}/kontrol/login`, {
+    const res  = await fetch(apiUrl('/api/kontrol/login'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ kode: val }),
-      credentials: 'include',
     });
-
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-    }
-
     const data = await res.json();
 
     if (data.ok) {
@@ -299,8 +293,7 @@ async function doLogin() {
       btn.querySelector('i').className = 'fa-solid fa-unlock';
     }
   } catch (err) {
-    console.error('Login error:', err);
-    showNotif('error', 'Koneksi Gagal', `${err.message}\n\nPastikan API_BASE benar: ${API_BASE}`);
+    showNotif('error', 'Koneksi Gagal', 'Tidak bisa terhubung ke server. Coba lagi.');
     btn.disabled = false;
     btnText.textContent = 'Masuk';
     btn.querySelector('i').className = 'fa-solid fa-unlock';
@@ -310,9 +303,6 @@ async function doLogin() {
 document.getElementById('kode-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') doLogin();
 });
-
-// Load API URL saat halaman load
-window.addEventListener('load', loadApiUrl);
 </script>
 </body>
 </html>
