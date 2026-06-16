@@ -237,7 +237,6 @@ async function loadApiBase() {
 
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
 
-// Cek auth
 if (!sessionStorage.getItem('kontroler_auth')) {
   window.location.href = '/kontroler/login_kontrol.html';
 }
@@ -245,7 +244,6 @@ if (!sessionStorage.getItem('kontroler_auth')) {
 let selectedDeviceId = null;
 const token = sessionStorage.getItem('kontroler_token');
 
-// ── Load devices dari API ──────────────────────────────────────────────────
 async function loadDevices() {
   try {
     
@@ -275,7 +273,7 @@ async function loadDevices() {
     }
   } catch (err) {
     console.error("Gagal load devices:", err);
-    toast(`❌ Gagal load devices: ${err.message}`, 'error');
+    toast(`Gagal Load Devices: ${err.message}`, 'error');
     renderDevices([]);
   }
 }
