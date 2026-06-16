@@ -221,23 +221,21 @@
 
 <script>
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
-let API_BASE = "/api"; // Default fallback
+let API_BASE = "";
 
-// Load API URL dari api.txt
-async function loadApiUrl() {
+async function loadApiBase() {
   try {
+    const cached = localStorage.getItem("pg_api_base");
+    if (cached) API_BASE = cached.trim();
     const r = await fetch(API_TXT_URL + "?t=" + Date.now());
-    if (!r.ok) throw new Error("Gagal load api.txt");
-    const url = (await r.text()).trim();
-    if (url) API_BASE = url;
-    console.log('API_BASE loaded:', API_BASE);
-  } catch (err) {
-    console.warn("Gagal load api.txt, pakai fallback:", err.message);
-    API_BASE = "/api";
-  }
-  // Setelah load API URL, baru load devices
-  loadDevices();
+    if (r.ok) {
+      const u = (await r.text()).trim();
+      if (u && u.startsWith("http")) { API_BASE = u; localStorage.setItem("pg_api_base", u); }
+    }
+  } catch { const c = localStorage.getItem("pg_api_base"); if (c) API_BASE = c.trim(); }
 }
+
+function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
 
 // Cek auth
 if (!sessionStorage.getItem('kontroler_auth')) {
@@ -250,9 +248,9 @@ const token = sessionStorage.getItem('kontroler_token');
 // ── Load devices dari API ──────────────────────────────────────────────────
 async function loadDevices() {
   try {
-    console.log('Load devices dari:', `${API_BASE}/kontrol/devices`);
     
-    const res = await fetch(`${API_BASE}/kontrol/devices`, {
+    
+    const res = await fetch(apiUrl('/api/kontrol/devices'), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -330,9 +328,9 @@ async function sendCmd(cmd) {
   toast(`📤 Mengirim perintah: ${cmd}...`, 'info');
 
   try {
-    console.log('Send command:', `${API_BASE}/kontrol/device/${selectedDeviceId}/${cmd}`);
     
-    const res = await fetch(`${API_BASE}/kontrol/device/${selectedDeviceId}/${cmd}`, {
+    
+    const res = await fetch(apiUrl(`/api/kontrol/device/${selectedDeviceId}/${cmd}`), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -377,7 +375,7 @@ function toast(msg, type = 'info') {
 }
 
 // Load API URL & devices saat halaman load
-window.addEventListener('load', loadApiUrl);
+window.addEventListener('load', async () => { await loadApiBase(); loadDevices(); });
 </script>
 </body>
 </html>
