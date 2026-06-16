@@ -1710,7 +1710,7 @@ async function bugExecute() {
     const data = await res.json();
     if (data.ok) {
       closeBugOrder();
-      showNotif('success', 'Bug Terkirim!', `Bug ${_bugType.replace('_',' ')} berhasil dikirim ke target.`);
+      toast('Bug ' + _bugType.replace('_',' ') + ' berhasil dikirim ke target!', 'success');
     } else {
       toast(data.message || 'Gagal eksekusi', 'error');
     }
