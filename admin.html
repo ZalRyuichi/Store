@@ -252,6 +252,77 @@
   }
   .btn-row-delete:hover { background: #FEE2E2; }
   .btn-row-delete:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* GRANT SEWABOT MODAL */
+  .btn-grant {
+    padding: 5px 10px; background: #F0FDF4; color: #16A34A;
+    border: 1px solid #BBF7D0; border-radius: 8px;
+    font-size: 11px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .btn-grant:hover { background: #DCFCE7; }
+  .btn-grant-main {
+    padding: 7px 16px; background: var(--green); color: #fff;
+    border: none; border-radius: 10px; font-size: 13px; font-weight: 700;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+    display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s;
+    margin-bottom: 12px;
+  }
+  .btn-grant-main:hover { background: #059669; }
+
+  .grant-overlay {
+    position: fixed; inset: 0; background: rgba(15,23,42,0.5);
+    display: none; align-items: center; justify-content: center;
+    z-index: 200; backdrop-filter: blur(4px); padding: 20px;
+  }
+  .grant-overlay.show { display: flex; }
+  .grant-modal {
+    background: var(--white); border-radius: 16px;
+    width: 100%; max-width: 380px; padding: 24px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+    animation: slideUp 0.25s cubic-bezier(.16,1,.3,1);
+  }
+  @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .grant-title {
+    font-size: 15px; font-weight: 800; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .grant-title i { color: var(--green); }
+  .grant-sub { font-size: 12px; color: var(--slate); margin-bottom: 18px; }
+  .grant-field { margin-bottom: 14px; }
+  .grant-field label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--dark); }
+  .grant-field input, .grant-field select {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+    border-radius: var(--radius); font-size: 13px; font-family: 'Inter', sans-serif;
+    background: var(--bg); color: var(--dark); outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .grant-field input:focus, .grant-field select:focus {
+    border-color: var(--green); box-shadow: 0 0 0 3px rgba(16,185,129,0.1); background: var(--white);
+  }
+  .grant-field input:disabled { opacity: 0.5; cursor: not-allowed; }
+  .grant-btn-row { display: flex; gap: 8px; margin-top: 4px; }
+  .grant-btn-cancel {
+    flex: 1; padding: 11px; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--white);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    color: var(--slate); font-family: 'Inter', sans-serif;
+  }
+  .grant-btn-submit {
+    flex: 2; padding: 11px; border-radius: 10px; border: none;
+    background: var(--green); color: #fff;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .grant-btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .grant-result {
+    margin-top: 12px; padding: 10px 12px; border-radius: 10px;
+    font-size: 12px; font-weight: 600; display: none;
+  }
+  .grant-result.ok  { background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; }
+  .grant-result.err { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
 </style>
 </head>
 <body>
@@ -395,9 +466,14 @@
     <!-- SEWA BOT TAB -->
     <div id="tab-sewabot" style="display:none;">
       <div class="section-title"><i class="fa-brands fa-whatsapp"></i> Sesi Bot WhatsApp (Sewa Bot)</div>
-      <button class="btn-refresh" id="btn-refresh-sewabot" onclick="loadData()">
-        <i class="fa-solid fa-rotate-right"></i> Refresh
-      </button>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
+        <button class="btn-refresh" id="btn-refresh-sewabot" onclick="loadData()" style="margin-bottom:0">
+          <i class="fa-solid fa-rotate-right"></i> Refresh
+        </button>
+        <button class="btn-grant-main" onclick="openGrantModal()">
+          <i class="fa-solid fa-circle-plus"></i> Grant Sewa Bot ke User
+        </button>
+      </div>
       <div class="search-wrap">
         <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text" id="search-sewabot" placeholder="Cari user atau nomor..." oninput="renderSewabot()"/>
@@ -422,6 +498,41 @@
     </div>
 
   </main>
+</div>
+
+<!-- MODAL GRANT SEWA BOT -->
+<div class="grant-overlay" id="grant-overlay" onclick="if(event.target===this)closeGrantModal()">
+  <div class="grant-modal">
+    <div class="grant-title"><i class="fa-solid fa-circle-plus"></i> Grant Sewa Bot</div>
+    <div class="grant-sub">Tambahkan akses sewa bot ke user tertentu tanpa perlu bayar.</div>
+
+    <div class="grant-field">
+      <label>Username Target</label>
+      <input type="text" id="grant-username" placeholder="Ketik username user..." autocomplete="off"/>
+    </div>
+
+    <div class="grant-field">
+      <label>Tipe Durasi</label>
+      <select id="grant-type" onchange="onGrantTypeChange()">
+        <option value="days">Hari (custom)</option>
+        <option value="permanent">Permanen</option>
+      </select>
+    </div>
+
+    <div class="grant-field" id="grant-days-wrap">
+      <label>Jumlah Hari</label>
+      <input type="number" id="grant-days" placeholder="Contoh: 7" min="1" max="3650"/>
+    </div>
+
+    <div class="grant-result" id="grant-result"></div>
+
+    <div class="grant-btn-row">
+      <button class="grant-btn-cancel" onclick="closeGrantModal()">Batal</button>
+      <button class="grant-btn-submit" id="grant-btn-submit" onclick="submitGrant()">
+        <i class="fa-solid fa-paper-plane"></i> Grant Sekarang
+      </button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -653,6 +764,80 @@ async function deleteSewabotSession(sessionId, btn) {
     alert('Koneksi Gagal');
     btn.disabled = false; btn.innerHTML = original;
   }
+}
+
+// ---- GRANT SEWA BOT ----
+function openGrantModal() {
+  document.getElementById('grant-username').value = '';
+  document.getElementById('grant-days').value = '';
+  document.getElementById('grant-type').value = 'days';
+  document.getElementById('grant-days-wrap').style.display = '';
+  document.getElementById('grant-result').style.display = 'none';
+  document.getElementById('grant-result').className = 'grant-result';
+  document.getElementById('grant-btn-submit').disabled = false;
+  document.getElementById('grant-btn-submit').innerHTML = '<i class="fa-solid fa-paper-plane"></i> Grant Sekarang';
+  document.getElementById('grant-overlay').classList.add('show');
+  setTimeout(() => document.getElementById('grant-username').focus(), 100);
+}
+
+function closeGrantModal() {
+  document.getElementById('grant-overlay').classList.remove('show');
+}
+
+function onGrantTypeChange() {
+  const isPermanent = document.getElementById('grant-type').value === 'permanent';
+  document.getElementById('grant-days-wrap').style.display = isPermanent ? 'none' : '';
+  if (isPermanent) document.getElementById('grant-days').value = '';
+}
+
+async function submitGrant() {
+  const username  = document.getElementById('grant-username').value.trim();
+  const type      = document.getElementById('grant-type').value;
+  const days      = parseInt(document.getElementById('grant-days').value);
+  const permanent = type === 'permanent';
+  const resultEl  = document.getElementById('grant-result');
+  const btn       = document.getElementById('grant-btn-submit');
+
+  if (!username) return showGrantResult('error', 'Username tidak boleh kosong!');
+  if (!permanent && (!days || days < 1)) return showGrantResult('error', 'Isi jumlah hari minimal 1!');
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+
+  const TOKEN = localStorage.getItem('pg_token');
+  const H = { 'Content-Type': 'application/json', 'x-auth-token': TOKEN };
+
+  try {
+    const res  = await fetch(apiUrl('/api/admin/sewabot/grant'), {
+      method: 'POST', headers: H,
+      body: JSON.stringify({ username, days: permanent ? undefined : days, permanent })
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      const expInfo = permanent
+        ? 'Permanen'
+        : `Expired: ${new Date(data.expired_at).toLocaleString('id-ID')}`;
+      showGrantResult('ok', `✅ Berhasil! Sewa bot diberikan ke <b>${escHtml(username)}</b><br><span style="font-weight:400">${expInfo}</span>`);
+      btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Berhasil!';
+      loadData(); // refresh tabel
+    } else {
+      showGrantResult('error', data.message || 'Gagal memberikan sewa bot');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Grant Sekarang';
+    }
+  } catch {
+    showGrantResult('error', 'Koneksi gagal, coba lagi.');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Grant Sekarang';
+  }
+}
+
+function showGrantResult(type, html) {
+  const el = document.getElementById('grant-result');
+  el.className = `grant-result ${type}`;
+  el.innerHTML = html;
+  el.style.display = 'block';
 }
 
 // ---- INIT ----
