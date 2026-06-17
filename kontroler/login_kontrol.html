@@ -399,7 +399,6 @@ body::after {
 
 </div>
 
-<!-- MODAL NOTIF -->
 <div class="notif-overlay" id="notif-overlay">
   <div class="notif-box">
     <div class="notif-icon" id="notif-icon"><i id="notif-icon-i" class="fa-solid fa-circle-xmark"></i></div>
@@ -467,7 +466,7 @@ window.addEventListener('load', async function() {
         headers: { 'Authorization': 'Bearer ' + token } 
       });
       if (r.ok) {
-        location.replace('/dashboard.html');
+        location.replace('../kontroler/dashboard_ryuichi.html');
       } else {
         localStorage.removeItem('bp_token');
       }
@@ -492,7 +491,7 @@ async function doLogin() {
   const btnText = document.getElementById('btn-text');
 
   if (!user || !pass) {
-    showNotif('warn', 'Data Kosong', 'Mohon lengkapi semua field.');
+    showNotif('warn', 'Data Kosong', 'Mohon Lengkapi Semua Data.');
     return;
   }
 
@@ -514,7 +513,7 @@ async function doLogin() {
 
     const data = await res.json();
 
-    if (!res.ok) throw new Error(data.error || 'Login gagal');
+    if (!res.ok) throw new Error(data.error || 'Login Gagal');
 
     localStorage.setItem('bp_token', data.token);
     localStorage.setItem('bp_username', data.username);
@@ -523,11 +522,12 @@ async function doLogin() {
     localStorage.setItem('bp_expiredAt', data.expiredAt || '');
 
     showNotif('success', 'Selamat Datang', data.displayName || data.username);
-    setTimeout(() => location.replace('../kontroler/dashboard.html'), 1200);
+    setTimeout(() => location.replace('../kontroler/dashboard_ryuichi.html'), 1200);
   } catch (e) {
-    showNotif('error', 'Login Gagal', e.message || 'Username atau password salah.');
+    showNotif('error', 'Login Gagal', e.message || 'Username Atau Password Salah.');
+    
     btn.disabled = false;
-    btnText.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> LOGIN';
+    btnText.innerHTML = 'LOGIN';
   }
 }
 </script>
