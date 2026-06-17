@@ -241,7 +241,6 @@
 <div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg"></span></div>
 
 <script>
-// ── API BASE (sama persis kayak login_kontrol.html) ───────────────────────────
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
 let API_BASE = "";
 
@@ -258,7 +257,6 @@ async function loadApiBase() {
 }
 
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
-// ─────────────────────────────────────────────────────────────────────────────
 
 function getToken() { return sessionStorage.getItem('kontroler_token') || ''; }
 
