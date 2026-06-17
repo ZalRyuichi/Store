@@ -18,39 +18,52 @@
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 
 :root {
-  --bg:      #ffffff;
-  --bg2:     #f8fafc;
-  --s:       #f1f5f9;
-  --c:       #e2e8f0;
-  --c2:      #cbd5e1;
-  --b:       #94a3b8;
-  --b2:      #64748b;
-  --b3:      #475569;
-  --blue:    #3b82f6;
-  --blue2:   #2563eb;
-  --blue3:   #1d4ed8;
-  --cyan:    #06b6d4;
+  --bg:      #0a0a0a;
+  --bg2:     #111111;
+  --s:       #1a1a1a;
+  --c:       #2a2a2a;
+  --c2:      #333333;
+  --b:       #666666;
+  --b2:      #999999;
+  --b3:      #bbbbbb;
+  --silver:  #c0c0c0;
+  --silver2: #d8d8d8;
+  --silver3: #a8a8a8;
   --white:   #ffffff;
-  --dark:    #1e293b;
-  --silver:  #334155;
-  --silver2: #475569;
+  --dark:    #0a0a0a;
   --green:   #10b981;
   --red:     #ef4444;
   --amber:   #f59e0b;
-  --t:       #1e293b;
-  --t2:      #64748b;
-  --t3:      #94a3b8;
+  --t:       #ffffff;
+  --t2:      #c0c0c0;
+  --t3:      #666666;
   --mono:    'Inter', monospace;
   --head:    'Orbitron', sans-serif;
   --title:   'Rajdhani', sans-serif;
   --body:    'Inter', sans-serif;
 }
 
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes shimmerBg {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(192,192,192,.15), 0 0 40px rgba(192,192,192,.05); }
+  50%       { box-shadow: 0 0 20px rgba(192,192,192,.3),  0 0 60px rgba(192,192,192,.12); }
+}
+
 html { scroll-behavior:smooth; }
 body {
-  background:linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
-  color:var(--t);
-  font-family:var(--body); min-height:100vh;
+  background: #0a0a0a;
+  color: var(--t);
+  font-family: var(--body); min-height:100vh;
   font-size:14px; line-height:1.5;
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
@@ -58,11 +71,26 @@ body {
   padding:20px;
 }
 
+/* Animated silver particle background */
 body::before {
   content:''; pointer-events:none; position:fixed;
-  top:-30vh; left:50%; transform:translateX(-50%);
-  width:100vw; height:80vh; z-index:0; border-radius:50%;
-  background:radial-gradient(ellipse,rgba(59,130,246,.08) 0%,rgba(6,182,212,.04) 40%,transparent 70%);
+  inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(192,192,192,.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(255,255,255,.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(160,160,160,.03) 0%, transparent 70%);
+}
+
+body::after {
+  content:''; pointer-events:none; position:fixed;
+  inset:0; z-index:0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,255,255,.008) 2px,
+    rgba(255,255,255,.008) 4px
+  );
 }
 
 .wrap {
@@ -72,15 +100,16 @@ body::before {
 
 .banner-strip {
   margin:0 0 16px; border-radius:20px;
-  overflow:hidden; background:var(--white);
+  overflow:hidden;
   position:relative;
-  box-shadow: 0 4px 16px rgba(59,130,246,.12);
+  border: 1px solid rgba(192,192,192,.2);
+  box-shadow: 0 4px 20px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.05);
 }
 
 .banner-inner {
   position:relative; z-index:1;
   border-radius:20px; overflow:hidden;
-  background:linear-gradient(135deg, #dbeafe 0%, #e0f2fe 100%);
+  background:linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
   aspect-ratio: 16/9;
   display:flex; align-items:center; justify-content:center;
   min-height:140px;
@@ -92,6 +121,7 @@ body::before {
   object-fit:cover;
 }
 
+/* Shimmer title text */
 .welcome-text {
   text-align:center;
   padding:16px 14px;
@@ -101,19 +131,37 @@ body::before {
   letter-spacing:1px;
 }
 
-.wt-white { color:var(--t); }
-.wt-blue { color:var(--blue2); }
+.wt-white {
+  background: linear-gradient(
+    90deg,
+    #888888 0%,
+    #c0c0c0 20%,
+    #ffffff 40%,
+    #e8e8e8 50%,
+    #ffffff 60%,
+    #c0c0c0 80%,
+    #888888 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
 
 .login-section {
   padding:0 0 14px;
 }
 
 .login-card {
-  background:var(--white);
+  background: linear-gradient(145deg, #141414 0%, #0e0e0e 100%);
   border-radius:16px;
   padding:24px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.06);
-  border: 1px solid var(--c);
+  box-shadow:
+    0 4px 20px rgba(0,0,0,.8),
+    inset 0 1px 0 rgba(255,255,255,.06);
+  border: 1px solid rgba(192,192,192,.15);
+  animation: glowPulse 4s ease-in-out infinite;
 }
 
 .field {
@@ -136,24 +184,24 @@ body::before {
 .field-icon {
   position:absolute; left:12px; top:50%;
   transform:translateY(-50%);
-  opacity:.4; flex-shrink:0; color:var(--b2);
+  opacity:.4; flex-shrink:0; color:var(--silver3);
 }
 
 .eye-toggle {
   position:absolute; right:12px; top:50%;
   transform:translateY(-50%);
   opacity:.5; cursor:pointer; flex-shrink:0;
-  color:var(--b2); transition:opacity .2s;
+  color:var(--silver3); transition:opacity .2s;
 }
 
-.eye-toggle:hover { opacity:.8; }
+.eye-toggle:hover { opacity:.9; color:var(--white); }
 
 .field-input {
   width:100%; padding:10px 12px 10px 36px;
-  border:1px solid var(--c);
+  border:1px solid rgba(192,192,192,.15);
   border-radius:10px;
-  background:var(--bg2);
-  color:var(--t); font-family:var(--body);
+  background: rgba(255,255,255,.04);
+  color: var(--white); font-family:var(--body);
   font-size:13px;
   transition: all .2s;
 }
@@ -162,42 +210,55 @@ body::before {
 
 .field-input:focus {
   outline:none;
-  border-color:var(--blue);
-  background:var(--white);
-  box-shadow: 0 0 0 3px rgba(59,130,246,.08);
+  border-color: rgba(255,255,255,.4);
+  background: rgba(255,255,255,.07);
+  box-shadow: 0 0 0 3px rgba(192,192,192,.08), 0 0 12px rgba(255,255,255,.05);
 }
 
+/* Silver shimmer login button */
 .login-btn {
   width:100%; padding:11px 14px;
-  background:linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%);
-  color:var(--white);
+  background: linear-gradient(
+    90deg,
+    #4a4a4a 0%,
+    #888888 20%,
+    #c0c0c0 40%,
+    #e8e8e8 50%,
+    #c0c0c0 60%,
+    #888888 80%,
+    #4a4a4a 100%
+  );
+  background-size: 200% auto;
+  color: #0a0a0a;
   border:none; border-radius:10px;
   font-family:var(--mono); font-size:11px; font-weight:700;
   letter-spacing:1.5px; text-transform:uppercase;
   cursor:pointer; transition: all .3s;
   display:flex; align-items:center; justify-content:center; gap:8px;
-  box-shadow: 0 4px 12px rgba(59,130,246,.3);
+  box-shadow: 0 4px 16px rgba(0,0,0,.5), 0 0 20px rgba(192,192,192,.15);
+  animation: shimmer 2.5s linear infinite;
 }
 
 .login-btn:hover {
   transform:translateY(-2px);
-  box-shadow: 0 6px 16px rgba(59,130,246,.4);
+  box-shadow: 0 6px 24px rgba(0,0,0,.6), 0 0 30px rgba(255,255,255,.2);
 }
 
-.login-btn:active {
-  transform:translateY(0);
-}
+.login-btn:active { transform:translateY(0); }
 
 .login-btn:disabled {
-  opacity:.7;
+  opacity:.5;
   cursor:not-allowed;
   transform:none;
+  animation:none;
+  background: #333333;
+  color: #666666;
 }
 
 .spin {
   display:inline-block; width:12px; height:12px;
-  border:2px solid rgba(255,255,255,.3);
-  border-radius:50%; border-top-color:white;
+  border:2px solid rgba(0,0,0,.3);
+  border-radius:50%; border-top-color:#0a0a0a;
   animation:spin .8s linear infinite;
 }
 
@@ -206,9 +267,9 @@ body::before {
 /* MODAL NOTIF */
 .notif-overlay {
   position:fixed; inset:0;
-  background:rgba(15,23,42,.5);
+  background:rgba(0,0,0,.75);
   display:none; align-items:center; justify-content:center;
-  z-index:200; backdrop-filter:blur(4px);
+  z-index:200; backdrop-filter:blur(6px);
   padding:20px;
 }
 
@@ -220,11 +281,13 @@ body::before {
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
 .notif-box {
-  background:var(--white); border-radius:20px;
+  background: linear-gradient(145deg, #141414 0%, #0e0e0e 100%);
+  border:1px solid rgba(192,192,192,.2);
+  border-radius:20px;
   width:100%; max-width:340px;
   padding:28px 24px 22px;
   text-align:center;
-  box-shadow: 0 20px 60px rgba(0,0,0,.18);
+  box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 30px rgba(192,192,192,.08);
   animation:popIn .22s ease;
 }
 
@@ -239,17 +302,23 @@ body::before {
   font-size:24px; margin:0 auto 14px;
 }
 
-.notif-icon.error { background:#FEF2F2; color:var(--red); }
-.notif-icon.success { background:#F0FDF4; color:#16A34A; }
-.notif-icon.warn { background:#FFFBEB; color:#D97706; }
+.notif-icon.error   { background:rgba(239,68,68,.15);  color:#ef4444; border:1px solid rgba(239,68,68,.3); }
+.notif-icon.success { background:rgba(192,192,192,.12); color:#e0e0e0; border:1px solid rgba(192,192,192,.3); }
+.notif-icon.warn    { background:rgba(245,158,11,.12);  color:#f59e0b; border:1px solid rgba(245,158,11,.3); }
 
 .notif-title {
-  font-size:15px; font-weight:800; color:var(--t);
+  font-size:15px; font-weight:800;
+  background: linear-gradient(90deg, #c0c0c0, #ffffff, #c0c0c0);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 2.5s linear infinite;
   margin-bottom:6px; font-family:var(--head);
 }
 
 .notif-msg {
-  font-size:12.5px; color:var(--t2);
+  font-size:12.5px; color:var(--b2);
   line-height:1.6; margin-bottom:20px;
 }
 
@@ -257,13 +326,24 @@ body::before {
   width:100%; padding:12px;
   border:none; border-radius:11px;
   font-size:14px; font-weight:700; font-family:var(--body);
-  cursor:pointer; transition:opacity .2s;
+  cursor:pointer; transition:all .2s;
 }
 
-.notif-ok.error { background:#FEF2F2; color:var(--red); border:1px solid #FECACA; }
-.notif-ok.success { background:linear-gradient(135deg, #2563EB, #1D4ED8); color:#fff; }
-.notif-ok.warn { background:#FFFBEB; color:#D97706; border:1px solid #FDE68A; }
-.notif-ok:hover { opacity:.85; }
+.notif-ok.error {
+  background:rgba(239,68,68,.12); color:#ef4444;
+  border:1px solid rgba(239,68,68,.3);
+}
+.notif-ok.success {
+  background: linear-gradient(90deg, #4a4a4a, #c0c0c0, #ffffff, #c0c0c0, #4a4a4a);
+  background-size: 200% auto;
+  color: #0a0a0a;
+  animation: shimmer 2s linear infinite;
+}
+.notif-ok.warn {
+  background:rgba(245,158,11,.12); color:#f59e0b;
+  border:1px solid rgba(245,158,11,.3);
+}
+.notif-ok:hover { opacity:.85; transform:translateY(-1px); }
 </style>
 </head>
 <body>
@@ -272,8 +352,8 @@ body::before {
 
   <div class="banner-strip">
     <div class="banner-inner">
-      <img class="banner-img" src="../image/welcome.jpg" alt="Banner"
-           onerror="this.style.background='linear-gradient(135deg, #dbeafe 0%, #e0f2fe 100%)'">
+      <img class="banner-img" src="../image/login_ryuichi.jpg" alt="Banner"
+           onerror="this.style.background='linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%)'">
     </div>
   </div>
 
