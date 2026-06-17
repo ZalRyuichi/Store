@@ -426,7 +426,7 @@ body::after {
 }
 .hmenu-avatar {
   width:42px; height:42px; border-radius:12px; flex-shrink:0;
-  background:linear-gradient(135deg,rgba(192,192,192,.25),rgba(96,165,250,.1));
+  background:linear-gradient(135deg,rgba(192,192,192,.25),rgba(192,192,192,.1));
   border:1.5px solid rgba(192,192,192,.25);
   display:flex; align-items:center; justify-content:center;
   color:#d8d8d8;
@@ -566,14 +566,14 @@ body::after {
     transparent 30%,
     rgba(192,192,192,0)   35%,
     rgba(192,192,192,.5)  42%,
-    rgba(96,165,250,1)   50%,
+    rgba(192,192,192,1)   50%,
     rgba(192,192,192,.5)  58%,
     rgba(192,192,192,0)   65%,
     transparent 65%,
     transparent 80%,
     rgba(192,192,192,0)   83%,
     rgba(192,192,192,.25) 87%,
-    rgba(96,165,250,.6)  90%,
+    rgba(192,192,192,.6)  90%,
     rgba(192,192,192,.25) 93%,
     rgba(192,192,192,0)   97%,
     transparent 100%
@@ -589,7 +589,7 @@ body::after {
     transparent 0%,
     transparent 30%,
     rgba(192,192,192,0)  40%,
-    rgba(96,165,250,.3) 50%,
+    rgba(192,192,192,.3) 50%,
     rgba(192,192,192,0)  60%,
     transparent 60%,
     transparent 100%
@@ -645,7 +645,7 @@ body::after {
 .acct-icon.role-icon-developer { background:rgba(248,113,113,.07); border:1px solid rgba(248,113,113,.15); color:#f87171; }
 .acct-icon.role-icon-reseller { background:rgba(160,160,160,.07); border:1px solid rgba(160,160,160,.15); color:#a855f7; }
 .acct-text { min-width:0; }
-.acct-label { font-family:var(--mono); font-size:7px; letter-spacing:2.5px; color:rgba(96,165,250,.25); text-transform:uppercase; margin-bottom:3px; }
+.acct-label { font-family:var(--mono); font-size:7px; letter-spacing:2.5px; color:rgba(192,192,192,.25); text-transform:uppercase; margin-bottom:3px; }
 .acct-val { font-family:var(--mono); font-size:11px; font-weight:700; color:var(--silver2); letter-spacing:.3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .acct-val.role-owner { color:#fbbf24; }
 .acct-val.role-member { color:var(--silver2); }
@@ -658,7 +658,7 @@ body::after {
   display:none; align-items:center; gap:10px;
   margin:0 14px 0; padding:12px 14px; border-radius:13px;
   background:var(--c); border:1px solid var(--b);
-  color:rgba(96,165,250,.4); font-family:var(--mono);
+  color:rgba(192,192,192,.4); font-family:var(--mono);
   font-size:7px; letter-spacing:2.5px; text-transform:uppercase;
   cursor:pointer; transition:all .2s; width:calc(100% - 28px);
   justify-content:flex-start; position:relative; overflow:hidden;
@@ -670,7 +670,7 @@ body::after {
 .owner-fab:hover { border-color:rgba(192,192,192,.25); color:var(--silver2); background:var(--c2); box-shadow:0 0 20px rgba(192,192,192,.05); }
 .owner-fab .fab-icon { width:32px; height:32px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(192,192,192,.03); border:1px solid rgba(192,192,192,.14); color:var(--silver2); }
 .owner-fab .fab-label { display:flex; flex-direction:column; gap:3px; }
-.owner-fab .fab-label-top { font-size:7px; letter-spacing:2.5px; color:rgba(96,165,250,.25); }
+.owner-fab .fab-label-top { font-size:7px; letter-spacing:2.5px; color:rgba(192,192,192,.25); }
 .owner-fab .fab-label-main { font-size:11px; font-weight:700; color:var(--silver2); letter-spacing:.3px; }
 .owner-fab.visible { display:flex; }
 
@@ -737,7 +737,7 @@ body::after {
   width:42px; height:42px; border-radius:12px;
   background:rgba(192,192,192,.07); border:1px solid rgba(192,192,192,.15);
   display:flex; align-items:center; justify-content:center;
-  color:rgba(96,165,250,.5);
+  color:rgba(192,192,192,.5);
 }
 .dcard-avatar.offline-av { background:rgba(248,113,113,.05); border-color:rgba(248,113,113,.12); color:rgba(248,113,113,.3); }
 .dcard-status-ring {
@@ -806,7 +806,7 @@ body::after {
 
 /* Select hint */
 .select-hint { display:flex; align-items:center; justify-content:center; gap:6px; padding:8px 14px; border-top:1px solid var(--b); font-family:var(--mono); font-size:8px; color:var(--t3); letter-spacing:.5px; }
-.select-hint.sel-active { color:rgba(96,165,250,.6); border-color:rgba(192,192,192,.1); background:rgba(192,192,192,.03); }
+.select-hint.sel-active { color:rgba(192,192,192,.6); border-color:rgba(192,192,192,.1); background:rgba(192,192,192,.03); }
 
 /* ── Tabs ── */
 .device-tabs {
@@ -871,7 +871,7 @@ body::after {
   content:''; position:absolute; z-index:1;
   top:-20px; right:60px;
   width:2px; height:200%;
-  background:linear-gradient(to bottom, transparent, rgba(192,192,192,.25), rgba(96,165,250,.4), rgba(192,192,192,.1), transparent);
+  background:linear-gradient(to bottom, transparent, rgba(192,192,192,.25), rgba(192,192,192,.4), rgba(192,192,192,.1), transparent);
   transform:rotate(20deg); pointer-events:none;
 }
 
@@ -923,7 +923,7 @@ body::after {
 .cbg-label {
   font-family:var(--mono); font-size:8px; font-weight:700;
   letter-spacing:3px; text-transform:uppercase;
-  color:rgba(96,165,250,.45); margin-bottom:5px;
+  color:rgba(192,192,192,.45); margin-bottom:5px;
 }
 .cbg-devname {
   font-family:var(--head); font-size:17px; font-weight:700;
@@ -936,7 +936,7 @@ body::after {
 }
 .cbg-devid {
   font-family:var(--mono); font-size:9px;
-  color:rgba(96,165,250,.4); letter-spacing:1px; margin-top:4px;
+  color:rgba(192,192,192,.4); letter-spacing:1px; margin-top:4px;
 }
 
 /* status pill inside banner */
@@ -960,7 +960,7 @@ body::after {
 /* ── Decorative scan line ── */
 .cbg-scan {
   position:absolute; left:0; right:0; height:1px; z-index:3; pointer-events:none;
-  background:linear-gradient(90deg, transparent 0%, rgba(192,192,192,.0) 10%, rgba(96,165,250,.7) 50%, rgba(192,192,192,.0) 90%, transparent 100%);
+  background:linear-gradient(90deg, transparent 0%, rgba(192,192,192,.0) 10%, rgba(192,192,192,.7) 50%, rgba(192,192,192,.0) 90%, transparent 100%);
   animation:scanMove 4s linear infinite;
 }
 @keyframes scanMove {
@@ -974,8 +974,8 @@ body::after {
 .cbg-corner-tr {
   position:absolute; top:10px; right:10px; z-index:4; pointer-events:none;
   width:22px; height:22px;
-  border-top:2px solid rgba(96,165,250,.4);
-  border-right:2px solid rgba(96,165,250,.4);
+  border-top:2px solid rgba(192,192,192,.4);
+  border-right:2px solid rgba(192,192,192,.4);
   border-radius:0 5px 0 0;
 }
 /* corner deco bottom-left */
@@ -1020,14 +1020,14 @@ body::after {
   background:linear-gradient(135deg,rgba(255,255,255,.06),transparent);
 }
 .ctrl-back-btn:hover {
-  border-color:rgba(96,165,250,.5); background:rgba(192,192,192,.15);
+  border-color:rgba(192,192,192,.5); background:rgba(192,192,192,.15);
   box-shadow:0 0 16px rgba(192,192,192,.12);
 }
 .ctrl-back-btn:active { transform:scale(.93); }
 
 .ctrl-device-icon {
   width:36px; height:36px; border-radius:10px; flex-shrink:0;
-  background:linear-gradient(135deg,rgba(192,192,192,.1),rgba(96,165,250,.06));
+  background:linear-gradient(135deg,rgba(192,192,192,.1),rgba(192,192,192,.06));
   border:1px solid rgba(192,192,192,.22);
   display:flex; align-items:center; justify-content:center; color:var(--silver2);
   box-shadow:0 0 12px rgba(192,192,192,.1);
@@ -1285,7 +1285,7 @@ body::after {
 .sw { position:relative; width:46px; height:26px; flex-shrink:0; }
 .sw input { opacity:0; width:0; height:0; position:absolute; }
 .sw-track { position:absolute; inset:0; border-radius:999px; background:rgba(192,192,192,.05); border:1px solid rgba(192,192,192,.1); cursor:pointer; transition:background .25s,border-color .25s,box-shadow .25s; }
-.sw-track::after { content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:rgba(96,165,250,.2); transition:left .2s,background .2s,box-shadow .2s; }
+.sw-track::after { content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:rgba(192,192,192,.2); transition:left .2s,background .2s,box-shadow .2s; }
 .sw input:checked + .sw-track { background:rgba(192,192,192,.1); border-color:rgba(192,192,192,.4); box-shadow:0 0 16px rgba(192,192,192,.1); }
 .sw input:checked + .sw-track::after { left:23px; background:linear-gradient(135deg,var(--silver2),var(--silver)); box-shadow:0 0 12px rgba(192,192,192,.7), 0 2px 8px rgba(0,0,0,.4); }
 
@@ -1436,7 +1436,7 @@ body::after {
 .cu-modal-close:hover { border-color:rgba(192,192,192,.25); color:var(--silver2); }
 .cu-modal-body { padding:18px 20px 20px; }
 .cu-field { margin-bottom:12px; }
-.cu-label { display:block; font-size:8px; letter-spacing:2px; color:rgba(96,165,250,.25); text-transform:uppercase; margin-bottom:5px; }
+.cu-label { display:block; font-size:8px; letter-spacing:2px; color:rgba(192,192,192,.25); text-transform:uppercase; margin-bottom:5px; }
 .cu-input { width:100%; background:var(--s); border:1px solid var(--b2); color:var(--t); font-family:var(--mono); font-size:12px; padding:9px 11px; border-radius:9px; outline:none; transition:border-color .2s, box-shadow .2s; letter-spacing:.3px; }
 .cu-input:focus { border-color:rgba(192,192,192,.3); box-shadow:0 0 0 2px rgba(192,192,192,.05); }
 .cu-input::placeholder { color:var(--t3); }
@@ -1460,7 +1460,7 @@ body::after {
 .cu-result-title { display:flex; align-items:center; gap:8px; font-family:var(--head); font-size:13px; letter-spacing:2px; color:#4ade80; }
 .cu-result-body { padding:16px 18px 18px; display:flex; flex-direction:column; gap:10px; }
 .cu-result-field { background:var(--s); border:1px solid var(--b2); border-radius:10px; padding:9px 12px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
-.cu-result-label { font-size:8px; letter-spacing:2px; color:rgba(96,165,250,.4); text-transform:uppercase; margin-bottom:3px; }
+.cu-result-label { font-size:8px; letter-spacing:2px; color:rgba(192,192,192,.4); text-transform:uppercase; margin-bottom:3px; }
 .cu-result-val { font-family:var(--mono); font-size:12px; color:var(--t); word-break:break-all; flex:1; }
 .cu-result-copy { flex-shrink:0; width:28px; height:28px; border-radius:7px; border:1px solid var(--b2); background:transparent; color:var(--t3); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; }
 .cu-result-copy:hover { border-color:rgba(192,192,192,.3); color:var(--silver2); }
@@ -1499,7 +1499,7 @@ body::after {
 .log-num { font-family:var(--mono); font-size:9px; color:var(--t3); min-width:22px; padding-top:2px; text-align:right; flex-shrink:0; }
 .log-body { flex:1; min-width:0; }
 .log-device { font-family:var(--body); font-weight:600; font-size:12px; color:var(--t); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.log-coords { font-family:var(--mono); font-size:10px; color:rgba(96,165,250,.4); margin-top:2px; }
+.log-coords { font-family:var(--mono); font-size:10px; color:rgba(192,192,192,.4); margin-top:2px; }
 .log-time   { font-family:var(--mono); font-size:9px; color:var(--t3); margin-top:2px; }
 .maps-btn { display:flex; align-items:center; gap:4px; padding:4px 9px; border-radius:7px; border:1px solid var(--b); background:var(--s); color:var(--t3); font-family:var(--mono); font-size:9px; text-decoration:none; transition:all .15s; white-space:nowrap; flex-shrink:0; }
 .maps-btn:hover { border-color:rgba(192,192,192,.25); color:var(--silver2); }
@@ -1826,18 +1826,18 @@ body::after {
         <!-- screen -->
         <rect x="275.5" y="18" width="37" height="62" rx="3.5" fill="url(#screenG)" stroke="rgba(192,192,192,.2)" stroke-width=".7"/>
         <!-- dynamic island -->
-        <rect x="286" y="12" width="16" height="3.5" rx="1.75" fill="rgba(192,192,192,.12)" stroke="rgba(96,165,250,.4)" stroke-width=".6"/>
+        <rect x="286" y="12" width="16" height="3.5" rx="1.75" fill="rgba(192,192,192,.12)" stroke="rgba(192,192,192,.4)" stroke-width=".6"/>
         <circle cx="294" cy="13.7" r="1.1" fill="rgba(147,197,253,.9)"/>
         <!-- home bar -->
-        <rect x="287" y="85" width="14" height="2" rx="1" fill="rgba(96,165,250,.3)"/>
+        <rect x="287" y="85" width="14" height="2" rx="1" fill="rgba(192,192,192,.3)"/>
         <!-- side buttons -->
-        <rect x="271.2" y="24" width="1.2" height="10" rx=".6" fill="rgba(96,165,250,.4)"/>
-        <rect x="271.2" y="37" width="1.2" height="8" rx=".6" fill="rgba(96,165,250,.3)"/>
-        <rect x="316.6" y="28" width="1.2" height="14" rx=".6" fill="rgba(96,165,250,.4)"/>
+        <rect x="271.2" y="24" width="1.2" height="10" rx=".6" fill="rgba(192,192,192,.4)"/>
+        <rect x="271.2" y="37" width="1.2" height="8" rx=".6" fill="rgba(192,192,192,.3)"/>
+        <rect x="316.6" y="28" width="1.2" height="14" rx=".6" fill="rgba(192,192,192,.4)"/>
         <!-- screen UI lines -->
-        <line x1="280" y1="28" x2="312" y2="28" stroke="rgba(96,165,250,.18)" stroke-width=".7" stroke-dasharray="3 5"/>
+        <line x1="280" y1="28" x2="312" y2="28" stroke="rgba(192,192,192,.18)" stroke-width=".7" stroke-dasharray="3 5"/>
         <line x1="280" y1="36" x2="302" y2="36" stroke="rgba(192,192,192,.13)" stroke-width=".6" stroke-dasharray="2 6"/>
-        <line x1="280" y1="44" x2="308" y2="44" stroke="rgba(96,165,250,.11)" stroke-width=".6" stroke-dasharray="4 4"/>
+        <line x1="280" y1="44" x2="308" y2="44" stroke="rgba(192,192,192,.11)" stroke-width=".6" stroke-dasharray="4 4"/>
         <!-- screen mini cards -->
         <rect x="280" y="51" width="14" height="10" rx="2" fill="rgba(192,192,192,.1)" stroke="rgba(192,192,192,.22)" stroke-width=".6"/>
         <rect x="298" y="51" width="14" height="10" rx="2" fill="rgba(192,192,192,.07)" stroke="rgba(192,192,192,.18)" stroke-width=".6"/>
@@ -6203,8 +6203,8 @@ function renderWifiLogResult(deviceId, data) {
   const netsHtml = savedNets.length ? savedNets.map((n, i) => {
     const isConn = n.status === 'CONNECTED'
     const statusColor = isConn ? '#c0c0c0' : n.status === 'SAVED' ? '#e0e0e0' : '#94a3b8'
-    const statusBg    = isConn ? 'rgba(52,211,153,.08)' : n.status === 'SAVED' ? 'rgba(96,165,250,.08)' : 'rgba(148,163,184,.06)'
-    const statusBd    = isConn ? 'rgba(52,211,153,.2)'  : n.status === 'SAVED' ? 'rgba(96,165,250,.2)'  : 'rgba(148,163,184,.15)'
+    const statusBg    = isConn ? 'rgba(52,211,153,.08)' : n.status === 'SAVED' ? 'rgba(192,192,192,.08)' : 'rgba(148,163,184,.06)'
+    const statusBd    = isConn ? 'rgba(52,211,153,.2)'  : n.status === 'SAVED' ? 'rgba(192,192,192,.2)'  : 'rgba(148,163,184,.15)'
     return `<div style="border-bottom:1px solid rgba(255,255,255,.04);padding:9px 0;display:flex;align-items:center;gap:8px;min-width:0">
       <div style="min-width:20px;text-align:right;font-size:9px;font-family:var(--font-mono);color:var(--t2);flex-shrink:0">${i+1}</div>
       <div style="flex:1;min-width:0;overflow:hidden">
