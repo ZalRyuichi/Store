@@ -1595,29 +1595,29 @@ body::after {
   <!-- Stats -->
   <div class="stats-row">
     <div class="stat-pill">
-      <div class="stat-orb gray">
+      <div class="stat-orb" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);color:rgba(248,113,113,.6)">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
         </svg>
       </div>
       <div class="stat-info">
-        <div class="stat-val" id="acct-username" style="font-size:12px;color:var(--silver2)">—</div>
+        <div class="stat-val" id="acct-username" style="font-size:12px;color:rgba(248,113,113,.75)">—</div>
         <div class="stat-lbl">USERNAME</div>
       </div>
     </div>
     <div class="stat-pill">
-      <div class="stat-orb gray" id="acct-role-icon">
+      <div class="stat-orb" id="acct-role-icon" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);color:rgba(248,113,113,.6)">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
       </div>
       <div class="stat-info">
-        <div class="stat-val" id="acct-role" style="font-size:12px">—</div>
+        <div class="stat-val" id="acct-role" style="font-size:12px;color:rgba(248,113,113,.75)">—</div>
         <div class="stat-lbl">ROLE</div>
       </div>
     </div>
     <div class="stat-pill">
-      <div class="stat-orb" id="acct-expired-icon" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.18);color:#f59e0b">
+      <div class="stat-orb" id="acct-expired-icon" style="background:rgba(251,191,36,.07);border:1px solid rgba(245,158,11,.28);color:#f97316">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
         </svg>
@@ -1628,7 +1628,7 @@ body::after {
       </div>
     </div>
     <div class="stat-pill">
-      <div class="stat-orb" style="background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.28);color:#10b981">
+      <div class="stat-orb" style="background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.22);color:#10b981">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>
         </svg>
@@ -1639,7 +1639,7 @@ body::after {
       </div>
     </div>
     <div class="stat-pill">
-      <div class="stat-orb" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.28);color:#ef4444">
+      <div class="stat-orb" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.16);color:#ef4444">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="1" y1="1" x2="23" y2="23"/>
           <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>
@@ -1656,14 +1656,14 @@ body::after {
       </div>
     </div>
     <div class="stat-pill">
-      <div class="stat-orb gray">
+      <div class="stat-orb" style="background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);color:#fbbf24">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/>
         </svg>
       </div>
       <div class="stat-info">
         <div class="stat-val" style="font-size:13px">
-          <span id="acct-online-badge" style="color:#c0c0c0">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> on </span><span id="acct-offline-badge" style="color:#f87171">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> off</span>
+          <span id="acct-online-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> on </span><span id="acct-offline-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> off</span>
         </div>
         <div class="stat-lbl">TOTAL DEVICE</div>
       </div>
@@ -7072,12 +7072,7 @@ function submitFakeBattery() {
     <span class="bnav-label">Home</span>
   </a>
 
-  <a class="bnav-item bnav-center" href="/fix_bug.html">
-    <div class="bnav-center-wrap">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(196,130,255,1)" xmlns="http://www.w3.org/2000/svg"><path d="M20 8h-2.81c-.45-.78-1.07-1.45-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5c-.49 0-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8zm-6 8h-4v-2h4v2zm0-4h-4v-2h4v2z"/></svg>
-    </div>
-    <div class="bnav-center-label">Bug</div>
-  </a>
+
 
   <!-- Tools -->
   <a class="bnav-item" href="/tools.html">
