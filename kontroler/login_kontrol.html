@@ -410,7 +410,7 @@ body::after {
 </div>
 
 <script>
-const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
+const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/ryuichi_api.txt";
 let API_BASE = "";
 
 async function loadApiBase() {
@@ -523,7 +523,7 @@ async function doLogin() {
     localStorage.setItem('bp_expiredAt', data.expiredAt || '');
 
     showNotif('success', 'Selamat Datang', data.displayName || data.username);
-    setTimeout(() => location.replace('/dashboard.html'), 1200);
+    setTimeout(() => location.replace('../kontroler/dashboard.html'), 1200);
   } catch (e) {
     showNotif('error', 'Login Gagal', e.message || 'Username atau password salah.');
     btn.disabled = false;
