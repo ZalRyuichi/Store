@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Splash - Ryuichi</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Rajdhani:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+:root {
+  --white:#ffffff;
+  --silver:#c0c0c0;
+  --t2:#999999;
+  --mono:'Inter', monospace;
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(192,192,192,.18), 0 0 44px rgba(192,192,192,.06); }
+  50%      { box-shadow: 0 0 22px rgba(192,192,192,.32), 0 0 64px rgba(192,192,192,.14); }
+}
+
+html, body {
+  width:100%; height:100%;
+  background:#000000;
+  color:var(--white);
+  font-family:var(--mono);
+  overflow:hidden;
+}
+
+body {
+  display:flex; align-items:center; justify-content:center;
+  min-height:100vh; padding:18px;
+}
+
+.splash-wrap {
+  position:relative;
+  width:100%;
+  max-width:380px;
+  aspect-ratio:9/16;
+  border-radius:22px;
+  padding:3px;
+  background:linear-gradient(
+    115deg,
+    #4a4a4a 0%,
+    #888888 20%,
+    #ffffff 40%,
+    #e8e8e8 50%,
+    #ffffff 60%,
+    #888888 80%,
+    #4a4a4a 100%
+  );
+  background-size:220% auto;
+  animation: shimmer 3.2s linear infinite, glowPulse 4s ease-in-out infinite;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.splash-inner {
+  width:100%; height:100%;
+  border-radius:20px;
+  overflow:hidden;
+  background:#000000;
+  position:relative;
+}
+
+.splash-inner video {
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+  background:#000000;
+}
+
+.skip-hint {
+  position:absolute;
+  bottom:14px; left:0; right:0;
+  text-align:center;
+  font-size:10.5px;
+  letter-spacing:1px;
+  color:rgba(255,255,255,.55);
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .25s;
+}
+
+.skip-hint.show { opacity:1; }
+</style>
+</head>
+<body>
+
+<div class="splash-wrap" id="tap-area">
+  <div class="splash-inner">
+    <video id="splash-video" src="video/splash_ryuichi.mp4" autoplay muted playsinline></video>
+    <div class="skip-hint" id="skip-hint">KETUK 2X UNTUK SKIP</div>
+  </div>
+</div>
+
+<script>
+const video    = document.getElementById('splash-video');
+const tapArea  = document.getElementById('tap-area');
+const skipHint = document.getElementById('skip-hint');
+
+let navigated = false;
+let lastTap = 0;
+
+function goDashboard() {
+  if (navigated) return;
+  navigated = true;
+  location.href = 'dashboard_ryuichi.html';
+}
+
+video.addEventListener('loadedmetadata', () => {
+  skipHint.classList.add('show');
+});
+
+video.addEventListener('ended', goDashboard);
+
+video.addEventListener('error', () => {
+  setTimeout(goDashboard, 1500);
+});
+
+function handleTap() {
+  const now = Date.now();
+  if (now - lastTap < 320) {
+    goDashboard();
+  }
+  lastTap = now;
+}
+
+tapArea.addEventListener('click', handleTap);
+tapArea.addEventListener('touchend', (e) => {
+  e.preventDefault();
+  handleTap();
+}, { passive:false });
+</script>
+</body>
+</html>
