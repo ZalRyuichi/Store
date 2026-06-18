@@ -375,6 +375,15 @@ body::after {
 .header-hamburger.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
 
 .header-title-center { font-family:'XYZTitle',sans-serif; font-size:28px; letter-spacing:3px; color:var(--white); }
+.header-refresh-btn {
+  width:36px; height:36px; border-radius:10px; border:1px solid rgba(192,192,192,.15);
+  background:rgba(192,192,192,.06); color:var(--silver); cursor:pointer;
+  display:flex; align-items:center; justify-content:center; transition:all .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.header-refresh-btn:active { background:rgba(192,192,192,.14); transform:scale(.92); }
+.header-refresh-btn.spinning svg { animation:spin-once .6s ease; }
+@keyframes spin-once { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 .header-title-center span { color:var(--white); }
 .header-title-center em { font-style:normal; color:var(--silver2); }
 
@@ -385,16 +394,6 @@ body::after {
   justify-content:center; color:var(--silver2); transition:all .2s;
 }
 .header-profile-btn:hover { border-color:rgba(192,192,192,.3); background:rgba(192,192,192,.1); }
-
-/* refresh btn */
-.header-refresh-btn {
-  width:36px; height:36px; border-radius:10px; border:1px solid rgba(192,192,192,.14);
-  background:rgba(192,192,192,.03); cursor:pointer; display:flex; align-items:center;
-  justify-content:center; color:var(--silver2); transition:all .2s;
-}
-.header-refresh-btn:hover { border-color:rgba(16,185,129,.4); background:rgba(16,185,129,.08); color:#10b981; }
-.header-refresh-btn.spinning svg { animation:spin-once .6s cubic-bezier(.4,0,.2,1) forwards; }
-@keyframes spin-once { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 
 /* hamburger dropdown */
 .hamburger-menu {
@@ -1592,7 +1591,7 @@ body::after {
     </button>
     <div class="header-title-center"></div>
     <button class="header-refresh-btn" id="refresh-btn" onclick="refreshDevices()" title="Refresh Devices">
-      <svg id="refresh-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
         <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
       </svg>
@@ -2442,28 +2441,6 @@ function backToSelect() {
   document.getElementById('screen-select').classList.remove('hidden')
   document.getElementById('screen-control').classList.remove('active')
   updateProtectionUI(false)
-}
-
-function refreshDevices() {
-  const btn = document.getElementById('refresh-btn')
-  if (btn) { btn.classList.add('spinning'); setTimeout(() => btn.classList.remove('spinning'), 650) }
-
-  fetch(apiUrl('/api/devices'), { headers: { 'Authorization': 'Bearer ' + _token } })
-    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json() })
-    .then(devices => {
-      allDevices = devices
-      document.getElementById('stat-online').textContent = devices.length
-      document.getElementById('tab-online-count').textContent = devices.length
-      const hoc = document.getElementById('header-online-count')
-      if (hoc) hoc.textContent = devices.length + ' ONLINE'
-      updateHmenuBadges(devices.length, _offlineCount)
-      renderDeviceList(devices)
-      loadOfflineDevices()
-      showToast('success', 'REFRESH OK', devices.length + ' device berhasil dimuat')
-    })
-    .catch(err => {
-      showToast('error', 'REFRESH GAGAL', 'Gagal memuat device: ' + err.message)
-    })
 }
 
 const socket = io(API_BASE || undefined)
@@ -4280,6 +4257,36 @@ function closeNotif() {
 }
 
 function toast(title, type='info', msg='') { showToast(type, title, msg) }
+
+async function refreshDevices() {
+  const btn = document.getElementById('refresh-btn')
+  if (!btn) return
+  btn.classList.add('spinning')
+  setTimeout(() => btn.classList.remove('spinning'), 650)
+
+  try {
+    const res = await fetch(apiUrl('/api/devices'), {
+      headers: { 'Authorization': 'Bearer ' + _token }
+    })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      showToast('error', 'REFRESH GAGAL', `HTTP ${res.status}: ${err.error || err.message || 'Server error'}`)
+      return
+    }
+    const devices = await res.json()
+    const list = Array.isArray(devices) ? devices : (devices.devices || [])
+    if (!list.length) {
+      showToast('warn', 'TIDAK ADA DEVICE', 'Belum ada device yang terhubung')
+      return
+    }
+    // Update UI — trigger render ulang kalau ada fungsi renderDevices/updateDeviceList
+    if (typeof renderDeviceList === 'function') renderDeviceList(list)
+    else if (typeof updateDeviceCards === 'function') updateDeviceCards(list)
+    showToast('success', 'REFRESH BERHASIL', `${list.length} device ditemukan`)
+  } catch (err) {
+    showToast('error', 'KONEKSI GAGAL', err.message || 'Tidak dapat terhubung ke server')
+  }
+}
 
 function startCam(deviceId, facing) {
   const modal    = document.getElementById('camModal')
