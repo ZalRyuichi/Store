@@ -2313,6 +2313,7 @@ setInterval(() => {
 
 window.addEventListener('DOMContentLoaded', async () => {
   await loadApiBase();
+  initSocket();
   const uEl = document.getElementById('acct-username')
   const rEl = document.getElementById('acct-role')
   const hmU = document.getElementById('hmenu-username')
@@ -2429,7 +2430,10 @@ function backToSelect() {
   updateProtectionUI(false)
 }
 
-const socket = io(API_BASE || undefined)
+let socket
+
+function initSocket() {
+  socket = io(API_BASE || undefined)
 
 socket.on('connect', () => {
   socket.emit('controller:join', { token: _token })
@@ -2593,6 +2597,7 @@ socket.on('device:status:broadcast', ({ deviceId, status }) => {
   const _origRender = window.renderDeviceList
   window._ensureStatusSub = ensureStatusSub
 })()
+} // end initSocket
 
 function renderDeviceList(devices) {
   const list  = document.getElementById('device-list')
