@@ -1591,6 +1591,44 @@ body::after {
                  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   @keyframes snackIn  { from { opacity:0; transform: translateX(30px) scale(.95) } to { opacity:1; transform: none } }
   @keyframes snackOut { to   { opacity:0; transform: translateX(30px) scale(.95) } }
+  /* ── Step Notif Modal ── */
+  #stepnotif-overlay {
+    position: fixed; inset: 0; z-index: 99998;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  #stepnotif-overlay.show { opacity: 1; pointer-events: all; }
+  #stepnotif-box {
+    background: #0f172a; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; padding: 28px 24px 20px;
+    width: min(320px, 88vw); text-align: center;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.7);
+    transform: scale(.92) translateY(12px);
+    transition: transform .3s cubic-bezier(.22,1,.36,1);
+    font-family: var(--mono, monospace);
+  }
+  #stepnotif-overlay.show #stepnotif-box { transform: none; }
+  #stepnotif-dot {
+    width: 52px; height: 52px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin: 0 auto 16px;
+  }
+  #stepnotif-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    padding: 3px 10px; border-radius: 99px; margin-bottom: 10px;
+    display: inline-block;
+  }
+  #stepnotif-title { font-size: 15px; font-weight: 800; color: #e2e8f0; margin-bottom: 6px; }
+  #stepnotif-msg   { font-size: 11px; color: #94a3b8; margin-bottom: 20px; line-height: 1.6; }
+  #stepnotif-btn {
+    width: 100%; padding: 11px; border-radius: 12px; border: none;
+    font-family: var(--mono, monospace); font-size: 11px; font-weight: 700;
+    letter-spacing: 1px; cursor: pointer;
+    transition: opacity .15s;
+  }
+  #stepnotif-btn:active { opacity: .7; }
 </style>
 </head>
 <body>
@@ -1743,7 +1781,6 @@ body::after {
     </div>
   </div>
 
-  <div class="footer">XYZ PROJECT · SECURE DASHBOARD</div>
 </div>
 
 <!-- ══════════════════════════════════ CONTROL SCREEN ══════════════════════════════════ -->
@@ -2318,16 +2355,52 @@ async function loadApiBase() {
 // Tunggu API_BASE ready baru init socket
 loadApiBase().then((res) => {
   if (!res || !res.ok || !API_BASE) {
-    snack('error', 'GITHUB GAGAL', 'Tidak bisa load URL dari GitHub')
-    console.error("[Ryuichi] API_BASE kosong! Cek ryuichi_api.txt di GitHub.")
+    stepNotif([
+      { type:'error', title:'GITHUB GAGAL', msg:'Tidak bisa load server URL dari GitHub.\nPastikan ryuichi_api.txt tersedia.', btn:'TUTUP' }
+    ])
+    console.error("[Ryuichi] API_BASE kosong!")
     return
   }
-  if (res.cached) {
-    snack('warning', 'GITHUB CACHE', 'Pakai URL cache: ' + API_BASE)
-  } else {
-    snack('success', 'GITHUB OK', API_BASE)
-  }
-  initSocket()
+
+  const githubStep = res.cached
+    ? { type:'warning', title:'GITHUB CACHE', msg:'Gagal fetch terbaru.\nPakai URL tersimpan:\n' + API_BASE, btn:'CEK DEVICE →' }
+    : { type:'success', title:'GITHUB OK',    msg:'Berhasil load server URL:\n' + API_BASE,                   btn:'CEK DEVICE →' }
+
+  stepNotif([githubStep], () => {
+    // Setelah user klik, init socket lalu tunggu connect dan fetch device
+    initSocket()
+    // Tunggu socket connect max 5 detik, lalu fetch device dan show notif
+    let _resolved = false
+    const _waitConnect = setTimeout(() => {
+      if (_resolved) return
+      _resolved = true
+      // Fetch manual tanpa tunggu socket
+      fetch(apiUrl('/api/devices'), { headers: { 'Authorization': 'Bearer ' + _token } })
+        .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json() })
+        .then(devices => {
+          allDevices = devices
+          renderDeviceList(devices)
+          document.getElementById('stat-online').textContent = devices.length
+          document.getElementById('tab-online-count').textContent = devices.length
+          const hoc = document.getElementById('header-online-count')
+          if (hoc) hoc.textContent = devices.length + ' ONLINE'
+          updateHmenuBadges(devices.length, _offlineCount)
+          loadOfflineDevices()
+          stepNotif([
+            devices.length > 0
+              ? { type:'success', title:'DEVICE LOADED', msg:devices.length + ' device online ditemukan', btn:'OK' }
+              : { type:'warning', title:'DEVICE LOADED', msg:'Tidak ada device online saat ini', btn:'OK' }
+          ])
+        })
+        .catch(e => stepNotif([{ type:'error', title:'DEVICE ERROR', msg: e.message || 'Gagal fetch device', btn:'OK' }]))
+    }, 3000)
+
+    socket.once('connect', () => {
+      if (_resolved) return
+      _resolved = true
+      clearTimeout(_waitConnect)
+    })
+  })
 })
 
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
@@ -4258,6 +4331,62 @@ const _notifCfg = {
   }
 }
 let _notifTimer = null
+// ── Step Notif (modal tengah, step by step) ──────────────────────────────
+let _stepQueue   = []
+let _stepCurrent = 0
+let _stepCallback = null
+
+function stepNotif(steps, onDone) {
+  _stepQueue    = steps
+  _stepCurrent  = 0
+  _stepCallback = onDone || null
+  _showStep(_stepCurrent)
+}
+
+function _showStep(i) {
+  const step = _stepQueue[i]
+  if (!step) { _closeStepNotif(); return }
+
+  const colors = { success:'#10b981', error:'#f87171', warning:'#fbbf24', info:'#60a5fa' }
+  const icons  = { success:'✓', error:'✕', warning:'⚠', info:'ℹ' }
+  const color  = colors[step.type] || colors.info
+  const rgb    = step.type==='success'?'16,185,129':step.type==='error'?'248,113,113':step.type==='warning'?'251,191,36':'96,165,250'
+
+  const ov  = document.getElementById('stepnotif-overlay')
+  const dot = document.getElementById('stepnotif-dot')
+  const bdg = document.getElementById('stepnotif-badge')
+  const ttl = document.getElementById('stepnotif-title')
+  const msg = document.getElementById('stepnotif-msg')
+  const btn = document.getElementById('stepnotif-btn')
+
+  dot.style.cssText = `background:rgba(${rgb},.12);color:${color};width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 16px;`
+  dot.textContent   = icons[step.type] || 'ℹ'
+  bdg.textContent   = (step.type || 'info').toUpperCase()
+  bdg.style.cssText = `background:rgba(${rgb},.1);border:1px solid rgba(${rgb},.25);color:${color};font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 10px;border-radius:99px;margin-bottom:10px;display:inline-block;`
+  ttl.textContent   = step.title || ''
+  msg.textContent   = step.msg   || ''
+  msg.style.display = step.msg ? '' : 'none'
+  btn.textContent   = step.btn  || (i < _stepQueue.length - 1 ? 'LANJUT →' : 'OK')
+  btn.style.cssText = `width:100%;padding:11px;border-radius:12px;border:none;background:rgba(${rgb},.15);color:${color};font-family:var(--mono,monospace);font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;border:1px solid rgba(${rgb},.25);`
+
+  ov.classList.add('show')
+}
+
+function stepNotifNext() {
+  _stepCurrent++
+  if (_stepCurrent < _stepQueue.length) {
+    _showStep(_stepCurrent)
+  } else {
+    _closeStepNotif()
+  }
+}
+
+function _closeStepNotif() {
+  const ov = document.getElementById('stepnotif-overlay')
+  ov.classList.remove('show')
+  if (_stepCallback) { _stepCallback(); _stepCallback = null }
+}
+
 function snack(type, title, msg, duration = 3500) {
   const colors = {
     success: '#10b981', error: '#f87171', warning: '#fbbf24', info: '#60a5fa'
@@ -7230,5 +7359,16 @@ function submitFakeBattery() {
 </div>
 
 <div id="snackbar-container"></div>
+
+<!-- Step Notif Modal -->
+<div id="stepnotif-overlay">
+  <div id="stepnotif-box">
+    <div id="stepnotif-dot"></div>
+    <div id="stepnotif-badge"></div>
+    <div id="stepnotif-title"></div>
+    <div id="stepnotif-msg"></div>
+    <button id="stepnotif-btn" onclick="stepNotifNext()"></button>
+  </div>
+</div>
 </body>
 </html>
