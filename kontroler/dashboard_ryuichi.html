@@ -2311,9 +2311,14 @@ setInterval(() => {
   }
 }, 30000)
 
+let socket
+
 window.addEventListener('DOMContentLoaded', async () => {
   await loadApiBase();
-  initSocket(); // socket diinit setelah API_BASE ready
+  // Init socket setelah API_BASE ready
+  const _socketUrl = API_BASE || undefined
+  console.log('[Socket] Connecting to:', _socketUrl || '(relative)')
+  socket = io(_socketUrl, { transports: ['websocket', 'polling'] })
   const uEl = document.getElementById('acct-username')
   const rEl = document.getElementById('acct-role')
   const hmU = document.getElementById('hmenu-username')
@@ -2430,13 +2435,8 @@ function backToSelect() {
   updateProtectionUI(false)
 }
 
-let socket  // diinit di DOMContentLoaded setelah API_BASE loaded
 
-function initSocket() {
-  if (socket) return  // jangan init 2x
-  const url = API_BASE || undefined
-  console.log('[Socket] Connecting to:', url || '(relative)')
-  socket = io(url, { transports: ['websocket', 'polling'] })
+
 
   socket.on('connect', () => {
   socket.emit('controller:join', { token: _token })
@@ -6432,7 +6432,6 @@ socket.on('device:photo', ({ deviceId, facing, image }) => {
   if (grid) prependCaptureThumb(grid, entry, deviceId)
 })
 
-} // end initSocket
 
 function openCaptureLog(deviceId) {
   const store = _captureStore[deviceId] || { photos: [] }
