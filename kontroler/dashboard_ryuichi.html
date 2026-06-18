@@ -1663,7 +1663,7 @@ body::after {
       </div>
       <div class="stat-info">
         <div class="stat-val" style="font-size:13px">
-          <span id="acct-online-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> on </span><span id="acct-offline-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> off</span>
+          <span id="acct-online-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> On </span><span id="acct-offline-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> Off</span>
         </div>
         <div class="stat-lbl">TOTAL DEVICE</div>
       </div>
@@ -2430,13 +2430,13 @@ function backToSelect() {
   updateProtectionUI(false)
 }
 
-let socket
+let socket = null
 
 function initSocket() {
+  if (socket) return
   socket = io(API_BASE || undefined)
-
-socket.on('connect', () => {
-  socket.emit('controller:join', { token: _token })
+  socket.on('connect', () => {
+    socket.emit('controller:join', { token: _token })
   fetch(apiUrl('/api/devices'), { headers: { 'Authorization': 'Bearer ' + _token } }).then(r => r.json()).then(devices => {
     allDevices = devices
     document.getElementById('stat-online').textContent = devices.length
