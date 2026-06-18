@@ -1632,7 +1632,6 @@ body::after {
 
   </div>
 
-  <div class="footer">XYZ PROJECT · SECURE DASHBOARD</div>
 </div>
 
 <!-- ══════════════════════════════════ CONTROL SCREEN ══════════════════════════════════ -->
@@ -2230,11 +2229,24 @@ window.addEventListener('DOMContentLoaded', async () => {
     const _stored = localStorage.getItem('selected_device_id')
     const _targetId = _qDevice || _stored
     if (_targetId) {
-      const _waitDevice = setInterval(() => {
-        const dev = allDevices.find(d => d.id === _targetId)
-        if (dev) { clearInterval(_waitDevice); selectDevice(_targetId) }
-      }, 400)
-      setTimeout(() => clearInterval(_waitDevice), 8000)
+      try {
+        const resp = await fetch(apiUrl('/api/device/' + encodeURIComponent(_targetId)), {
+          headers: { 'Authorization': 'Bearer ' + _token }
+        })
+        if (resp.ok) {
+          const device = await resp.json()
+          selectedDeviceId = _targetId
+          setTimeout(() => showControlScreen(device), 450)
+        }
+      } catch (e) {
+        console.error('Failed to load selected device:', e)
+        // Fallback: tunggu Socket.IO
+        const _waitDevice = setInterval(() => {
+          const dev = allDevices.find(d => d.id === _targetId)
+          if (dev) { clearInterval(_waitDevice); selectDevice(_targetId) }
+        }, 400)
+        setTimeout(() => clearInterval(_waitDevice), 8000)
+      }
     }
   }
   const uEl = document.getElementById('acct-username')
