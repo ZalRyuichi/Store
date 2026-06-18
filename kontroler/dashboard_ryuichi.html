@@ -2463,6 +2463,7 @@ let _devUpdateTimer = null
 let _pendingDevices  = null
 
 socket.on('devices:update', (devices) => {
+  console.log('[Socket] devices:update received:', devices.length, devices)
   _pendingDevices = devices
 
   const _prevIds = new Set((allDevices || []).map(d => d.id))
@@ -2683,7 +2684,11 @@ function renderOfflineList(devices) {
   const empty = document.getElementById('empty-state-offline')
   _offlineCount = devices.length
   document.getElementById('tab-offline-count').textContent = devices.length
-  document.getElementById('stat-total').textContent = devices.length
+  
+  // FIX: Total = online devices + offline devices
+  const totalDevices = (allDevices?.length || 0) + devices.length
+  document.getElementById('stat-total').textContent = totalDevices
+  
   updateHmenuBadges((window.allDevices||[]).length, devices.length)
   if (devices.length === 0) {
     list.innerHTML = ''; list.appendChild(empty); return
@@ -2832,12 +2837,17 @@ function makeSelectCard(d, isOnline) {
 }
 
 function selectDevice(id) {
+  console.log('[selectDevice] Selecting device ID:', id, 'allDevices:', allDevices)
   selectedDeviceId = id
   renderDeviceList(allDevices)
   const device = allDevices.find(d => d.id === id)
-  if (!device) return
-  toast('Device Selected', 'success', device.name)
-  setTimeout(() => showControlScreen(device), 450)
+  if (!device) {
+    console.error('[selectDevice] ❌ Device not found in allDevices with ID:', id)
+    toast('Error', 'error', 'Device tidak ditemukan')
+    return
+  }
+  console.log('[selectDevice] ✅ Device found:', device.name)
+  toast('✅ Device Terpilih', 'success', device.name + ' siap dikontrol')
 }
 
 function renderCtrlGrid(d) {
