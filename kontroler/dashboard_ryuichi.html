@@ -7045,13 +7045,13 @@ function refreshDevices() {
     if (hoc) hoc.textContent = devices.length + ' ONLINE'
     updateHmenuBadges(devices.length, _offlineCount)
     renderDeviceList(devices)
-    showRefreshToast('✓ ' + devices.length + ' device loaded', true)
+    showRefreshToast(' ' + devices.length + ' device loaded', true)
   })
   .catch(err => {
     const msg = err.name === 'TimeoutError'  ? 'Timeout — server tidak merespons'
               : err.name === 'TypeError'     ? 'Gagal konek ke server'
               : err.message || 'Unknown error'
-    showRefreshToast('✗ ' + msg, false)
+    showRefreshToast('X ' + msg, false)
   })
 }
 
