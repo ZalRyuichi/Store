@@ -1743,6 +1743,7 @@ body::after {
     </div>
   </div>
 
+  <div class="footer">XYZ PROJECT · SECURE DASHBOARD</div>
 </div>
 
 <!-- ══════════════════════════════════ CONTROL SCREEN ══════════════════════════════════ -->
@@ -2484,7 +2485,10 @@ function initSocket() {
   socket.on('connect', () => {
     socket.emit('controller:join', { token: _token })
     fetch(apiUrl('/api/devices'), { headers: { 'Authorization': 'Bearer ' + _token } })
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status)
+        return r.json()
+      })
       .then(devices => {
         allDevices = devices
         document.getElementById('stat-online').textContent = devices.length
@@ -2499,9 +2503,13 @@ function initSocket() {
           snack('warning', 'DEVICE LOADED', 'Tidak ada device online')
         }
       })
-      .catch(() => snack('error', 'DEVICE ERROR', 'Gagal fetch device'))
+      .catch(e => snack('error', 'DEVICE ERROR', e.message || 'Gagal fetch device'))
     loadOfflineDevices()
-})
+  })
+
+  socket.on('connect_error', (e) => {
+    snack('error', 'SOCKET ERROR', 'Gagal konek ke server: ' + (e.message || ''))
+  })
 
 let _devUpdateTimer = null
 let _pendingDevices  = null
