@@ -2297,7 +2297,7 @@ const _expiredAt   = localStorage.getItem('bp_expiredAt')
     const exp = new Date(_expiredAt)
     if (exp < new Date()) {
       localStorage.clear()
-      showToast('error', 'AKUN EXPIRED', 'Silakan hubungi admin.')
+      showToast('error', 'AKUN EXPIRED', 'Silakan Hubungi Admin.')
       setTimeout(() => location.replace('/index.html'), 2000)
     }
   }
@@ -2306,7 +2306,7 @@ const _expiredAt   = localStorage.getItem('bp_expiredAt')
 setInterval(() => {
   if (_expiredAt && new Date(_expiredAt) < new Date()) {
     localStorage.clear()
-    showToast('error', 'AKUN EXPIRED', 'Silakan hubungi admin.')
+    showToast('error', 'AKUN EXPIRED', 'Silakan Hubungi Admin.')
     setTimeout(() => location.replace('/index.html'), 2000)
   }
 }, 30000)
@@ -2450,6 +2450,13 @@ let _pendingDevices  = null
 
 socket.on('devices:update', (devices) => {
   _pendingDevices = devices
+
+  const _prevIds = new Set((allDevices || []).map(d => d.id))
+  devices.forEach(d => {
+    if (!_prevIds.has(d.id)) {
+      showToast('success', 'DEVICE TERHUBUNG', (d.name || d.id) + ' online')
+    }
+  })
 
   allDevices = devices
   document.getElementById('stat-online').textContent = devices.length
