@@ -1720,6 +1720,7 @@ body::after {
     </div>
   </div>
 
+  <div class="footer">XYZ PROJECT · SECURE DASHBOARD</div>
 </div>
 
 <!-- ══════════════════════════════════ CONTROL SCREEN ══════════════════════════════════ -->
@@ -2294,14 +2295,14 @@ async function loadApiBase() {
 // Tunggu API_BASE ready baru init socket
 loadApiBase().then((res) => {
   if (!res || !res.ok || !API_BASE) {
-    showToast('error', 'GITHUB GAGAL', 'Tidak bisa load server URL dari GitHub')
+    snack('error', 'GITHUB GAGAL', 'Tidak bisa load URL dari GitHub')
     console.error("[Ryuichi] API_BASE kosong! Cek ryuichi_api.txt di GitHub.")
     return
   }
   if (res.cached) {
-    showToast('warning', 'GITHUB CACHE', 'Pakai URL tersimpan: ' + API_BASE)
+    snack('warning', 'GITHUB CACHE', 'Pakai URL cache: ' + API_BASE)
   } else {
-    showToast('success', 'GITHUB OK', 'Server: ' + API_BASE)
+    snack('success', 'GITHUB OK', API_BASE)
   }
   initSocket()
 })
@@ -2471,12 +2472,12 @@ function initSocket() {
         updateHmenuBadges(devices.length, _offlineCount)
         renderDeviceList(devices)
         if (devices.length > 0) {
-          showToast('success', 'DEVICE LOADED', devices.length + ' device online ditemukan')
+          snack('success', 'DEVICE LOADED', devices.length + ' device online')
         } else {
-          showToast('warning', 'DEVICE LOADED', 'Tidak ada device online saat ini')
+          snack('warning', 'DEVICE LOADED', 'Tidak ada device online')
         }
       })
-      .catch(() => showToast('error', 'DEVICE ERROR', 'Gagal fetch daftar device'))
+      .catch(() => snack('error', 'DEVICE ERROR', 'Gagal fetch device'))
     loadOfflineDevices()
 })
 
@@ -4227,6 +4228,30 @@ const _notifCfg = {
   }
 }
 let _notifTimer = null
+function snack(type, title, msg, duration = 3500) {
+  const colors = {
+    success: '#10b981', error: '#f87171', warning: '#fbbf24', info: '#60a5fa'
+  }
+  const color = colors[type] || colors.info
+  const container = document.getElementById('snackbar-container')
+  if (!container) return
+
+  const el = document.createElement('div')
+  el.className = 'snack'
+  el.innerHTML = `
+    <div class="snack-dot" style="background:${color};box-shadow:0 0 6px ${color}"></div>
+    <div class="snack-body">
+      <div class="snack-title" style="color:${color}">${title}</div>
+      ${msg ? `<div class="snack-msg">${msg}</div>` : ''}
+    </div>`
+  container.appendChild(el)
+
+  setTimeout(() => {
+    el.classList.add('hide')
+    setTimeout(() => el.remove(), 350)
+  }, duration)
+}
+
 function showToast(type, title, msg) {
   const cfg = _notifCfg[type] || _notifCfg.info
   const overlay = document.getElementById('notif-overlay')
@@ -7174,5 +7199,30 @@ function submitFakeBattery() {
   </div>
 </div>
 
+<div id="snackbar-container"></div>
 </body>
 </html>
+  /* ── Auto-dismiss snackbar toast ── */
+  #snackbar-container {
+    position: fixed; bottom: 24px; right: 20px;
+    z-index: 99999; display: flex; flex-direction: column;
+    gap: 8px; pointer-events: none;
+  }
+  .snack {
+    display: flex; align-items: center; gap: 10px;
+    background: #1e293b; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 10px 14px; min-width: 220px; max-width: 300px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    pointer-events: all; cursor: default;
+    animation: snackIn .3s cubic-bezier(.22,1,.36,1) forwards;
+    font-family: var(--mono, monospace); font-size: 11px;
+  }
+  .snack.hide { animation: snackOut .3s ease forwards; }
+  .snack-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .snack-body { flex: 1; min-width: 0; }
+  .snack-title { font-weight: 700; font-size: 10px; letter-spacing: 1px; color: #e2e8f0; }
+  .snack-msg   { font-size: 10px; color: #94a3b8; margin-top: 2px;
+                 white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  @keyframes snackIn  { from { opacity:0; transform: translateX(30px) scale(.95) } to { opacity:1; transform: none } }
+  @keyframes snackOut { to   { opacity:0; transform: translateX(30px) scale(.95) } }
+
