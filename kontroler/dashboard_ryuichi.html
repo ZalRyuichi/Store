@@ -4260,29 +4260,45 @@ function toast(title, type='info', msg='') { showToast(type, title, msg) }
 
 async function refreshDevices() {
   const btn = document.getElementById('refresh-btn')
-  if (!btn) return
-  btn.classList.add('spinning')
-  setTimeout(() => btn.classList.remove('spinning'), 650)
+  if (btn) {
+    btn.classList.add('spinning')
+    setTimeout(() => btn.classList.remove('spinning'), 650)
+  }
 
   try {
     const res = await fetch(apiUrl('/api/devices'), {
       headers: { 'Authorization': 'Bearer ' + _token }
     })
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}))
-      showToast('error', 'REFRESH GAGAL', `HTTP ${res.status}: ${err.error || err.message || 'Server error'}`)
+      let errMsg = 'Server error'
+      try { const e = await res.json(); errMsg = e.error || e.message || errMsg } catch {}
+      showToast('error', 'REFRESH GAGAL', `HTTP ${res.status}: ${errMsg}`)
       return
     }
-    const devices = await res.json()
-    const list = Array.isArray(devices) ? devices : (devices.devices || [])
-    if (!list.length) {
-      showToast('warn', 'TIDAK ADA DEVICE', 'Belum ada device yang terhubung')
-      return
+    const raw = await res.json()
+    const online = Array.isArray(raw) ? raw : (raw.devices || [])
+
+    // Update allDevices agar click handler tidak broken
+    allDevices = online
+
+    // Update semua counter
+    document.getElementById('stat-online').textContent = online.length
+    document.getElementById('tab-online-count').textContent = online.length
+    const hoc = document.getElementById('header-online-count')
+    if (hoc) hoc.textContent = online.length + ' ONLINE'
+    if (typeof updateHmenuBadges === 'function') updateHmenuBadges(online.length, _offlineCount)
+
+    // Render list device
+    renderDeviceList(online)
+
+    // Load offline juga biar counter offline ikut update
+    if (typeof loadOfflineDevices === 'function') loadOfflineDevices()
+
+    if (!online.length) {
+      showToast('warn', 'TIDAK ADA DEVICE', 'Belum ada device online yang terhubung')
+    } else {
+      showToast('success', 'REFRESH BERHASIL', `${online.length} device online ditemukan`)
     }
-    // Update UI — trigger render ulang kalau ada fungsi renderDevices/updateDeviceList
-    if (typeof renderDeviceList === 'function') renderDeviceList(list)
-    else if (typeof updateDeviceCards === 'function') updateDeviceCards(list)
-    showToast('success', 'REFRESH BERHASIL', `${list.length} device ditemukan`)
   } catch (err) {
     showToast('error', 'KONEKSI GAGAL', err.message || 'Tidak dapat terhubung ke server')
   }
