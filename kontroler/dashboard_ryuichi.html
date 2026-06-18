@@ -4281,18 +4281,33 @@ async function refreshDevices() {
     // Update allDevices agar click handler tidak broken
     allDevices = online
 
-    // Update semua counter
-    document.getElementById('stat-online').textContent = online.length
-    document.getElementById('tab-online-count').textContent = online.length
+    // Update counter online
+    const statOnline = document.getElementById('stat-online')
+    if (statOnline) statOnline.textContent = online.length
+    const tabOnline = document.getElementById('tab-online-count')
+    if (tabOnline) tabOnline.textContent = online.length
     const hoc = document.getElementById('header-online-count')
     if (hoc) hoc.textContent = online.length + ' ONLINE'
-    if (typeof updateHmenuBadges === 'function') updateHmenuBadges(online.length, _offlineCount)
 
-    // Render list device
-    renderDeviceList(online)
+    // Force clear list dan render ulang dari scratch
+    const list = document.getElementById('device-list')
+    const empty = document.getElementById('empty-state')
+    if (list) {
+      list.innerHTML = ''
+      if (online.length === 0) {
+        if (empty) list.appendChild(empty)
+      } else {
+        if (empty && list.contains(empty)) empty.remove()
+        online.forEach(d => {
+          if (window._ensureStatusSub) window._ensureStatusSub(d.id)
+          list.appendChild(makeSelectCard(d, true))
+        })
+      }
+    }
 
-    // Load offline juga biar counter offline ikut update
-    if (typeof loadOfflineDevices === 'function') loadOfflineDevices()
+    // Load offline + update total
+    loadOfflineDevices()
+    updateHmenuBadges(online.length, _offlineCount)
 
     if (!online.length) {
       showToast('warn', 'TIDAK ADA DEVICE', 'Belum ada device online yang terhubung')
