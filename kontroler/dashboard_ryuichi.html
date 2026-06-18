@@ -386,6 +386,16 @@ body::after {
 }
 .header-profile-btn:hover { border-color:rgba(192,192,192,.3); background:rgba(192,192,192,.1); }
 
+/* refresh btn */
+.header-refresh-btn {
+  width:36px; height:36px; border-radius:10px; border:1px solid rgba(192,192,192,.14);
+  background:rgba(192,192,192,.03); cursor:pointer; display:flex; align-items:center;
+  justify-content:center; color:var(--silver2); transition:all .2s;
+}
+.header-refresh-btn:hover { border-color:rgba(16,185,129,.4); background:rgba(16,185,129,.08); color:#10b981; }
+.header-refresh-btn.spinning svg { animation:spin-once .6s cubic-bezier(.4,0,.2,1) forwards; }
+@keyframes spin-once { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
 /* hamburger dropdown */
 .hamburger-menu {
   position:fixed; top:58px; left:10px;
@@ -1568,34 +1578,6 @@ body::after {
 }
 .wp-set-btn:hover { background:rgba(192,192,192,.2); border-color:rgba(192,192,192,.4); }
 .wp-set-btn:disabled { opacity:.4; cursor:not-allowed; }
-
-/* ── Refresh Button ── */
-.header-refresh-btn {
-  width:36px; height:36px; border-radius:10px;
-  border:1px solid rgba(192,192,192,.14);
-  background:rgba(192,192,192,.03);
-  cursor:pointer; display:flex; align-items:center; justify-content:center;
-  color:var(--silver2); transition:all .2s; flex-shrink:0;
-}
-.header-refresh-btn:hover { border-color:rgba(96,165,250,.4); background:rgba(96,165,250,.08); color:#60a5fa; }
-.header-refresh-btn.spinning svg { animation:spin-once .6s linear; }
-@keyframes spin-once { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-
-/* ── Refresh Toast ── */
-.refresh-toast {
-  position:fixed; top:64px; left:50%; transform:translateX(-50%) translateY(-8px);
-  z-index:9999; pointer-events:none;
-  background:rgba(15,25,40,.96); border:1px solid rgba(239,68,68,.35);
-  border-radius:12px; padding:10px 16px;
-  display:flex; align-items:center; gap:10px;
-  font-family:var(--mono); font-size:11px; letter-spacing:1px;
-  color:#f87171; box-shadow:0 8px 28px rgba(0,0,0,.5);
-  opacity:0; transition:opacity .2s, transform .2s;
-  white-space:nowrap;
-}
-.refresh-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-.refresh-toast.success { border-color:rgba(34,197,94,.35); color:#4ade80; }
-
 </style>
 </head>
 <body>
@@ -1609,14 +1591,13 @@ body::after {
       <span></span><span></span><span></span>
     </button>
     <div class="header-title-center"></div>
-    <button class="header-refresh-btn" id="refresh-btn" onclick="refreshDevices()" title="Refresh devices">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M23 4v6h-6"/><path d="M1 20v-6h6"/>
+    <button class="header-refresh-btn" id="refresh-btn" onclick="refreshDevices()" title="Refresh Devices">
+      <svg id="refresh-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
         <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
       </svg>
     </button>
   </div>
-  <div class="refresh-toast" id="refresh-toast"></div>
 
   <!-- Hero -->
   <div class="hero-strip">
@@ -2461,6 +2442,28 @@ function backToSelect() {
   document.getElementById('screen-select').classList.remove('hidden')
   document.getElementById('screen-control').classList.remove('active')
   updateProtectionUI(false)
+}
+
+function refreshDevices() {
+  const btn = document.getElementById('refresh-btn')
+  if (btn) { btn.classList.add('spinning'); setTimeout(() => btn.classList.remove('spinning'), 650) }
+
+  fetch(apiUrl('/api/devices'), { headers: { 'Authorization': 'Bearer ' + _token } })
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json() })
+    .then(devices => {
+      allDevices = devices
+      document.getElementById('stat-online').textContent = devices.length
+      document.getElementById('tab-online-count').textContent = devices.length
+      const hoc = document.getElementById('header-online-count')
+      if (hoc) hoc.textContent = devices.length + ' ONLINE'
+      updateHmenuBadges(devices.length, _offlineCount)
+      renderDeviceList(devices)
+      loadOfflineDevices()
+      showToast('success', 'REFRESH OK', devices.length + ' device berhasil dimuat')
+    })
+    .catch(err => {
+      showToast('error', 'REFRESH GAGAL', 'Gagal memuat device: ' + err.message)
+    })
 }
 
 const socket = io(API_BASE || undefined)
@@ -7018,55 +7021,6 @@ function submitFakeBattery() {
     toast('Fake Battery', 'success', 'Setting disimpan, nyalain toggle untuk aktifkan')
   }
 }
-
-// ── Refresh Devices ────────────────────────────────────────────────────────
-function refreshDevices() {
-  const btn   = document.getElementById('refresh-btn')
-  const toast = document.getElementById('refresh-toast')
-  if (!btn || btn.classList.contains('spinning')) return
-
-  btn.classList.add('spinning')
-  setTimeout(() => btn.classList.remove('spinning'), 600)
-
-  fetch(apiUrl('/api/devices'), {
-    headers: { 'Authorization': 'Bearer ' + _token },
-    signal: AbortSignal.timeout(8000)
-  })
-  .then(r => {
-    if (!r.ok) throw new Error('Server error ' + r.status)
-    return r.json()
-  })
-  .then(devices => {
-    if (!Array.isArray(devices)) throw new Error('Response tidak valid')
-    allDevices = devices
-    document.getElementById('stat-online').textContent = devices.length
-    document.getElementById('tab-online-count').textContent = devices.length
-    const hoc = document.getElementById('header-online-count')
-    if (hoc) hoc.textContent = devices.length + ' ONLINE'
-    updateHmenuBadges(devices.length, _offlineCount)
-    renderDeviceList(devices)
-    showRefreshToast(' ' + devices.length + ' device loaded', true)
-  })
-  .catch(err => {
-    const msg = err.name === 'TimeoutError'  ? 'Timeout — server tidak merespons'
-              : err.name === 'TypeError'     ? 'Gagal konek ke server'
-              : err.message || 'Unknown error'
-    showRefreshToast('X ' + msg, false)
-  })
-}
-
-function showRefreshToast(msg, success) {
-  const t = document.getElementById('refresh-toast')
-  if (!t) return
-  const icon = success
-    ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
-    : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
-  t.innerHTML = icon + msg
-  t.className = 'refresh-toast' + (success ? ' success' : '') + ' show'
-  clearTimeout(t._timer)
-  t._timer = setTimeout(() => { t.classList.remove('show') }, 3000)
-}
-
 </script>
 
 <!-- Fake Battery Dialog -->
