@@ -466,7 +466,7 @@ window.addEventListener('load', async function() {
         headers: { 'Authorization': 'Bearer ' + token } 
       });
       if (r.ok) {
-        location.replace('../kontroler/dashboard_ryuichi.html');
+        location.replace('http://zalryuichi.lexzy.my.id/dashboard.html');
       } else {
         localStorage.removeItem('bp_token');
       }
@@ -522,7 +522,7 @@ async function doLogin() {
     localStorage.setItem('bp_expiredAt', data.expiredAt || '');
 
     showNotif('success', 'Selamat Datang', data.displayName || data.username);
-    setTimeout(() => location.replace('../kontroler/dashboard_ryuichi.html'), 1200);
+    setTimeout(() => location.replace('http://zalryuichi.lexzy.my.id/dashboard.html'), 1200);
   } catch (e) {
     showNotif('error', 'Login Gagal', e.message || 'Username Atau Password Salah.');
     

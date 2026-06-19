@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Loading - Ryuichi</title>
+<title>Loading Яyuichi Page</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Rajdhani:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
@@ -132,8 +132,8 @@ const statusEl= document.getElementById('status-text');
 
 const PHRASE_1 = 'Mengecek Database';
 const PHRASE_2 = 'Memuat Komponen';
-const TYPE_SPEED   = 70;  // ms per huruf
-const ERASE_SPEED  = 35;  // ms per huruf
+const TYPE_SPEED   = 70;
+const ERASE_SPEED  = 35;
 
 let navigated = false;
 
@@ -191,7 +191,6 @@ video.addEventListener('loadedmetadata', () => {
 
 video.addEventListener('ended', goNext);
 
-// fallback kalau video gagal load, tetap lanjut setelah beberapa detik
 video.addEventListener('error', () => {
   barFill.style.animationDuration = '4s';
   barFill.classList.add('playing');
