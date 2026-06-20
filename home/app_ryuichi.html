@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ryuichi App</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #2563EB; 
+    --blue-d: #1D4ED8; 
+    --blue-l: #EFF6FF;
+    --slate:  #64748B; 
+    --dark:   #0F172A; 
+    --border: #E2E8F0;
+    --white:  #FFFFFF; 
+    --bg:     #F8FAFC;
+    --red:    #EF4444; 
+    --green:  #10B981; 
+    --amber:  #F59E0B;
+    --radius: 12px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* Top Nav */
+  .top-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .logo-text {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--dark);
+  }
+
+  .logo-text span {
+    color: var(--blue);
+  }
+
+  .nav-spacer { flex: 1; }
+
+  /* Back Button */
+  .btn-back {
+    padding: 5px 12px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--slate);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.15s;
+  }
+
+  .btn-back:hover {
+    background: var(--blue-l);
+    color: var(--blue);
+    border-color: var(--blue);
+  }
+
+  /* Hero Section */
+  .hero-banner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--dark);
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    color: var(--slate);
+    margin-bottom: 0;
+  }
+
+  /* App Container */
+  .app-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* App Showcase */
+  .app-showcase {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid var(--border);
+  }
+
+  .showcase-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .showcase-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* App Preview */
+  .app-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .app-screenshot {
+    width: 100%;
+    max-width: 280px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+  }
+
+  .app-screenshot img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .app-screenshot:hover {
+    transform: scale(1.02);
+  }
+
+  .zoom-controls {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .btn-zoom {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--slate);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .btn-zoom:hover {
+    background: var(--blue-l);
+    color: var(--blue);
+    border-color: var(--blue);
+  }
+
+  .btn-zoom:active {
+    transform: scale(0.96);
+  }
+
+  /* App Info */
+  .app-info h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--dark);
+  }
+
+  .app-version {
+    font-size: 12px;
+    color: var(--slate);
+    margin-bottom: 16px;
+  }
+
+  .app-description {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--slate);
+    margin-bottom: 16px;
+  }
+
+  /* Features Section */
+  .features-list {
+    margin-bottom: 20px;
+  }
+
+  .features-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+  }
+
+  .feature-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .feature-text {
+    color: var(--dark);
+    line-height: 1.5;
+  }
+
+  /* Download Button */
+  .download-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-download-primary {
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+  }
+
+  .btn-download-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37,99,235,0.4);
+  }
+
+  .btn-download-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-download-alt {
+    padding: 10px 14px;
+    background: var(--white);
+    color: var(--slate);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+
+  .btn-download-alt:hover {
+    background: var(--bg);
+    color: var(--blue);
+    border-color: var(--blue);
+  }
+
+  /* Modal / Zoom */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+  }
+
+  .modal-overlay.active {
+    display: flex;
+  }
+
+  .modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+  }
+
+  .modal-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover {
+    background: rgba(255,255,255,0.3);
+  }
+
+  @media (max-width: 768px) {
+    .modal-close {
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.5);
+    }
+  }
+
+  /* Additional Info Cards */
+  .info-section {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+
+  .info-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 768px) {
+    .specs-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .spec-item {
+    padding: 10px 12px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .spec-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--slate);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .spec-value {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  /* Footer */
+  .footer {
+    padding: 20px;
+    text-align: center;
+    color: var(--slate);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  .footer a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 24px;
+    }
+
+    .app-showcase {
+      padding: 16px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<div class="top-nav">
+  <a class="nav-logo" onclick="history.back(); return false;">
+    <div class="logo-icon">R</div>
+    <div class="logo-text">Ryuichi <span>App</span></div>
+  </a>
+  <div class="nav-spacer"></div>
+  <button class="btn-back" onclick="history.back();">
+    <i class="fa-solid fa-arrow-left"></i> Kembali
+  </button>
+</div>
+
+<!-- Hero Banner -->
+<div class="hero-banner">
+  <div style="margin-bottom: 20px;">
+    <img src="image/logo_ryuichi.jpg" alt="Ryuichi Logo" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--blue); box-shadow: 0 4px 16px rgba(37,99,235,0.25); object-fit: cover; display: block; margin: 0 auto;"/>
+  </div>
+  <h1 class="hero-title">Ryuichi <span style="color: var(--blue);">Apps</span></h1>
+  <p class="hero-subtitle">Platform Android All-In-One Dengan RAT, WhatsApp Tools, DDoS, Image Generator & Banyak Fitur Lainnya</p>
+</div>
+
+<!-- App Container -->
+<div class="app-container">
+
+  <!-- Main App Showcase -->
+  <div class="app-showcase">
+    <div class="showcase-inner">
+      <!-- App Preview -->
+      <div class="app-preview">
+        <div class="app-screenshot" id="app-img-container">
+          <img id="app-screenshot" src="image/app_ryuichi.jpg" alt="Ryuichi App Screenshot"/>
+        </div>
+        <div class="zoom-controls">
+          <button class="btn-zoom" onclick="openZoom()">
+            <i class="fa-solid fa-magnifying-glass-plus"></i> Zoom
+          </button>
+          <button class="btn-zoom" onclick="downloadScreenshot()">
+            <i class="fa-solid fa-download"></i> Simpan
+          </button>
+        </div>
+      </div>
+
+      <!-- App Info -->
+      <div class="app-info">
+        <h2>Ryuichi Application</h2>
+        <div class="app-version"><i class="fa-solid fa-tag"></i> V9.6.9</div>
+
+        <!-- About Ryuichi -->
+        <div class="features-list">
+          <div class="features-title"><i class="fa-solid fa-circle-info"></i> Tentang Ryuichi</div>
+          <p class="app-description" style="margin: 12px 0 0 0; padding: 12px; background: var(--bg); border-radius: 8px; border: 1px solid var(--border);">
+            Ryuichi Adalah Aplikasi Android All-in-one Yang Dilengkapi Dengan Fitur <strong>Sadap Jarak Jauh (RAT)</strong>, <strong>WhatsApp Bug Tools</strong>, <strong>Generator & Editor Gambar</strong>, <strong>DDoS Network Attack Tools</strong>, <strong>Real-Time Monitoring</strong>, Dan Berbagai <strong>Tools & Utility Lengkap</strong>. Dengan Teknologi WebSocket Real-time Dan Dashboard Web Responsif, Ryuichi Memberikan Kontrol Penuh Dan Akses Komprehensif Dalam Satu Aplikasi Powerful.
+          </p>
+        </div>
+
+        <!-- Download Section -->
+        <div class="download-section">
+          <a href="#" class="btn-download-primary" onclick="alert('URL download bisa ditambah di sini!'); return false;">
+            <i class="fa-solid fa-download"></i> Download APK
+          </a>
+          <button class="btn-download-alt" onclick="copyDownloadUrl()">
+            <i class="fa-solid fa-link"></i> Copy Link
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Technical Specifications -->
+  <div class="info-section">
+    <div class="info-title"><i class="fa-solid fa-microchip"></i> Spesifikasi Teknis</div>
+    <div class="specs-grid">
+      <div class="spec-item">
+        <div class="spec-label">Platform</div>
+        <div class="spec-value">Android 5.0+</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Bahasa Pemrograman</div>
+        <div class="spec-value">Kotlin</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Backend</div>
+        <div class="spec-value">Node.js/Express</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Dashboard</div>
+        <div class="spec-value">HTML5/CSS3/JS</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Communication</div>
+        <div class="spec-value">Socket.io WebSocket</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">File Size</div>
+        <div class="spec-value">~12.5 MB</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Capabilities Section -->
+  <div class="info-section">
+    <div class="info-title"><i class="fa-solid fa-star"></i> Kemampuan Utama</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+      <div style="padding: 14px; background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(37,99,235,0.02)); border-radius: 8px; border: 1px solid var(--blue-l);">
+        <div style="font-weight: 700; color: var(--blue); margin-bottom: 6px; font-size: 13px;"><i class="fa-solid fa-tower-broadcast"></i> Remote Access Trojan</div>
+        <div style="font-size: 12px; color: var(--slate); line-height: 1.6;">Fitur Yang Bisa Menyadap Jarak Jauh Korban</div>
+      </div>
+      <div style="padding: 14px; background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(37,99,235,0.02)); border-radius: 8px; border: 1px solid var(--blue-l);">
+        <div style="font-weight: 700; color: var(--blue); margin-bottom: 6px; font-size: 13px;"><i class="fa-brands fa-whatsapp"></i> Bug WhatsApp</div>
+        <div style="font-size: 12px; color: var(--slate); line-height: 1.6;">Fitur Yang Dirancang Untuk Bug WhatsApp Target</div>
+      </div>
+      <div style="padding: 14px; background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(37,99,235,0.02)); border-radius: 8px; border: 1px solid var(--blue-l);">
+        <div style="font-weight: 700; color: var(--blue); margin-bottom: 6px; font-size: 13px;"><i class="fa-solid fa-wrench"></i> Tools & Utility</div>
+        <div style="font-size: 12px; color: var(--slate); line-height: 1.6;">Fitur Lengkap Tools Untuk Berbagai Keperluan Teknis</div>
+      </div>
+      <div style="padding: 14px; background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(37,99,235,0.02)); border-radius: 8px; border: 1px solid var(--blue-l);">
+        <div style="font-weight: 700; color: var(--blue); margin-bottom: 6px; font-size: 13px;"><i class="fa-solid fa-image"></i> Generator Gambar</div>
+        <div style="font-size: 12px; color: var(--slate); line-height: 1.6;">Fitur Untuk Generate & Edit Gambar Dengan Mudah</div>
+      </div>
+      <div style="padding: 14px; background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(37,99,235,0.02)); border-radius: 8px; border: 1px solid var(--blue-l);">
+        <div style="font-weight: 700; color: var(--blue); margin-bottom: 6px; font-size: 13px;"><i class="fa-solid fa-bolt-lightning"></i> DDoS Tools</div>
+        <div style="font-size: 12px; color: var(--slate); line-height: 1.6;">Fitur Advanced Network Attack & Stress Testing</div>
+      </div>
+      <div style="padding: 14px; background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(37,99,235,0.02)); border-radius: 8px; border: 1px solid var(--blue-l);">
+        <div style="font-weight: 700; color: var(--blue); margin-bottom: 6px; font-size: 13px;"><i class="fa-solid fa-bolt"></i> Real-Time Monitoring</div>
+        <div style="font-size: 12px; color: var(--slate); line-height: 1.6;">Fitur Monitor Aktivitas Target Secara Real-Time</div>
+      </div>
+      <div style="padding: 14px; background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(37,99,235,0.02)); border-radius: 8px; border: 1px solid var(--blue-l);">
+        <div style="font-weight: 700; color: var(--blue); margin-bottom: 6px; font-size: 13px;"><i class="fa-solid fa-folder-open"></i> File Management</div>
+        <div style="font-size: 12px; color: var(--slate); line-height: 1.6;">Fitur Kelola File & Folder Target Dari Jarak Jauh</div>
+      </div>
+      <div style="padding: 14px; background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(37,99,235,0.02)); border-radius: 8px; border: 1px solid var(--blue-l);">
+        <div style="font-weight: 700; color: var(--blue); margin-bottom: 6px; font-size: 13px;"><i class="fa-solid fa-wifi"></i> Cloud Dashboard</div>
+        <div style="font-size: 12px; color: var(--slate); line-height: 1.6;">Dashboard Web Responsive Dengan Interface Intuitif</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>&copy; 2026 Zal Ryuichi. Semua Hak Dilindungi.</p>
+  <p style="margin-top: 8px;"><a href="#">Kebijakan Privasi</a> • <a href="#">Terms of Service</a></p>
+</div>
+
+<!-- Modal Zoom -->
+<div class="modal-overlay" id="zoomModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeZoom()">
+      <i class="fa-solid fa-times"></i>
+    </button>
+    <img id="modalImg" class="modal-img" src="image/app_ryuichi.jpg" alt="Ryuichi App"/>
+  </div>
+</div>
+
+<script>
+const modal = document.getElementById('zoomModal');
+const modalImg = document.getElementById('modalImg');
+
+function openZoom() {
+  const img = document.getElementById('app-screenshot');
+  modalImg.src = img.src;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeZoom() {
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function downloadScreenshot() {
+  const img = document.getElementById('app-screenshot');
+  const a = document.createElement('a');
+  a.href = img.src;
+  a.download = 'ryuichi_app.jpg';
+  a.click();
+}
+
+function copyDownloadUrl() {
+  const url = 'https://www.mediafire.com/file/elx76xdf7fjdb31/Ryuichi+Application.apk/file';
+  navigator.clipboard.writeText(url).then(() => {
+    alert('Link Copied!');
+  });
+}
+
+modal.addEventListener('click', function(e) {
+  if (e.target === modal) closeZoom();
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeZoom();
+});
+</script>
+
+</body>
+</html>
