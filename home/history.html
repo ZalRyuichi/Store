@@ -7,21 +7,65 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <link rel="stylesheet" href="shared.css"/>
+<style>
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed; left: 0; top: 0; width: 240px; height: 100vh;
+    background: var(--white); border-right: 1px solid var(--border);
+    transform: translateX(-100%); transition: transform 0.3s ease;
+    z-index: 99; padding-top: 56px; overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+  .sidebar.show { transform: translateX(0); }
+  .sidebar-content { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .sidebar-btn {
+    padding: 11px 16px; border: none; border-radius: 10px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sidebar-btn.logout {
+    background: #FEF2F2; color: var(--red); border: 1px solid #FECACA;
+  }
+  .sidebar-btn.logout:hover { background: #FECACA; color: #fff; }
+  .sidebar-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0);
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    z-index: 98;
+  }
+  .sidebar-overlay.show { opacity: 0.5; pointer-events: all; }
+  .sidebar-toggle {
+    background: none; border: none; cursor: pointer; color: var(--dark);
+    font-size: 16px; padding: 8px; display: flex; align-items: center;
+    transition: all 0.2s;
+  }
+  .sidebar-toggle:hover { color: var(--blue); }
+</style>
 </head>
 <body>
 
 <nav class="top-nav">
+  <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
+    <i class="fa-solid fa-bars"></i>
+  </button>
   <a class="nav-logo" href="/dashboard">
     <div class="logo-icon">
       <i class="fa-solid fa-store" style="color:#fff;font-size:14px"></i>
     </div>
     <div class="logo-text">Zal <span>Яyuichi</span></div>
   </a>
-  <button class="btn-logout" onclick="logout()">
-    <i class="fa-solid fa-right-from-bracket"></i>
-    Logout
-  </button>
+  <div style="width:40px;"></div>
 </nav>
+
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="document.getElementById('sidebar').classList.remove('show'); this.classList.remove('show')"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-content">
+    <button class="sidebar-btn logout" onclick="logout()">
+      <i class="fa-solid fa-sign-out-alt"></i> Log Out
+    </button>
+  </div>
+</aside>
 
 <main>
 

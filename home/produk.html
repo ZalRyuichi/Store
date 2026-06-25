@@ -342,22 +342,65 @@
   }
   .bug-step.done { background:var(--blue); }
 
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed; left: 0; top: 0; width: 240px; height: 100vh;
+    background: var(--white); border-right: 1px solid var(--border);
+    transform: translateX(-100%); transition: transform 0.3s ease;
+    z-index: 99; padding-top: 56px; overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+  .sidebar.show { transform: translateX(0); }
+  .sidebar-content { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .sidebar-btn {
+    padding: 11px 16px; border: none; border-radius: 10px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sidebar-btn.logout {
+    background: #FEF2F2; color: var(--red); border: 1px solid #FECACA;
+  }
+  .sidebar-btn.logout:hover { background: #FECACA; color: #fff; }
+  .sidebar-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0);
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    z-index: 98;
+  }
+  .sidebar-overlay.show { opacity: 0.5; pointer-events: all; }
+  .sidebar-toggle {
+    background: none; border: none; cursor: pointer; color: var(--dark);
+    font-size: 16px; padding: 8px; display: flex; align-items: center;
+    transition: all 0.2s;
+  }
+  .sidebar-toggle:hover { color: var(--blue); }
+
 </style>
 </head>
 <body>
 
 <nav class="top-nav">
+  <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
+    <i class="fa-solid fa-bars"></i>
+  </button>
   <a class="nav-logo" href="/dashboard">
     <div class="logo-icon">
       <i class="fa-solid fa-store" style="color:#fff;font-size:14px"></i>
     </div>
     <div class="logo-text">Zal <span>Яyuichi</span></div>
   </a>
-  <button class="btn-logout" onclick="logout()">
-    <i class="fa-solid fa-right-from-bracket"></i>
-    Logout
-  </button>
+  <div style="width:40px;"></div>
 </nav>
+
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="document.getElementById('sidebar').classList.remove('show'); this.classList.remove('show')"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-content">
+    <button class="sidebar-btn logout" onclick="logout()">
+      <i class="fa-solid fa-sign-out-alt"></i> Log Out
+    </button>
+  </div>
+</aside>
 
 <main>
 
@@ -404,7 +447,7 @@
     </a>
     <a class="quick-item" href="#jasabug" onclick="event.preventDefault();document.getElementById('jasabug').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon purple"><i class="fa-solid fa-bug"></i></div>
-      <div class="quick-label">Jasa Bug</div>
+      <div class="quick-label">JasBug</div>
     </a>
     <a class="quick-item" href="#wa" onclick="event.preventDefault();document.getElementById('wa').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon green"><i class="fa-brands fa-whatsapp"></i></div>
@@ -509,7 +552,7 @@
         <div class="apk-banner-icon"><i class="fa-brands fa-whatsapp"></i></div>
         <div>
           <div class="apk-banner-label">Sewa Bot WhatsApp</div>
-          <div class="apk-banner-sub">Bot Pribadi · Fitur Stiker · 1 Nomor / User</div>
+          <div class="apk-banner-sub">Bot Pribadi · 1 Nomor / User</div>
         </div>
       </div>
       <div class="apk-banner-pills">
@@ -749,11 +792,11 @@ const ROLE_DATA = {
   'xyz-member-permanen': { name: 'Member (Permanen)', price: 50000, app: 'xyz',   benefit: ['Akses Fitur Aplikasi Xyz Permanen'], vip: false },
   'xyz-reseller':     { name: 'Reseller',          price: 130000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualan Role Member 1 Bulan Dan Permanen'], vip: false },
 
-  'sewabot-1hari':    { name: 'Sewa Bot WhatsApp - 1 Hari',    price: 1000,  app: 'sewabot', days: 1,    benefit: ['Bot WhatsApp Pribadi Aktif Selama 1 Hari', 'Fitur Convert Stiker Foto/Video'] },
-  'sewabot-1minggu':  { name: 'Sewa Bot WhatsApp - 1 Minggu',  price: 5000,  app: 'sewabot', days: 7,    benefit: ['Bot WhatsApp Pribadi Aktif Selama 1 Minggu', 'Fitur Convert Stiker Foto/Video'] },
-  'sewabot-3minggu':  { name: 'Sewa Bot WhatsApp - 3 Minggu',  price: 15000, app: 'sewabot', days: 21,   benefit: ['Bot WhatsApp Pribadi Aktif Selama 3 Minggu', 'Fitur Convert Stiker Foto/Video'] },
-  'sewabot-1bulan':   { name: 'Sewa Bot WhatsApp - 1 Bulan',   price: 20000, app: 'sewabot', days: 30,   benefit: ['Bot WhatsApp Pribadi Aktif Selama 1 Bulan', 'Fitur Convert Stiker Foto/Video'] },
-  'sewabot-permanen': { name: 'Sewa Bot WhatsApp - Permanen',  price: 50000, app: 'sewabot', permanent: true, benefit: ['Bot WhatsApp Pribadi Aktif Selamanya', 'Fitur Convert Stiker Foto/Video', 'Tidak Perlu Perpanjang Lagi'] },
+  'sewabot-1hari':    { name: 'Sewa Bot WhatsApp - 1 Hari',    price: 1000,  app: 'sewabot', days: 1,    benefit: ['Bot WhatsApp Pribadi Aktif Selama 1 Hari'] },
+  'sewabot-1minggu':  { name: 'Sewa Bot WhatsApp - 1 Minggu',  price: 5000,  app: 'sewabot', days: 7,    benefit: ['Bot WhatsApp Pribadi Aktif Selama 1 Minggu'] },
+  'sewabot-3minggu':  { name: 'Sewa Bot WhatsApp - 3 Minggu',  price: 15000, app: 'sewabot', days: 21,   benefit: ['Bot WhatsApp Pribadi Aktif Selama 3 Minggu'] },
+  'sewabot-1bulan':   { name: 'Sewa Bot WhatsApp - 1 Bulan',   price: 20000, app: 'sewabot', days: 30,   benefit: ['Bot WhatsApp Pribadi Aktif Selama 1 Bulan'] },
+  'sewabot-permanen': { name: 'Sewa Bot WhatsApp - Permanen',  price: 50000, app: 'sewabot', permanent: true, benefit: ['Bot WhatsApp Pribadi Aktif Selamanya', 'Tidak Perlu Perpanjang Lagi'] },
 };
 
 const SEWABOT_FEATURES = [
@@ -806,26 +849,44 @@ const BASIC_FEATURES = [
 
 const VIP_FEATURES = [
   ['Buat Web Jadi Apk', 'fa-solid fa-mobile-screen-button'],
-  ['Kunci Perangkat Korban', 'fa-solid fa-lock'],
-  ['Getarkan Perangkat Korban', 'fa-solid fa-mobile-alt'],
-  ['Ambil Lokasi Korban', 'fa-solid fa-location-dot'],
-  ['Pantau Kamera Depan Dan Belakang Perangkat Korban', 'fa-solid fa-camera'],
-  ['Matikan Dan Hidupkan Senter Perangkat Korban', 'fa-solid fa-lightbulb'],
+  ['Anti Uninstall Apk Phishing', 'fa-solid fa-shield-halved'],
+  ['Matikan Hidupkan Senter Perangkat Korban', 'fa-solid fa-lightbulb'],
+  ['Play Video Full Layar Di Perangkat Korban', 'fa-solid fa-video'],
   ['Ganti Wallpaper Perangkat Korban', 'fa-solid fa-image'],
+  ['Kunci Perangkat Korban', 'fa-solid fa-lock'],
   ['Putar Suara Pada Perangkat Korban', 'fa-solid fa-volume-up'],
-  ['Pantau SMS Perangkat Korban', 'fa-regular fa-message'],
-  ['Melihat Foto Galeri Perangkat Korban', 'fa-regular fa-images'],
-  ['Melihat List Kontak Perangkat Korban', 'fa-solid fa-address-book'],
-  ['Menghapus File Korban', 'fa-solid fa-trash-can'],
-  ['Pantau Layar Perangkat Korban', 'fa-solid fa-desktop'],
-  ['Putar Video Di Perangkat Korban', 'fa-solid fa-video'],
+  ['Getarkan Perangkat Korban', 'fa-solid fa-mobile-alt'],
+  ['Kirim Suara Google Ke Perangkat Korban', 'fa-solid fa-message'],
+  ['Atur Kecerahan Perangkat Korban', 'fa-solid fa-sun'],
+  ['Atur Volume Perangkat Korban', 'fa-solid fa-volume-high'],
+  ['Kirim Teks Layar Pada Perangkat Korban', 'fa-solid fa-text-height'],
+  ['Buka Website Pada Perangkat Korban', 'fa-solid fa-globe'],
+  ['Spam Dialog Pada Perangkat Korban', 'fa-solid fa-comment-dots'],
+  ['SOS Pada Perangkat Korban', 'fa-solid fa-bell'],
+  ['Pantau Kamera Depan Dan Belakang Pada Perangkat Korban', 'fa-solid fa-camera'],
+  ['Pantau Layar Dan Bisa Kontrol Perangkat Korban', 'fa-solid fa-desktop'],
+  ['Ambil Foto Depan Dan Belakang Pada Perangkat Korban', 'fa-solid fa-camera-retro'],
+  ['Ambil Paste Pada Keyboard Korban', 'fa-solid fa-keyboard'],
+  ['Scan Wifi Terdekat Pada Perangkat Korban', 'fa-solid fa-wifi'],
+  ['Cari Cell Tower Pada Perangkat Korban', 'fa-solid fa-tower-cell'],
+  ['Melihat Histori Chrome Perangkat Korban', 'fa-solid fa-clock-rotate-left'],
+  ['Ambil Lokasi Perangkat Korban', 'fa-solid fa-location-dot'],
+  ['Melihat Kontak Pada Perangkat Korban', 'fa-solid fa-address-book'],
+  ['Link Foto (Tampil di Layar Korban)', 'fa-solid fa-image'],
+  ['Spam Notifikasi Pada Perangkat Korban', 'fa-solid fa-bell'],
+  ['Spam Toast Pada Perangkat Korban', 'fa-solid fa-toast'],
+  ['Ganti Tema Aplikasi Phising Menjadi (WA dll)', 'fa-solid fa-palette'],
+  ['Rekam Suara Korban', 'fa-solid fa-microphone'],
+  ['Melihat Log WiFi Perangkat Korban', 'fa-solid fa-wifi'],
+  ['Melihat Akun Pada Perangkat Korban Seperti Akun Google Atau Email', 'fa-solid fa-users'],
+  ['Melihat Log Panggilan Pada Perangkat Korban', 'fa-solid fa-phone'],
+  ['Melihat Foto Galeri Korban', 'fa-solid fa-images'],
+  ['Blokir Aplikasi Korban Sehingga Korban Tidak Bisa Membuka Aplikasi Yang Di Blokir', 'fa-solid fa-ban'],
+  ['Buka Aplikasi Korban', 'fa-solid fa-rocket'],
+  ['Uninstall Aplikasi Yang Ada Di Perangkat Korban', 'fa-solid fa-trash-can'],
+  ['Hapus, Download Dan Masukin File Pada Perangkat Korban', 'fa-solid fa-folder'],
   ['Panggil Nomer Pada Perangkat Korban', 'fa-solid fa-phone'],
-  ['Kunci Perangkat Korban Dan Bisa Chatan Sama Korban', 'fa-solid fa-comment-dots'],
-  ['Rekam Suara Pada Perangkat Korban', 'fa-solid fa-microphone'],
-  ['List Aplikasi Pada Perangkat Korban', 'fa-solid fa-list'],
-  ['Blokir Aplikasi Pada Perangkat Korban', 'fa-solid fa-ban'],
-  ['Buka Aplikasi Pada Perangkat Korban', 'fa-solid fa-rocket'],
-  ['Teks Layar', 'fa-solid fa-text-height']
+  ['Sembunyikan Aplikasi Phising Atau Korban', 'fa-solid fa-eye-slash']
 ];
 
 const XYZ_FEATURES = [
