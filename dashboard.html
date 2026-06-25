@@ -682,7 +682,10 @@
       <path d="M16 10a4 4 0 0 1-8 0"/>
     </svg>
   </div>
-  <div class="logo-text">Zal <span>Яyuichi</span></div>
+  <div class="logo-text" id="greeting-text" style="display:flex; align-items:center; gap:6px;">
+    <span id="greeting-msg">Selamat Datang</span>
+    <i id="greeting-icon" class="fa-solid fa-hand"></i>
+  </div>
 </a>
   <div style="display:flex; align-items:center; gap:8px;">
     <a id="btn-admin" href="/admin.html" style="display:none; padding:5px 12px; background:none; border:1px solid #DDD6FE; border-radius:8px; font-size:12px; font-weight:500; cursor:pointer; color:#6D28D9; font-family:'Inter',sans-serif; align-items:center; gap:5px; text-decoration:none; transition:all 0.15s;">
@@ -750,10 +753,6 @@
   <a class="quick-item" href="/home/history.html">
     <div class="quick-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
     <div class="quick-label">History</div>
-  </a>
-  <a class="quick-item" href="https://t.me/ZalRyuichi" target="_blank">
-    <div class="quick-icon purple"><i class="fa-brands fa-telegram"></i></div>
-    <div class="quick-label">Bantuan</div>
   </a>
 </div>
 
@@ -1122,6 +1121,40 @@ document.addEventListener('click', e => {
     panel.classList.remove('show');
   }
 });
+
+// Update greeting based on WIB time
+function updateGreeting() {
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }));
+  const hour = now.getHours();
+  const username = localStorage.getItem('pg_user') || 'User';
+  
+  let waktu, icon;
+  if (hour >= 5 && hour < 11) {
+    waktu = 'Pagi';
+    icon = 'fa-solid fa-sun';
+  } else if (hour >= 11 && hour < 15) {
+    waktu = 'Siang';
+    icon = 'fa-solid fa-sun';
+  } else if (hour >= 15 && hour < 19) {
+    waktu = 'Sore';
+    icon = 'fa-solid fa-sun-plant-wilt';
+  } else {
+    waktu = 'Malam';
+    icon = 'fa-solid fa-moon';
+  }
+  
+  const greetingMsg = document.getElementById('greeting-msg');
+  const greetingIcon = document.getElementById('greeting-icon');
+  
+  if (greetingMsg && greetingIcon) {
+    greetingMsg.textContent = `Selamat ${waktu} ${username}`;
+    greetingIcon.className = icon;
+  }
+}
+
+// Update greeting immediately and every minute
+updateGreeting();
+setInterval(updateGreeting, 60000);
 
 </script>
 </body>
