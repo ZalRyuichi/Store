@@ -97,7 +97,7 @@
     background: rgba(255,255,255,0.07);
   }
   .apk-banner.xyz    { background: linear-gradient(135deg, #6D28D9 0%, #4C1D95 100%); }
-  .apk-banner.pegasus { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%); }
+  .apk-banner.ryuichi { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%); }
   .apk-banner-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
   .apk-banner-icon {
     width: 38px; height: 38px; border-radius: 10px;
@@ -394,9 +394,9 @@
       <div class="quick-icon blue"><i class="fa-solid fa-wallet"></i></div>
       <div class="quick-label">Top Up</div>
     </a>
-    <a class="quick-item" href="#pegasus" onclick="event.preventDefault();document.getElementById('pegasus').scrollIntoView({behavior:'smooth'})">
+    <a class="quick-item" href="#ryuichi" onclick="event.preventDefault();document.getElementById('ryuichi').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon green"><i class="fa-solid fa-mobile-screen-button"></i></div>
-      <div class="quick-label">Pegasus-X</div>
+      <div class="quick-label">Ryuichi</div>
     </a>
     <a class="quick-item" href="#xyz" onclick="event.preventDefault();document.getElementById('xyz').scrollIntoView({behavior:'smooth'})">
       <div class="quick-icon cyan"><i class="fa-solid fa-mobile-screen-button"></i></div>
@@ -541,12 +541,12 @@
     </div>
   </div>
 
-  <div class="card" id="pegasus" style="margin-top:14px">
-    <div class="apk-banner pegasus">
+  <div class="card" id="ryuichi" style="margin-top:14px">
+    <div class="apk-banner ryuichi">
       <div class="apk-banner-top">
         <div class="apk-banner-icon"><i class="fa-solid fa-bag-shopping"></i></div>
         <div>
-          <div class="apk-banner-label">Aplikasi Pegasus-X</div>
+          <div class="apk-banner-label">Aplikasi Ryuichi</div>
           <div class="apk-banner-sub">Fitur Lengkap · Permanen Full Update</div>
         </div>
       </div>
@@ -825,11 +825,11 @@ let onPaymentCompleted = null;
 let currentSaldoVal = 0;
 
 const ROLE_DATA = {
-  'member':           { name: 'Member',           price: 25000,  app: 'pegasus', benefit: ['Akses Fitur Dasar'], vip: false },
-  'vip-no-update':    { name: 'Vip No Update',    price: 50000,  app: 'pegasus', benefit: ['Akses Setengah Fitur Vip'], vip: true, vipNote: 'Akses Sebagian Fitur Vip' },
-  'vip-full-update':  { name: 'Vip Full Update',  price: 100000, app: 'pegasus', benefit: ['Akses Full Fitur Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
-  'reseller':         { name: 'Reseller',          price: 200000, app: 'pegasus', benefit: ['Akses Full Fitur Vip', 'Bisa Jualan Role Vip No Update Dan Full Update'], vip: true, vipNote: 'Akses Full Fitur Vip' },
-  'admin':            { name: 'Admin',             price: 300000, app: 'pegasus', benefit: ['Akses Full Fitur Aplikasi', 'Akses Full Fitur Vip', 'Bisa Jualin Role Vip No Update, Full Update Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'member':           { name: 'Member',           price: 25000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar'], vip: false },
+  'vip-no-update':    { name: 'Vip No Update',    price: 50000,  app: 'ryuichi', benefit: ['Akses Setengah Fitur Vip'], vip: true, vipNote: 'Akses Sebagian Fitur Vip' },
+  'vip-full-update':  { name: 'Vip Full Update',  price: 100000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'reseller':         { name: 'Reseller',          price: 200000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip', 'Bisa Jualan Role Vip No Update Dan Full Update'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'admin':            { name: 'Admin',             price: 300000, app: 'ryuichi', benefit: ['Akses Full Fitur Aplikasi', 'Akses Full Fitur Vip', 'Bisa Jualin Role Vip No Update, Full Update Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
   'xyz-member-1m':    { name: 'Member (1 Bulan)',  price: 25000,  app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Selama 1 Bulan'], vip: false },
   'xyz-member-permanen': { name: 'Member (Permanen)', price: 50000, app: 'xyz',   benefit: ['Akses Fitur Aplikasi Xyz Permanen'], vip: false },
   'xyz-reseller':     { name: 'Reseller',          price: 130000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualan Role Member 1 Bulan Dan Permanen'], vip: false },
@@ -1016,7 +1016,7 @@ function openDetail(id) {
     renderFeaturePills(document.getElementById('detail-features-basic'), SEWABOT_FEATURES);
     vipSection.style.display = 'none';
   } else {
-    document.getElementById('detail-sub-label').textContent = 'Pegasus-X';
+    document.getElementById('detail-sub-label').textContent = 'Ryuichi';
     document.getElementById('detail-price-sub').textContent = 'Permanen Full Update';
     document.getElementById('basic-feature-title').innerHTML = '<i class="fa-solid fa-layer-group"></i> Fitur Dasar Aplikasi';
     document.getElementById('detail-benefit').innerHTML = role.benefit.map(b =>
