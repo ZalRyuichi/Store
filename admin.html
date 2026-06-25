@@ -323,6 +323,51 @@
   }
   .grant-result.ok  { background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; }
   .grant-result.err { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+
+  /* NOTIFICATION OVERLAY */
+  .notif-overlay {
+    position: fixed; inset: 0; background: rgba(15,23,42,0.45);
+    display: none; align-items: center; justify-content: center; z-index: 9999;
+    backdrop-filter: blur(4px); padding: 20px;
+    animation: overlayIn 0.2s ease;
+  }
+  .notif-overlay.show { display: flex; }
+  @keyframes overlayIn { from { opacity:0; } to { opacity:1; } }
+  .notif-box {
+    background: var(--white); border-radius: 18px; padding: 32px 36px 28px;
+    width: 100%; max-width: 420px; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    animation: notifUp 0.3s cubic-bezier(.16,1,.3,1);
+  }
+  @keyframes notifUp { from { opacity:0; transform:translateY(20px) scale(0.96); } to { opacity:1; transform:translateY(0) scale(1); } }
+  .notif-icon {
+    width: 52px; height: 52px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px; font-size: 20px;
+  }
+  .notif-icon.error   { background: #FEF2F2; }
+  .notif-icon.success { background: #F0FDF4; }
+  .notif-icon.info    { background: var(--blue-l); }
+  .notif-msg {
+    font-size: 15px; font-weight: 600; color: var(--dark);
+    margin-bottom: 6px; line-height: 1.4;
+  }
+  .notif-msg.error   { color: #991B1B; }
+  .notif-msg.success { color: #166534; }
+  .notif-msg.info    { color: var(--blue-d); }
+  .notif-sub { font-size: 13px; color: var(--slate); margin-bottom: 24px; }
+  .notif-ok {
+    padding: 11px 40px; background: var(--blue); color: #fff;
+    border: none; border-radius: var(--radius); font-size: 14px; font-weight: 600;
+    font-family: 'Inter', sans-serif; cursor: pointer; transition: background 0.2s, box-shadow 0.2s;
+    min-width: 120px;
+  }
+  .notif-ok:hover { background: var(--blue-d); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+  .notif-ok.error   { background: var(--red); }
+  .notif-ok.error:hover { background: #DC2626; box-shadow: 0 4px 12px rgba(239,68,68,0.3); }
+  .notif-ok.success { background: var(--green); }
+  .notif-ok.success:hover { background: #059669; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+
 </style>
 </head>
 <body>
@@ -395,7 +440,7 @@
       <div class="stat-card">
         <div class="stat-icon red"><i class="fa-solid fa-money-bill-wave"></i></div>
         <div class="stat-val" id="stat-revenue">—</div>
-        <div class="stat-label">Revenue Masuk</div>
+        <div class="stat-label">Saldo Masuk</div>
       </div>
     </div>
 
@@ -524,14 +569,21 @@
       <input type="number" id="grant-days" placeholder="Contoh: 7" min="1" max="3650"/>
     </div>
 
-    <div class="grant-result" id="grant-result"></div>
-
     <div class="grant-btn-row">
       <button class="grant-btn-cancel" onclick="closeGrantModal()">Batal</button>
       <button class="grant-btn-submit" id="grant-btn-submit" onclick="submitGrant()">
         <i class="fa-solid fa-paper-plane"></i> Grant Sekarang
       </button>
     </div>
+  </div>
+</div>
+
+<div class="notif-overlay" id="notif-overlay">
+  <div class="notif-box">
+    <div class="notif-icon" id="notif-icon"><i id="notif-icon-i" class="fa-solid fa-circle-xmark"></i></div>
+    <div class="notif-msg" id="notif-msg"></div>
+    <div class="notif-sub" id="notif-sub"></div>
+    <button class="notif-ok" id="notif-ok" onclick="closeNotif()">OK</button>
   </div>
 </div>
 
@@ -562,7 +614,31 @@ async function loadApiBase() {
 
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
 
-// ---- GATE ----
+// ---- NOTIFICATION SYSTEM ----
+let _notifCallback = null;
+
+function showNotif(msg, type = 'error', sub = '') {
+  const icons = {
+    error:   'fa-solid fa-circle-xmark',
+    success: 'fa-solid fa-circle-check',
+    info:    'fa-solid fa-circle-info'
+  };
+  const iconEl = document.getElementById('notif-icon-i');
+  iconEl.className = icons[type] || icons.info;
+  document.getElementById('notif-icon').className = `notif-icon ${type}`;
+  document.getElementById('notif-msg').textContent = msg;
+  document.getElementById('notif-msg').className = `notif-msg ${type}`;
+  document.getElementById('notif-sub').textContent = sub;
+  document.getElementById('notif-ok').className = `notif-ok ${type}`;
+  document.getElementById('notif-overlay').classList.add('show');
+}
+
+function closeNotif() {
+  document.getElementById('notif-overlay').classList.remove('show');
+  if (_notifCallback) { _notifCallback(); _notifCallback = null; }
+}
+
+
 function gateLogin() {
   const u = document.getElementById('gate-user').value.trim();
   const p = document.getElementById('gate-pass').value.trim();
@@ -755,13 +831,14 @@ async function deleteSewabotSession(sessionId, btn) {
     });
     const data = await res.json();
     if (data.ok) {
-      loadData();
+      showNotif('Sesi bot berhasil dihapus!', 'success', 'Data akan diperbarui otomatis');
+      _notifCallback = () => loadData();
     } else {
-      alert(data.message || 'Gagal Menghapus Sesi');
+      showNotif(data.message || 'Gagal Menghapus Sesi', 'error', 'Coba lagi dalam beberapa saat');
       btn.disabled = false; btn.innerHTML = original;
     }
   } catch (e) {
-    alert('Koneksi Gagal');
+    showNotif('Koneksi Gagal', 'error', 'Periksa koneksi internet Anda');
     btn.disabled = false; btn.innerHTML = original;
   }
 }
@@ -772,8 +849,6 @@ function openGrantModal() {
   document.getElementById('grant-days').value = '';
   document.getElementById('grant-type').value = 'days';
   document.getElementById('grant-days-wrap').style.display = '';
-  document.getElementById('grant-result').style.display = 'none';
-  document.getElementById('grant-result').className = 'grant-result';
   document.getElementById('grant-btn-submit').disabled = false;
   document.getElementById('grant-btn-submit').innerHTML = '<i class="fa-solid fa-paper-plane"></i> Grant Sekarang';
   document.getElementById('grant-overlay').classList.add('show');
@@ -795,11 +870,10 @@ async function submitGrant() {
   const type      = document.getElementById('grant-type').value;
   const days      = parseInt(document.getElementById('grant-days').value);
   const permanent = type === 'permanent';
-  const resultEl  = document.getElementById('grant-result');
   const btn       = document.getElementById('grant-btn-submit');
 
-  if (!username) return showGrantResult('error', 'Username tidak boleh kosong!');
-  if (!permanent && (!days || days < 1)) return showGrantResult('error', 'Isi jumlah hari minimal 1!');
+  if (!username) return showNotif('Username tidak boleh kosong!', 'error', 'Masukkan username user terlebih dahulu');
+  if (!permanent && (!days || days < 1)) return showNotif('Isi jumlah hari minimal 1!', 'error', 'Jumlah hari harus lebih dari 0');
 
   btn.disabled = true;
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
@@ -818,26 +892,22 @@ async function submitGrant() {
       const expInfo = permanent
         ? 'Permanen'
         : `Expired: ${new Date(data.expired_at).toLocaleString('id-ID')}`;
-      showGrantResult('ok', `✅ Berhasil! Sewa bot diberikan ke <b>${escHtml(username)}</b><br><span style="font-weight:400">${expInfo}</span>`);
+      showNotif(`Sewa bot berhasil diberikan ke ${username}!`, 'success', expInfo);
       btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Berhasil!';
-      loadData(); // refresh tabel
+      _notifCallback = () => {
+        closeGrantModal();
+        loadData();
+      };
     } else {
-      showGrantResult('error', data.message || 'Gagal memberikan sewa bot');
+      showNotif(data.message || 'Gagal memberikan sewa bot', 'error', 'Periksa kembali data yang Anda masukkan');
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Grant Sekarang';
     }
   } catch {
-    showGrantResult('error', 'Koneksi gagal, coba lagi.');
+    showNotif('Koneksi gagal', 'error', 'Periksa koneksi internet dan coba lagi');
     btn.disabled = false;
     btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Grant Sekarang';
   }
-}
-
-function showGrantResult(type, html) {
-  const el = document.getElementById('grant-result');
-  el.className = `grant-result ${type}`;
-  el.innerHTML = html;
-  el.style.display = 'block';
 }
 
 // ---- INIT ----
