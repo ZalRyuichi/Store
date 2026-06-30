@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Layanan Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
+    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
+    --white:  #FFFFFF; --bg:     #F8FAFC;
+    --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 30px;
+  }
+
+  /* PAGE HEADER */
+  .page-hero {
+    max-width: 900px; margin: 0 auto; padding: 28px 20px 4px;
+  }
+  .page-hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--blue-l); color: var(--blue);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.4px;
+    padding: 5px 12px; border-radius: 20px; margin-bottom: 12px;
+  }
+  .page-hero-title { font-size: 21px; font-weight: 800; color: var(--dark); margin-bottom: 6px; }
+  .page-hero-sub { font-size: 13px; color: var(--slate); line-height: 1.6; }
+
+  .back-btn {
+    position: fixed; top: 16px; right: 16px; z-index: 50;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--white); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--dark); font-size: 14px; text-decoration: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transition: all 0.15s;
+  }
+  .back-btn:hover { background: var(--blue-l); color: var(--blue); border-color: var(--blue); }
+  .back-btn:active { transform: scale(0.92); }
+
+  /* LAYANAN SECTION */
+  .layanan-wrap { max-width: 900px; margin: 0 auto; padding: 18px 20px 10px; }
+
+  .layanan-group { margin-bottom: 22px; }
+  .layanan-group-title {
+    font-size: 13px; font-weight: 700; color: var(--dark);
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  }
+  .layanan-group-title i { color: var(--blue); font-size: 13px; }
+
+  .layanan-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 16px; padding: 18px 20px; margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: relative; overflow: hidden;
+  }
+  .layanan-card-head {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 12px;
+  }
+  .layanan-icon {
+    width: 46px; height: 46px; border-radius: 13px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px; color: #fff;
+  }
+  .layanan-icon.blue   { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
+  .layanan-icon.purple { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+  .layanan-icon.green  { background: linear-gradient(135deg, #10B981, #059669); }
+  .layanan-icon.red    { background: linear-gradient(135deg, #EF4444, #B91C1C); }
+
+  .layanan-card-title { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 3px; }
+  .layanan-card-sub { font-size: 11.5px; color: var(--slate); }
+
+  .layanan-desc {
+    font-size: 12.5px; color: var(--slate); line-height: 1.7; margin-bottom: 14px;
+  }
+
+  .layanan-tiers {
+    display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;
+  }
+  .tier-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 11px;
+  }
+  .tier-row-left { display: flex; flex-direction: column; gap: 2px; }
+  .tier-name { font-size: 12.5px; font-weight: 600; color: var(--dark); }
+  .tier-benefit { font-size: 10.5px; color: var(--slate); }
+  .tier-price { font-size: 13px; font-weight: 700; color: var(--blue); white-space: nowrap; }
+
+  .layanan-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .layanan-pill {
+    font-size: 10.5px; font-weight: 600; color: var(--slate);
+    background: var(--bg); border: 1px solid var(--border);
+    padding: 5px 10px; border-radius: 20px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .layanan-pill i { font-size: 9px; color: var(--blue); }
+
+  .layanan-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--blue); color: #fff; border: none;
+    padding: 11px 16px; border-radius: 11px; font-size: 12.5px; font-weight: 700;
+    font-family: 'Inter', sans-serif; cursor: pointer; text-decoration: none;
+    width: 100%; transition: all 0.15s;
+  }
+  .layanan-cta:active { transform: scale(0.98); }
+
+  /* PAYMENT BANNER */
+  .payment-banner {
+    max-width: 900px; margin: 0 auto; padding: 0 20px 10px;
+  }
+  .payment-card {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    border-radius: 16px; padding: 18px 20px; color: #fff;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 6px 20px rgba(15,23,42,0.2);
+    position: relative; overflow: hidden;
+  }
+  .payment-card::after {
+    content: ''; position: absolute; top: -20px; right: -20px;
+    width: 100px; height: 100px; background: rgba(37,99,235,0.25);
+    border-radius: 50%;
+  }
+  .payment-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px; flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .payment-text { flex: 1; min-width: 0; position: relative; z-index: 1; }
+  .payment-title { font-size: 13.5px; font-weight: 700; margin-bottom: 2px; }
+  .payment-sub { font-size: 11px; opacity: 0.8; }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="/dashboard" title="Kembali">
+  <i class="fa-solid fa-arrow-left"></i>
+</a>
+
+<div class="page-hero">
+  <div class="page-hero-tag"><i class="fa-solid fa-concierge-bell"></i> Layanan Kami</div>
+  <div class="page-hero-title">Semua Layanan Zal Яyuichi</div>
+  <div class="page-hero-sub">Daftar lengkap produk dan jasa yang tersedia di platform kami. Proses instan, pembayaran khusus QRIS.</div>
+</div>
+
+<div class="payment-banner">
+  <div class="payment-card">
+    <div class="payment-icon"><i class="fa-solid fa-qrcode"></i></div>
+    <div class="payment-text">
+      <div class="payment-title">Pembayaran Instan via QRIS</div>
+      <div class="payment-sub">Satu-satunya metode pembayaran kami • Proses otomatis dalam hitungan detik</div>
+    </div>
+  </div>
+</div>
+
+<div class="layanan-wrap">
+
+  <!-- RYUICHI APK -->
+  <div class="layanan-group">
+    <div class="layanan-group-title"><i class="fa-solid fa-mobile-screen-button"></i> Aplikasi</div>
+
+    <div class="layanan-card">
+      <div class="layanan-card-head">
+        <div class="layanan-icon blue"><i class="fa-solid fa-bolt"></i></div>
+        <div>
+          <div class="layanan-card-title">Pegasus-X Яyuichi Apk</div>
+          <div class="layanan-card-sub">Upgrade role untuk akses fitur penuh aplikasi</div>
+        </div>
+      </div>
+      <div class="layanan-desc">Aplikasi utama kami dengan berbagai tingkatan akses, mulai dari fitur dasar sampai akses reseller dan admin penuh.</div>
+      <div class="layanan-tiers">
+        <div class="tier-row">
+          <div class="tier-row-left"><div class="tier-name">Member</div><div class="tier-benefit">Akses fitur dasar</div></div>
+          <div class="tier-price">Rp 25.000</div>
+        </div>
+        <div class="tier-row">
+          <div class="tier-row-left"><div class="tier-name">Vip No Update</div><div class="tier-benefit">Akses sebagian fitur Vip</div></div>
+          <div class="tier-price">Rp 50.000</div>
+        </div>
+        <div class="tier-row">
+          <div class="tier-row-left"><div class="tier-name">Vip Full Update</div><div class="tier-benefit">Akses full fitur Vip</div></div>
+          <div class="tier-price">Rp 100.000</div>
+        </div>
+        <div class="tier-row">
+          <div class="tier-row-left"><div class="tier-name">Reseller</div><div class="tier-benefit">Full Vip + bisa jual role Vip</div></div>
+          <div class="tier-price">Rp 200.000</div>
+        </div>
+        <div class="tier-row">
+          <div class="tier-row-left"><div class="tier-name">Admin</div><div class="tier-benefit">Full akses + bisa jual semua role</div></div>
+          <div class="tier-price">Rp 300.000</div>
+        </div>
+      </div>
+      <a class="layanan-cta" href="/home/produk.html#ryuichi"><i class="fa-solid fa-cart-shopping"></i> Lihat & Beli Role</a>
+    </div>
+
+    <div class="layanan-card">
+      <div class="layanan-card-head">
+        <div class="layanan-icon purple"><i class="fa-solid fa-shield-cat"></i></div>
+        <div>
+          <div class="layanan-card-title">Aplikasi XyzXRat</div>
+          <div class="layanan-card-sub">Membership bulanan atau permanen</div>
+        </div>
+      </div>
+      <div class="layanan-desc">Aplikasi pendukung kedua dengan sistem keanggotaan fleksibel, cocok untuk pemakaian jangka pendek atau permanen.</div>
+      <div class="layanan-tiers">
+        <div class="tier-row">
+          <div class="tier-row-left"><div class="tier-name">Member (1 Bulan)</div><div class="tier-benefit">Akses fitur selama 1 bulan</div></div>
+          <div class="tier-price">Rp 25.000</div>
+        </div>
+        <div class="tier-row">
+          <div class="tier-row-left"><div class="tier-name">Member (Permanen)</div><div class="tier-benefit">Akses fitur permanen</div></div>
+          <div class="tier-price">Rp 50.000</div>
+        </div>
+        <div class="tier-row">
+          <div class="tier-row-left"><div class="tier-name">Reseller</div><div class="tier-benefit">Akses permanen + bisa jual role member</div></div>
+          <div class="tier-price">Rp 130.000</div>
+        </div>
+      </div>
+      <a class="layanan-cta" href="/home/produk.html#xyz"><i class="fa-solid fa-cart-shopping"></i> Lihat & Beli Role</a>
+    </div>
+  </div>
+
+  <!-- WHATSAPP TOOLS -->
+  <div class="layanan-group">
+    <div class="layanan-group-title"><i class="fa-brands fa-whatsapp"></i> Layanan WhatsApp</div>
+
+    <div class="layanan-card">
+      <div class="layanan-card-head">
+        <div class="layanan-icon green"><i class="fa-solid fa-robot"></i></div>
+        <div>
+          <div class="layanan-card-title">Sewa Bot WhatsApp</div>
+          <div class="layanan-card-sub">Bot WhatsApp pribadi, aktif sesuai paket sewa</div>
+        </div>
+      </div>
+      <div class="layanan-desc">Sewa bot WhatsApp pribadi untuk kebutuhanmu sendiri dengan berbagai pilihan durasi, dari harian sampai permanen tanpa perlu perpanjang lagi.</div>
+      <div class="layanan-pills">
+        <div class="layanan-pill"><i class="fa-solid fa-check"></i> 1 Hari - Rp 1.000</div>
+        <div class="layanan-pill"><i class="fa-solid fa-check"></i> 1 Minggu - Rp 5.000</div>
+        <div class="layanan-pill"><i class="fa-solid fa-check"></i> 3 Minggu - Rp 15.000</div>
+        <div class="layanan-pill"><i class="fa-solid fa-check"></i> 1 Bulan - Rp 20.000</div>
+        <div class="layanan-pill"><i class="fa-solid fa-check"></i> Permanen - Rp 50.000</div>
+      </div>
+      <a class="layanan-cta" href="/home/produk.html#wa"><i class="fa-solid fa-cart-shopping"></i> Sewa Sekarang</a>
+    </div>
+
+    <div class="layanan-card">
+      <div class="layanan-card-head">
+        <div class="layanan-icon red"><i class="fa-solid fa-bug"></i></div>
+        <div>
+          <div class="layanan-card-title">Jasa Bug WhatsApp</div>
+          <div class="layanan-card-sub">Bug nomer & bug grup, proses otomatis</div>
+        </div>
+      </div>
+      <div class="layanan-desc">Layanan bug WhatsApp untuk nomor atau grup dengan proses instan dan otomatis melalui sistem kami.</div>
+      <div class="layanan-pills">
+        <div class="layanan-pill"><i class="fa-solid fa-mobile-screen"></i> Bug Nomer</div>
+        <div class="layanan-pill"><i class="fa-solid fa-users"></i> Bug Group</div>
+        <div class="layanan-pill"><i class="fa-solid fa-bolt"></i> Instan</div>
+      </div>
+      <a class="layanan-cta" href="/home/produk.html#jasabug"><i class="fa-solid fa-cart-shopping"></i> Mulai Rp 4.000</a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+                                         </html>
+                                         
