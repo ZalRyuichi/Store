@@ -10,24 +10,104 @@
 <style>
   /* SIDEBAR */
   .sidebar {
-    position: fixed; left: 0; top: 0; width: 240px; height: 100vh;
-    background: var(--white); border-right: 1px solid var(--border);
+    position: fixed; left: 0; top: 0; width: 280px; height: 100vh;
+    background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%);
+    border-right: 1px solid var(--border);
     transform: translateX(-100%); transition: transform 0.3s ease;
-    z-index: 99; padding-top: 56px; overflow-y: auto;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    z-index: 99; padding-top: 0; overflow-y: auto;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.12);
   }
   .sidebar.show { transform: translateX(0); }
-  .sidebar-content { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+
+  .sidebar-header {
+    position: sticky; top: 0; z-index: 10;
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    padding: 24px 16px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 16px rgba(37,99,235,0.25);
+  }
+
+  .sidebar-logo-img {
+    width: 84px; height: 84px;
+    border-radius: 14px;
+    border: 3px solid rgba(255,255,255,0.3);
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .sidebar-app-name {
+    font-size: 14px; font-weight: 700; color: #fff;
+    text-align: center; letter-spacing: 0.5px;
+  }
+
+  .sidebar-content {
+    padding: 20px 12px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+
+  .sidebar-section {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+
+  .sidebar-section-title {
+    font-size: 10px; font-weight: 700; color: var(--slate);
+    text-transform: uppercase; letter-spacing: 0.6px;
+    padding: 8px 14px; opacity: 0.7;
+  }
+
+  .sidebar-menu {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+
+  .sidebar-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px; border-radius: 11px;
+    text-decoration: none; color: var(--dark);
+    font-size: 13px; font-weight: 500;
+    transition: all 0.2s;
+    position: relative;
+    border: 1px solid transparent;
+  }
+
+  .sidebar-item:hover {
+    background: rgba(37,99,235,0.08);
+    border-color: rgba(37,99,235,0.15);
+    color: var(--blue);
+    padding-left: 16px;
+  }
+
+  .sidebar-item i {
+    font-size: 14px; width: 20px; text-align: center;
+    transition: all 0.2s;
+  }
+
+  .sidebar-item:hover i { color: var(--blue); transform: translateX(2px); }
+
+  .sidebar-divider {
+    height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 8px 0;
+  }
+
   .sidebar-btn {
-    padding: 11px 16px; border: none; border-radius: 10px;
+    padding: 12px 14px; border: none; border-radius: 11px;
     font-size: 13px; font-weight: 600; cursor: pointer;
     font-family: 'Inter', sans-serif; transition: all 0.2s;
-    display: flex; align-items: center; gap: 8px;
+    display: flex; align-items: center; gap: 10px;
   }
+
   .sidebar-btn.logout {
-    background: #FEF2F2; color: var(--red); border: 1px solid #FECACA;
+    background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+    color: var(--red); border: 1px solid #FECACA;
+    width: 100%; justify-content: center; margin-top: 12px;
   }
-  .sidebar-btn.logout:hover { background: #FECACA; color: #fff; }
+
+  .sidebar-btn.logout:hover {
+    background: linear-gradient(135deg, #FECACA 0%, #FCA5A5 100%);
+    color: #fff; box-shadow: 0 4px 12px rgba(239,68,68,0.3);
+  }
+
+  .sidebar-btn.logout:active { transform: scale(0.97); }
   .sidebar-overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,0);
     opacity: 0; pointer-events: none; transition: opacity 0.3s;
@@ -37,7 +117,7 @@
   .sidebar-toggle {
     background: none; border: none; cursor: pointer; color: var(--dark);
     font-size: 16px; padding: 8px; display: flex; align-items: center;
-    transition: all 0.2s;
+    transition: all 0.2s; flex-shrink: 0;
   }
   .sidebar-toggle:hover { color: var(--blue); }
 </style>
@@ -57,7 +137,103 @@
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="document.getElementById('sidebar').classList.remove('show'); this.classList.remove('show')"></div>
 
 <aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <img src="../image/logo_sidebar.jpg" alt="Logo Sidebar" class="sidebar-logo-img"/>
+    <div class="sidebar-app-name">Zal Яyuichi</div>
+  </div>
+
   <div class="sidebar-content">
+
+    <!-- UTAMA SECTION -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Utama</div>
+      <div class="sidebar-menu">
+        <a href="/dashboard" class="sidebar-item">
+          <i class="fa-solid fa-house"></i>
+          <span>Beranda</span>
+        </a>
+        <a href="/home/produk.html" class="sidebar-item">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span>Produk</span>
+        </a>
+        <a href="/home/topup.html" class="sidebar-item">
+          <i class="fa-solid fa-wallet"></i>
+          <span>Top Up</span>
+        </a>
+        <a href="/home/history.html" class="sidebar-item">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Riwayat</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- INFORMASI SECTION -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Informasi</div>
+      <div class="sidebar-menu">
+        <a href="/home/faq.html" class="sidebar-item">
+          <i class="fa-solid fa-circle-question"></i>
+          <span>FAQ</span>
+        </a>
+        <a href="/home/layanan.html" class="sidebar-item">
+          <i class="fa-solid fa-concierge-bell"></i>
+          <span>Layanan</span>
+        </a>
+        <a href="/home/ketentuan.html" class="sidebar-item">
+          <i class="fa-solid fa-file-contract"></i>
+          <span>Ketentuan</span>
+        </a>
+        <a href="/home/tos.html" class="sidebar-item">
+          <i class="fa-solid fa-scroll"></i>
+          <span>Terms of Service</span>
+        </a>
+        <a href="/home/kebijakan.html" class="sidebar-item">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Kebijakan</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- DUKUNGAN SECTION -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Dukungan</div>
+      <div class="sidebar-menu">
+        <a href="/home/customer-service.html" class="sidebar-item">
+          <i class="fa-solid fa-headset"></i>
+          <span>Customer Service</span>
+        </a>
+        <a href="/home/hubungi-kami.html" class="sidebar-item">
+          <i class="fa-solid fa-envelope"></i>
+          <span>Hubungi Kami</span>
+        </a>
+        <a href="/home/lapor.html" class="sidebar-item">
+          <i class="fa-solid fa-flag"></i>
+          <span>Laporkan Bug</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- APLIKASI SECTION -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Aplikasi</div>
+      <div class="sidebar-menu">
+        <a href="/home/app_ryuichi.html" class="sidebar-item">
+          <i class="fa-solid fa-download"></i>
+          <span>Download App</span>
+        </a>
+        <a href="/home/tutorial.html" class="sidebar-item">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Tutorial</span>
+        </a>
+      </div>
+    </div>
+
     <button class="sidebar-btn logout" onclick="logout()">
       <i class="fa-solid fa-sign-out-alt"></i> Log Out
     </button>
