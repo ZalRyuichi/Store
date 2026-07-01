@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kebijakan Privasi Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
+    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
+    --white:  #FFFFFF; --bg:     #F8FAFC;
+    --red:    #EF4444; --red-l:  #FEF2F2;
+    --green:  #10B981; --green-l:#ECFDF5;
+    --amber:  #F59E0B; --amber-l:#FFFBEB;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 50px;
+  }
+
+  /* BACK BUTTON */
+  .back-btn {
+    position: fixed; top: 16px; right: 16px; z-index: 50;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--white); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--dark); font-size: 14px; text-decoration: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: all 0.15s;
+  }
+  .back-btn:hover { background: var(--blue-l); color: var(--blue); border-color: var(--blue); }
+  .back-btn:active { transform: scale(0.92); }
+
+  /* HERO */
+  .page-hero {
+    max-width: 700px; margin: 0 auto; padding: 28px 20px 16px;
+  }
+  .page-hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--blue-l); color: var(--blue);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.4px;
+    padding: 5px 12px; border-radius: 20px; margin-bottom: 14px;
+  }
+  .page-hero-title { font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+  .page-hero-meta { font-size: 11.5px; color: var(--slate); display: flex; align-items: center; gap: 6px; }
+  .page-hero-meta i { font-size: 10px; }
+
+  /* CONTENT */
+  .kbj-wrap { max-width: 700px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; gap: 14px; }
+
+  .kbj-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+
+  .kbj-section-title {
+    font-size: 13px; font-weight: 700; color: var(--dark);
+    display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  }
+  .kbj-num {
+    width: 24px; height: 24px; border-radius: 7px;
+    background: var(--blue-l); color: var(--blue);
+    font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+
+  .kbj-body { display: flex; flex-direction: column; gap: 8px; }
+  .kbj-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 12.5px; color: var(--slate); line-height: 1.7;
+  }
+  .kbj-item i { font-size: 9px; color: var(--blue); margin-top: 5px; flex-shrink: 0; }
+  .kbj-item strong { color: var(--dark); font-weight: 600; }
+
+  /* ALERT */
+  .kbj-alert {
+    border-radius: 12px; padding: 14px 16px;
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 12px; line-height: 1.7;
+  }
+  .kbj-alert.blue  { background: var(--blue-l);  border: 1px solid rgba(37,99,235,0.2); color: #1E40AF; }
+  .kbj-alert.green { background: var(--green-l); border: 1px solid #A7F3D0; color: #065F46; }
+  .kbj-alert.amber { background: var(--amber-l); border: 1px solid #FDE68A; color: #92400E; }
+  .kbj-alert i { font-size: 13px; margin-top: 1px; flex-shrink: 0; }
+  .kbj-alert strong { font-weight: 700; }
+
+  /* DATA TABLE */
+  .kbj-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .kbj-table th {
+    background: var(--bg); font-size: 11px; font-weight: 700;
+    color: var(--slate); text-transform: uppercase; letter-spacing: 0.4px;
+    padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border);
+  }
+  .kbj-table td {
+    font-size: 12px; color: var(--slate); padding: 9px 12px;
+    border-bottom: 1px solid var(--border); line-height: 1.6;
+  }
+  .kbj-table tr:last-child td { border-bottom: none; }
+  .kbj-table td strong { color: var(--dark); font-weight: 600; }
+
+  /* FOOTER */
+  .kbj-footer { max-width: 700px; margin: 6px auto 0; padding: 0 20px; }
+  .kbj-footer-card {
+    background: linear-gradient(135deg, #0F172A, #1E293B);
+    border-radius: 14px; padding: 16px 20px; color: #fff;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .kbj-footer-card i { font-size: 18px; opacity: 0.8; }
+  .kbj-footer-text { font-size: 12px; line-height: 1.7; opacity: 0.85; }
+  .kbj-footer-text strong { font-weight: 700; color: #fff; }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="/dashboard" title="Kembali">
+  <i class="fa-solid fa-arrow-left"></i>
+</a>
+
+<div class="page-hero">
+  <div class="page-hero-tag"><i class="fa-solid fa-shield-halved"></i> Kebijakan Privasi</div>
+  <div class="page-hero-title">Kebijakan Privasi Pengguna</div>
+  <div class="page-hero-meta"><i class="fa-solid fa-calendar"></i> Berlaku sejak 1 Juni 2026 &nbsp;·&nbsp; <i class="fa-solid fa-globe"></i> Zal Яyuichi</div>
+</div>
+
+<div class="kbj-wrap">
+
+  <!-- KOMITMEN -->
+  <div class="kbj-alert blue">
+    <i class="fa-solid fa-shield-halved"></i>
+    <span>Kami berkomitmen untuk <strong>melindungi privasi dan keamanan data</strong> setiap pengguna platform Zal Яyuichi. Kebijakan ini menjelaskan data apa yang kami kumpulkan, bagaimana kami menggunakannya, dan hak-hak kamu sebagai pengguna.</span>
+  </div>
+
+  <!-- 1. DATA YANG DIKUMPULKAN -->
+  <div class="kbj-card">
+    <div class="kbj-section-title"><div class="kbj-num">1</div> Data yang Kami Kumpulkan</div>
+    <table class="kbj-table">
+      <tr>
+        <th>Jenis Data</th>
+        <th>Keterangan</th>
+      </tr>
+      <tr>
+        <td><strong>Data Akun</strong></td>
+        <td>Username, password (terenkripsi), dan role/tier yang dimiliki</td>
+      </tr>
+      <tr>
+        <td><strong>Data Transaksi</strong></td>
+        <td>Riwayat pembelian, nominal transaksi, waktu transaksi, dan status pembayaran</td>
+      </tr>
+      <tr>
+        <td><strong>Data Teknis</strong></td>
+        <td>Alamat IP, jenis perangkat, dan waktu akses untuk keperluan keamanan</td>
+      </tr>
+      <tr>
+        <td><strong>Data Komunikasi</strong></td>
+        <td>Pesan yang dikirim ke CS kami melalui Telegram atau WhatsApp</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 2. PENGGUNAAN DATA -->
+  <div class="kbj-card">
+    <div class="kbj-section-title"><div class="kbj-num">2</div> Penggunaan Data</div>
+    <div class="kbj-body">
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Memverifikasi identitas pengguna dan memproses transaksi secara otomatis.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Mengelola role, masa aktif, dan hak akses sesuai produk yang dibeli.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Mendeteksi dan mencegah aktivitas mencurigakan, penipuan, atau penyalahgunaan platform.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Memberikan dukungan teknis dan merespons pertanyaan atau keluhan pengguna.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Meningkatkan performa dan pengalaman penggunaan platform secara keseluruhan.</span></div>
+    </div>
+  </div>
+
+  <!-- 3. PENYIMPANAN DATA -->
+  <div class="kbj-card">
+    <div class="kbj-section-title"><div class="kbj-num">3</div> Penyimpanan & Keamanan Data</div>
+    <div class="kbj-body">
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Data pengguna disimpan di server yang <strong>terenkripsi</strong> dan hanya dapat diakses oleh tim internal yang berwenang.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Password disimpan dalam bentuk <strong>hash terenkripsi</strong> — kami tidak pernah menyimpan password dalam bentuk teks biasa.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Data transaksi disimpan selama akun aktif dan minimal <strong>90 hari</strong> setelah akun dihapus untuk keperluan audit.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Kami tidak menjamin keamanan 100% dari ancaman siber di luar kendali kami, namun kami terus berupaya memperbarui sistem keamanan.</span></div>
+    </div>
+  </div>
+
+  <!-- 4. BERBAGI DATA -->
+  <div class="kbj-card">
+    <div class="kbj-section-title"><div class="kbj-num">4</div> Berbagi Data dengan Pihak Ketiga</div>
+    <div class="kbj-body">
+      <div class="kbj-alert amber" style="margin-bottom:10px;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span><strong>Kami tidak menjual, menyewakan, atau memperdagangkan data pribadi pengguna</strong> kepada pihak ketiga manapun.</span>
+      </div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Data pembayaran diproses melalui gateway QRIS pihak ketiga. Kami tidak menyimpan detail pembayaran secara langsung.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Data dapat diungkapkan jika diwajibkan oleh hukum atau perintah pengadilan yang sah di Indonesia.</span></div>
+    </div>
+  </div>
+
+  <!-- 5. HAK PENGGUNA -->
+  <div class="kbj-card">
+    <div class="kbj-section-title"><div class="kbj-num">5</div> Hak Pengguna</div>
+    <div class="kbj-body">
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span><strong>Hak Akses:</strong> Kamu berhak meminta informasi tentang data pribadi yang kami simpan terkait akunmu.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span><strong>Hak Koreksi:</strong> Kamu berhak meminta koreksi jika ada data yang tidak akurat melalui CS kami.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span><strong>Hak Hapus:</strong> Kamu dapat meminta penghapusan akun beserta datanya. Namun data transaksi tetap disimpan sesuai ketentuan audit.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span><strong>Hak Keberatan:</strong> Jika kamu keberatan atas penggunaan datamu, hubungi kami dan kami akan meninjau permintaan tersebut.</span></div>
+    </div>
+  </div>
+
+  <!-- 6. COOKIES -->
+  <div class="kbj-card">
+    <div class="kbj-section-title"><div class="kbj-num">6</div> Cookie & Penyimpanan Lokal</div>
+    <div class="kbj-body">
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Platform kami menggunakan cookie dan localStorage untuk menyimpan sesi login dan preferensi pengguna.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Cookie ini bersifat <strong>fungsional</strong> — tidak digunakan untuk pelacakan iklan atau analitik pihak ketiga.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Menghapus cookie browser akan mengakibatkan kamu perlu login ulang ke platform.</span></div>
+    </div>
+  </div>
+
+  <!-- 7. PERUBAHAN KEBIJAKAN -->
+  <div class="kbj-card">
+    <div class="kbj-section-title"><div class="kbj-num">7</div> Perubahan Kebijakan</div>
+    <div class="kbj-body">
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Kami berhak mengubah kebijakan privasi ini kapan saja. Perubahan akan berlaku segera setelah dipublikasikan di platform.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Tanggal pembaruan terakhir akan selalu ditampilkan di bagian atas halaman ini.</span></div>
+      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Dengan terus menggunakan platform setelah perubahan dipublikasikan, kamu dianggap menyetujui kebijakan yang baru.</span></div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
