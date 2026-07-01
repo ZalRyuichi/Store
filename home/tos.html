@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Terms of Service - Zal Яyuichi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
+    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
+    --white:  #FFFFFF; --bg:     #F8FAFC;
+    --red:    #EF4444; --red-l:  #FEF2F2;
+    --green:  #10B981; --green-l:#ECFDF5;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 50px;
+  }
+
+  /* BACK BUTTON */
+  .back-btn {
+    position: fixed; top: 16px; right: 16px; z-index: 50;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--white); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--dark); font-size: 14px; text-decoration: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: all 0.15s;
+  }
+  .back-btn:hover { background: var(--blue-l); color: var(--blue); border-color: var(--blue); }
+  .back-btn:active { transform: scale(0.92); }
+
+  /* HERO */
+  .page-hero {
+    max-width: 700px; margin: 0 auto; padding: 28px 20px 16px;
+  }
+  .page-hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--blue-l); color: var(--blue);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.4px;
+    padding: 5px 12px; border-radius: 20px; margin-bottom: 14px;
+  }
+  .page-hero-title { font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+  .page-hero-meta { font-size: 11.5px; color: var(--slate); display: flex; align-items: center; gap: 6px; }
+  .page-hero-meta i { font-size: 10px; }
+
+  /* CONTENT */
+  .tos-wrap { max-width: 700px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; gap: 14px; }
+
+  .tos-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+
+  .tos-section-title {
+    font-size: 13px; font-weight: 700; color: var(--dark);
+    display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  }
+  .tos-section-title .tos-num {
+    width: 24px; height: 24px; border-radius: 7px;
+    background: var(--blue-l); color: var(--blue);
+    font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .tos-body { display: flex; flex-direction: column; gap: 8px; }
+
+  .tos-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 12.5px; color: var(--slate); line-height: 1.7;
+  }
+  .tos-item i { font-size: 9px; color: var(--blue); margin-top: 5px; flex-shrink: 0; }
+  .tos-item strong { color: var(--dark); font-weight: 600; }
+
+  /* ALERT CARDS */
+  .tos-alert {
+    border-radius: 12px; padding: 14px 16px;
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 12px; line-height: 1.7;
+  }
+  .tos-alert.red   { background: var(--red-l);   border: 1px solid #FECACA; color: #991B1B; }
+  .tos-alert.green { background: var(--green-l);  border: 1px solid #A7F3D0; color: #065F46; }
+  .tos-alert i { font-size: 13px; margin-top: 1px; flex-shrink: 0; }
+  .tos-alert strong { font-weight: 700; }
+
+  /* FOOTER NOTE */
+  .tos-footer {
+    max-width: 700px; margin: 6px auto 0; padding: 0 20px;
+  }
+  .tos-footer-card {
+    background: linear-gradient(135deg, #0F172A, #1E293B);
+    border-radius: 14px; padding: 16px 20px; color: #fff;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .tos-footer-card i { font-size: 18px; opacity: 0.8; }
+  .tos-footer-text { font-size: 12px; line-height: 1.7; opacity: 0.85; }
+  .tos-footer-text strong { font-weight: 700; opacity: 1; color: #fff; }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="/dashboard" title="Kembali">
+  <i class="fa-solid fa-arrow-left"></i>
+</a>
+
+<div class="page-hero">
+  <div class="page-hero-tag"><i class="fa-solid fa-scroll"></i> Terms of Service</div>
+  <div class="page-hero-title">Syarat & Ketentuan Layanan</div>
+  <div class="page-hero-meta"><i class="fa-solid fa-calendar"></i> Berlaku sejak 1 Juli 2026 &nbsp;·&nbsp; <i class="fa-solid fa-globe"></i> Zal Яyuichi</div>
+</div>
+
+<div class="tos-wrap">
+
+  <!-- 1. UMUM -->
+  <div class="tos-card">
+    <div class="tos-section-title"><div class="tos-num">1</div> Ketentuan Umum</div>
+    <div class="tos-body">
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Dengan menggunakan platform Zal Яyuichi, kamu dianggap telah membaca, memahami, dan menyetujui seluruh syarat & ketentuan yang berlaku.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Platform ini menyediakan layanan berupa penjualan role/membership aplikasi, sewa bot, dan jasa digital lainnya.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Kami berhak mengubah, memperbarui, atau menambahkan ketentuan kapan saja tanpa pemberitahuan sebelumnya. Versi terbaru selalu berlaku.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Pengguna bertanggung jawab penuh atas keamanan akun dan kata sandi masing-masing.</span></div>
+    </div>
+  </div>
+
+  <!-- 2. PEMBAYARAN -->
+  <div class="tos-card">
+    <div class="tos-section-title"><div class="tos-num">2</div> Pembayaran & Transaksi</div>
+    <div class="tos-body">
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span><strong>Metode pembayaran yang diterima hanya QRIS.</strong> Tidak ada metode lain yang didukung saat ini.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Pembayaran diproses secara <strong>otomatis dan instan</strong>. Role/layanan akan aktif segera setelah pembayaran berhasil dikonfirmasi sistem.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Pastikan nominal yang dibayarkan sesuai dengan yang tertera pada halaman checkout. Kekurangan atau kelebihan bayar menjadi tanggung jawab pengguna.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Transaksi yang sudah berhasil diproses tidak dapat dibatalkan secara sepihak oleh pengguna.</span></div>
+    </div>
+  </div>
+
+  <!-- 3. REFUND -->
+  <div class="tos-card">
+    <div class="tos-section-title"><div class="tos-num">3</div> Kebijakan Refund & Pengembalian</div>
+    <div class="tos-body">
+      <div class="tos-alert red" style="margin-bottom:10px;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span><strong>Tidak ada refund</strong> untuk pembelian yang sudah berhasil diproses, kecuali terjadi kesalahan teknis dari pihak kami yang terverifikasi.</span>
+      </div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Jika role/layanan tidak aktif setelah pembayaran berhasil, segera hubungi CS kami dengan menyertakan bukti pembayaran.</span></div>
+  </div>
+
+  <!-- 4. PENGGUNAAN -->
+  <div class="tos-card">
+    <div class="tos-section-title"><div class="tos-num">4</div> Penggunaan Layanan</div>
+    <div class="tos-body">
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Akun bersifat <strong>personal</strong> dan tidak boleh dipindahtangankan, dijual, atau dibagikan kepada pihak lain tanpa izin.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Dilarang menggunakan layanan kami untuk aktivitas yang melanggar hukum yang berlaku di Indonesia.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Dilarang melakukan penyalahgunaan sistem, eksploitasi bug, atau tindakan yang merugikan pengguna lain maupun platform.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Pengguna dengan role Reseller atau Admin wajib mematuhi ketentuan tambahan yang berlaku untuk tier tersebut.</span></div>
+    </div>
+  </div>
+
+  <!-- 5. MASA AKTIF -->
+  <div class="tos-card">
+    <div class="tos-section-title"><div class="tos-num">5</div> Masa Aktif & Perpanjangan</div>
+    <div class="tos-body">
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Role/membership dengan masa aktif terbatas (harian, mingguan, bulanan) akan <strong>otomatis nonaktif</strong> setelah waktu habis.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Tidak ada notifikasi otomatis sebelum masa aktif berakhir. Pengguna bertanggung jawab memantau masa aktif sendiri.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Perpanjangan dapat dilakukan kapan saja melalui halaman produk. Masa aktif baru dihitung dari waktu perpanjangan dilakukan.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Role permanen tidak memerlukan perpanjangan dan berlaku selamanya selama platform masih aktif.</span></div>
+    </div>
+  </div>
+
+  <!-- 6. AKUN SUSPEND -->
+  <div class="tos-card">
+    <div class="tos-section-title"><div class="tos-num">6</div> Suspend & Pemblokiran Akun</div>
+    <div class="tos-body">
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Kami berhak melakukan suspend atau pemblokiran akun tanpa pemberitahuan jika terbukti melanggar ToS ini.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Akun yang disuspend tidak berhak atas pengembalian saldo atau role yang masih aktif.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Pelanggaran berat seperti penipuan, chargeback tanpa alasan valid, atau penyebaran akses ilegal dapat berujung pada banned permanen.</span></div>
+    </div>
+  </div>
+
+  <!-- 7. HAK KAMI -->
+  <div class="tos-card">
+    <div class="tos-section-title"><div class="tos-num">7</div> Hak Platform</div>
+    <div class="tos-body">
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Kami berhak mengubah harga, produk, atau fitur layanan kapan saja tanpa pemberitahuan sebelumnya.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Kami tidak bertanggung jawab atas kerugian yang timbul akibat downtime, pemeliharaan sistem, atau gangguan teknis di luar kendali kami.</span></div>
+      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Kami berhak menghentikan layanan kapan saja dengan atau tanpa pemberitahuan sebelumnya.</span></div>
+    </div>
+  </div>
+
+  <!-- AGREEMENT -->
+  <div class="tos-alert green">
+    <i class="fa-solid fa-circle-check"></i>
+    <span>Dengan melakukan pembelian atau menggunakan platform ini, kamu dianggap telah <strong>membaca dan menyetujui</strong> seluruh Terms of Service di atas.</span>
+  </div>
+
+</div>
+
+</body>
+</html>
