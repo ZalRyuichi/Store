@@ -639,18 +639,50 @@ function closeNotif() {
 }
 
 
-function gateLogin() {
+async function gateLogin() {
   const u = document.getElementById('gate-user').value.trim();
   const p = document.getElementById('gate-pass').value.trim();
   const err = document.getElementById('gate-err');
-  if (u === 'Zal' && p === '969') {
-    document.getElementById('admin-gate').style.display = 'none';
-    document.getElementById('admin-content').style.display = 'block';
-    loadData();
-  } else {
+  const btn = document.querySelector('.gate-btn');
+
+  if (!u || !p) {
+    err.textContent = 'Username dan password wajib diisi.';
     err.style.display = 'block';
-    document.getElementById('gate-pass').value = '';
     setTimeout(() => err.style.display = 'none', 3000);
+    return;
+  }
+
+  btn.disabled = true;
+  const originalBtnHtml = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memeriksa...';
+
+  try {
+    const res  = await fetch(apiUrl('/api/admin/login'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      localStorage.setItem('pg_token', data.token);
+      localStorage.setItem('pg_user', data.username);
+      document.getElementById('admin-gate').style.display = 'none';
+      document.getElementById('admin-content').style.display = 'block';
+      loadData();
+    } else {
+      err.textContent = data.message || 'Username atau password salah.';
+      err.style.display = 'block';
+      document.getElementById('gate-pass').value = '';
+      setTimeout(() => err.style.display = 'none', 3000);
+    }
+  } catch {
+    err.textContent = 'Koneksi gagal. Periksa koneksi internet.';
+    err.style.display = 'block';
+    setTimeout(() => err.style.display = 'none', 3000);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalBtnHtml;
   }
 }
 
@@ -911,18 +943,12 @@ async function submitGrant() {
 }
 
 // ---- INIT ----
-// Check if already logged in from main session
-const pgUser = localStorage.getItem('pg_user');
-const pgToken = localStorage.getItem('pg_token');
-if (pgUser && pgToken) {
-  // Verify token validity dengan backend
-  verifyAdminToken(pgToken);
-}
-
-async function verifyAdminToken(token) {
+// Cek session yang tersimpan lewat verifikasi ke server (bukan hardcode username)
+(async function initAdminSession() {
+  const token = localStorage.getItem('pg_token');
+  if (!token) return;
   try {
-    const res = await fetch(apiUrl('/api/admin/verify'), {
-      method: 'GET',
+    const res  = await fetch(apiUrl('/api/admin/verify'), {
       headers: { 'x-auth-token': token }
     });
     const data = await res.json();
@@ -931,59 +957,13 @@ async function verifyAdminToken(token) {
       document.getElementById('admin-content').style.display = 'block';
       loadData();
     } else {
-      localStorage.removeItem('pg_user');
       localStorage.removeItem('pg_token');
+      localStorage.removeItem('pg_user');
     }
   } catch {
-    localStorage.removeItem('pg_user');
-    localStorage.removeItem('pg_token');
+    // Koneksi gagal saat verifikasi, biarkan user login manual
   }
-}
-
-// Override admin login form submission
-async function handleAdminLogin(e) {
-  e?.preventDefault?.();
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const btn = document.getElementById('gate-btn-submit');
-  
-  if (!username || !password) {
-    showNotif('Username dan password harus diisi!', 'error');
-    return;
-  }
-  
-  btn.disabled = true;
-  const originalText = btn.innerHTML;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengecek...';
-  
-  try {
-    const res = await fetch(apiUrl('/api/admin/login'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-    const data = await res.json();
-    
-    if (data.ok) {
-      localStorage.setItem('pg_user', data.username);
-      localStorage.setItem('pg_token', data.token);
-      document.getElementById('admin-gate').style.display = 'none';
-      document.getElementById('admin-content').style.display = 'block';
-      document.getElementById('username').value = '';
-      document.getElementById('password').value = '';
-      loadData();
-      showNotif(`Selamat datang, ${data.username}!`, 'success');
-    } else {
-      showNotif(data.message || 'Username atau password salah', 'error');
-      btn.disabled = false;
-      btn.innerHTML = originalText;
-    }
-  } catch (err) {
-    showNotif('Koneksi gagal', 'error');
-    btn.disabled = false;
-    btn.innerHTML = originalText;
-  }
-}
+})();
 </script>
 </body>
 </html>
