@@ -657,6 +657,7 @@ async function gateLogin() {
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memeriksa...';
 
   try {
+    await loadApiBase();
     const res  = await fetch(apiUrl('/api/admin/login'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -942,12 +943,11 @@ async function submitGrant() {
   }
 }
 
-// ---- INIT ----
-// Cek session yang tersimpan lewat verifikasi ke server (bukan hardcode username)
 (async function initAdminSession() {
   const token = localStorage.getItem('pg_token');
   if (!token) return;
   try {
+    await loadApiBase();
     const res  = await fetch(apiUrl('/api/admin/verify'), {
       headers: { 'x-auth-token': token }
     });
@@ -961,7 +961,6 @@ async function submitGrant() {
       localStorage.removeItem('pg_user');
     }
   } catch {
-    // Koneksi gagal saat verifikasi, biarkan user login manual
   }
 })();
 </script>
