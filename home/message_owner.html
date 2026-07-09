@@ -327,7 +327,7 @@
   <div class="nav-left">
     <a href="#" id="mobile-back" class="back-link"><i class="fa-solid fa-arrow-left"></i></a>
     <div class="logo-icon"><i class="fa-solid fa-inbox"></i></div>
-    <div class="nav-title">Ryuichi<span> Inbox</span></div>
+    <div class="nav-title">Ryuichi<span> Owner</span></div>
   </div>
 </div>
 
@@ -646,13 +646,18 @@ function escapeHtml(s) {
 // doesn't blow up the height of its bubble.
 function cleanMsgText(s) {
   return (s || '')
-    .replace(/\r\n?/g, '\n')
+    // Normalize EVERY kind of line-break char (CRLF, CR, NEL, LINE/PARAGRAPH
+    // SEPARATOR, vertical tab, form feed) to a plain \n first. The bubble
+    // uses white-space:pre-wrap, which renders U+2028/U+2029 as real line
+    // breaks too — those two were slipping through the old regex, which is
+    // what inflated bubble height on short texts like "oi" / "p" / "hai".
+    .replace(/\r\n|[\r\u0085\u2028\u2029\v\f]/g, '\n')
     .replace(/[\u200B\u200C\u200D\uFEFF\u2060]/g, '')
     .replace(/\u00A0/g, ' ')
     .split('\n')
     .map(line => line.replace(/^[ \t]+|[ \t]+$/g, ''))
+    .filter(line => line.length > 0)
     .join('\n')
-    .replace(/\n{2,}/g, '\n')
     .trim();
 }
 
