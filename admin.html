@@ -113,6 +113,13 @@
   .stat-icon.red    { background: linear-gradient(135deg,#EF4444,#B91C1C); }
   .stat-val { font-size: 22px; font-weight: 800; color: var(--dark); }
   .stat-label { font-size: 11px; color: var(--slate); font-weight: 500; }
+  .stat-card.link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .stat-card.link:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+  .stat-card.link:active { transform: scale(0.98); }
 
   /* SECTION */
   .section-title {
@@ -442,6 +449,11 @@
         <div class="stat-val" id="stat-revenue">—</div>
         <div class="stat-label">Saldo Masuk</div>
       </div>
+      <a href="/home/message_owner.html" class="stat-card link">
+        <div class="stat-icon green"><i class="fa-solid fa-message"></i></div>
+        <div class="stat-val">Chat</div>
+        <div class="stat-label">Message</div>
+      </a>
     </div>
 
     <!-- TABS -->
