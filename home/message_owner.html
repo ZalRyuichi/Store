@@ -188,13 +188,11 @@
     margin: 8px 0;
   }
 
-  .msg-row { display: inline-flex; max-width: 72%; align-self: flex-start; }
+  .msg-row { display: flex; max-width: 72%; }
   .msg-row.in  { align-self: flex-start; }
   .msg-row.out { align-self: flex-end; }
 
   .bubble {
-    width: fit-content;
-    max-width: 100%;
     padding: 8px 11px;
     border-radius: 14px;
     font-size: 13.5px;
@@ -622,8 +620,8 @@ function renderMessages(messages, scrollToBottom) {
     }
     const side = m.from === 'owner' ? 'out' : 'in';
     const bodyHtml = m.type === 'image'
-      ? `<img class="bubble-img" src="${m.image}" onclick="openLightbox('${m.image}')">${m.text ? `<div>${escapeHtml(m.text)}</div>` : ''}`
-      : `<div>${escapeHtml(m.text || '')}</div>`;
+      ? `<img class="bubble-img" src="${m.image}" onclick="openLightbox('${m.image}')">${m.text ? `<div>${escapeHtml(cleanMsgText(m.text))}</div>` : ''}`
+      : `<div>${escapeHtml(cleanMsgText(m.text))}</div>`;
     html += `
       <div class="msg-row ${side}">
         <div class="bubble">
@@ -642,6 +640,16 @@ function renderMessages(messages, scrollToBottom) {
 
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+// Trims stray leading/trailing whitespace and collapses runs of 2+ blank
+// lines down to a single line break, so a message like "oi" stored with
+// a bunch of hidden newlines doesn't blow up the height of its bubble.
+function cleanMsgText(s) {
+  return (s || '')
+    .replace(/\r\n/g, '\n')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{2,}/g, '\n')
+    .trim();
 }
 
 async function markRead(username) {
@@ -698,7 +706,7 @@ function clearImagePick() {
 async function sendMessage() {
   if (!activeUser) return;
   const input = document.getElementById('msg-input');
-  const text = input.value.trim();
+  const text = cleanMsgText(input.value);
   if (!text && !pickedImage) return;
 
   const btn = document.getElementById('send-btn');
