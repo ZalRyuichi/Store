@@ -212,16 +212,25 @@
     color: #fff;
     border-bottom-right-radius: 4px;
   }
+  .bubble.has-image {
+    padding: 4px;
+  }
+  .bubble.has-image .bubble-time {
+    padding: 0 6px 2px;
+  }
   .bubble-img {
     max-width: 150px;
     max-height: 150px;
     width: auto;
     height: auto;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 8px;
     display: block;
     cursor: zoom-in;
     margin-bottom: 3px;
+  }
+  .bubble.has-image .bubble-caption {
+    padding: 0 6px 2px;
   }
   .bubble-time {
     font-size: 9.5px;
@@ -623,12 +632,13 @@ function renderMessages(messages, scrollToBottom) {
       lastDay = day;
     }
     const side = m.from === 'owner' ? 'out' : 'in';
-    const bodyHtml = m.type === 'image'
-      ? `<img class="bubble-img" src="${m.image}" onclick="openLightbox('${m.image}')">${m.text ? `<div>${escapeHtml(m.text)}</div>` : ''}`
+    const isImg = m.type === 'image';
+    const bodyHtml = isImg
+      ? `<img class="bubble-img" src="${m.image}" onclick="openLightbox('${m.image}')">${m.text ? `<div class="bubble-caption">${escapeHtml(m.text)}</div>` : ''}`
       : `<div>${escapeHtml(m.text || '')}</div>`;
     html += `
       <div class="msg-row ${side}">
-        <div class="bubble">
+        <div class="bubble${isImg ? ' has-image' : ''}">
           ${bodyHtml}
           <div class="bubble-time">${fmtTime(m.time)}</div>
         </div>
