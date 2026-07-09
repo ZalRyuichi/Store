@@ -458,7 +458,7 @@ async function verifySession() {
    Messages persist server-side to data-chat/${username}.json
 --------------------------------------------------------- */
 
-const MIN_IMAGE_BYTES = 1 * 1024 * 1024;   // 1 MB
+const MIN_IMAGE_BYTES = 1024; // 1 KB
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;   // 5 MB
 
 let contactsCache = [];

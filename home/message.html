@@ -239,19 +239,18 @@
 
 <div class="top-nav">
   <div class="nav-left">
-    <a href="/home/dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i></a>
+    <a href="/dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i></a>
     <div class="owner-avatar"><i class="fa-solid fa-headset"></i></div>
     <div class="nav-title-wrap">
-      <div class="nav-title">Ryuichi Support</div>
+      <div class="nav-title">Ryuichi Chat</div>
       <div class="nav-sub"><span class="status-dot"></span> Online</div>
     </div>
   </div>
-  <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
 </div>
 
 <div class="chat-pane" id="chat-pane">
   <div class="messages-area" id="messages-area">
-    <div class="loading-spin"><i class="fa-solid fa-spinner fa-spin"></i> Memuat percakapan...</div>
+    <div class="loading-spin"><i class="fa-solid fa-spinner fa-spin"></i> Memuat Percakapan...</div>
   </div>
 
   <div class="img-preview-bar" id="img-preview-bar">
@@ -336,7 +335,7 @@ function logout() {
    and automatically appear in message_owner.html's contact list.
 --------------------------------------------------------- */
 
-const MIN_IMAGE_BYTES = 1 * 1024 * 1024;   // 1 MB
+const MIN_IMAGE_BYTES = 1024; // 1 KB
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;   // 5 MB
 
 let pickedImage = null; // { dataUrl, mime, name, size }
