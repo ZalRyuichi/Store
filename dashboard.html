@@ -784,6 +784,53 @@
   }
   .sidebar-toggle:hover { color: var(--blue); }
   .nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+
+  /* OWNER ISSUE OVERLAY */
+  .owner-overlay {
+    position: fixed; inset: 0; background: rgba(15,23,42,0.55);
+    backdrop-filter: blur(3px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 200; padding: 20px;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  .owner-overlay.show { opacity: 1; pointer-events: all; }
+  .owner-modal {
+    background: var(--white);
+    border-radius: 20px;
+    max-width: 360px; width: 100%;
+    padding: 26px 24px 22px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    transform: translateY(14px) scale(0.97);
+    transition: transform 0.25s;
+  }
+  .owner-overlay.show .owner-modal { transform: translateY(0) scale(1); }
+  .owner-modal-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 24px; color: var(--amber);
+    box-shadow: 0 4px 14px rgba(245,158,11,0.25);
+  }
+  .owner-modal-title { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+  .owner-modal-text { font-size: 12.5px; color: var(--slate); line-height: 1.55; margin-bottom: 20px; }
+  .owner-modal-actions { display: flex; flex-direction: column; gap: 8px; }
+  .owner-btn-chat {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: #fff; border: none; padding: 11px 16px; border-radius: 12px;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    font-family: 'Inter', sans-serif; text-decoration: none;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 6px 16px rgba(37,211,102,0.35);
+    transition: transform 0.15s;
+  }
+  .owner-btn-chat:active { transform: scale(0.97); }
+  .owner-btn-close {
+    background: none; border: none; color: var(--slate);
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; padding: 8px;
+  }
 </style>
 </head>
 <body>
@@ -801,6 +848,18 @@
     </a>
   </div>
 </nav>
+
+<div class="owner-overlay" id="owner-overlay">
+  <div class="owner-modal">
+    <div class="owner-modal-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+    <div class="owner-modal-title">WhatsApp Owner Sedang Mengalami Masalah</div>
+    <div class="owner-modal-text">Jika ada kendala, silahkan klik tombol di bawah ini untuk menghubungi owner secara langsung.</div>
+    <div class="owner-modal-actions">
+      <a href="/home/message.html" class="owner-btn-chat"><i class="fa-brands fa-whatsapp"></i> Chat Owner</a>
+      <button class="owner-btn-close" onclick="document.getElementById('owner-overlay').classList.remove('show')">Tutup</button>
+    </div>
+  </div>
+</div>
 
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="document.getElementById('sidebar').classList.remove('show'); this.classList.remove('show')"></div>
 
@@ -1126,7 +1185,7 @@ const H = { 'Content-Type':'application/json', 'x-auth-token': TOKEN };
 const savedUser = localStorage.getItem('pg_user') || 'User';
 document.getElementById('profile-name-el').textContent = savedUser;
 
-if (savedUser === 'Zal Ryuichi') {
+if (savedUser === 'Zal') {
   const btnAdmin = document.getElementById('btn-admin');
   btnAdmin.style.display = 'inline-flex';
 }
@@ -1364,6 +1423,9 @@ function updateGreeting() {
 // Update greeting immediately and every minute
 updateGreeting();
 setInterval(updateGreeting, 60000);
+
+// Show owner issue overlay on dashboard entry
+document.getElementById('owner-overlay').classList.add('show');
 
 </script>
 </body>
