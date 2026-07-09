@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Kelola Pesan - Owner</title>
+<title>Kelola Pesan</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
@@ -329,7 +329,6 @@
     <div class="logo-icon"><i class="fa-solid fa-inbox"></i></div>
     <div class="nav-title">Ryuichi<span> Inbox</span></div>
   </div>
-  <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
 </div>
 
 <div class="app-shell" id="app-shell">
@@ -342,7 +341,7 @@
       </div>
     </div>
     <div class="contact-list" id="contact-list">
-      <div class="loading-spin"><i class="fa-solid fa-spinner fa-spin"></i> Memuat kontak...</div>
+      <div class="loading-spin"><i class="fa-solid fa-spinner fa-spin"></i> Memuat Kontak...</div>
     </div>
   </div>
 
@@ -641,13 +640,18 @@ function renderMessages(messages, scrollToBottom) {
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
-// Trims stray leading/trailing whitespace and collapses runs of 2+ blank
-// lines down to a single line break, so a message like "oi" stored with
-// a bunch of hidden newlines doesn't blow up the height of its bubble.
+// Strips invisible unicode chars (zero-width space/joiners, BOM, word joiner,
+// nbsp) that a plain [ \t] check misses, then trims each line and collapses
+// blank lines, so a message like "oi" stored with hidden "empty" lines
+// doesn't blow up the height of its bubble.
 function cleanMsgText(s) {
   return (s || '')
-    .replace(/\r\n/g, '\n')
-    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\r\n?/g, '\n')
+    .replace(/[\u200B\u200C\u200D\uFEFF\u2060]/g, '')
+    .replace(/\u00A0/g, ' ')
+    .split('\n')
+    .map(line => line.replace(/^[ \t]+|[ \t]+$/g, ''))
+    .join('\n')
     .replace(/\n{2,}/g, '\n')
     .trim();
 }
