@@ -31,7 +31,7 @@
     background: var(--bg);
     color: var(--dark);
     min-height: 100vh;
-    padding-bottom: 80px;
+    padding-bottom: 24px;
   }
 
   .top-nav {
@@ -345,6 +345,99 @@
   .download-app-dl-badge i { font-size: 10px; }
   .download-app-dl-badge.dl-ryu { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
   .download-app-dl-badge.dl-xyz { background: linear-gradient(135deg, #EF4444, #B91C1C); }
+
+  .aksi-lainnya-heading {
+    max-width: 900px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+    text-align: left;
+  }
+  .aksi-lainnya-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .aksi-lainnya-title i { color: #F97316; font-size: 0.72em; }
+  .aksi-lainnya-box {
+    max-width: 900px;
+    margin: 12px auto 0;
+    padding: 0 20px;
+  }
+  .aksi-lainnya-slider {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    padding: 12px;
+  }
+  .aksi-lainnya-slider::-webkit-scrollbar { display: none; }
+  .aksi-card {
+    position: relative;
+    overflow: hidden;
+    flex: 0 0 calc(50% - 6px);
+    scroll-snap-align: start;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+  }
+  .aksi-card:active { transform: scale(0.96); }
+  .aksi-card-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .aksi-card-decor i { position: absolute; color: rgba(255,255,255,0.32); }
+  .aksi-card-decor i.d1 { top: -14px; left: -12px; font-size: 62px; opacity: 0.75; animation: floatD1 3.2s ease-in-out infinite; }
+  .aksi-card-decor i.d2 { bottom: -18px; right: -14px; font-size: 78px; opacity: 0.65; animation: floatD2 3.8s ease-in-out infinite; animation-delay: 0.3s; }
+  .aksi-card-decor i.d3 { top: 14%; right: -10px; font-size: 30px; opacity: 0.85; animation: floatD3 2.8s ease-in-out infinite; animation-delay: 0.6s; }
+  .aksi-card-decor i.d4 { bottom: 16%; left: -8px; font-size: 26px; opacity: 0.7; animation: floatD4 3.5s ease-in-out infinite; animation-delay: 0.2s; }
+  .aksi-card-decor i.d5 { top: 50%; left: 50%; font-size: 100px; opacity: 0.32; animation: floatD5 4.2s ease-in-out infinite; animation-delay: 0.1s; }
+  @keyframes floatD1 { 0%,100% { transform: rotate(-18deg) translateY(0); } 50% { transform: rotate(-18deg) translateY(-9px); } }
+  @keyframes floatD2 { 0%,100% { transform: rotate(16deg) translateY(0); } 50% { transform: rotate(16deg) translateY(9px); } }
+  @keyframes floatD3 { 0%,100% { transform: rotate(12deg) translateY(0); } 50% { transform: rotate(12deg) translateY(-7px); } }
+  @keyframes floatD4 { 0%,100% { transform: rotate(-20deg) translateY(0); } 50% { transform: rotate(-20deg) translateY(8px); } }
+  @keyframes floatD5 { 0%,100% { transform: translate(-50%,-50%) rotate(-8deg) translateY(0); } 50% { transform: translate(-50%,-50%) rotate(-8deg) translateY(-10px); } }
+  .aksi-card-icon {
+    position: relative;
+    z-index: 1;
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(2px);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .aksi-card-label {
+    position: relative;
+    z-index: 1;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .aksi-card.aksi-tools   { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 60%, #1D4ED8 100%); }
+  .aksi-card.aksi-topup   { background: radial-gradient(120% 120% at 15% 10%, #6EE7B7 0%, #10B981 45%, #047857 100%); }
+  .aksi-card.aksi-produk  { background: radial-gradient(120% 120% at 15% 10%, #93C5FD 0%, #2563EB 45%, #1E40AF 100%); }
+  .aksi-card.aksi-history { background: radial-gradient(120% 120% at 15% 10%, #C4B5FD 0%, #7C3AED 45%, #4C1D95 100%); }
 
   .tools-banner {
     max-width: 900px; margin: 12px auto 0; padding: 0 20px;
@@ -741,7 +834,7 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .contact-fab {
-    position: fixed; right: 16px; bottom: 84px;
+    position: fixed; right: 16px; bottom: 20px;
     width: 48px; height: 48px; border-radius: 50%;
     background: linear-gradient(135deg, var(--blue), var(--blue-d));
     color: #fff; border: none; cursor: pointer;
@@ -1153,55 +1246,61 @@
   </div>
 </div>
 
-<div class="tools-banner">
-  <a class="tools-card" href="/tools.html">
-    <div class="tools-card-left">
-      <div class="tools-card-icon"><i class="fa-solid fa-wrench"></i></div>
-      <div class="tools-card-text">
-        <div class="tools-card-title">Tools & Utilitas</div>
-        <div class="tools-card-sub">Tools Gratis Yang Bisa Kamu Pakai</div>
-      </div>
-    </div>
-    <i class="fa-solid fa-chevron-right tools-card-arrow"></i>
-  </a>
+<div class="aksi-lainnya-heading">
+  <div class="aksi-lainnya-title">Aksi Lainnya <i class="fa-solid fa-bolt"></i></div>
 </div>
-
-<div class="tools-banner" style="margin-top:10px;">
-  <a class="tools-card" href="/home/app_ryuichi.html" style="background: linear-gradient(135deg, #0F172A 0%, #3B1F6B 60%, #7C3AED 100%); box-shadow: 0 6px 24px rgba(124,58,237,0.35);">
-    <div class="tools-card-left">
-      <div class="tools-card-icon"><i class="fa-solid fa-table-cells-large"></i></div>
-      <div class="tools-card-text">
-        <div class="tools-card-sub">Lihat Dan Download Aplikasi</div>
+<div class="aksi-lainnya-box">
+  <div class="aksi-lainnya-slider" id="aksi-lainnya-slider">
+    <a href="/tools.html" class="aksi-card aksi-tools">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-gear d1"></i>
+        <i class="fa-solid fa-screwdriver-wrench d2"></i>
+        <i class="fa-solid fa-hammer d3"></i>
+        <i class="fa-solid fa-toolbox d4"></i>
+        <i class="fa-solid fa-wrench d5"></i>
       </div>
-    </div>
-    <i class="fa-solid fa-chevron-right tools-card-arrow"></i>
-  </a>
+      <div class="aksi-card-icon"><i class="fa-solid fa-wrench"></i></div>
+      <div class="aksi-card-label">Tools</div>
+    </a>
+    <a href="/home/topup.html" class="aksi-card aksi-topup">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-coins d1"></i>
+        <i class="fa-solid fa-sack-dollar d2"></i>
+        <i class="fa-solid fa-money-bill-wave d3"></i>
+        <i class="fa-solid fa-credit-card d4"></i>
+        <i class="fa-solid fa-wallet d5"></i>
+      </div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-wallet"></i></div>
+      <div class="aksi-card-label">Top Up</div>
+    </a>
+    <a href="/home/produk.html" class="aksi-card aksi-produk">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-box d1"></i>
+        <i class="fa-solid fa-cart-shopping d2"></i>
+        <i class="fa-solid fa-tags d3"></i>
+        <i class="fa-solid fa-boxes-stacked d4"></i>
+        <i class="fa-solid fa-bag-shopping d5"></i>
+      </div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+      <div class="aksi-card-label">Produk</div>
+    </a>
+    <a href="/home/history.html" class="aksi-card aksi-history">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-hourglass-half d1"></i>
+        <i class="fa-solid fa-calendar-days d2"></i>
+        <i class="fa-solid fa-receipt d3"></i>
+        <i class="fa-solid fa-list-check d4"></i>
+        <i class="fa-solid fa-clock-rotate-left d5"></i>
+      </div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+      <div class="aksi-card-label">History</div>
+    </a>
+  </div>
 </div>
 
 <main>
 
-</main><nav class="bottom-nav">
-  <a class="bnav-item active" href="/dashboard">
-    <i class="fa-solid fa-house"></i>
-    <span class="bnav-label">Home</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/topup.html">
-    <i class="fa-solid fa-wallet"></i>
-    <span class="bnav-label">Top Up</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/produk.html">
-    <i class="fa-solid fa-bag-shopping"></i>
-    <span class="bnav-label">Produk</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/history.html">
-    <i class="fa-solid fa-clock-rotate-left"></i>
-    <span class="bnav-label">History</span>
-    <div class="bnav-dot"></div>
-  </a>
-</nav>
+</main>
 
 
 <button id="contact-fab" class="contact-fab" onclick="document.getElementById('contact-panel').classList.toggle('show')">
@@ -1355,6 +1454,17 @@ async function refreshSewaBotDashboard(retry = 2) {
 
 (function(){
   const slider = document.getElementById('produk-populer-slider');
+  if (!slider) return;
+  const items = Array.from(slider.children);
+  let idx = 0;
+  setInterval(() => {
+    idx = (idx + 1) % items.length;
+    items[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  }, 3000);
+})();
+
+(function(){
+  const slider = document.getElementById('aksi-lainnya-slider');
   if (!slider) return;
   const items = Array.from(slider.children);
   let idx = 0;
