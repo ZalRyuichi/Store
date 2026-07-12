@@ -41,15 +41,54 @@
     top: 0;
     z-index: 10;
   }
-  .logo-icon {
-    width: 32px; height: 32px;
-    background: var(--blue);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
   }
-  .logo-icon svg { width: 16px; height: 16px; }
-  .logo-text { font-size: 15px; font-weight: 800; color: var(--dark); }
-  .logo-text span { color: var(--blue); }
+  .nav-brand-logo {
+    width: 38px; height: 38px;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    flex-shrink: 0;
+  }
+  .nav-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .nav-brand-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--dark);
+    letter-spacing: 0.3px;
+  }
+  .nav-brand-sub {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.4px;
+    margin-top: 1px;
+  }
+  .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .nav-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--dark);
+    font-size: 16px;
+    width: 36px; height: 36px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .nav-icon-btn:hover { background: var(--blue-l); color: var(--blue); }
   .btn-logout {
     padding: 5px 12px;
     background: none;
@@ -215,32 +254,6 @@
   .produk-populer-badge.badge-server  { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
   .produk-populer-badge.badge-bot     { background: linear-gradient(135deg, #10B981, #059669); }
   .produk-populer-badge.badge-populer { background: linear-gradient(135deg, #F97316, #EA580C); }
-
-  .promo-banner {
-    max-width: 900px; margin: 16px auto 0; padding: 0 20px;
-  }
-  .promo-card {
-    background: linear-gradient(135deg, #0F172A, #1E293B);
-    border-radius: 16px; padding: 18px 20px; color: #fff;
-    display: flex; align-items: center; justify-content: space-between;
-    box-shadow: 0 6px 20px rgba(15,23,42,0.2);
-    position: relative; overflow: hidden;
-  }
-  .promo-card::after {
-    content: ''; position: absolute; top: -20px; right: -20px;
-    width: 100px; height: 100px; background: rgba(37,99,235,0.25);
-    border-radius: 50%;
-  }
-  .promo-text { position: relative; z-index: 1; }
-  .promo-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
-  .promo-sub { font-size: 11px; opacity: 0.75; }
-  .promo-cta {
-    position: relative; z-index: 1;
-    background: var(--blue); color: #fff; border: none;
-    padding: 8px 16px; border-radius: 10px; font-size: 12px; font-weight: 600;
-    font-family: 'Inter', sans-serif; cursor: pointer; text-decoration: none;
-    white-space: nowrap;
-  }
 
   .tools-banner {
     max-width: 900px; margin: 12px auto 0; padding: 0 20px;
@@ -671,82 +684,6 @@
   .contact-item-icon.tt { background: #000000; }
   .contact-item-icon.ig { background: linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4); }
 
-  .sholat-section {
-    max-width: 900px; margin: 16px auto 0; padding: 0 20px;
-  }
-  .sholat-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px 18px 14px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-  }
-  .sholat-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 12px;
-  }
-  .sholat-title-wrap { display: flex; align-items: center; gap: 8px; }
-  .sholat-icon-wrap {
-    width: 34px; height: 34px; border-radius: 10px;
-    background: linear-gradient(135deg, #059669, #047857);
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 15px; flex-shrink: 0;
-  }
-  .sholat-title { font-size: 14px; font-weight: 700; }
-  .sholat-meta { font-size: 11px; color: var(--slate); margin-top: 1px; }
-  .sholat-search {
-    display: flex; align-items: center;
-    border: 1px solid var(--border); border-radius: 10px;
-    overflow: hidden; background: var(--bg);
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .sholat-search:focus-within { border-color: #059669; box-shadow: 0 0 0 3px rgba(5,150,105,0.12); background: #fff; }
-  .sholat-search i { padding: 0 10px; color: var(--slate); font-size: 12px; }
-  .sholat-search input {
-    border: none; outline: none; padding: 7px 8px 7px 0;
-    font-size: 12px; font-family: 'Inter', sans-serif;
-    background: transparent; color: var(--dark); width: 120px;
-  }
-  .sholat-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-  @media (max-width: 480px) {
-    .sholat-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
-  }
-  .sholat-item {
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 6px 9px;
-    text-align: center;
-    transition: all 0.25s;
-    position: relative;
-    background: var(--bg);
-  }
-  .sholat-item.aktif {
-    border-color: #059669;
-    background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
-    box-shadow: 0 2px 12px rgba(5,150,105,0.18);
-  }
-  .sholat-item.aktif .sholat-waktu { color: #047857; }
-  .sholat-item.aktif .sholat-nama { color: #065F46; font-weight: 700; }
-  .sholat-item.aktif .sholat-item-icon { color: #059669; }
-  .sholat-item.lewat { opacity: 0.5; }
-  .sholat-aktif-badge {
-    position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
-    background: #059669; color: #fff;
-    font-size: 8px; font-weight: 700; letter-spacing: 0.3px;
-    padding: 2px 7px; border-radius: 20px;
-    white-space: nowrap; display: none;
-  }
-  .sholat-item.aktif .sholat-aktif-badge { display: block; }
-  .sholat-item-icon { font-size: 16px; color: var(--slate); margin-bottom: 5px; transition: color 0.25s; }
-  .sholat-nama { font-size: 10px; font-weight: 600; color: var(--dark); margin-bottom: 3px; text-transform: capitalize; }
-  .sholat-waktu { font-size: 13px; font-weight: 700; color: var(--blue); font-variant-numeric: tabular-nums; }
-  .sholat-loading { text-align: center; padding: 24px 0; color: var(--slate); font-size: 12px; }
-  .sholat-loading i { display: block; font-size: 20px; margin-bottom: 6px; animation: spin 1s linear infinite; }
-
   .sewabot-fab {
     position: fixed; left: 16px; bottom: 84px;
     width: 48px; height: 48px; border-radius: 50%;
@@ -765,12 +702,12 @@
 
   /* SIDEBAR */
   .sidebar {
-    position: fixed; left: 0; top: 0; width: 280px; height: 100vh;
+    position: fixed; right: 0; top: 0; width: 280px; height: 100vh;
     background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%);
-    border-right: 1px solid var(--border);
-    transform: translateX(-100%); transition: transform 0.3s ease;
+    border-left: 1px solid var(--border);
+    transform: translateX(100%); transition: transform 0.3s ease;
     z-index: 99; padding-top: 0; overflow-y: auto;
-    box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+    box-shadow: -4px 0 24px rgba(0,0,0,0.12);
   }
   .sidebar.show { transform: translateX(0); }
   
@@ -869,13 +806,6 @@
     z-index: 98;
   }
   .sidebar-overlay.show { opacity: 0.5; pointer-events: all; }
-  .sidebar-toggle {
-    background: none; border: none; cursor: pointer; color: var(--dark);
-    font-size: 16px; padding: 8px; display: flex; align-items: center;
-    transition: all 0.2s; flex-shrink: 0;
-  }
-  .sidebar-toggle:hover { color: var(--blue); }
-  .nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
 
   /* OWNER ISSUE OVERLAY */
   .owner-overlay {
@@ -928,16 +858,23 @@
 <body>
 
 <nav class="top-nav">
-  <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
-    <i class="fa-solid fa-bars"></i>
-  </button>
-  <div class="nav-logo" title="Zal Яyuichi" style="position:absolute; left:50%; transform:translateX(-50%);">
-    <img src="image/logo.png" alt="Logo" style="width:46px;height:46px;object-fit:contain;display:block;">
+  <div class="nav-brand">
+    <img src="image/logo.png" alt="Logo" class="nav-brand-logo"/>
+    <div class="nav-brand-text">
+      <div class="nav-brand-title">RYUICHI STORE</div>
+      <div class="nav-brand-sub">#BANYAKDISKONNYA</div>
+    </div>
   </div>
-  <div style="display:flex; align-items:center; gap:8px;">
-    <a id="btn-admin" href="/admin.html" title="Admin" style="display:none; width:32px; height:32px; background:none; border:1px solid #DDD6FE; border-radius:8px; cursor:pointer; color:#6D28D9; align-items:center; justify-content:center; text-decoration:none; transition:all 0.15s;">
-      <i class="fa-solid fa-shield-halved" style="font-size:13px;"></i>
+  <div class="nav-icons">
+    <a id="btn-admin" href="/admin.html" title="Admin" class="nav-icon-btn" style="display:none; color:#6D28D9;">
+      <i class="fa-solid fa-shield-halved" style="font-size:14px;"></i>
     </a>
+    <button class="nav-icon-btn" title="Menu" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
+      <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
+    <button class="nav-icon-btn" title="Notifikasi">
+      <i class="fa-regular fa-bell"></i>
+    </button>
   </div>
 </nav>
 
@@ -1128,16 +1065,6 @@
   </div>
 </div>
 
-<div class="promo-banner">
-  <div class="promo-card">
-    <div class="promo-text">
-      <div class="promo-title"><i class="fa-solid fa-fire" style="color:#F59E0B; margin-right:6px;"></i>Promo Top Up Hari Ini</div>
-      <div class="promo-sub">Top Up Sekarang, Makin Gampang Transaksi</div>
-    </div>
-    <a class="promo-cta" href="/home/topup.html">Top Up</a>
-  </div>
-</div>
-
 <div class="tools-banner">
   <a class="tools-card" href="/tools.html">
     <div class="tools-card-left">
@@ -1162,29 +1089,6 @@
     </div>
     <i class="fa-solid fa-chevron-right tools-card-arrow"></i>
   </a>
-</div>
-
-<div class="sholat-section">
-  <div class="sholat-card">
-    <div class="sholat-header">
-      <div class="sholat-title-wrap">
-        <div class="sholat-icon-wrap"><i class="fa-solid fa-mosque"></i></div>
-        <div>
-          <div class="sholat-title">Jadwal Sholat</div>
-          <div class="sholat-meta" id="sholat-meta">Memuat...</div>
-        </div>
-      </div>
-      <div class="sholat-search">
-        <i class="fa-solid fa-search"></i>
-        <input type="text" id="sholat-input" placeholder="Cari kota..." value="" autocomplete="off"/>
-      </div>
-    </div>
-    <div id="sholat-grid" class="sholat-grid">
-      <div class="sholat-loading" style="grid-column:1/-1;">
-        <i class="fa-solid fa-spinner"></i> Memuat jadwal...
-      </div>
-    </div>
-  </div>
 </div>
 
 <main>
@@ -1391,92 +1295,6 @@ async function refreshSewaBotDashboard(retry = 2) {
     items[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
   }, 3000);
 })();
-
-const SHOLAT_ORDER = [
-  { key: 'imsyak',  label: 'Imsyak',  icon: 'fa-solid fa-moon' },
-  { key: 'subuh',   label: 'Subuh',   icon: 'fa-solid fa-mountain-sun' },
-  { key: 'dhuha',   label: 'Dhuha',   icon: 'fa-solid fa-cloud-sun' },
-  { key: 'dzuhur',  label: 'Dzuhur',  icon: 'fa-solid fa-sun' },
-  { key: 'ashar',   label: 'Ashar',   icon: 'fa-solid fa-cloud-sun-rain' },
-  { key: 'maghrib', label: 'Maghrib', icon: 'fa-solid fa-sun-plant-wilt' },
-  { key: 'isya',    label: 'Isya',    icon: 'fa-solid fa-star-and-crescent' },
-];
-
-let sholatData = null;
-let sholatDebounce = null;
-
-function nowWIB() {
-  return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }));
-}
-
-function parseTime(t) {
-  const [h, m] = t.split(':').map(Number);
-  const now = nowWIB();
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0);
-}
-
-function renderSholat(jadwal, kota, periode, tanggal) {
-  const grid = document.getElementById('sholat-grid');
-  const meta = document.getElementById('sholat-meta');
-  const now = nowWIB();
-
-  const tanggalWIB = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-  meta.textContent = `${kota} • ${tanggalWIB}`;
-
-  let aktifKey = null;
-  for (let i = 0; i < SHOLAT_ORDER.length; i++) {
-    const t = parseTime(jadwal[SHOLAT_ORDER[i].key]);
-    if (now >= t) aktifKey = SHOLAT_ORDER[i].key;
-  }
-
-  grid.innerHTML = SHOLAT_ORDER.map(({ key, label, icon }) => {
-    const waktu = jadwal[key];
-    const t = parseTime(waktu);
-    const isAktif = key === aktifKey;
-    const isLewat = !isAktif && now > t;
-    return `
-      <div class="sholat-item ${isAktif ? 'aktif' : ''} ${isLewat ? 'lewat' : ''}">
-        <div class="sholat-aktif-badge">Sekarang</div>
-        <div class="sholat-item-icon"><i class="${icon}"></i></div>
-        <div class="sholat-nama">${label}</div>
-        <div class="sholat-waktu">${waktu}</div>
-      </div>`;
-  }).join('');
-}
-
-async function loadSholat(kota = 'jakarta') {
-  const grid = document.getElementById('sholat-grid');
-  const meta = document.getElementById('sholat-meta');
-  grid.innerHTML = `<div class="sholat-loading" style="grid-column:1/-1;"><i class="fa-solid fa-spinner"></i> Memuat jadwal...</div>`;
-  meta.textContent = 'Memuat...';
-  try {
-    const res = await fetch(`https://api.nexray.eu.cc/information/jadwalsholat?kota=${encodeURIComponent(kota)}`);
-    const data = await res.json();
-    if (!data.status || !data.result) throw new Error('Data tidak ditemukan');
-    sholatData = data.result;
-    renderSholat(sholatData.jadwal, sholatData.kota, sholatData.periode, sholatData.tanggal);
-  } catch (e) {
-    grid.innerHTML = `<div class="sholat-loading" style="grid-column:1/-1; color:var(--red);"><i class="fa-solid fa-triangle-exclamation" style="animation:none;"></i> Gagal memuat: ${e.message}</div>`;
-    meta.textContent = 'Gagal';
-  }
-}
-
-setInterval(() => {
-  if (sholatData) renderSholat(sholatData.jadwal, sholatData.kota, sholatData.periode, sholatData.tanggal);
-}, 60000);
-
-document.getElementById('sholat-input').addEventListener('input', function() {
-  clearTimeout(sholatDebounce);
-  const val = this.value.trim();
-  if (val.length < 2) return;
-  sholatDebounce = setTimeout(() => loadSholat(val), 700);
-});
-
-document.getElementById('sholat-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') { clearTimeout(sholatDebounce); loadSholat(this.value.trim()); }
-});
-
-loadSholat('jakarta');
 
 document.addEventListener('click', e => {
   const panel = document.getElementById('contact-panel');
