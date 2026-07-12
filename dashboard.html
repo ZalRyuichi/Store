@@ -261,6 +261,86 @@
   .produk-populer-badge.badge-bot     { background: linear-gradient(135deg, #10B981, #059669); }
   .produk-populer-badge.badge-populer { background: linear-gradient(135deg, #F97316, #EA580C); }
 
+  .download-app-heading {
+    max-width: 900px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+    text-align: left;
+  }
+  .download-app-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .download-app-title i { color: #2563EB; font-size: 0.72em; }
+  .download-app-box {
+    max-width: 900px;
+    margin: 12px auto 0;
+    padding: 0 20px;
+  }
+  .download-app-grid {
+    display: flex;
+    gap: 12px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    padding: 12px;
+  }
+  .download-app-item {
+    position: relative;
+    flex: 0 0 calc(50% - 6px);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .download-app-photo {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+  }
+  .download-app-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .download-app-corner-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 0 12px 0 12px;
+  }
+  .download-app-corner-badge.badge-ryu { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
+  .download-app-corner-badge.badge-xyz { background: linear-gradient(135deg, #EF4444, #B91C1C); }
+  .download-app-dl-badge {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(0,0,0,0.65);
+    color: #fff;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .download-app-dl-badge i { font-size: 10px; }
+
   .tools-banner {
     max-width: 900px; margin: 12px auto 0; padding: 0 20px;
   }
@@ -1042,6 +1122,28 @@
         <div class="produk-populer-badge badge-bot">Bot</div>
       </div>
       <div class="produk-populer-caption">Sewa Bot WhatsApp</div>
+    </a>
+  </div>
+</div>
+
+<div class="download-app-heading">
+  <div class="download-app-title">Download Aplikasi <i class="fa-solid fa-download"></i></div>
+</div>
+<div class="download-app-box">
+  <div class="download-app-grid">
+    <a href="/home/app_ryuchi.html" class="download-app-item">
+      <div class="download-app-photo">
+        <img src="/image/down_ryu.jpg" alt="Ryuichi"/>
+        <div class="download-app-corner-badge badge-ryu">RYUICHI</div>
+        <div class="download-app-dl-badge"><i class="fa-solid fa-download"></i> Download</div>
+      </div>
+    </a>
+    <a href="/home/app_xyz" class="download-app-item">
+      <div class="download-app-photo">
+        <img src="/image/down_xyz.jpg" alt="XyzXApp"/>
+        <div class="download-app-corner-badge badge-xyz">XYZXAPP</div>
+        <div class="download-app-dl-badge"><i class="fa-solid fa-download"></i> Download</div>
+      </div>
     </a>
   </div>
 </div>
