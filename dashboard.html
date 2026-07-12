@@ -146,7 +146,11 @@
     font-weight: 700;
     color: var(--dark);
     line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
+  .produk-populer-title i { color: #F97316; font-size: 0.72em; }
   .produk-populer-slider {
     display: flex;
     gap: 12px;
@@ -161,10 +165,10 @@
   .produk-populer-slider::-webkit-scrollbar { display: none; }
   .produk-populer-item {
     position: relative;
-    flex: 0 0 46%;
-    min-width: 150px;
+    flex: 0 0 42%;
+    min-width: 130px;
     scroll-snap-align: start;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 1 / 1;
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
@@ -178,18 +182,18 @@
   }
   .produk-populer-badge {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    background: linear-gradient(135deg, #EF4444, #B91C1C);
+    top: 0;
+    right: 0;
     color: #fff;
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    padding: 3px 9px;
-    border-radius: 20px;
-    box-shadow: 0 2px 8px rgba(239,68,68,0.4);
+    padding: 4px 10px;
+    border-radius: 0 14px 0 12px;
   }
+  .produk-populer-badge.badge-hot    { background: linear-gradient(135deg, #EF4444, #B91C1C); }
+  .produk-populer-badge.badge-server { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
 
   .promo-banner {
     max-width: 900px; margin: 16px auto 0; padding: 0 20px;
@@ -1068,16 +1072,20 @@
 </div>
 
 <div class="produk-populer-heading">
-  <div class="produk-populer-title">Produk Populer</div>
+  <div class="produk-populer-title">Produk Populer <i class="fa-solid fa-fire"></i></div>
 </div>
-<div class="produk-populer-slider">
+<div class="produk-populer-slider" id="produk-populer-slider">
   <a href="/home/produk.html#ryuichi" class="produk-populer-item">
     <img src="/image/icon_ryu.jpg" alt="Ryuichi"/>
-    <div class="produk-populer-badge">Hot</div>
+    <div class="produk-populer-badge badge-hot">Hot</div>
   </a>
   <a href="/home/produk.html#xyz" class="produk-populer-item">
     <img src="/image/icon_xyz.jpg" alt="XyzXRat"/>
-    <div class="produk-populer-badge">Hot</div>
+    <div class="produk-populer-badge badge-hot">Hot</div>
+  </a>
+  <a href="/home/produk.html#server" class="produk-populer-item">
+    <img src="/image/ptero.jpg" alt="Server"/>
+    <div class="produk-populer-badge badge-server">Server</div>
   </a>
 </div>
 
@@ -1332,6 +1340,17 @@ async function refreshSewaBotDashboard(retry = 2) {
 
   render();
   setInterval(next, 2000);
+})();
+
+(function(){
+  const slider = document.getElementById('produk-populer-slider');
+  if (!slider) return;
+  const items = Array.from(slider.children);
+  let idx = 0;
+  setInterval(() => {
+    idx = (idx + 1) % items.length;
+    items[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  }, 3000);
 })();
 
 const SHOLAT_ORDER = [
