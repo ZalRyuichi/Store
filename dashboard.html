@@ -70,29 +70,27 @@
   }
   .banner-slides {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding: 0 12%;
+    padding: 0 6%;
     touch-action: pan-y;
   }
   .banner-slides::-webkit-scrollbar { display: none; }
   .banner-slide {
-    flex: 0 0 76%;
+    flex: 0 0 88%;
     scroll-snap-align: center;
     aspect-ratio: 16 / 9;
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
     position: relative;
     background: var(--dark);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-    opacity: 0.5;
-    transform: scale(0.92);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0.55;
+    transition: opacity 0.3s ease;
   }
-  .banner-slide.active { opacity: 1; transform: scale(1); }
+  .banner-slide.active { opacity: 1; }
   .banner-slide img {
     width: 100%;
     height: 100%;
@@ -101,18 +99,6 @@
     display: block;
     pointer-events: none;
   }
-  .banner-dots {
-    position: absolute; bottom: 10px; left: 0; right: 0;
-    display: flex; justify-content: center; gap: 6px; z-index: 2;
-    pointer-events: none;
-  }
-  .banner-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: rgba(255,255,255,0.45);
-    transition: all 0.2s; cursor: pointer;
-    pointer-events: all;
-  }
-  .banner-dot.active { background: #fff; width: 18px; border-radius: 4px; }
 
   .quick-actions {
     max-width: 900px; margin: 16px auto 0; padding: 0 20px;
@@ -994,7 +980,6 @@
       <div class="banner-slide"><img src="/image/header3.jpg" alt="Banner 3"/></div>
       <div class="banner-slide"><img src="/image/header4.jpg" alt="Banner 4"/></div>
     </div>
-    <div class="banner-dots" id="banner-dots"></div>
   </div>
 </div>
 
@@ -1275,22 +1260,12 @@ async function refreshSewaBotDashboard(retry = 2) {
 
 (function(){
   const track = document.getElementById('banner-slides');
-  const dotsWrap = document.getElementById('banner-dots');
   const slides = Array.from(track.querySelectorAll('.banner-slide'));
   let idx = 0;
-
-  slides.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'banner-dot' + (i === 0 ? ' active' : '');
-    d.onclick = () => goTo(i);
-    dotsWrap.appendChild(d);
-  });
-  const dots = dotsWrap.querySelectorAll('.banner-dot');
 
   function setActive(i) {
     idx = i;
     slides.forEach((s, si) => s.classList.toggle('active', si === i));
-    dots.forEach((d, di) => d.classList.toggle('active', di === i));
   }
 
   function goTo(i) {
