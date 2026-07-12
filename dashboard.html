@@ -151,6 +151,11 @@
     gap: 8px;
   }
   .produk-populer-title i { color: #F97316; font-size: 0.72em; }
+  .produk-populer-box {
+    max-width: 900px;
+    margin: 12px auto 0;
+    padding: 0 20px;
+  }
   .produk-populer-slider {
     display: flex;
     gap: 12px;
@@ -158,20 +163,21 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    max-width: 900px;
-    margin: 12px auto 0;
-    padding: 0 20px 4px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    padding: 12px;
   }
   .produk-populer-slider::-webkit-scrollbar { display: none; }
   .produk-populer-item {
     position: relative;
-    flex: 0 0 42%;
-    min-width: 130px;
+    flex: 0 0 30%;
+    min-width: 110px;
     scroll-snap-align: start;
     aspect-ratio: 1 / 1;
-    border-radius: 14px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     display: block;
   }
   .produk-populer-item img {
@@ -1074,19 +1080,21 @@
 <div class="produk-populer-heading">
   <div class="produk-populer-title">Produk Populer <i class="fa-solid fa-fire"></i></div>
 </div>
-<div class="produk-populer-slider" id="produk-populer-slider">
-  <a href="/home/produk.html#ryuichi" class="produk-populer-item">
-    <img src="/image/icon_ryu.jpg" alt="Ryuichi"/>
-    <div class="produk-populer-badge badge-hot">Hot</div>
-  </a>
-  <a href="/home/produk.html#xyz" class="produk-populer-item">
-    <img src="/image/icon_xyz.jpg" alt="XyzXRat"/>
-    <div class="produk-populer-badge badge-hot">Hot</div>
-  </a>
-  <a href="/home/produk.html#server" class="produk-populer-item">
-    <img src="/image/ptero.jpg" alt="Server"/>
-    <div class="produk-populer-badge badge-server">Server</div>
-  </a>
+<div class="produk-populer-box">
+  <div class="produk-populer-slider" id="produk-populer-slider">
+    <a href="/home/produk.html#ryuichi" class="produk-populer-item">
+      <img src="/image/icon_ryu.jpg" alt="Ryuichi"/>
+      <div class="produk-populer-badge badge-hot">Hot</div>
+    </a>
+    <a href="/home/produk.html#xyz" class="produk-populer-item">
+      <img src="/image/icon_xyz.jpg" alt="XyzXRat"/>
+      <div class="produk-populer-badge badge-hot">Hot</div>
+    </a>
+    <a href="/home/produk.html#server" class="produk-populer-item">
+      <img src="/image/ptero.jpg" alt="Server"/>
+      <div class="produk-populer-badge badge-server">Server</div>
+    </a>
+  </div>
 </div>
 
 <div class="promo-banner">
