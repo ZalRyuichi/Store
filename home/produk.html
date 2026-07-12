@@ -702,12 +702,12 @@
         <div class="role-name">Member</div>
         <div class="role-price">Rp 25.000</div>
       </div>
-      <div class="role-card vipnoupdate" onclick="openDetail('vip-no-update')">
+      <div class="role-card vipnoupdate" onclick="openDetail('vip')">
         <div class="role-icon"><i class="fa-solid fa-star-half-stroke"></i></div>
         <div class="role-name">Vip</div>
         <div class="role-price">Rp 50.000</div>
       </div>
-      <div class="role-card vipfull" onclick="openDetail('vip-full-update')">
+      <div class="role-card vipfull" onclick="openDetail('premium')">
         <div class="role-icon"><i class="fa-solid fa-star"></i></div>
         <div class="role-name">Premium</div>
         <div class="role-price">Rp 100.000</div>
@@ -717,7 +717,7 @@
         <div class="role-name">Reseller</div>
         <div class="role-price">Rp 200.000</div>
       </div>
-      <div class="role-card admin" onclick="openDetail('admin')">
+      <div class="role-card admin" onclick="openDetail('owner')">
         <div class="role-icon"><i class="fa-solid fa-crown"></i></div>
         <div class="role-name">Owner</div>
         <div class="role-price">Rp 400.000</div>
@@ -958,8 +958,8 @@ function logout() {
 }
 
 const ROLE_LABEL = {
-  'member': 'Member', 'vip-no-update': 'VIP No Update',
-  'vip-full-update': 'VIP Full', 'reseller': 'Reseller', 'admin': 'Admin'
+  'member': 'Member', 'vip': 'VIP',
+  'premium': 'Premium', 'reseller': 'Reseller', 'owner': 'Owner'
 };
 const savedRole = localStorage.getItem('pg_role');
 if (savedRole && ROLE_LABEL[savedRole]) {
@@ -974,10 +974,10 @@ let currentSaldoVal = 0;
 
 const ROLE_DATA = {
   'member':           { name: 'Member',           price: 25000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar'], vip: false },
-  'vip-no-update':    { name: 'Vip',    price: 50000,  app: 'ryuichi', benefit: ['Akses Setengah Fitur Vip'], vip: true, vipNote: 'Akses Sebagian Fitur Vip' },
-  'vip-full-update':  { name: 'Premium',  price: 100000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'vip':    { name: 'Vip',    price: 50000,  app: 'ryuichi', benefit: ['Akses Setengah Fitur Vip'], vip: true, vipNote: 'Akses Sebagian Fitur Vip' },
+  'premium':  { name: 'Premium',  price: 100000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
   'reseller':         { name: 'Reseller',          price: 200000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip', 'Bisa Jualan Role Member Dan Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
-  'admin':            { name: 'Owner',             price: 400000, app: 'ryuichi', benefit: ['Akses Full Fitur Aplikasi', 'Akses Full Fitur Vip', 'Bisa Jualin Role Member, Vip, Premium Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'owner':            { name: 'Owner',             price: 400000, app: 'ryuichi', benefit: ['Akses Full Fitur Aplikasi', 'Akses Full Fitur Vip', 'Bisa Jualin Role Member, Vip, Premium Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
   'xyz-member-1m':    { name: 'Member (1 Bulan)',  price: 25000,  app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Selama 1 Bulan'], vip: false },
   'xyz-member-permanen': { name: 'Member (Permanen)', price: 50000, app: 'xyz',   benefit: ['Akses Fitur Aplikasi Xyz Permanen'], vip: false },
   'xyz-reseller':     { name: 'Reseller',          price: 130000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualan Role Member 1 Bulan Dan Permanen'], vip: false },
@@ -1006,7 +1006,7 @@ const SEWABOT_FEATURES = [
 
 const BASIC_FEATURES = [
   ['Bug Nomer', 'fa-solid fa-bug'],
-  ['Bug', 'fa-solid fa-people-group'],
+  ['Bug Group', 'fa-solid fa-people-group'],
   ['Nonton Anime', 'fa-solid fa-tv'],
   ['Nonton Donghua', 'fa-solid fa-clapperboard'],
   ['Tabungan', 'fa-solid fa-piggy-bank'],
