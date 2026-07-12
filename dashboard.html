@@ -9,6 +9,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
   @font-face {
+    font-family: 'TitleFont';
+    src: url('/font/title.ttf') format('truetype');
+    font-display: swap;
+  }
+  @font-face {
     font-family: 'LabelFont';
     src: url('/font/label.ttf') format('truetype');
     font-display: swap;
@@ -32,8 +37,8 @@
   .top-nav {
     background: var(--white);
     border-bottom: 1px solid var(--border);
-    padding: 0 20px;
-    height: 56px;
+    padding: 0 8px;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -48,9 +53,9 @@
     text-decoration: none;
   }
   .nav-brand-logo {
-    width: 38px; height: 38px;
+    width: 58px; height: 58px;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 10px;
     display: block;
     flex-shrink: 0;
   }
@@ -60,8 +65,9 @@
     line-height: 1.15;
   }
   .nav-brand-title {
-    font-size: 14px;
-    font-weight: 800;
+    font-family: 'TitleFont', 'Inter', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
     color: var(--dark);
     letter-spacing: 0.3px;
   }
@@ -861,19 +867,16 @@
   <div class="nav-brand">
     <img src="image/logo.png" alt="Logo" class="nav-brand-logo"/>
     <div class="nav-brand-text">
-      <div class="nav-brand-title">RYUICHI STORE</div>
+      <div class="nav-brand-title">Ryuichi Store</div>
       <div class="nav-brand-sub">#BANYAKDISKONNYA</div>
     </div>
   </div>
   <div class="nav-icons">
-    <a id="btn-admin" href="/admin.html" title="Admin" class="nav-icon-btn" style="display:none; color:#6D28D9;">
-      <i class="fa-solid fa-shield-halved" style="font-size:14px;"></i>
-    </a>
-    <button class="nav-icon-btn" title="Menu" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
-      <i class="fa-solid fa-ellipsis-vertical"></i>
-    </button>
     <button class="nav-icon-btn" title="Notifikasi">
       <i class="fa-regular fa-bell"></i>
+    </button>
+    <button class="nav-icon-btn" title="Menu" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
+      <i class="fa-solid fa-ellipsis-vertical"></i>
     </button>
   </div>
 </nav>
@@ -1191,7 +1194,7 @@ document.getElementById('profile-name-el').textContent = savedUser;
 
 if (savedUser === 'Zal') {
   const btnAdmin = document.getElementById('btn-admin');
-  btnAdmin.style.display = 'inline-flex';
+  if (btnAdmin) btnAdmin.style.display = 'inline-flex';
 }
 
 function logout() {
