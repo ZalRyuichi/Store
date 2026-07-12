@@ -172,19 +172,33 @@
   .produk-populer-slider::-webkit-scrollbar { display: none; }
   .produk-populer-item {
     position: relative;
-    flex: 0 0 30%;
-    min-width: 110px;
+    flex: 0 0 46%;
+    min-width: 155px;
     scroll-snap-align: start;
-    aspect-ratio: 1 / 1;
     border-radius: 12px;
     overflow: hidden;
-    display: block;
+    display: flex;
+    flex-direction: column;
+  }
+  .produk-populer-photo {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
   }
   .produk-populer-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+  .produk-populer-caption {
+    background: #000;
+    color: #fff;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.3;
+    padding: 8px 6px;
   }
   .produk-populer-badge {
     position: absolute;
@@ -1083,16 +1097,25 @@
 <div class="produk-populer-box">
   <div class="produk-populer-slider" id="produk-populer-slider">
     <a href="/home/produk.html#ryuichi" class="produk-populer-item">
-      <img src="/image/icon_ryu.jpg" alt="Ryuichi"/>
-      <div class="produk-populer-badge badge-hot">Hot</div>
+      <div class="produk-populer-photo">
+        <img src="/image/icon_ryu.jpg" alt="Ryuichi"/>
+        <div class="produk-populer-badge badge-hot">Hot</div>
+      </div>
+      <div class="produk-populer-caption">Aplikasi All In One</div>
     </a>
     <a href="/home/produk.html#xyz" class="produk-populer-item">
-      <img src="/image/icon_xyz.jpg" alt="XyzXRat"/>
-      <div class="produk-populer-badge badge-hot">Hot</div>
+      <div class="produk-populer-photo">
+        <img src="/image/icon_xyz.jpg" alt="XyzXRat"/>
+        <div class="produk-populer-badge badge-hot">Hot</div>
+      </div>
+      <div class="produk-populer-caption">Aplikasi Kontrol</div>
     </a>
     <a href="/home/produk.html#server" class="produk-populer-item">
-      <img src="/image/ptero.jpg" alt="Server"/>
-      <div class="produk-populer-badge badge-server">Server</div>
+      <div class="produk-populer-photo">
+        <img src="/image/ptero.jpg" alt="Server"/>
+        <div class="produk-populer-badge badge-server">Server</div>
+      </div>
+      <div class="produk-populer-caption">Server Panel</div>
     </a>
   </div>
 </div>
