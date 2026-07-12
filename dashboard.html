@@ -66,32 +66,51 @@
     padding: 0 20px;
   }
   .banner-inner {
-    width: 100%;
+    position: relative;
+  }
+  .banner-slides {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 12%;
+    touch-action: pan-y;
+  }
+  .banner-slides::-webkit-scrollbar { display: none; }
+  .banner-slide {
+    flex: 0 0 76%;
+    scroll-snap-align: center;
     aspect-ratio: 16 / 9;
     border-radius: 16px;
     overflow: hidden;
     position: relative;
     background: var(--dark);
     box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-    touch-action: pan-y;
+    opacity: 0.5;
+    transform: scale(0.92);
+    transition: opacity 0.3s ease, transform 0.3s ease;
   }
-  .banner-inner img {
+  .banner-slide.active { opacity: 1; transform: scale(1); }
+  .banner-slide img {
     width: 100%;
     height: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
     display: block;
+    pointer-events: none;
   }
-  .banner-slides { display: flex; transition: transform 0.5s ease; }
-  .banner-slides img { flex: 0 0 100%; }
   .banner-dots {
     position: absolute; bottom: 10px; left: 0; right: 0;
     display: flex; justify-content: center; gap: 6px; z-index: 2;
+    pointer-events: none;
   }
   .banner-dot {
     width: 7px; height: 7px; border-radius: 50%;
     background: rgba(255,255,255,0.45);
     transition: all 0.2s; cursor: pointer;
+    pointer-events: all;
   }
   .banner-dot.active { background: #fff; width: 18px; border-radius: 4px; }
 
@@ -970,10 +989,10 @@
 <div class="banner-wrapper">
   <div class="banner-inner" id="banner-inner">
     <div class="banner-slides" id="banner-slides">
-      <img src="/image/header1.jpg" alt="Banner 1"/>
-      <img src="/image/header2.jpg" alt="Banner 2"/>
-      <img src="/image/header3.jpg" alt="Banner 3"/>
-      <img src="/image/header4.jpg" alt="Banner 4"/>
+      <div class="banner-slide"><img src="/image/header1.jpg" alt="Banner 1"/></div>
+      <div class="banner-slide"><img src="/image/header2.jpg" alt="Banner 2"/></div>
+      <div class="banner-slide"><img src="/image/header3.jpg" alt="Banner 3"/></div>
+      <div class="banner-slide"><img src="/image/header4.jpg" alt="Banner 4"/></div>
     </div>
     <div class="banner-dots" id="banner-dots"></div>
   </div>
@@ -1255,45 +1274,62 @@ async function refreshSewaBotDashboard(retry = 2) {
 }
 
 (function(){
-  const slides = document.getElementById('banner-slides');
+  const track = document.getElementById('banner-slides');
   const dotsWrap = document.getElementById('banner-dots');
-  const imgs = slides.querySelectorAll('img');
+  const slides = Array.from(track.querySelectorAll('.banner-slide'));
   let idx = 0;
-  imgs.forEach((_, i) => {
+
+  slides.forEach((_, i) => {
     const d = document.createElement('div');
     d.className = 'banner-dot' + (i === 0 ? ' active' : '');
     d.onclick = () => goTo(i);
     dotsWrap.appendChild(d);
   });
   const dots = dotsWrap.querySelectorAll('.banner-dot');
-  function render() {
-    slides.style.transform = `translateX(-${idx * 100}%)`;
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+
+  function setActive(i) {
+    idx = i;
+    slides.forEach((s, si) => s.classList.toggle('active', si === i));
+    dots.forEach((d, di) => d.classList.toggle('active', di === i));
   }
-  function goTo(i) { idx = (i + imgs.length) % imgs.length; render(); resetAuto(); }
+
+  function goTo(i) {
+    idx = (i + slides.length) % slides.length;
+    slides[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    resetAuto();
+  }
+
   let auto;
   function resetAuto() {
     clearInterval(auto);
     auto = setInterval(() => goTo(idx + 1), 4000);
   }
-  resetAuto();
 
-  const banner = document.getElementById('banner-inner');
-  let startX = 0, deltaX = 0, dragging = false;
-  banner.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX; dragging = true; deltaX = 0;
-    clearInterval(auto);
+  // Tentukan slide aktif berdasarkan posisi tengah viewport saat scroll
+  let scrollTimeout;
+  track.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const trackRect = track.getBoundingClientRect();
+      const center = trackRect.left + trackRect.width / 2;
+      let closest = 0, minDist = Infinity;
+      slides.forEach((s, i) => {
+        const r = s.getBoundingClientRect();
+        const dist = Math.abs((r.left + r.width / 2) - center);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      setActive(closest);
+    }, 100);
   }, { passive: true });
-  banner.addEventListener('touchmove', e => {
-    if (!dragging) return;
-    deltaX = e.touches[0].clientX - startX;
-  }, { passive: true });
-  banner.addEventListener('touchend', () => {
-    if (!dragging) return;
-    dragging = false;
-    if (Math.abs(deltaX) > 40) goTo(idx + (deltaX < 0 ? 1 : -1));
-    else resetAuto();
-  });
+
+  track.addEventListener('touchstart', () => clearInterval(auto), { passive: true });
+  track.addEventListener('mousedown', () => clearInterval(auto));
+  track.addEventListener('touchend', resetAuto);
+
+  // Posisikan slide pertama tepat di tengah saat halaman dibuka
+  setActive(0);
+  track.scrollLeft = slides[0].offsetLeft - (track.clientWidth - slides[0].getBoundingClientRect().width) / 2;
+  resetAuto();
 })();
 
 const SHOLAT_ORDER = [
