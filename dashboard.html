@@ -327,19 +327,24 @@
   .download-app-corner-badge.badge-xyz { background: linear-gradient(135deg, #EF4444, #B91C1C); }
   .download-app-dl-badge {
     position: absolute;
-    bottom: 8px;
-    left: 8px;
-    background: rgba(0,0,0,0.65);
+    bottom: 0;
+    left: 0;
     color: #fff;
     font-size: 10.5px;
-    font-weight: 700;
-    padding: 5px 10px;
-    border-radius: 20px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding: 6px 18px 6px 10px;
     display: flex;
     align-items: center;
     gap: 5px;
+    clip-path: polygon(0 0, 100% 0, 70% 100%, 0 100%);
+    border-top: 1.5px solid rgba(255,255,255,0.55);
+    border-left: 1.5px solid rgba(255,255,255,0.55);
   }
   .download-app-dl-badge i { font-size: 10px; }
+  .download-app-dl-badge.dl-ryu { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
+  .download-app-dl-badge.dl-xyz { background: linear-gradient(135deg, #EF4444, #B91C1C); }
 
   .tools-banner {
     max-width: 900px; margin: 12px auto 0; padding: 0 20px;
@@ -1135,14 +1140,14 @@
       <div class="download-app-photo">
         <img src="/image/down_ryu.jpg" alt="Ryuichi"/>
         <div class="download-app-corner-badge badge-ryu">RYUICHI</div>
-        <div class="download-app-dl-badge"><i class="fa-solid fa-download"></i> Download</div>
+        <div class="download-app-dl-badge dl-ryu"><i class="fa-solid fa-download"></i> Download</div>
       </div>
     </a>
     <a href="/home/app_xyz" class="download-app-item">
       <div class="download-app-photo">
         <img src="/image/down_xyz.jpg" alt="XyzXApp"/>
         <div class="download-app-corner-badge badge-xyz">XYZXAPP</div>
-        <div class="download-app-dl-badge"><i class="fa-solid fa-download"></i> Download</div>
+        <div class="download-app-dl-badge dl-xyz"><i class="fa-solid fa-download"></i> Download</div>
       </div>
     </a>
   </div>
