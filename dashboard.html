@@ -61,36 +61,37 @@
   .btn-logout:hover { background: #FEF2F2; color: var(--red); border-color: #FECACA; }
 
   .banner-wrapper {
-    max-width: 900px;
+    width: 100%;
     margin: 20px auto 0;
-    padding: 0 20px;
   }
   .banner-inner {
     position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    perspective: 1200px;
+    overflow: hidden;
   }
   .banner-slides {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding: 0 6%;
-    touch-action: pan-y;
+    position: relative;
+    width: 100%;
+    height: 100%;
   }
-  .banner-slides::-webkit-scrollbar { display: none; }
   .banner-slide {
-    flex: 0 0 88%;
-    scroll-snap-align: center;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 76%;
     aspect-ratio: 16 / 9;
     border-radius: 14px;
     overflow: hidden;
-    position: relative;
-    background: var(--dark);
-    opacity: 0.55;
-    transition: opacity 0.3s ease;
+    transform-origin: 50% 50%;
+    transition: transform 0.7s cubic-bezier(.4,0,.2,1), opacity 0.7s ease;
+    will-change: transform, opacity;
   }
-  .banner-slide.active { opacity: 1; }
+  .banner-slide.pos-active { transform: translateX(-50%) scale(1) rotateY(0deg); opacity: 1; z-index: 3; }
+  .banner-slide.pos-prev   { transform: translateX(-112%) scale(0.78) rotateY(32deg); opacity: 0.55; z-index: 2; }
+  .banner-slide.pos-next   { transform: translateX(12%) scale(0.78) rotateY(-32deg); opacity: 0.55; z-index: 2; }
+  .banner-slide.pos-hidden { transform: translateX(-50%) scale(0.4); opacity: 0; z-index: 1; pointer-events: none; }
   .banner-slide img {
     width: 100%;
     height: 100%;
@@ -1259,52 +1260,30 @@ async function refreshSewaBotDashboard(retry = 2) {
 }
 
 (function(){
-  const track = document.getElementById('banner-slides');
-  const slides = Array.from(track.querySelectorAll('.banner-slide'));
+  const slides = Array.from(document.querySelectorAll('#banner-slides .banner-slide'));
+  const n = slides.length;
   let idx = 0;
 
-  function setActive(i) {
-    idx = i;
-    slides.forEach((s, si) => s.classList.toggle('active', si === i));
+  function render() {
+    slides.forEach((el, i) => {
+      let diff = i - idx;
+      diff = ((diff % n) + n) % n;
+      if (diff > Math.floor(n / 2)) diff -= n;
+      el.classList.remove('pos-active', 'pos-prev', 'pos-next', 'pos-hidden');
+      if (diff === 0) el.classList.add('pos-active');
+      else if (diff === -1) el.classList.add('pos-prev');
+      else if (diff === 1) el.classList.add('pos-next');
+      else el.classList.add('pos-hidden');
+    });
   }
 
-  function goTo(i) {
-    idx = (i + slides.length) % slides.length;
-    slides[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    resetAuto();
+  function next() {
+    idx = (idx + 1) % n;
+    render();
   }
 
-  let auto;
-  function resetAuto() {
-    clearInterval(auto);
-    auto = setInterval(() => goTo(idx + 1), 4000);
-  }
-
-  // Tentukan slide aktif berdasarkan posisi tengah viewport saat scroll
-  let scrollTimeout;
-  track.addEventListener('scroll', () => {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-      const trackRect = track.getBoundingClientRect();
-      const center = trackRect.left + trackRect.width / 2;
-      let closest = 0, minDist = Infinity;
-      slides.forEach((s, i) => {
-        const r = s.getBoundingClientRect();
-        const dist = Math.abs((r.left + r.width / 2) - center);
-        if (dist < minDist) { minDist = dist; closest = i; }
-      });
-      setActive(closest);
-    }, 100);
-  }, { passive: true });
-
-  track.addEventListener('touchstart', () => clearInterval(auto), { passive: true });
-  track.addEventListener('mousedown', () => clearInterval(auto));
-  track.addEventListener('touchend', resetAuto);
-
-  // Posisikan slide pertama tepat di tengah saat halaman dibuka
-  setActive(0);
-  track.scrollLeft = slides[0].offsetLeft - (track.clientWidth - slides[0].getBoundingClientRect().width) / 2;
-  resetAuto();
+  render();
+  setInterval(next, 2000);
 })();
 
 const SHOLAT_ORDER = [
