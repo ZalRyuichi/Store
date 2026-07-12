@@ -689,8 +689,8 @@
       </div>
       <div class="apk-banner-pills">
         <div class="apk-banner-pill"><i class="fa-solid fa-user"></i>Member</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-star-half-stroke"></i>Vip No Update</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-star"></i>Vip Full Update</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-star-half-stroke"></i>Vip</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-star"></i>Premium</div>
         <div class="apk-banner-pill"><i class="fa-solid fa-shop"></i>Reseller</div>
         <div class="apk-banner-pill"><i class="fa-solid fa-crown"></i>Admin</div>
       </div>
@@ -704,12 +704,12 @@
       </div>
       <div class="role-card vipnoupdate" onclick="openDetail('vip-no-update')">
         <div class="role-icon"><i class="fa-solid fa-star-half-stroke"></i></div>
-        <div class="role-name">Vip No Update</div>
+        <div class="role-name">Vip</div>
         <div class="role-price">Rp 50.000</div>
       </div>
       <div class="role-card vipfull" onclick="openDetail('vip-full-update')">
         <div class="role-icon"><i class="fa-solid fa-star"></i></div>
-        <div class="role-name">Vip Full Update</div>
+        <div class="role-name">Premium</div>
         <div class="role-price">Rp 100.000</div>
       </div>
       <div class="role-card reseller" onclick="openDetail('reseller')">
@@ -719,8 +719,8 @@
       </div>
       <div class="role-card admin" onclick="openDetail('admin')">
         <div class="role-icon"><i class="fa-solid fa-crown"></i></div>
-        <div class="role-name">Admin</div>
-        <div class="role-price">Rp 300.000</div>
+        <div class="role-name">Owner</div>
+        <div class="role-price">Rp 400.000</div>
       </div>
     </div>
   </div>
@@ -974,10 +974,10 @@ let currentSaldoVal = 0;
 
 const ROLE_DATA = {
   'member':           { name: 'Member',           price: 25000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar'], vip: false },
-  'vip-no-update':    { name: 'Vip No Update',    price: 50000,  app: 'ryuichi', benefit: ['Akses Setengah Fitur Vip'], vip: true, vipNote: 'Akses Sebagian Fitur Vip' },
-  'vip-full-update':  { name: 'Vip Full Update',  price: 100000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
-  'reseller':         { name: 'Reseller',          price: 200000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip', 'Bisa Jualan Role Vip No Update Dan Full Update'], vip: true, vipNote: 'Akses Full Fitur Vip' },
-  'admin':            { name: 'Admin',             price: 300000, app: 'ryuichi', benefit: ['Akses Full Fitur Aplikasi', 'Akses Full Fitur Vip', 'Bisa Jualin Role Vip No Update, Full Update Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'vip-no-update':    { name: 'Vip',    price: 50000,  app: 'ryuichi', benefit: ['Akses Setengah Fitur Vip'], vip: true, vipNote: 'Akses Sebagian Fitur Vip' },
+  'vip-full-update':  { name: 'Premium',  price: 100000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'reseller':         { name: 'Reseller',          price: 200000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip', 'Bisa Jualan Role Member Dan Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'admin':            { name: 'Owner',             price: 400000, app: 'ryuichi', benefit: ['Akses Full Fitur Aplikasi', 'Akses Full Fitur Vip', 'Bisa Jualin Role Member, Vip, Premium Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
   'xyz-member-1m':    { name: 'Member (1 Bulan)',  price: 25000,  app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Selama 1 Bulan'], vip: false },
   'xyz-member-permanen': { name: 'Member (Permanen)', price: 50000, app: 'xyz',   benefit: ['Akses Fitur Aplikasi Xyz Permanen'], vip: false },
   'xyz-reseller':     { name: 'Reseller',          price: 130000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualan Role Member 1 Bulan Dan Permanen'], vip: false },
@@ -991,7 +991,7 @@ const ROLE_DATA = {
 
 const SEWABOT_FEATURES = [
   ['Bug Nomer', 'fa-solid fa-bug'],
-  ['Bug Group', 'fa-brands fa-telegram'],
+  ['Bug Group', 'fa-solid fa-people-group'],
   ['Convert Stiker', 'fa-solid fa-image'],
   ['Buat Sticker Brat', 'fa-solid fa-signature'],
   ['Buat Sticker Brat Video', 'fa-solid fa-clapperboard'],
@@ -1005,36 +1005,123 @@ const SEWABOT_FEATURES = [
 ];
 
 const BASIC_FEATURES = [
-  ['Bug WhatsApp', 'fa-solid fa-bug'],
-  ['DDoS Panel', 'fa-solid fa-network-wired'],
-  ['Spam Pairing', 'fa-solid fa-paper-plane'],
-  ['WhatsApp Call', 'fa-solid fa-phone'],
-  ['Spam NGL', 'fa-solid fa-comment-dots'],
-  ['Downloader (Tiktok, Pin, Instagram)', 'fa-solid fa-download'],
-  ['iPhone Quote', 'fa-solid fa-quote-left'],
-  ['Remini Ai', 'fa-solid fa-wand-magic-sparkles'],
-  ['Nik Parse', 'fa-solid fa-id-card'],
-  ['Comment FB', 'fa-brands fa-facebook'],
-  ['Fake Group', 'fa-solid fa-users'],
-  ['Lobby FF', 'fa-solid fa-gamepad'],
-  ['Lobby ML', 'fa-solid fa-gamepad'],
-  ['Fake Story', 'fa-solid fa-book-open'],
-  ['Fake Threads', 'fa-brands fa-threads'],
-  ['QC Card', 'fa-solid fa-id-badge'],
-  ['Sticker Meme', 'fa-solid fa-icons'],
-  ['Brat Anime', 'fa-solid fa-face-grin-squint'],
-  ['Meme Ustadz', 'fa-solid fa-mosque'],
-  ['Blur Face', 'fa-solid fa-eye-slash'],
-  ['Remove BG', 'fa-solid fa-eraser'],
-  ['Wasted', 'fa-solid fa-skull'],
-  ['Wanted', 'fa-solid fa-bullhorn'],
-  ['Nonton Donghua', 'fa-solid fa-clapperboard'],
+  ['Bug Nomer', 'fa-solid fa-bug'],
+  ['Bug', 'fa-solid fa-people-group'],
   ['Nonton Anime', 'fa-solid fa-tv'],
-  ['Al-Quran', 'fa-solid fa-book-quran'],
-  ['Hadist', 'fa-solid fa-book'],
-  ['Music', 'fa-solid fa-music'],
-  ['Crosshair', 'fa-solid fa-crosshairs'],
-  ['Cek Keamanan Device', 'fa-solid fa-shield-halved']
+  ['Nonton Donghua', 'fa-solid fa-clapperboard'],
+  ['Tabungan', 'fa-solid fa-piggy-bank'],
+  ['Spam OTP', 'fa-solid fa-key'],
+  ['Spam NGL', 'fa-solid fa-comment-dots'],
+  ['Spam Pairing', 'fa-brands fa-whatsapp'],
+  ['Spam Call', 'fa-solid fa-phone-volume'],
+  ['Kode Pos', 'fa-solid fa-envelope-open-text'],
+  ['Nik Parse', 'fa-solid fa-id-card'],
+  ['TikTok', 'fa-brands fa-tiktok'],
+  ['Instagram', 'fa-brands fa-instagram'],
+  ['Pinterest', 'fa-brands fa-pinterest-p'],
+  ['YouTube', 'fa-brands fa-youtube'],
+  ['Lobby FF', 'fa-solid fa-crosshairs'],
+  ['SS iPhone', 'fa-solid fa-mobile-screen-button'],
+  ['Lobby ML', 'fa-solid fa-dragon'],
+  ['Brat Gambar', 'fa-solid fa-image'],
+  ['Brat Video', 'fa-solid fa-film'],
+  ['Brat Anime', 'fa-solid fa-star'],
+  ['Fake Story', 'fa-solid fa-circle-play'],
+  ['Fake Threads', 'fa-brands fa-threads'],
+  ['Nulis', 'fa-solid fa-pen-nib'],
+  ['QC', 'fa-solid fa-clipboard-check'],
+  ['Code Snap', 'fa-solid fa-code'],
+  ['Attp', 'fa-solid fa-icons'],
+  ['Fake WhatsApp', 'fa-brands fa-whatsapp'],
+  ['Fake Call', 'fa-solid fa-phone'],
+  ['Fake Dev', 'fa-solid fa-mobile-screen-button'],
+  ['Fake Wafat', 'fa-solid fa-cross'],
+  ['IQC Sticker', 'fa-solid fa-stamp'],
+  ['ID Card', 'fa-solid fa-id-badge'],
+  ['QC TikTok', 'fa-brands fa-tiktok'],
+  ['Quotes', 'fa-solid fa-quote-right'],
+  ['Fake KTP', 'fa-solid fa-id-card'],
+  ['Quote Nokia', 'fa-solid fa-mobile'],
+  ['Jarvis Meme', 'fa-solid fa-robot'],
+  ['Maju Lo Meme', 'fa-solid fa-fire'],
+  ['Sticker Meme', 'fa-solid fa-face-grin-squint-tears'],
+  ['Ustadz Meme', 'fa-solid fa-comment'],
+  ['Random Meme', 'fa-solid fa-shuffle'],
+  ['Dark Joke', 'fa-solid fa-skull'],
+  ['Track IP', 'fa-solid fa-location-crosshairs'],
+  ['Subdomain Finder', 'fa-solid fa-sitemap'],
+  ['Web To Zip', 'fa-solid fa-file-zipper'],
+  ['SS Website', 'fa-solid fa-desktop'],
+  ['Jarak Kota', 'fa-solid fa-route'],
+  ['IP Info', 'fa-solid fa-network-wired'],
+  ['Jadwal Bola', 'fa-solid fa-futbol'],
+  ['Jadwal Sholat', 'fa-solid fa-mosque'],
+  ['Jadwal TV', 'fa-solid fa-tv'],
+  ['Gempa', 'fa-solid fa-house-crack'],
+  ['Hari Libur', 'fa-solid fa-calendar-days'],
+  ['Cek Cuaca', 'fa-solid fa-cloud-sun-rain'],
+  ['Asah Otak', 'fa-solid fa-brain'],
+  ['Islamic', 'fa-solid fa-star-and-crescent'],
+  ['Siapakah Aku', 'fa-solid fa-user-secret'],
+  ['Susun Kata', 'fa-solid fa-font'],
+  ['Tebak Kimia', 'fa-solid fa-flask'],
+  ['Tebak Lirik', 'fa-solid fa-music'],
+  ['Tebak Tebakan', 'fa-solid fa-lightbulb'],
+  ['Teka Teki', 'fa-solid fa-puzzle-piece'],
+  ['Benar Atau Salah', 'fa-solid fa-circle-check'],
+  ['Tebak Anime', 'fa-solid fa-face-laugh-wink'],
+  ['Tebak Makanan', 'fa-solid fa-utensils'],
+  ['Family 100', 'fa-solid fa-people-group'],
+  ['Remini', 'fa-solid fa-wand-magic-sparkles'],
+  ['Upscale', 'fa-solid fa-expand'],
+  ['Blur Face', 'fa-solid fa-droplet'],
+  ['Unblur Face', 'fa-solid fa-eye'],
+  ['HD Video', 'fa-solid fa-video'],
+  ['Delete Watermark', 'fa-solid fa-eraser'],
+  ['Emoji Mix', 'fa-solid fa-face-laugh-wink'],
+  ['Face Swap', 'fa-solid fa-people-arrows'],
+  ['Enhancer', 'fa-solid fa-sliders'],
+  ['Ocr Image', 'fa-solid fa-file-lines'],
+  ['Remove BG', 'fa-solid fa-layer-group'],
+  ['Wink HDR', 'fa-solid fa-sun'],
+  ['HappyMod', 'fa-solid fa-bolt'],
+  ['Pinterest Video', 'fa-brands fa-pinterest'],
+  ['Pinterest Foto', 'fa-brands fa-pinterest-p'],
+  ['Resep Koki', 'fa-solid fa-utensils'],
+  ['SoundCloud', 'fa-brands fa-soundcloud'],
+  ['Spotify', 'fa-brands fa-spotify'],
+  ['Tiktok', 'fa-brands fa-tiktok'],
+  ['YouTube', 'fa-brands fa-youtube'],
+  ['Gura', 'fa-solid fa-image'],
+  ['Quotly', 'fa-solid fa-quote-left'],
+  ['YouTube Thumbnail', 'fa-brands fa-youtube'],
+  ['Music Card', 'fa-solid fa-music'],
+  ['Detik News', 'fa-solid fa-newspaper'],
+  ['Kompas TV', 'fa-solid fa-tv'],
+  ['Liputan 6', 'fa-solid fa-6'],
+  ['Tribun News', 'fa-solid fa-newspaper'],
+  ['Tagihan PLN', 'fa-solid fa-bolt'],
+  ['Check WhatsApp', 'fa-brands fa-whatsapp'],
+  ['Check Tri', 'fa-solid fa-sim-card'],
+  ['Check XL/AXIS', 'fa-solid fa-sim-card'],
+  ['Stalk Telegram', 'fa-brands fa-telegram'],
+  ['Stalk TikTok', 'fa-brands fa-tiktok'],
+  ['Stalk WhatsApp', 'fa-brands fa-whatsapp'],
+  ['Stalk Instagram', 'fa-brands fa-instagram'],
+  ['Stalk Roblox', 'fa-solid fa-cube'],
+  ['Stalk Minecraft', 'fa-solid fa-cubes'],
+  ['Blue Archive', 'fa-solid fa-graduation-cap'],
+  ['Doraemon', 'fa-solid fa-cat'],
+  ['JKT48 Music', 'fa-solid fa-music'],
+  ['JKT48 Video', 'fa-solid fa-video'],
+  ['Waifu', 'fa-solid fa-heart'],
+  ['Random Anime', 'fa-solid fa-dragon'],
+  ['Claude 4.6', 'fa-solid fa-brain'],
+  ['Gemini 3 Pro', 'fa-solid fa-star'],
+  ['Grok 4.1', 'fa-solid fa-bolt'],
+  ['Text To Image', 'fa-solid fa-image'],
+  ['GPT 5.4', 'fa-solid fa-robot'],
+  ['Kimi K26', 'fa-solid fa-cloud'],
 ];
 
 const VIP_FEATURES = [
