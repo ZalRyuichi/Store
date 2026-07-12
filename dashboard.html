@@ -88,8 +88,8 @@
     border: none;
     cursor: pointer;
     color: var(--dark);
-    font-size: 16px;
-    width: 36px; height: 36px;
+    font-size: 22px;
+    width: 46px; height: 46px;
     border-radius: 9px;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.2s;
@@ -867,7 +867,7 @@
   <div class="nav-brand">
     <img src="image/logo.png" alt="Logo" class="nav-brand-logo"/>
     <div class="nav-brand-text">
-      <div class="nav-brand-title">Ryuichi Store</div>
+      <div class="nav-brand-title">RYUICHI STORE</div>
       <div class="nav-brand-sub">#BANYAKDISKONNYA</div>
     </div>
   </div>
@@ -1006,28 +1006,6 @@
       <div class="banner-slide"><img src="/image/header2.jpg" alt="Banner 2"/></div>
       <div class="banner-slide"><img src="/image/header3.jpg" alt="Banner 3"/></div>
       <div class="banner-slide"><img src="/image/header4.jpg" alt="Banner 4"/></div>
-    </div>
-  </div>
-</div>
-
-<div class="profile-section">
-  <div class="profile-card">
-    <div class="profile-avatar">
-      <img src="/image/profil.jpg" alt="Profil"/>
-    </div>
-    <div class="profile-info">
-      <div class="profile-name" id="profile-name-el">—</div>
-      <div class="profile-handle">Telegram @ZalRyuichi</div>
-      <div class="profile-badges">
-        <div class="profile-badge">
-          <i class="fa-solid fa-circle-check"></i>
-          Verified
-        </div>
-        <div class="saldo-badge">
-          <i class="fa-solid fa-wallet"></i>
-          <span id="saldo-display">Rp 0</span>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -1190,7 +1168,8 @@ if (!TOKEN) window.location.href = '/login';
 const H = { 'Content-Type':'application/json', 'x-auth-token': TOKEN };
 
 const savedUser = localStorage.getItem('pg_user') || 'User';
-document.getElementById('profile-name-el').textContent = savedUser;
+const profileNameEl = document.getElementById('profile-name-el');
+if (profileNameEl) profileNameEl.textContent = savedUser;
 
 if (savedUser === 'Zal') {
   const btnAdmin = document.getElementById('btn-admin');
@@ -1211,7 +1190,8 @@ async function loadSaldo(retry = 2) {
     if (res.status === 401 || res.status === 403) { logout(); return; }
     const data = await res.json();
     if (data.ok) {
-      document.getElementById('saldo-display').textContent = rupiah(data.balance ?? 0);
+      const saldoEl = document.getElementById('saldo-display');
+      if (saldoEl) saldoEl.textContent = rupiah(data.balance ?? 0);
     }
   } catch {
     if (retry > 0) {
