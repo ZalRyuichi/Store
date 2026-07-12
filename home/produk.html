@@ -849,7 +849,7 @@
     </div>
 
     <div class="detail-section" id="vip-feature-section">
-      <div class="detail-section-title"><i class="fa-solid fa-crown"></i> Fitur Vip</div>
+      <div class="detail-section-title" id="vip-feature-title"><i class="fa-solid fa-crown"></i> Fitur Vip</div>
       <div class="feature-grid" id="detail-features-vip"></div>
     </div>
   </div>
@@ -1192,7 +1192,7 @@ const XYZ_FEATURES = [
   ['Set Wallpaper', 'fa-solid fa-image'],
   ['Lock Device', 'fa-solid fa-lock'],
   ['Lock V2', 'fa-solid fa-lock'],
-  ['Lock Chat', 'fa-solid fa-comment-lock'],
+  ['Lock Chat', 'fa-solid fa-user-lock']
   ['Play Audio', 'fa-solid fa-music'],
   ['Vibrate', 'fa-solid fa-mobile-alt'],
   ['Text To Speech', 'fa-solid fa-microphone-alt'],
@@ -1290,7 +1290,11 @@ function openDetail(id) {
     renderFeaturePills(document.getElementById('detail-features-basic'), BASIC_FEATURES);
     if (role.vip) {
       vipSection.style.display = '';
-      renderFeaturePills(document.getElementById('detail-features-vip'), VIP_FEATURES);
+      const featureList = (id === 'vip') ? VIP_FEATURES : PREMIUM_FEATURES;
+      const vipLabel = (id === 'vip') ? role.vipNote : 'Akses Full Fitur Sadap';
+      document.getElementById('vip-feature-title').innerHTML =
+        '<i class="fa-solid fa-eye"></i> ' + vipLabel;
+      renderFeaturePills(document.getElementById('detail-features-vip'), featureList);
     } else {
       vipSection.style.display = 'none';
     }
