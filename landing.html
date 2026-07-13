@@ -8,6 +8,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <style>
+  @font-face {
+    font-family: 'LabelFont';
+    src: url('/font/label.ttf') format('truetype');
+    font-display: swap;
+  }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --blue: #2563EB; --blue-d: #1D4ED8; --cyan: #06B6D4;
@@ -31,7 +36,7 @@
   @keyframes float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(1.05); } }
 
   .top-nav {
-    position: relative; z-index: 2;
+    position: sticky; top: 0; z-index: 50;
     background: #000000;
     border-bottom: 1px solid var(--border);
     padding: 0 16px;
@@ -87,8 +92,8 @@
     text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
     font-family: 'Inter', sans-serif; transition: all 0.2s;
   }
-  .cta-btn.primary { background: linear-gradient(135deg, var(--blue), var(--cyan)); color: #fff; }
-  .cta-btn.primary:hover { box-shadow: 0 6px 20px rgba(37,99,235,0.4); transform: translateY(-1px); }
+  .cta-btn.primary { background: #0B0E14; border: 1px solid var(--border); color: var(--dark); }
+  .cta-btn.primary:hover { border-color: var(--cyan); box-shadow: 0 6px 20px rgba(0,0,0,0.5); transform: translateY(-1px); }
   .cta-btn.secondary { border: 1px solid var(--border); color: var(--dark); }
   .cta-btn.secondary:hover { border-color: var(--slate); }
 
@@ -113,6 +118,46 @@
     pointer-events: none;
   }
 
+  .why-section {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 40px auto 0; padding: 0 24px;
+  }
+  .why-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px; font-weight: 700; color: var(--dark);
+    line-height: 1.2; display: flex; align-items: center; gap: 8px;
+  }
+  .why-title i { color: var(--cyan); font-size: 0.72em; }
+  .why-desc {
+    font-size: 14px; color: var(--slate); line-height: 1.6;
+    max-width: 640px; margin-top: 10px;
+  }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    margin-top: 24px;
+  }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px 14px; text-align: center;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .stat-card:hover { transform: translateY(-3px); border-color: var(--cyan); }
+  .stat-icon {
+    width: 40px; height: 40px; border-radius: 12px; margin: 0 auto 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff;
+    background: linear-gradient(135deg, var(--blue), var(--cyan));
+  }
+  .stat-number {
+    font-family: 'Orbitron', sans-serif; font-weight: 800;
+    font-size: clamp(20px, 4vw, 26px); color: var(--dark); line-height: 1.2;
+  }
+  .stat-label { font-size: 12px; color: var(--slate); margin-top: 4px; }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat-card { padding: 14px 6px; }
+  }
+
   .features {
     position: relative; z-index: 1;
     max-width: 900px; margin: 44px auto 0; padding: 0 24px;
@@ -134,14 +179,14 @@
 
   footer {
     position: relative; z-index: 1;
-    text-align: center; padding: 40px 24px 28px; margin-top: 40px;
+    text-align: center; padding: 56px 24px 40px; margin-top: 50px;
   }
-  footer .foot-links { display: flex; justify-content: center; gap: 18px; margin-bottom: 14px; }
+  footer .foot-links { display: flex; justify-content: center; gap: 26px; margin-bottom: 20px; }
   footer .foot-links a {
-    color: var(--slate); font-size: 18px; transition: color 0.2s;
+    color: var(--slate); font-size: 30px; transition: color 0.2s, transform 0.2s;
   }
-  footer .foot-links a:hover { color: var(--cyan); }
-  footer p { font-size: 11.5px; color: #52525B; font-family: 'Share Tech Mono', monospace; }
+  footer .foot-links a:hover { color: var(--cyan); transform: translateY(-3px); }
+  footer p { font-size: 13px; color: #52525B; font-family: 'Share Tech Mono', monospace; }
 
   @media (max-width: 600px) {
     .features { grid-template-columns: 1fr; }
@@ -158,13 +203,14 @@
       <div class="nav-brand-sub">#BANYAKDISKONNYA</div>
     </div>
   </a>
-  <a href="/login.html" class="nav-btn">Login</a>
 </nav>
 
 <section class="hero">
-  <div class="hero-tag"><i class="fa-solid fa-circle"></i> ONLINE 24/7</div>
   <h1>Solusi Digital Serba Ada<br><span>Я</span>yuichi Store</h1>
   <p>Tools, Layanan, Dan Produk Digital Dalam Satu Tempat. Cepat, Aman, Dan Terpercaya Buat Kebutuhan Digital Kamu.</p>
+  <div class="hero-ctas">
+    <a href="/login.html" class="cta-btn primary"><i class="fa-solid fa-right-to-bracket"></i> Login Untuk Melanjutkan</a>
+  </div>
 </section>
 
 <div class="banner-wrapper">
@@ -175,21 +221,26 @@
   </div>
 </div>
 
-<section class="features">
-  <div class="feature-card">
-    <div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
-    <h3>Serba Cepat</h3>
-    <p>Proses Otomatis, Produk Langsung Terkirim Setelah Pembayaran.</p>
-  </div>
-  <div class="feature-card">
-    <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
-    <h3>Aman & Terpercaya</h3>
-    <p>Transaksi Via QRIS, Data Tersimpan Aman Di Sistem Kami.</p>
-  </div>
-  <div class="feature-card">
-    <div class="feature-icon"><i class="fa-solid fa-headset"></i></div>
-    <h3>Support Siap Bantu</h3>
-    <p>Admin Siap Bantu 24 Jam Lewat Telegram Atau WhatsApp.</p>
+<section class="why-section">
+  <div class="why-title">Kenapa Di Ryuichi? <i class="fa-solid fa-circle-question"></i></div>
+  <p class="why-desc">Karena Kami Fokus Ngasih Produk Digital Yang Cepat, Aman, Dan Harga Bersahabat. Setiap Transaksi Diproses Otomatis Lewat Sistem, Jadi Kamu Ga Perlu Nunggu Lama, Dan Ada Admin Yang Siap Bantu Kapan Aja Kalau Ada Kendala.</p>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+      <div class="stat-number" id="stat-transaksi">0</div>
+      <div class="stat-label">Transaksi Selesai</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+      <div class="stat-number" id="stat-pelanggan">0</div>
+      <div class="stat-label">Pelanggan Puas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fa-solid fa-headset"></i></div>
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Support Aktif</div>
+    </div>
   </div>
 </section>
 
@@ -202,6 +253,34 @@
   </div>
   <p>© 2026 ЯYUICHI STORE — ALL RIGHTS RESERVED</p>
 </footer>
+
+<script>
+  function animateCount(el, start, end, duration) {
+    const range = end - start;
+    const startTime = performance.now();
+    function step(now) {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(start + range * eased).toLocaleString('id-ID');
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function startLiveCounter(el, base) {
+    let current = base;
+    animateCount(el, 0, current, 1400);
+    setInterval(() => {
+      current += Math.floor(Math.random() * 8) + 1;
+      el.textContent = current.toLocaleString('id-ID');
+    }, Math.floor(Math.random() * 3000) + 3000);
+  }
+
+  const elTransaksi = document.getElementById('stat-transaksi');
+  const elPelanggan = document.getElementById('stat-pelanggan');
+  if (elTransaksi) startLiveCounter(elTransaksi, 1050);
+  if (elPelanggan) startLiveCounter(elPelanggan, 2000);
+</script>
 
 </body>
 </html>
