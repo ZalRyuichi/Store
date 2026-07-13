@@ -389,6 +389,23 @@
   .pay-method-name { font-size: 16px !important; }
   .pay-method-desc { font-size: 12.5px !important; }
   .pay-method-check { font-size: 20px !important; }
+
+  /* ALTERNATIF PAYMENT METHOD (belum tersedia): Dana, Gopay, Seabank */
+  .pay-method-alt {
+    border-top: 1px solid var(--border) !important;
+    cursor: pointer; user-select: none;
+    transition: background 0.2s;
+  }
+  .pay-method-alt:hover { background: rgba(255,255,255,0.03) !important; }
+  .pay-method-alt:active { background: rgba(255,255,255,0.06) !important; }
+  .pay-method-badge-slow {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: linear-gradient(135deg, #f59e0b, #b45309);
+    color: #fff; font-size: 9.5px; font-weight: 700;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(245,158,11,0.35);
+  }
   .qr-wrap #qr-canvas { display: flex; justify-content: center; }
   .qr-wrap #qr-canvas img, .qr-wrap #qr-canvas canvas { max-width: 100% !important; height: auto !important; }
 </style>
@@ -575,6 +592,39 @@
       <i class="fa-solid fa-circle-check pay-method-check"></i>
     </div>
 
+    <div class="pay-method pay-method-alt" onclick="methodUnavailable()">
+      <div class="pay-method-icon"><img src="../image/dana_logo.jpg" alt="Dana"></div>
+      <div class="pay-method-info">
+        <div class="pay-method-name-row">
+          <div class="pay-method-name">Dana</div>
+          <span class="pay-method-badge-slow"><i class="fa-solid fa-hourglass-half"></i> Slow</span>
+        </div>
+        <div class="pay-method-desc">E-Wallet Dana</div>
+      </div>
+    </div>
+
+    <div class="pay-method pay-method-alt" onclick="methodUnavailable()">
+      <div class="pay-method-icon"><img src="../image/gopay_logo.jpg" alt="Gopay"></div>
+      <div class="pay-method-info">
+        <div class="pay-method-name-row">
+          <div class="pay-method-name">Gopay</div>
+          <span class="pay-method-badge-slow"><i class="fa-solid fa-hourglass-half"></i> Slow</span>
+        </div>
+        <div class="pay-method-desc">E-Wallet Gopay</div>
+      </div>
+    </div>
+
+    <div class="pay-method pay-method-alt" onclick="methodUnavailable()">
+      <div class="pay-method-icon"><img src="../image/seabank_logo.jpg" alt="Seabank"></div>
+      <div class="pay-method-info">
+        <div class="pay-method-name-row">
+          <div class="pay-method-name">Seabank</div>
+          <span class="pay-method-badge-slow"><i class="fa-solid fa-hourglass-half"></i> Slow</span>
+        </div>
+        <div class="pay-method-desc">M-Banking Seabank</div>
+      </div>
+    </div>
+
     <div class="summary-box">
       <div class="summary-row">
         <span>Nominal Top Up</span>
@@ -698,6 +748,10 @@ document.addEventListener('click', e => {
     panel.classList.remove('show');
   }
 });
+
+function methodUnavailable() {
+  toast('Belum Tersedia', 'info', 'Metode Pembayaran Ini Belum Tersedia, Silakan Gunakan QRIS.');
+}
 
 async function doTopup() {
   const amount = parseInt(document.getElementById('topup-amount').value);
