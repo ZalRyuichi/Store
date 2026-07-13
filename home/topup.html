@@ -209,6 +209,19 @@
   }
   .saldo-card::after { display: none; content: none; }
   .saldo-card > * { position: relative; z-index: 1; }
+  .saldo-card {
+    min-height: 170px;
+    display: flex;
+    align-items: flex-end;
+  }
+  .saldo-bottom-row-topup {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+    gap: 12px;
+  }
+  .saldo-bottom-row-topup .saldo-mid { margin-bottom: 0; }
 
   /* TOPUP FORM CARD: plain border, no glow/animation effect */
   #topup-form-card {
@@ -313,24 +326,30 @@
   }
   .notif-icon-wrap {
     width: 64px !important; height: 64px !important; margin: 0 auto 18px !important;
-    font-size: 26px !important;
+    font-size: 26px !important; border-radius: 50% !important;
+    animation: notifIconPop .35s cubic-bezier(.34,1.56,.64,1) .05s both !important;
   }
+  @keyframes notifIconPop { 0% { transform:scale(0); } 60% { transform:scale(1.15); } 100% { transform:scale(1); } }
+  .notif-icon-wrap i { color: inherit !important; }
   .notif-icon-wrap.success { background: rgba(52,211,153,.1) !important; border: 1px solid rgba(52,211,153,.25); color: #34d399; box-shadow: 0 0 24px rgba(52,211,153,.15); }
   .notif-icon-wrap.error   { background: rgba(248,113,113,.1) !important; border: 1px solid rgba(248,113,113,.25); color: #f87171; box-shadow: 0 0 24px rgba(248,113,113,.15); }
   .notif-icon-wrap.info    { background: rgba(37,99,235,.1) !important; border: 1px solid rgba(37,99,235,.3); color: #60a5fa; box-shadow: 0 0 24px rgba(37,99,235,.15); }
   .notif-icon-wrap.warning { background: rgba(245,158,11,.1) !important; border: 1px solid rgba(245,158,11,.3); color: #fbbf24; box-shadow: 0 0 24px rgba(245,158,11,.15); }
   .notif-title {
     font-family: 'LabelFont', 'Inter', sans-serif !important;
-    font-size: 17px !important; letter-spacing: .6px;
+    font-size: 17px !important; font-weight: 700 !important; letter-spacing: .6px;
     color: #f8fafc !important; margin-bottom: 8px !important;
   }
   .notif-desc {
     font-size: 12.5px !important; line-height: 1.6 !important; color: #8ea3c2 !important;
-    margin-bottom: 24px !important;
+    letter-spacing: .2px !important; margin-bottom: 24px !important;
   }
   .notif-btn-ok {
     width: 100%; padding: 13px !important; border-radius: 12px !important;
+    font-size: 13.5px !important; font-weight: 600 !important;
     letter-spacing: 1px; text-transform: uppercase;
+    display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important;
+    margin-top: 10px !important;
     transition: transform 0.2s ease, filter 0.2s ease;
   }
   .notif-btn-ok:hover { transform: translateY(-2px); filter: brightness(1.08); }
@@ -339,6 +358,9 @@
   .notif-btn-ok.error   { background: linear-gradient(135deg, #ef4444, #b91c1c) !important; }
   .notif-btn-ok.info    { background: linear-gradient(135deg, #2563eb, #1e40af) !important; }
   .notif-btn-ok.warning { background: linear-gradient(135deg, #f59e0b, #b45309) !important; }
+
+  /* QR WRAP: kurangi jarak antara foto QR dan border */
+  .qr-wrap { padding: 8px !important; }
 </style>
 </head>
 <body>
@@ -469,13 +491,12 @@
 <main>
 
   <div class="saldo-card">
-    <div class="saldo-top-row">
+    <div class="saldo-bottom-row-topup">
+      <div class="saldo-mid">
+        <div class="saldo-label">Saldo Kamu</div>
+        <div class="saldo-amount" id="saldo-display">Rp 0</div>
+      </div>
       <div class="saldo-chip"><i class="fa-solid fa-circle-check"></i> Verified</div>
-      <div class="saldo-logo">PayGet</div>
-    </div>
-    <div class="saldo-mid">
-      <div class="saldo-label">Saldo Kamu</div>
-      <div class="saldo-amount" id="saldo-display">Rp 0</div>
     </div>
   </div>
 
@@ -542,35 +563,6 @@
     </button>
   </div>
 
-  <div class="card">
-    <div class="page-head">
-      <i class="fa-solid fa-circle-info"></i>
-      <div class="card-title">Informasi</div>
-    </div>
-    <div class="info-list">
-      <div class="info-row">
-        <div class="info-icon"><i class="fa-solid fa-bolt"></i></div>
-        <div>
-          <div class="info-row-title">Proses Otomatis</div>
-          <div class="info-row-desc">Saldo Masuk Otomatis Maksimal 1 Menit Setelah Pembayaran QRIS Berhasil.</div>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon"><i class="fa-solid fa-lock"></i></div>
-        <div>
-          <div class="info-row-title">Transaksi Aman</div>
-          <div class="info-row-desc">Setiap Transaksi Terenkripsi Dan Tercatat Di Riwayat History-mu.</div>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon"><i class="fa-solid fa-headset"></i></div>
-        <div>
-          <div class="info-row-title">Butuh Bantuan?</div>
-          <div class="info-row-desc">Hubungi Admin Jika Saldo Belum Masuk Lebih Dari 10 Menit.</div>
-        </div>
-      </div>
-    </div>
-  </div>
 
 </main>
 
@@ -645,7 +637,7 @@
     <div class="notif-icon-wrap" id="notif-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
     <div class="notif-title" id="notif-title"></div>
     <div class="notif-desc" id="notif-desc"></div>
-    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()">OK</button>
+    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()"><i class="fa-solid fa-check"></i> Mengerti</button>
   </div>
 </div>
 
