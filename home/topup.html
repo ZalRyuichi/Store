@@ -362,7 +362,18 @@
   .notif-btn-ok.warning { background: linear-gradient(135deg, #f59e0b, #b45309) !important; }
 
   /* QR WRAP: kasih jarak antara foto QR dan border biar QRIS keliatan jelas */
-  .qr-wrap { padding: 30px !important; box-sizing: border-box !important; background: #ffffff !important; }
+  .qr-wrap { padding: 5px !important; box-sizing: border-box !important; background: #ffffff !important; }
+
+  /* PAY METHOD FAST BADGE */
+  .pay-method-name-row { display: flex; align-items: center; gap: 8px; }
+  .pay-method-badge-fast {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: linear-gradient(135deg, #10b981, #047857);
+    color: #fff; font-size: 9.5px; font-weight: 700;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.35);
+  }
   .qr-wrap #qr-canvas { display: flex; justify-content: center; }
   .qr-wrap #qr-canvas img, .qr-wrap #qr-canvas canvas { max-width: 100% !important; height: auto !important; }
 </style>
@@ -540,7 +551,10 @@
     <div class="pay-method">
       <div class="pay-method-icon"><i class="fa-solid fa-qrcode"></i></div>
       <div class="pay-method-info">
-        <div class="pay-method-name">QRIS</div>
+        <div class="pay-method-name-row">
+          <div class="pay-method-name">QRIS</div>
+          <span class="pay-method-badge-fast"><i class="fa-solid fa-bolt"></i> Fast</span>
+        </div>
         <div class="pay-method-desc">Bayar Pakai E-wallet Atau M-banking Apa Saja</div>
       </div>
       <i class="fa-solid fa-circle-check pay-method-check"></i>
