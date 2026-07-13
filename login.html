@@ -9,9 +9,9 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
-    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
-    --white:  #FFFFFF; --red:    #EF4444; --green:  #10B981;
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #1E293B;
+    --slate:  #94A3B8; --dark:   #F1F5F9; --border: #27272A;
+    --white:  #12151C; --red:    #EF4444; --green:  #10B981;
     --radius: 12px;
   }
   body {
@@ -42,7 +42,7 @@
   }
   .banner-wrap {
     width: 100%; max-width: 380px; margin: 0 auto;
-    background: var(--dark); overflow: hidden; line-height: 0;
+    background: #0B0F19; overflow: hidden; line-height: 0;
     border-radius: 14px;
     box-shadow: 0 4px 20px rgba(37,99,235,0.10), 0 1px 4px rgba(0,0,0,0.08);
     border: 1px solid var(--border);
@@ -54,7 +54,7 @@
   .card-body { padding: 30px 36px 36px; }
 
   .btn-google {
-    width: 100%; padding: 11px; background: #fff; color: var(--dark);
+    width: 100%; padding: 11px; background: #fff; color: #1F1F1F;
     border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-weight: 600;
     font-family: 'Inter', sans-serif; cursor: pointer;
     transition: background 0.2s, box-shadow 0.2s;
@@ -74,7 +74,7 @@
     width: 100%; padding: 10px 14px 10px 38px;
     border: 1px solid var(--border); border-radius: var(--radius);
     font-size: 14px; font-family: 'Inter', sans-serif; outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s; background: #FAFAFA; color: var(--dark);
+    transition: border-color 0.2s, box-shadow 0.2s; background: #1A1D26; color: var(--dark);
   }
   input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); background: var(--white); }
 
@@ -114,16 +114,16 @@
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto 16px; font-size: 20px;
   }
-  .notif-icon.error   { background: #FEF2F2; }
-  .notif-icon.success { background: #F0FDF4; }
-  .notif-icon.info    { background: var(--blue-l); }
+  .notif-icon.error   { background: #FEF2F2; color: #DC2626; }
+  .notif-icon.success { background: #F0FDF4; color: #16A34A; }
+  .notif-icon.info    { background: #EFF6FF; color: #2563EB; }
   .notif-msg {
     font-size: 15px; font-weight: 600; color: var(--dark);
     margin-bottom: 6px; line-height: 1.4;
   }
-  .notif-msg.error   { color: #991B1B; }
-  .notif-msg.success { color: #166534; }
-  .notif-msg.info    { color: var(--blue-d); }
+  .notif-msg.error   { color: #F87171; }
+  .notif-msg.success { color: #4ADE80; }
+  .notif-msg.info    { color: #60A5FA; }
   .notif-sub { font-size: 13px; color: var(--slate); margin-bottom: 24px; }
   .notif-ok {
     padding: 11px 40px; background: var(--blue); color: #fff;
