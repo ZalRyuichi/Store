@@ -25,7 +25,7 @@
     --white:  #000000; --bg:     #000000;
     --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
   }
-  body { background: var(--bg); color: var(--dark); }
+  body { background: var(--bg); color: var(--dark); padding-bottom: 24px; }
 
   /* TOP NAV */
   .top-nav {
@@ -189,6 +189,31 @@
     z-index: 98;
   }
   .sidebar-overlay.show { opacity: 0.5; pointer-events: all; }
+
+  /* SALDO CARD BACKGROUND PHOTO */
+  .saldo-card {
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.65) 100%), url('image/bg_topup.jpg') center/cover no-repeat;
+  }
+  .saldo-card::before, .saldo-card::after { display: none; }
+
+  /* TOP UP SALDO HEADING (luar kotak, gaya seperti Produk Populer) */
+  .topup-heading {
+    max-width: 900px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+    text-align: left;
+  }
+  .topup-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topup-title i { color: var(--blue); font-size: 0.72em; }
 </style>
 </head>
 <body>
@@ -327,22 +352,13 @@
       <div class="saldo-label">Saldo Kamu</div>
       <div class="saldo-amount" id="saldo-display">Rp 0</div>
     </div>
-    <div class="saldo-bottom-row">
-      <div class="saldo-user">
-        <i class="fa-solid fa-circle-user" style="opacity:0.85"></i>
-        <span id="home-username">—</span>
-      </div>
-      <div class="saldo-actions">
-        <div class="saldo-btn"><i class="fa-solid fa-clock-rotate-left"></i> History</div>
-      </div>
-    </div>
+  </div>
+
+  <div class="topup-heading">
+    <div class="topup-title">Top Up Saldo <i class="fa-solid fa-wallet"></i></div>
   </div>
 
   <div class="card">
-    <div class="page-head">
-      <i class="fa-solid fa-wallet"></i>
-      <div class="card-title">Top Up Saldo</div>
-    </div>
     <div class="card-sub">Pilih nominal atau masukkan jumlah sesuai kebutuhanmu</div>
 
     <label>Pilih Nominal Cepat</label>
@@ -427,29 +443,6 @@
 
 </main>
 
-<nav class="bottom-nav">
-  <a class="bnav-item" href="/dashboard">
-    <i class="fa-solid fa-house"></i>
-    <span class="bnav-label">Home</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item active" href="/home/topup.html">
-    <i class="fa-solid fa-wallet"></i>
-    <span class="bnav-label">Top Up</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/produk.html">
-    <i class="fa-solid fa-bag-shopping"></i>
-    <span class="bnav-label">Produk</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/history.html">
-    <i class="fa-solid fa-clock-rotate-left"></i>
-    <span class="bnav-label">History</span>
-    <div class="bnav-dot"></div>
-  </a>
-</nav>
-
 <div class="overlay" id="modal-overlay">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">
@@ -505,7 +498,6 @@
 <script src="shared.js"></script>
 <script>
 const savedUserName = localStorage.getItem('pg_user') || 'User';
-document.getElementById('home-username').textContent = savedUserName;
 
 function onApiReady() {
   loadSaldo();
