@@ -190,22 +190,24 @@
   }
   .sidebar-overlay.show { opacity: 0.5; pointer-events: all; }
 
-  /* SALDO CARD BACKGROUND PHOTO */
+  /* SALDO CARD BACKGROUND PHOTO: full width to match card, no shadow/glow */
   .saldo-card {
     position: relative;
     overflow: hidden;
     background: #000;
     isolation: isolate;
+    box-shadow: none !important;
   }
   .saldo-card::before {
     content: '';
     position: absolute;
-    inset: -8px;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
     background: url('../image/bg_topup.jpg') center/cover no-repeat;
-    filter: blur(2px);
+    border-radius: inherit;
     z-index: -1;
   }
-  .saldo-card::after { display: none; }
+  .saldo-card::after { display: none; content: none; }
   .saldo-card > * { position: relative; z-index: 1; }
 
   /* TOPUP FORM CARD: plain border, no glow/animation effect */
@@ -256,6 +258,87 @@
     gap: 8px;
   }
   .topup-title i { color: var(--blue); font-size: 0.72em; }
+
+  /* METODE PEMBAYARAN HEADING (di luar kotak, style sama dgn Top Up Saldo, icon beda warna) */
+  .paymethod-heading {
+    max-width: 900px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+    text-align: left;
+  }
+  .paymethod-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .paymethod-title i { color: var(--green); font-size: 0.72em; }
+
+  /* PAYMENT METHOD CARD: plain border, no glow/animation, dipisah dari kotak Top Up Saldo */
+  #paymethod-card {
+    border: 1px solid var(--border) !important;
+    box-shadow: none !important;
+    animation: none !important;
+  }
+
+  /* FAB WhatsApp & Customer Service: no shadow/glow, posisi lebih bawah seperti dashboard.html */
+  .contact-fab {
+    position: fixed; right: 16px; bottom: 20px;
+    box-shadow: none !important;
+  }
+  .sewabot-fab {
+    position: fixed; left: 16px; bottom: 20px;
+    box-shadow: none !important;
+    animation: none !important;
+  }
+
+  /* NOTIF OVERLAY: style seperti login.html (dark glass card) */
+  .notif-overlay {
+    background: rgba(3,5,10,0.72) !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+  }
+  .notif-box {
+    background: rgba(15, 20, 30, 0.9) !important;
+    border: 1px solid rgba(96, 165, 250, 0.22) !important;
+    border-radius: 20px !important;
+    padding: 32px 26px 26px !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+  }
+  .notif-icon-wrap {
+    width: 64px !important; height: 64px !important; margin: 0 auto 18px !important;
+    font-size: 26px !important;
+  }
+  .notif-icon-wrap.success { background: rgba(52,211,153,.1) !important; border: 1px solid rgba(52,211,153,.25); color: #34d399; box-shadow: 0 0 24px rgba(52,211,153,.15); }
+  .notif-icon-wrap.error   { background: rgba(248,113,113,.1) !important; border: 1px solid rgba(248,113,113,.25); color: #f87171; box-shadow: 0 0 24px rgba(248,113,113,.15); }
+  .notif-icon-wrap.info    { background: rgba(37,99,235,.1) !important; border: 1px solid rgba(37,99,235,.3); color: #60a5fa; box-shadow: 0 0 24px rgba(37,99,235,.15); }
+  .notif-icon-wrap.warning { background: rgba(245,158,11,.1) !important; border: 1px solid rgba(245,158,11,.3); color: #fbbf24; box-shadow: 0 0 24px rgba(245,158,11,.15); }
+  .notif-title {
+    font-family: 'LabelFont', 'Inter', sans-serif !important;
+    font-size: 17px !important; letter-spacing: .6px;
+    color: #f8fafc !important; margin-bottom: 8px !important;
+  }
+  .notif-desc {
+    font-size: 12.5px !important; line-height: 1.6 !important; color: #8ea3c2 !important;
+    margin-bottom: 24px !important;
+  }
+  .notif-btn-ok {
+    width: 100%; padding: 13px !important; border-radius: 12px !important;
+    letter-spacing: 1px; text-transform: uppercase;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  .notif-btn-ok:hover { transform: translateY(-2px); filter: brightness(1.08); }
+  .notif-btn-ok:active { transform: translateY(0); }
+  .notif-btn-ok.success { background: linear-gradient(135deg, #10b981, #047857) !important; }
+  .notif-btn-ok.error   { background: linear-gradient(135deg, #ef4444, #b91c1c) !important; }
+  .notif-btn-ok.info    { background: linear-gradient(135deg, #2563eb, #1e40af) !important; }
+  .notif-btn-ok.warning { background: linear-gradient(135deg, #f59e0b, #b45309) !important; }
 </style>
 </head>
 <body>
@@ -422,7 +505,13 @@
       <div class="form-hint">Minimal Rp 1.000</div>
     </div>
 
-    <label>Metode Pembayaran</label>
+  </div>
+
+  <div class="paymethod-heading">
+    <div class="paymethod-title">Metode Pembayaran <i class="fa-solid fa-credit-card"></i></div>
+  </div>
+
+  <div class="card" id="paymethod-card">
     <div class="pay-method">
       <div class="pay-method-icon"><i class="fa-solid fa-qrcode"></i></div>
       <div class="pay-method-info">
@@ -484,6 +573,29 @@
   </div>
 
 </main>
+
+<a id="sewabot-fab" class="sewabot-fab" href="https://wa.me/6285809456224" target="_blank" title="WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<button id="contact-fab" class="contact-fab" onclick="document.getElementById('contact-panel').classList.toggle('show')">
+  <i class="fa-solid fa-headset"></i>
+</button>
+<div id="contact-panel" class="contact-panel">
+  <div class="contact-panel-title">Hubungi Admin</div>
+  <a class="contact-item" href="https://t.me/ZalRyuichi" target="_blank">
+    <div class="contact-item-icon tg"><i class="fa-brands fa-telegram"></i></div> Telegram
+  </a>
+  <a class="contact-item" href="https://wa.me/6285809456224" target="_blank">
+    <div class="contact-item-icon wa"><i class="fa-brands fa-whatsapp"></i></div> WhatsApp
+  </a>
+  <a class="contact-item" href="https://tiktok.com/@zal_ryuichi" target="_blank">
+    <div class="contact-item-icon tt"><i class="fa-brands fa-tiktok"></i></div> TikTok
+  </a>
+  <a class="contact-item" href="https://instagram.com/zal_ryuichi" target="_blank">
+    <div class="contact-item-icon ig"><i class="fa-brands fa-instagram"></i></div> Instagram
+  </a>
+</div>
 
 <div class="overlay" id="modal-overlay">
   <div class="modal">
@@ -563,6 +675,14 @@ presets.forEach(p => {
   });
 });
 amountInput.addEventListener('input', updateSummary);
+
+document.addEventListener('click', e => {
+  const panel = document.getElementById('contact-panel');
+  const fab = document.getElementById('contact-fab');
+  if (panel.classList.contains('show') && !panel.contains(e.target) && !fab.contains(e.target)) {
+    panel.classList.remove('show');
+  }
+});
 
 async function doTopup() {
   const amount = parseInt(document.getElementById('topup-amount').value);
