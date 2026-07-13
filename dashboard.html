@@ -427,13 +427,37 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 22px;
   }
-  .aksi-card-label {
-    position: relative;
-    z-index: 1;
-    font-size: 13.5px;
-    font-weight: 700;
-    letter-spacing: 0.01em;
+  .aksi-card-badge-top {
+    position: absolute;
+    top: 0; right: 0;
+    z-index: 2;
+    background: rgba(0,0,0,0.28);
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 0 12px 0 12px;
+    backdrop-filter: blur(2px);
   }
+  .aksi-card-badge-bottom {
+    position: absolute;
+    bottom: 0; left: 0;
+    z-index: 2;
+    background: rgba(0,0,0,0.28);
+    color: #fff;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 6px 18px 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    clip-path: polygon(0 0, 70% 0, 100% 100%, 0 100%);
+    border-top: 1.5px solid rgba(255,255,255,0.45);
+    border-left: 1.5px solid rgba(255,255,255,0.45);
+  }
+  .aksi-card-badge-bottom i { font-size: 10px; }
   .aksi-card.aksi-tools   { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 60%, #1D4ED8 100%); }
   .aksi-card.aksi-topup   { background: radial-gradient(120% 120% at 15% 10%, #6EE7B7 0%, #10B981 45%, #047857 100%); }
   .aksi-card.aksi-produk  { background: radial-gradient(120% 120% at 15% 10%, #93C5FD 0%, #2563EB 45%, #1E40AF 100%); }
@@ -839,7 +863,7 @@
     background: linear-gradient(135deg, var(--blue), var(--blue-d));
     color: #fff; border: none; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px; box-shadow: 0 6px 18px rgba(37,99,235,0.4);
+    font-size: 18px;
     z-index: 50; transition: transform 0.2s;
   }
   .contact-fab:active { transform: scale(0.94); }
@@ -869,21 +893,15 @@
   .contact-item-icon.ig { background: linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4); }
 
   .sewabot-fab {
-    position: fixed; left: 16px; bottom: 84px;
+    position: fixed; left: 16px; bottom: 20px;
     width: 48px; height: 48px; border-radius: 50%;
     background: linear-gradient(135deg, #25D366, #128C7E);
     color: #fff; border: none; cursor: pointer; text-decoration: none;
     display: flex; align-items: center; justify-content: center;
-    font-size: 20px; box-shadow: 0 6px 18px rgba(37,211,102,0.45);
+    font-size: 20px;
     z-index: 50; transition: transform 0.2s;
-    animation: sewabotPulse 2.2s infinite;
   }
   .sewabot-fab:active { transform: scale(0.94); }
-  @keyframes sewabotPulse {
-    0%, 100% { box-shadow: 0 6px 18px rgba(37,211,102,0.45); }
-    50%      { box-shadow: 0 6px 24px rgba(37,211,102,0.8); }
-  }
-
   /* SIDEBAR */
   .sidebar {
     position: fixed; right: 0; top: 0; width: 280px; height: 100vh;
@@ -1251,17 +1269,6 @@
 </div>
 <div class="aksi-lainnya-box">
   <div class="aksi-lainnya-slider" id="aksi-lainnya-slider">
-    <a href="/tools.html" class="aksi-card aksi-tools">
-      <div class="aksi-card-decor">
-        <i class="fa-solid fa-gear d1"></i>
-        <i class="fa-solid fa-screwdriver-wrench d2"></i>
-        <i class="fa-solid fa-hammer d3"></i>
-        <i class="fa-solid fa-toolbox d4"></i>
-        <i class="fa-solid fa-wrench d5"></i>
-      </div>
-      <div class="aksi-card-icon"><i class="fa-solid fa-wrench"></i></div>
-      <div class="aksi-card-label">Tools</div>
-    </a>
     <a href="/home/topup.html" class="aksi-card aksi-topup">
       <div class="aksi-card-decor">
         <i class="fa-solid fa-coins d1"></i>
@@ -1270,8 +1277,9 @@
         <i class="fa-solid fa-credit-card d4"></i>
         <i class="fa-solid fa-wallet d5"></i>
       </div>
+      <div class="aksi-card-badge-top">Saldo</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-wallet"></i> Top Up</div>
       <div class="aksi-card-icon"><i class="fa-solid fa-wallet"></i></div>
-      <div class="aksi-card-label">Top Up</div>
     </a>
     <a href="/home/produk.html" class="aksi-card aksi-produk">
       <div class="aksi-card-decor">
@@ -1281,8 +1289,9 @@
         <i class="fa-solid fa-boxes-stacked d4"></i>
         <i class="fa-solid fa-bag-shopping d5"></i>
       </div>
+      <div class="aksi-card-badge-top">Belanja</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-bag-shopping"></i> Produk</div>
       <div class="aksi-card-icon"><i class="fa-solid fa-bag-shopping"></i></div>
-      <div class="aksi-card-label">Produk</div>
     </a>
     <a href="/home/history.html" class="aksi-card aksi-history">
       <div class="aksi-card-decor">
@@ -1292,8 +1301,21 @@
         <i class="fa-solid fa-list-check d4"></i>
         <i class="fa-solid fa-clock-rotate-left d5"></i>
       </div>
+      <div class="aksi-card-badge-top">Riwayat</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-clock-rotate-left"></i> History</div>
       <div class="aksi-card-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-      <div class="aksi-card-label">History</div>
+    </a>
+    <a href="/tools.html" class="aksi-card aksi-tools">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-gear d1"></i>
+        <i class="fa-solid fa-screwdriver-wrench d2"></i>
+        <i class="fa-solid fa-hammer d3"></i>
+        <i class="fa-solid fa-toolbox d4"></i>
+        <i class="fa-solid fa-wrench d5"></i>
+      </div>
+      <div class="aksi-card-badge-top">Gratis</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-wrench"></i> Tools</div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-wrench"></i></div>
     </a>
   </div>
 </div>
@@ -1450,28 +1472,6 @@ async function refreshSewaBotDashboard(retry = 2) {
 
   render();
   setInterval(next, 2000);
-})();
-
-(function(){
-  const slider = document.getElementById('produk-populer-slider');
-  if (!slider) return;
-  const items = Array.from(slider.children);
-  let idx = 0;
-  setInterval(() => {
-    idx = (idx + 1) % items.length;
-    items[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-  }, 3000);
-})();
-
-(function(){
-  const slider = document.getElementById('aksi-lainnya-slider');
-  if (!slider) return;
-  const items = Array.from(slider.children);
-  let idx = 0;
-  setInterval(() => {
-    idx = (idx + 1) % items.length;
-    items[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-  }, 3000);
 })();
 
 document.addEventListener('click', e => {
