@@ -462,6 +462,7 @@
   .aksi-card.aksi-topup   { background: radial-gradient(120% 120% at 15% 10%, #6EE7B7 0%, #10B981 45%, #047857 100%); }
   .aksi-card.aksi-produk  { background: radial-gradient(120% 120% at 15% 10%, #93C5FD 0%, #2563EB 45%, #1E40AF 100%); }
   .aksi-card.aksi-history { background: radial-gradient(120% 120% at 15% 10%, #C4B5FD 0%, #7C3AED 45%, #4C1D95 100%); }
+  .aksi-card.aksi-voucher { background: radial-gradient(120% 120% at 15% 10%, #FBCFE8 0%, #EC4899 45%, #9D174D 100%); }
 
   .tools-banner {
     max-width: 900px; margin: 12px auto 0; padding: 0 20px;
@@ -905,21 +906,21 @@
   /* SIDEBAR */
   .sidebar {
     position: fixed; right: 0; top: 0; width: 280px; height: 100vh;
-    background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%);
+    background: linear-gradient(180deg, #0B0E14 0%, #000000 100%);
     border-left: 1px solid var(--border);
     transform: translateX(100%); transition: transform 0.3s ease;
     z-index: 99; padding-top: 0; overflow-y: auto;
-    box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+    box-shadow: -4px 0 24px rgba(0,0,0,0.5);
   }
   .sidebar.show { transform: translateX(0); }
   
   .sidebar-header {
     position: sticky; top: 0; z-index: 10;
-    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
     padding: 24px 16px;
     display: flex; flex-direction: column; align-items: center; gap: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 4px 16px rgba(37,99,235,0.25);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
   }
   
   .sidebar-logo-img {
@@ -991,13 +992,13 @@
   }
   
   .sidebar-btn.logout {
-    background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
-    color: var(--red); border: 1px solid #FECACA;
+    background: rgba(239,68,68,0.08);
+    color: var(--red); border: 1px solid rgba(239,68,68,0.3);
     width: 100%; justify-content: center; margin-top: 12px;
   }
   
   .sidebar-btn.logout:hover {
-    background: linear-gradient(135deg, #FECACA 0%, #FCA5A5 100%);
+    background: var(--red);
     color: #fff; box-shadow: 0 4px 12px rgba(239,68,68,0.3);
   }
   
@@ -1247,7 +1248,7 @@
 </div>
 <div class="download-app-box">
   <div class="download-app-grid">
-    <a href="/home/app_ryuchi.html" class="download-app-item">
+    <a href="/home/app_ryuichi.html" class="download-app-item">
       <div class="download-app-photo">
         <img src="/image/down_ryu.jpg" alt="Ryuichi"/>
         <div class="download-app-corner-badge badge-ryu">RYUICHI</div>
@@ -1257,7 +1258,7 @@
     <a href="/home/app_xyz" class="download-app-item">
       <div class="download-app-photo">
         <img src="/image/down_xyz.jpg" alt="XyzXApp"/>
-        <div class="download-app-corner-badge badge-xyz">XYZXAPP</div>
+        <div class="download-app-corner-badge badge-xyz">XYZXRAT</div>
         <div class="download-app-dl-badge dl-xyz"><i class="fa-solid fa-download"></i> Download</div>
       </div>
     </a>
@@ -1316,6 +1317,18 @@
       <div class="aksi-card-badge-top">Gratis</div>
       <div class="aksi-card-badge-bottom"><i class="fa-solid fa-wrench"></i> Tools</div>
       <div class="aksi-card-icon"><i class="fa-solid fa-wrench"></i></div>
+    </a>
+    <a href="/home/voucher.html" class="aksi-card aksi-voucher">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-ticket d1"></i>
+        <i class="fa-solid fa-gift d2"></i>
+        <i class="fa-solid fa-percent d3"></i>
+        <i class="fa-solid fa-tags d4"></i>
+        <i class="fa-solid fa-ticket-simple d5"></i>
+      </div>
+      <div class="aksi-card-badge-top">Promo</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-ticket"></i> Voucher</div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-ticket"></i></div>
     </a>
   </div>
 </div>
