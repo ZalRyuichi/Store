@@ -374,6 +374,21 @@
     padding: 3px 8px; border-radius: 20px;
     box-shadow: 0 2px 8px rgba(16,185,129,0.35);
   }
+
+  /* PAY METHOD: perbesar row + icon foto 1:1 */
+  .pay-method { padding: 18px !important; gap: 14px !important; align-items: center !important; }
+  .pay-method-icon {
+    width: 56px !important; height: 56px !important; min-width: 56px !important;
+    border-radius: 14px !important; overflow: hidden !important;
+    padding: 0 !important; background: #000 !important;
+  }
+  .pay-method-icon img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    aspect-ratio: 1 / 1;
+  }
+  .pay-method-name { font-size: 16px !important; }
+  .pay-method-desc { font-size: 12.5px !important; }
+  .pay-method-check { font-size: 20px !important; }
   .qr-wrap #qr-canvas { display: flex; justify-content: center; }
   .qr-wrap #qr-canvas img, .qr-wrap #qr-canvas canvas { max-width: 100% !important; height: auto !important; }
 </style>
@@ -549,7 +564,7 @@
 
   <div class="card" id="paymethod-card">
     <div class="pay-method">
-      <div class="pay-method-icon"><i class="fa-solid fa-qrcode"></i></div>
+      <div class="pay-method-icon"><img src="../image/qr_logo.jpg" alt="QRIS"></div>
       <div class="pay-method-info">
         <div class="pay-method-name-row">
           <div class="pay-method-name">QRIS</div>
@@ -565,19 +580,11 @@
         <span>Nominal Top Up</span>
         <span id="sum-amount">Rp 0</span>
       </div>
-      <div class="summary-row">
-        <span>Biaya Admin</span>
-        <span>Murah</span>
-      </div>
-      <div class="summary-row total">
-        <span>Total Bayar</span>
-        <span id="sum-total">Rp 0</span>
-      </div>
     </div>
 
     <button class="btn-primary" id="btn-topup" onclick="doTopup()" style="width:100%; justify-content:center;">
-      <i class="fa-solid fa-qrcode"></i>
-      <span id="btn-topup-text">Buat QRIS</span>
+      <i class="fa-solid fa-arrow-right"></i>
+      <span id="btn-topup-text">Lanjut Bayar</span>
     </button>
   </div>
 
@@ -669,13 +676,11 @@ function onApiReady() {
 
 const amountInput = document.getElementById('topup-amount');
 const sumAmount = document.getElementById('sum-amount');
-const sumTotal = document.getElementById('sum-total');
 const presets = document.querySelectorAll('.amount-chip');
 
 function updateSummary() {
   const val = parseInt(amountInput.value) || 0;
   sumAmount.textContent = rupiah(val);
-  sumTotal.textContent = rupiah(val);
   presets.forEach(p => p.classList.toggle('active', parseInt(p.dataset.val) === val));
 }
 presets.forEach(p => {
@@ -711,7 +716,7 @@ async function doTopup() {
       toast(data.message || 'Gagal Membuat Transaksi', 'error');
     }
   } catch { toast('Koneksi Gagal', 'error'); }
-  finally { btn.disabled = false; btnText.textContent = 'Buat QRIS'; sp.remove(); }
+  finally { btn.disabled = false; btnText.textContent = 'Lanjut Bayar'; sp.remove(); }
 }
 </script>
 </body>
