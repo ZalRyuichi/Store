@@ -376,7 +376,7 @@
   }
 
   /* PAY METHOD: perbesar row + icon foto 1:1 */
-  .pay-method { padding: 18px !important; gap: 14px !important; align-items: center !important; }
+  .pay-method { padding: 18px !important; gap: 14px !important; align-items: center !important; cursor: pointer; }
   .pay-method-icon {
     width: 56px !important; height: 56px !important; min-width: 56px !important;
     border-radius: 14px !important; overflow: hidden !important;
@@ -388,16 +388,23 @@
   }
   .pay-method-name { font-size: 16px !important; }
   .pay-method-desc { font-size: 12.5px !important; }
-  .pay-method-check { font-size: 20px !important; }
 
-  /* ALTERNATIF PAYMENT METHOD (belum tersedia): Dana, Gopay, Seabank */
+  /* SELECTION STATE: border biru cuma muncul di metode yang lagi dipilih */
+  .pay-method { border: 1px solid transparent !important; border-radius: 14px !important; transition: border-color .2s, background .2s; }
+  .pay-method .pay-method-check { display: none !important; }
+  .pay-method.selected { border-color: var(--blue) !important; background: rgba(37,99,235,0.06) !important; }
+  .pay-method.selected .pay-method-check {
+    display: flex !important; font-size: 20px !important; color: var(--blue) !important;
+  }
+
+  /* ALTERNATIF PAYMENT METHOD: Dana, Gopay, Seabank */
   .pay-method-alt {
     border-top: 1px solid var(--border) !important;
-    cursor: pointer; user-select: none;
-    transition: background 0.2s;
+    user-select: none;
   }
   .pay-method-alt:hover { background: rgba(255,255,255,0.03) !important; }
   .pay-method-alt:active { background: rgba(255,255,255,0.06) !important; }
+  .pay-method-alt.selected { border-top-color: var(--blue) !important; }
   .pay-method-badge-slow {
     display: inline-flex; align-items: center; gap: 4px;
     background: linear-gradient(135deg, #f59e0b, #b45309);
@@ -580,7 +587,7 @@
   </div>
 
   <div class="card" id="paymethod-card">
-    <div class="pay-method">
+    <div class="pay-method selected" data-method="qris" onclick="selectMethod('qris')">
       <div class="pay-method-icon"><img src="../image/qr_logo.jpg" alt="QRIS"></div>
       <div class="pay-method-info">
         <div class="pay-method-name-row">
@@ -592,7 +599,7 @@
       <i class="fa-solid fa-circle-check pay-method-check"></i>
     </div>
 
-    <div class="pay-method pay-method-alt" onclick="methodUnavailable()">
+    <div class="pay-method pay-method-alt" data-method="dana" onclick="selectMethod('dana')">
       <div class="pay-method-icon"><img src="../image/dana_logo.jpg" alt="Dana"></div>
       <div class="pay-method-info">
         <div class="pay-method-name-row">
@@ -601,9 +608,10 @@
         </div>
         <div class="pay-method-desc">E-Wallet Dana</div>
       </div>
+      <i class="fa-solid fa-circle-check pay-method-check"></i>
     </div>
 
-    <div class="pay-method pay-method-alt" onclick="methodUnavailable()">
+    <div class="pay-method pay-method-alt" data-method="gopay" onclick="selectMethod('gopay')">
       <div class="pay-method-icon"><img src="../image/gopay_logo.jpg" alt="Gopay"></div>
       <div class="pay-method-info">
         <div class="pay-method-name-row">
@@ -612,9 +620,10 @@
         </div>
         <div class="pay-method-desc">E-Wallet Gopay</div>
       </div>
+      <i class="fa-solid fa-circle-check pay-method-check"></i>
     </div>
 
-    <div class="pay-method pay-method-alt" onclick="methodUnavailable()">
+    <div class="pay-method pay-method-alt" data-method="seabank" onclick="selectMethod('seabank')">
       <div class="pay-method-icon"><img src="../image/seabank_logo.jpg" alt="Seabank"></div>
       <div class="pay-method-info">
         <div class="pay-method-name-row">
@@ -623,13 +632,7 @@
         </div>
         <div class="pay-method-desc">M-Banking Seabank</div>
       </div>
-    </div>
-
-    <div class="summary-box">
-      <div class="summary-row">
-        <span>Nominal Top Up</span>
-        <span id="sum-amount">Rp 0</span>
-      </div>
+      <i class="fa-solid fa-circle-check pay-method-check"></i>
     </div>
 
     <button class="btn-primary" id="btn-topup" onclick="doTopup()" style="width:100%; justify-content:center;">
@@ -637,6 +640,7 @@
       <span id="btn-topup-text">Lanjut Bayar</span>
     </button>
   </div>
+
 
 
 </main>
@@ -725,12 +729,10 @@ function onApiReady() {
 }
 
 const amountInput = document.getElementById('topup-amount');
-const sumAmount = document.getElementById('sum-amount');
 const presets = document.querySelectorAll('.amount-chip');
 
 function updateSummary() {
   const val = parseInt(amountInput.value) || 0;
-  sumAmount.textContent = rupiah(val);
   presets.forEach(p => p.classList.toggle('active', parseInt(p.dataset.val) === val));
 }
 presets.forEach(p => {
@@ -749,11 +751,20 @@ document.addEventListener('click', e => {
   }
 });
 
+let currentMethod = 'qris';
+function selectMethod(method) {
+  currentMethod = method;
+  document.querySelectorAll('.pay-method').forEach(el => {
+    el.classList.toggle('selected', el.dataset.method === method);
+  });
+}
+
 function methodUnavailable() {
   toast('Belum Tersedia', 'info', 'Metode Pembayaran Ini Belum Tersedia, Silakan Gunakan QRIS.');
 }
 
 async function doTopup() {
+  if (currentMethod !== 'qris') { methodUnavailable(); return; }
   const amount = parseInt(document.getElementById('topup-amount').value);
   if (!amount || amount < 1000) { toast('Nominal Minimal Rp 1.000', 'error'); return; }
   const btn = document.getElementById('btn-topup');
@@ -772,6 +783,7 @@ async function doTopup() {
   } catch { toast('Koneksi Gagal', 'error'); }
   finally { btn.disabled = false; btnText.textContent = 'Lanjut Bayar'; sp.remove(); }
 }
+
 </script>
 </body>
 </html>
