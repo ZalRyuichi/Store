@@ -1493,10 +1493,10 @@ function autoSlideRow(containerId, intervalMs) {
     const gap = parseFloat(style.columnGap || style.gap || '0') || 0;
     const step = itemEl.getBoundingClientRect().width + gap;
     const maxScroll = el.scrollWidth - el.clientWidth;
-    const next = el.scrollLeft + step;
-    if (next >= maxScroll - 2) {
+    if (el.scrollLeft >= maxScroll - 2) {
       el.scrollTo({ left: 0, behavior: 'smooth' });
     } else {
+      const next = Math.min(el.scrollLeft + step, maxScroll);
       el.scrollTo({ left: next, behavior: 'smooth' });
     }
   }
