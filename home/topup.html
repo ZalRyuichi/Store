@@ -192,9 +192,46 @@
 
   /* SALDO CARD BACKGROUND PHOTO */
   .saldo-card {
-    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.65) 100%), url('image/bg_topup.jpg') center/cover no-repeat;
+    position: relative;
+    overflow: hidden;
+    background: #000;
+    isolation: isolate;
   }
-  .saldo-card::before, .saldo-card::after { display: none; }
+  .saldo-card::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    background: url('../image/bg_topup.jpg') center/cover no-repeat;
+    filter: blur(2px);
+    z-index: -1;
+  }
+  .saldo-card::after { display: none; }
+  .saldo-card > * { position: relative; z-index: 1; }
+
+  /* TOPUP FORM CARD: plain border, no glow/animation effect */
+  #topup-form-card {
+    border: 1px solid var(--border) !important;
+    box-shadow: none !important;
+    animation: none !important;
+  }
+
+  /* NOMINAL INPUT: dark style */
+  .input-prefix-wrap {
+    background: #0B0E14 !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: none !important;
+  }
+  .input-prefix-wrap .prefix {
+    background: #000 !important;
+    color: var(--slate) !important;
+  }
+  #topup-amount {
+    background: transparent !important;
+    color: var(--dark) !important;
+  }
+  #topup-amount::placeholder {
+    color: var(--slate) !important;
+  }
 
   /* TOP UP SALDO HEADING (luar kotak, gaya seperti Produk Populer) */
   .topup-heading {
@@ -358,7 +395,7 @@
     <div class="topup-title">Top Up Saldo <i class="fa-solid fa-wallet"></i></div>
   </div>
 
-  <div class="card">
+  <div class="card" id="topup-form-card">
     <div class="card-sub">Pilih nominal atau masukkan jumlah sesuai kebutuhanmu</div>
 
     <label>Pilih Nominal Cepat</label>
