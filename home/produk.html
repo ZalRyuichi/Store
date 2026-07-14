@@ -276,12 +276,12 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding: 0 3vw 4px;
-    gap: 2vw;
+    padding: 0 0 4px;
+    gap: 0;
   }
   .produk-slider::-webkit-scrollbar { display: none; }
   .produk-slide {
-    flex: 0 0 94vw;
+    flex: 0 0 100vw;
     scroll-snap-align: center;
     scroll-snap-stop: always;
     transform-origin: center center;
@@ -289,12 +289,13 @@
     opacity: 1; /* selalu tampil duluan; efek coverflow tinggal menghalusin, bukan syarat buat nongol */
   }
 
-  /* Card produk di dalam slider dibuat lebar penuh, tanpa border/padding pembatas */
+  /* Card produk di dalam slider dibuat 90vw dan selalu center di tengah slot, biar gak ada card tetangga yang nyempil di pinggir */
   .produk-slide .card {
     border: none !important;
     padding: 0 !important;
     max-width: none !important;
-    width: 100% !important;
+    width: 90vw !important;
+    margin: 0 auto !important;
     box-shadow: none !important;
     background: transparent !important;
     border-radius: 0 !important;
