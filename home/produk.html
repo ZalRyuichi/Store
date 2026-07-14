@@ -180,38 +180,26 @@
   .quick-icon.cyan   { background: linear-gradient(135deg, #06B6D4, #0891B2); }
   .quick-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--dark); }
 
-  /* WRAPPER: foto banner nyatu dengan banner desain (satu blok, gak kepisah), rasio 16:9 */
+  /* WRAPPER: foto full 16:9, banner desain nyatu langsung di bawahnya (satu blok, gak kepisah) */
   .apk-banner-wrap {
     position: relative;
     border-radius: 16px;
     overflow: hidden;
     margin-bottom: 14px;
-    aspect-ratio: 16 / 9;
     display: flex;
     flex-direction: column;
   }
   .apk-banner-photo {
     position: relative;
     width: 100%;
-    flex: 0 0 38%;
+    aspect-ratio: 16 / 9;
     background-size: cover;
     background-position: center;
-  }
-  .apk-banner-photo::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0) 45%, var(--fade-color) 100%);
   }
   .apk-banner-wrap .apk-banner {
     border-radius: 0;
     margin-bottom: 0;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
-  .apk-banner-wrap.xyz-wrap .apk-banner-photo { --fade-color: #7F1D1D; }
-  .apk-banner-wrap.ryuichi-wrap .apk-banner-photo { --fade-color: #0B1220; }
 
   .apk-banner {
     border-radius: 16px;
