@@ -246,7 +246,6 @@
   }
   .produk3d-viewport {
     perspective: 1200px;
-    margin-top: 14px;
   }
   .produk-slider {
     display: flex;
@@ -255,16 +254,18 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding: 0 4% 4px;
-    gap: 2%;
+    padding: 0 6% 4px;
+    gap: 2.5%;
   }
   .produk-slider::-webkit-scrollbar { display: none; }
   .produk-slide {
-    flex: 0 0 92%;
+    flex: 0 0 88%;
     scroll-snap-align: center;
+    scroll-snap-stop: always;
     transform-origin: center center;
     transition: transform 0.12s linear, opacity 0.12s linear;
     will-change: transform, opacity;
+    opacity: 1; /* selalu tampil duluan; efek coverflow tinggal menghalusin, bukan syarat buat nongol */
   }
 
   /* Card produk di dalam slider dibuat lebar penuh, tanpa border/padding pembatas */
@@ -281,7 +282,8 @@
     display: flex;
     justify-content: center;
     gap: 6px;
-    margin-top: 10px;
+    margin-top: 14px;
+    margin-bottom: 6px;
   }
   .produk-dot {
     width: 6px; height: 6px; border-radius: 50%;
@@ -811,6 +813,13 @@
 
   <video class="produk-video-banner" src="../video/produk.mp4" autoplay muted loop playsinline></video>
 
+  <div class="produk-dots" id="produkDots">
+    <div class="produk-dot active" data-i="0"></div>
+    <div class="produk-dot" data-i="1"></div>
+    <div class="produk-dot" data-i="2"></div>
+    <div class="produk-dot" data-i="3"></div>
+  </div>
+
   <div class="produk3d-viewport">
   <div class="produk-slider" id="produkSlider">
 
@@ -1048,13 +1057,6 @@
   </div>
 
   </div>
-  </div>
-
-  <div class="produk-dots" id="produkDots">
-    <div class="produk-dot active" data-i="0"></div>
-    <div class="produk-dot" data-i="1"></div>
-    <div class="produk-dot" data-i="2"></div>
-    <div class="produk-dot" data-i="3"></div>
   </div>
 
 </main>
@@ -2021,27 +2023,15 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   if (!slider) return;
   const dots = Array.from(document.querySelectorAll('#produkDots .produk-dot'));
 
-  const originalSlides = Array.from(slider.querySelectorAll('.produk-slide'));
-  const totalReal = originalSlides.length;
-  if (!totalReal) return;
-
-  originalSlides.forEach((s, i) => { s.dataset.realIndex = i; });
-
-  // Clone slide pertama & terakhir biar carousel "muter" (infinite loop):
-  // di kiri card pertama bakal nongol preview card terakhir, begitu juga sebaliknya
-  const firstClone = originalSlides[0].cloneNode(true);
-  const lastClone  = originalSlides[totalReal - 1].cloneNode(true);
-  firstClone.dataset.clone = 'true';
-  lastClone.dataset.clone = 'true';
-  firstClone.setAttribute('aria-hidden', 'true');
-  lastClone.setAttribute('aria-hidden', 'true');
-  slider.appendChild(firstClone);
-  slider.insertBefore(lastClone, originalSlides[0]);
-
   const slides = Array.from(slider.querySelectorAll('.produk-slide'));
+  if (!slides.length) return;
+  slides.forEach((s, i) => { s.dataset.realIndex = i; });
+
+  // Gak pake clone/infinite-loop lagi — itu sumber bug reset pas scroll cepat/banyak,
+  // soalnya manipulasi scrollLeft manual gampang bentrok sama momentum scroll browser.
+  // scroll-snap-align: center (di CSS) sudah cukup buat "menepatkan slide yang digestur
+  // ke tengah-tengah" secara native, jadi gak perlu di-reimplement di JS.
   let ticking = false;
-  let jumping = false;
-  let scrollEndTimer = null;
 
   function applyCoverflow() {
     const viewportCenter = slider.scrollLeft + slider.clientWidth / 2;
@@ -2051,7 +2041,7 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
       const dist = slideCenter - viewportCenter;
       const ratio = Math.max(-1, Math.min(1, dist / (slide.offsetWidth * 0.9)));
       const rotateY = ratio * -32;
-      const scale = 1 - Math.abs(ratio) * 0.35;
+      const scale = 1 - Math.abs(ratio) * 0.22;
       const translateZ = -Math.abs(ratio) * 60;
       const opacity = 1 - Math.abs(ratio) * 0.45;
       slide.style.transform = `rotateY(${rotateY}deg) scale(${scale}) translateZ(${translateZ}px)`;
@@ -2071,74 +2061,26 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
 
   function goToSlide(slide, smooth) {
     const left = slide.offsetLeft - (slider.clientWidth - slide.offsetWidth) / 2;
-    if (smooth) {
-      slider.scrollTo({ left, behavior: 'smooth' });
-    } else {
-      slider.scrollLeft = left;
-    }
-  }
-
-  function findRealSlide(idx) {
-    return slides.find(s => s.dataset.realIndex == idx && s.dataset.clone !== 'true');
-  }
-
-  function handleScrollEnd() {
-    if (jumping) return;
-    const viewportCenter = slider.scrollLeft + slider.clientWidth / 2;
-    let closest = null, closestDist = Infinity;
-    slides.forEach(slide => {
-      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
-      const dist = Math.abs(slideCenter - viewportCenter);
-      if (dist < closestDist) { closestDist = dist; closest = slide; }
-    });
-    // Kalau yang lagi di tengah adalah clone, lompat diam-diam ke slide asli di posisi yg sama
-    // biar scroll tetap bisa lanjut mulus ke arah yang sama (efek infinite loop)
-    if (closest && closest.dataset.clone === 'true') {
-      jumping = true;
-      const realSlide = findRealSlide(closest.dataset.realIndex);
-      if (realSlide) {
-        slider.style.scrollBehavior = 'auto';
-        goToSlide(realSlide, false);
-        requestAnimationFrame(() => {
-          slider.style.scrollBehavior = '';
-          syncDots(applyCoverflow());
-          jumping = false;
-        });
-      } else {
-        jumping = false;
-      }
-    }
+    slider.scrollTo({ left, behavior: smooth ? 'smooth' : 'auto' });
   }
 
   function onScroll() {
     if (!ticking) {
-      requestAnimationFrame(() => { syncDots(applyCoverflow()); });
       ticking = true;
+      requestAnimationFrame(() => syncDots(applyCoverflow()));
     }
-    clearTimeout(scrollEndTimer);
-    scrollEndTimer = setTimeout(handleScrollEnd, 120);
   }
 
   slider.addEventListener('scroll', onScroll, { passive: true });
 
   dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => {
-      const target = findRealSlide(i);
-      if (target) goToSlide(target, true);
-    });
+    dot.addEventListener('click', () => goToSlide(slides[i], true));
   });
 
-  // Posisi awal: slide asli pertama, tapi karena ada clone terakhir di depannya,
-  // preview kiri langsung nampilin produk terakhir sejak awal
-  const initialSlide = findRealSlide(0);
-  slider.style.scrollBehavior = 'auto';
-  goToSlide(initialSlide, false);
-  requestAnimationFrame(() => {
-    slider.style.scrollBehavior = '';
-    syncDots(applyCoverflow());
-  });
-
-  window.addEventListener('resize', () => { applyCoverflow(); });
+  // Render awal: hitung posisi & efek coverflow begitu layout siap.
+  syncDots(applyCoverflow());
+  window.addEventListener('load', () => syncDots(applyCoverflow()), { once: true });
+  window.addEventListener('resize', () => syncDots(applyCoverflow()));
 })();
 </script>
 
