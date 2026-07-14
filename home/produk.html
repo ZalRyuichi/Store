@@ -94,7 +94,7 @@
   .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 8px; }
   .role-card {
     border: 2px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: 18px;
     padding: 16px 14px;
     cursor: pointer;
     transition: all 0.2s;
@@ -2111,7 +2111,6 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     dot.addEventListener('click', () => {
       currentIndex = i;
       goToSlide(slides[i], true);
-      restartAutoSlide();
     });
   });
 
@@ -2120,18 +2119,7 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   window.addEventListener('load', () => syncDots(applyCoverflow()), { once: true });
   window.addEventListener('resize', () => syncDots(applyCoverflow()));
 
-  // ── AUTO-SLIDE tiap 3 detik, tetep bisa di-geser manual ──
-  const AUTO_DELAY = 3000;
-  let autoTimer = null;
-
-  // currentIndex adalah SATU-SATUNYA sumber kebenaran soal "slide keberapa yang aktif"
-  // saat auto-slide jalan. Sebelumnya index dibaca ulang lewat getCurrentIndex() (yang
-  // membaca scrollLeft real-time), padahal saat dipanggil, slide sebelumnya kadang masih
-  // di tengah animasi smooth-scroll — scrollLeft belum settle di posisi final, jadi slide
-  // "terdekat" yang terbaca salah dan card melompat ke pinggir alih-alih pas di tengah.
-  // Dengan nge-track index sendiri (cuma diupdate saat KITA yang gerakin slide, dan
-  // disinkronkan ulang cuma waktu scroll benar-benar berhenti), auto-slide selalu tahu
-  // persis slide mana yang jadi tujuan berikutnya.
+  // currentIndex nge-track slide mana yang lagi aktif/di-tengah, dipakai buat sinkronisasi dots.
   let currentIndex = 0;
   let scrollEndTimer = null;
 
@@ -2148,56 +2136,20 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
   }, { passive: true });
 
-  function autoSlideNext() {
-    currentIndex = (currentIndex + 1) % slides.length;
-    goToSlide(slides[currentIndex], true);
-  }
-
-  function startAutoSlide() {
-    stopAutoSlide();
-    autoTimer = setInterval(autoSlideNext, AUTO_DELAY);
-  }
-
-  function stopAutoSlide() {
-    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
-  }
-
-  function restartAutoSlide() {
-    startAutoSlide();
-  }
-
-  // Kalau user geser manual (sentuh/drag), timer di-reset biar gak nabrak auto-slide,
-  // dan animasi manual yang lagi jalan (dari auto-slide) dibatalkan biar gak rebutan
-  // sama gesture user.
-  let userInteracting = false;
   slider.addEventListener('pointerdown', () => {
-    userInteracting = true;
-    stopAutoSlide();
     if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
   });
   slider.addEventListener('pointerup', () => {
-    userInteracting = false;
     clearTimeout(scrollEndTimer);
-    scrollEndTimer = setTimeout(() => { syncCurrentIndexFromScroll(); restartAutoSlide(); }, 120);
+    scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
   });
   slider.addEventListener('touchstart', () => {
-    userInteracting = true;
-    stopAutoSlide();
     if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
   }, { passive: true });
   slider.addEventListener('touchend', () => {
-    userInteracting = false;
     clearTimeout(scrollEndTimer);
-    scrollEndTimer = setTimeout(() => { syncCurrentIndexFromScroll(); restartAutoSlide(); }, 120);
+    scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
   }, { passive: true });
-
-  // Pause auto-slide kalau tab/halaman gak keliatan biar gak numpuk di background
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stopAutoSlide();
-    else if (!userInteracting) startAutoSlide();
-  });
-
-  startAutoSlide();
 })();
 </script>
 
