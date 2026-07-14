@@ -247,6 +247,24 @@
   .produk3d-viewport {
     perspective: 1200px;
   }
+  .list-produk-heading {
+    max-width: 900px;
+    margin: 16px auto 0;
+    padding: 0 20px;
+    text-align: left;
+  }
+  .list-produk-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .list-produk-title i { color: #F97316; font-size: 0.72em; }
+
   .produk-slider {
     display: flex;
     align-items: flex-start;
@@ -287,11 +305,11 @@
   }
   .produk-dot {
     width: 6px; height: 6px; border-radius: 50%;
-    background: var(--border);
+    background: rgba(255,255,255,0.4);
     transition: .25s;
     cursor: pointer;
   }
-  .produk-dot.active { width: 18px; border-radius: 4px; background: var(--blue); }
+  .produk-dot.active { width: 18px; border-radius: 4px; background: #FFFFFF; }
   .apk-banner-icon {
     width: 38px; height: 38px; border-radius: 10px;
     background: rgba(255,255,255,0.18);
@@ -813,6 +831,10 @@
 
   <video class="produk-video-banner" src="../video/produk.mp4" autoplay muted loop playsinline></video>
 
+  <div class="list-produk-heading">
+    <div class="list-produk-title">List Produk <i class="fa-solid fa-fire"></i></div>
+  </div>
+
   <div class="produk-dots" id="produkDots">
     <div class="produk-dot active" data-i="0"></div>
     <div class="produk-dot" data-i="1"></div>
@@ -860,10 +882,10 @@
         </div>
       </div>
       <div class="apk-banner-pills">
-        <div class="apk-banner-pill"><i class="fa-solid fa-binoculars"></i> Sadap Jarak Jauh</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-user"></i>Member 1 Bulan</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-infinity"></i>Member Permanen</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-shop"></i>Reseller</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-eye"></i> Fitur Spyware</div>
+<div class="apk-banner-pill"><i class="fa-solid fa-gamepad"></i> Fitur Kontrol</div>
+<div class="apk-banner-pill"><i class="fa-solid fa-folder"></i> Fitur Management</div>
+<div class="apk-banner-pill"><i class="fa-solid fa-broadcast"></i> Fitur Live</div>
       </div>
     </div>
     </div>
@@ -982,7 +1004,7 @@
         <div class="apk-banner-icon"><i class="fa-brands fa-whatsapp"></i></div>
         <div>
           <div class="apk-banner-label">Sewa Bot WhatsApp</div>
-          <div class="apk-banner-sub">Bot Pribadi · 1 Nomor / User</div>
+          <div class="apk-banner-sub">Bot Buat Sticker Dan Bug Nomer Atau Group</div>
         </div>
       </div>
       <div class="apk-banner-pills">
@@ -1383,8 +1405,7 @@ async function doBeliSaldo() {
       if (role.app === 'sewabot') {
         toast('Sewa Bot Berhasil Diaktifkan! Yuk Hubungkan Nomor WhatsApp Kamu.', 'success');
         refreshSewaBotFloating();
-      } else {
-        // Notif telegram sudah dikirim dari backend /api/buy/saldo — tidak perlu call lagi
+      } else {        
         toast('Pembelian Berhasil!', 'success');
         setTimeout(() => openAccountForm(data.transaction), 500);
       }
@@ -1452,10 +1473,8 @@ async function doBeliPtero() {
       if (qData.ok) {
         const _pteroProduct  = data.product;
         const _pteroProduct2 = selectedProduct;
-        onPaymentCompleted = async (_tx) => {
-          // Setelah bayar QRIS → saldo sudah ter-topup → langsung buka form username panel
+        onPaymentCompleted = async (_tx) => {  
           closeModal();
-          // Refresh saldo supaya data.balance akurat
           const balRes = await fetch(apiUrl('/api/balance'), { headers: H });
           const balData = await balRes.json();
           const newBalance = balData.ok ? balData.balance : (_pteroProduct.price);
@@ -1479,7 +1498,7 @@ async function sendTelegramNotif(role, tx, method) {
         product_name: role.name,
         product_app: role.app || (role.ptero ? 'ptero' : ''),
         price: role.price,
-        method: method, // 'saldo' atau 'qris'
+        method: method,
         order_id: tx?.order_id || '—',
         username: localStorage.getItem('pg_user') || '—',
       })
@@ -1865,12 +1884,10 @@ async function openBugOrder() {
   _bugSenderOnline = false;
   bugSetStep(1);
 
-  // Reset status sender step1
   const sBox = document.getElementById('bug-sender-status-step1');
   sBox.className = 'bug-sender-status';
   sBox.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Mengecek ketersediaan sender...';
 
-  // Disable tombol bayar dulu selama pengecekan
   const btnSaldo = document.querySelector('#bug-step1 .pay-method-btn.saldo');
   const btnQris  = document.querySelector('#bug-step1 .pay-method-btn.qris');
   if (btnSaldo) btnSaldo.disabled = true;
@@ -1879,13 +1896,11 @@ async function openBugOrder() {
   document.getElementById('bug-saldo-preview').textContent = 'Saldo: Memuat...';
   document.getElementById('bug-overlay').classList.add('active');
 
-  // Fetch saldo & cek sender paralel
   const [saldoRes, senderRes] = await Promise.allSettled([
     fetch(apiUrl('/api/user/saldo'), { headers: H }).then(r => r.json()),
     fetch(apiUrl('/api/bug/sender/status'), { headers: H }).then(r => r.json()),
   ]);
 
-  // Update saldo
   if (saldoRes.status === 'fulfilled') {
     currentSaldoVal = saldoRes.value.saldo || 0;
     document.getElementById('bug-saldo-preview').textContent = 'Saldo: ' + rupiah(currentSaldoVal);
@@ -1893,7 +1908,6 @@ async function openBugOrder() {
     document.getElementById('bug-saldo-preview').textContent = 'Saldo: Gagal Memuat';
   }
 
-  // Update status sender
   if (senderRes.status === 'fulfilled' && senderRes.value.online) {
     _bugSenderOnline = true;
     sBox.className = 'bug-sender-status online';
@@ -1903,8 +1917,7 @@ async function openBugOrder() {
   } else {
     _bugSenderOnline = false;
     sBox.className = 'bug-sender-status offline';
-    sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Sender Offline, Order Tidak Tersedia Saat Ini';
-    // Tombol tetap disabled
+    sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Sender Offline, Order Tidak Tersedia Saat Ini';    
   }
 }
 
@@ -2026,11 +2039,7 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   const slides = Array.from(slider.querySelectorAll('.produk-slide'));
   if (!slides.length) return;
   slides.forEach((s, i) => { s.dataset.realIndex = i; });
-
-  // Gak pake clone/infinite-loop lagi — itu sumber bug reset pas scroll cepat/banyak,
-  // soalnya manipulasi scrollLeft manual gampang bentrok sama momentum scroll browser.
-  // scroll-snap-align: center (di CSS) sudah cukup buat "menepatkan slide yang digestur
-  // ke tengah-tengah" secara native, jadi gak perlu di-reimplement di JS.
+  
   let ticking = false;
 
   function applyCoverflow() {
@@ -2059,12 +2068,6 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
   }
 
-  // Animasi scroll manual (bukan native scrollTo behavior:'smooth') karena native smooth-scroll
-  // berbarengan dengan scroll-snap-type:x mandatory saling "tarik-menarik": browser lagi animasi
-  // ke target kita, tapi scroll-snap juga nyoba narik ke titik snap terdekat di tengah jalan —
-  // hasilnya gerakan gak mulus / overshoot / berhenti sebelum bener-bener center.
-  // Dengan animasi manual pakai rAF + easing, kita yang kontrol penuh titik berhentinya persis
-  // di scrollLeft yang kita tentukan, snap browser gak ikut campur.
   let scrollAnim = null;
   function animateScrollTo(targetLeft, duration) {
     if (scrollAnim) cancelAnimationFrame(scrollAnim);
@@ -2072,7 +2075,6 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     const distance = targetLeft - startLeft;
     if (Math.abs(distance) < 1) { slider.scrollLeft = targetLeft; return; }
     const startTime = performance.now();
-    // ease-in-out cubic: mulai & berhenti halus, gak ada sentakan
     const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     function step(now) {
       const elapsed = now - startTime;
@@ -2081,7 +2083,7 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
       if (t < 1) {
         scrollAnim = requestAnimationFrame(step);
       } else {
-        slider.scrollLeft = targetLeft; // pastikan presisi di titik akhir, gak kelebihan/kekurangan
+        slider.scrollLeft = targetLeft;
         scrollAnim = null;
       }
     }
@@ -2113,13 +2115,11 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
       goToSlide(slides[i], true);
     });
   });
-
-  // Render awal: hitung posisi & efek coverflow begitu layout siap.
+  
   syncDots(applyCoverflow());
   window.addEventListener('load', () => syncDots(applyCoverflow()), { once: true });
   window.addEventListener('resize', () => syncDots(applyCoverflow()));
 
-  // currentIndex nge-track slide mana yang lagi aktif/di-tengah, dipakai buat sinkronisasi dots.
   let currentIndex = 0;
   let scrollEndTimer = null;
 
@@ -2129,8 +2129,6 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     syncDots(centerSlide);
   }
 
-  // Update currentIndex hanya setelah scroll benar-benar diam (debounce ~120ms),
-  // supaya nggak kebaca di tengah-tengah momentum/animasi.
   slider.addEventListener('scroll', () => {
     clearTimeout(scrollEndTimer);
     scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
