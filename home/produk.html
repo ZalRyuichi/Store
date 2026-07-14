@@ -91,7 +91,7 @@
   }
   .nav-icon-btn:hover { background: var(--blue-l); color: var(--blue); }
 
-  .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 8px; }
+  .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 8px; width: calc(100% - 3px); margin-left: auto; margin-right: auto; }
   .role-card {
     border: 2px solid var(--border);
     border-radius: 18px;
@@ -186,6 +186,9 @@
     border-radius: 16px;
     overflow: hidden;
     margin-bottom: 14px;
+    margin-left: auto;
+    margin-right: auto;
+    width: calc(100% - 3px);
     display: flex;
     flex-direction: column;
   }
