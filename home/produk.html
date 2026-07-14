@@ -180,6 +180,31 @@
   .quick-icon.cyan   { background: linear-gradient(135deg, #06B6D4, #0891B2); }
   .quick-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--dark); }
 
+  /* WRAPPER: foto banner nyatu dengan banner desain (satu blok, gak kepisah) */
+  .apk-banner-wrap {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .apk-banner-photo {
+    position: relative;
+    width: 100%; height: 108px;
+    background-size: cover;
+    background-position: center;
+  }
+  .apk-banner-photo::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 45%, var(--fade-color) 100%);
+  }
+  .apk-banner-wrap .apk-banner {
+    border-radius: 0;
+    margin-bottom: 0;
+  }
+  .apk-banner-wrap.xyz-wrap .apk-banner-photo { --fade-color: #7F1D1D; }
+  .apk-banner-wrap.ryuichi-wrap .apk-banner-photo { --fade-color: #0B1220; }
+
   .apk-banner {
     border-radius: 16px;
     padding: 18px 20px;
@@ -210,7 +235,7 @@
   }
   .apk-banner-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; position: relative; z-index: 1; }
 
-  /* Icon 3D dekoratif dengan efek naik-turun */
+  /* Icon 3D dekoratif silver terang, dengan efek naik-turun */
   @keyframes apkIconFloat {
     0%, 100% { transform: translateY(0) rotate(var(--deco-rot, -6deg)); }
     50%      { transform: translateY(-10px) rotate(calc(var(--deco-rot, -6deg) * -1)); }
@@ -219,10 +244,11 @@
     position: absolute;
     z-index: 0;
     pointer-events: none;
-    color: rgba(255,255,255,0.22);
+    color: rgba(226,232,240,0.5);
     text-shadow:
-      1px 2px 0 rgba(0,0,0,0.18),
-      3px 5px 8px rgba(0,0,0,0.28);
+      1px 2px 0 rgba(0,0,0,0.22),
+      3px 6px 10px rgba(0,0,0,0.32),
+      0 0 14px rgba(226,232,240,0.25);
     animation: apkIconFloat 3.2s ease-in-out infinite;
   }
   .apk-banner-deco.d1 { top: 6px;   right: 18px; font-size: 56px; --deco-rot: -8deg; animation-delay: 0s; }
@@ -758,7 +784,9 @@
   </div>
 
   <div class="card" id="xyz" style="margin-top:14px">
-    <div class="apk-banner xyz">
+    <div class="apk-banner-wrap xyz-wrap">
+      <div class="apk-banner-photo" style="background-image:url('../image/bproduk_xyz.jpg')"></div>
+      <div class="apk-banner xyz">
       <i class="fa-solid fa-mobile-screen-button apk-banner-deco d1"></i>
       <i class="fa-solid fa-bolt apk-banner-deco d2"></i>
       <i class="fa-solid fa-shield-halved apk-banner-deco d3"></i>
@@ -775,6 +803,7 @@
         <div class="apk-banner-pill"><i class="fa-solid fa-infinity"></i>Member Permanen</div>
         <div class="apk-banner-pill"><i class="fa-solid fa-shop"></i>Reseller</div>
       </div>
+    </div>
     </div>
 
     <div class="role-grid">
@@ -800,7 +829,12 @@
   </div>
 
   <div class="card" id="ryuichi" style="margin-top:14px">
-    <div class="apk-banner ryuichi">
+    <div class="apk-banner-wrap ryuichi-wrap">
+      <div class="apk-banner-photo" style="background-image:url('../image/bproduk_ryuichi.jpg')"></div>
+      <div class="apk-banner ryuichi">
+      <i class="fa-solid fa-bag-shopping apk-banner-deco d1"></i>
+      <i class="fa-solid fa-crown apk-banner-deco d2"></i>
+      <i class="fa-solid fa-star apk-banner-deco d3"></i>
       <div class="apk-banner-top">
         <div class="apk-banner-icon"><i class="fa-solid fa-bag-shopping"></i></div>
         <div>
@@ -815,6 +849,7 @@
         <div class="apk-banner-pill"><i class="fa-solid fa-shop"></i>Reseller</div>
         <div class="apk-banner-pill"><i class="fa-solid fa-crown"></i>Admin</div>
       </div>
+    </div>
     </div>
 
     <div class="role-grid">
