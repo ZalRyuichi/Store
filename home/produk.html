@@ -251,6 +251,7 @@
     display: flex;
     align-items: flex-start;
     overflow-x: auto;
+    overflow-anchor: none;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -2059,9 +2060,43 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
   }
 
+  // Animasi scroll manual (bukan native scrollTo behavior:'smooth') karena native smooth-scroll
+  // berbarengan dengan scroll-snap-type:x mandatory saling "tarik-menarik": browser lagi animasi
+  // ke target kita, tapi scroll-snap juga nyoba narik ke titik snap terdekat di tengah jalan —
+  // hasilnya gerakan gak mulus / overshoot / berhenti sebelum bener-bener center.
+  // Dengan animasi manual pakai rAF + easing, kita yang kontrol penuh titik berhentinya persis
+  // di scrollLeft yang kita tentukan, snap browser gak ikut campur.
+  let scrollAnim = null;
+  function animateScrollTo(targetLeft, duration) {
+    if (scrollAnim) cancelAnimationFrame(scrollAnim);
+    const startLeft = slider.scrollLeft;
+    const distance = targetLeft - startLeft;
+    if (Math.abs(distance) < 1) { slider.scrollLeft = targetLeft; return; }
+    const startTime = performance.now();
+    // ease-in-out cubic: mulai & berhenti halus, gak ada sentakan
+    const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    function step(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(1, elapsed / duration);
+      slider.scrollLeft = startLeft + distance * ease(t);
+      if (t < 1) {
+        scrollAnim = requestAnimationFrame(step);
+      } else {
+        slider.scrollLeft = targetLeft; // pastikan presisi di titik akhir, gak kelebihan/kekurangan
+        scrollAnim = null;
+      }
+    }
+    scrollAnim = requestAnimationFrame(step);
+  }
+
   function goToSlide(slide, smooth) {
     const target = slide.offsetLeft + slide.offsetWidth / 2 - slider.clientWidth / 2;
-    slider.scrollTo({ left: target, behavior: smooth ? 'smooth' : 'auto' });
+    if (smooth) {
+      animateScrollTo(target, 450);
+    } else {
+      if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
+      slider.scrollLeft = target;
+    }
   }
 
   function onScroll() {
@@ -2132,15 +2167,25 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     startAutoSlide();
   }
 
-  // Kalau user geser manual (sentuh/drag), timer di-reset biar gak nabrak auto-slide
+  // Kalau user geser manual (sentuh/drag), timer di-reset biar gak nabrak auto-slide,
+  // dan animasi manual yang lagi jalan (dari auto-slide) dibatalkan biar gak rebutan
+  // sama gesture user.
   let userInteracting = false;
-  slider.addEventListener('pointerdown', () => { userInteracting = true; stopAutoSlide(); });
+  slider.addEventListener('pointerdown', () => {
+    userInteracting = true;
+    stopAutoSlide();
+    if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
+  });
   slider.addEventListener('pointerup', () => {
     userInteracting = false;
     clearTimeout(scrollEndTimer);
     scrollEndTimer = setTimeout(() => { syncCurrentIndexFromScroll(); restartAutoSlide(); }, 120);
   });
-  slider.addEventListener('touchstart', () => { userInteracting = true; stopAutoSlide(); }, { passive: true });
+  slider.addEventListener('touchstart', () => {
+    userInteracting = true;
+    stopAutoSlide();
+    if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
+  }, { passive: true });
   slider.addEventListener('touchend', () => {
     userInteracting = false;
     clearTimeout(scrollEndTimer);
