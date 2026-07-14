@@ -220,24 +220,11 @@
     margin-bottom: 14px;
     position: relative;
     overflow: hidden;
-  }
-  .apk-banner::before {
-    content: '';
-    position: absolute; top: -30px; right: -30px;
-    width: 100px; height: 100px; border-radius: 50%;
-    background: rgba(255,255,255,0.12);
-  }
-  .apk-banner::after {
-    content: '';
-    position: absolute; bottom: -20px; left: 20px;
-    width: 70px; height: 70px; border-radius: 50%;
-    background: rgba(255,255,255,0.07);
+    box-shadow: none;
   }
   .apk-banner.xyz    {
     background: linear-gradient(135deg, #DC2626 0%, #7F1D1D 100%);
   }
-  .apk-banner.xyz::before { background: rgba(255,255,255,0.10); }
-  .apk-banner.xyz::after  { background: rgba(0,0,0,0.12); }
   .apk-banner.ryuichi {
     background: linear-gradient(135deg, #0B1220 0%, #1E40AF 55%, #94A3B8 100%);
   }
