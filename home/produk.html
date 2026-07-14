@@ -2060,7 +2060,8 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   }
 
   function goToSlide(slide, smooth) {
-    slide.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', inline: 'center', block: 'nearest' });
+    const target = slide.offsetLeft + slide.offsetWidth / 2 - slider.clientWidth / 2;
+    slider.scrollTo({ left: target, behavior: smooth ? 'smooth' : 'auto' });
   }
 
   function onScroll() {
@@ -2073,7 +2074,11 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   slider.addEventListener('scroll', onScroll, { passive: true });
 
   dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => { goToSlide(slides[i], true); restartAutoSlide(); });
+    dot.addEventListener('click', () => {
+      currentIndex = i;
+      goToSlide(slides[i], true);
+      restartAutoSlide();
+    });
   });
 
   // Render awal: hitung posisi & efek coverflow begitu layout siap.
@@ -2085,14 +2090,33 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   const AUTO_DELAY = 3000;
   let autoTimer = null;
 
-  function getCurrentIndex() {
+  // currentIndex adalah SATU-SATUNYA sumber kebenaran soal "slide keberapa yang aktif"
+  // saat auto-slide jalan. Sebelumnya index dibaca ulang lewat getCurrentIndex() (yang
+  // membaca scrollLeft real-time), padahal saat dipanggil, slide sebelumnya kadang masih
+  // di tengah animasi smooth-scroll — scrollLeft belum settle di posisi final, jadi slide
+  // "terdekat" yang terbaca salah dan card melompat ke pinggir alih-alih pas di tengah.
+  // Dengan nge-track index sendiri (cuma diupdate saat KITA yang gerakin slide, dan
+  // disinkronkan ulang cuma waktu scroll benar-benar berhenti), auto-slide selalu tahu
+  // persis slide mana yang jadi tujuan berikutnya.
+  let currentIndex = 0;
+  let scrollEndTimer = null;
+
+  function syncCurrentIndexFromScroll() {
     const centerSlide = applyCoverflow();
-    return centerSlide ? parseInt(centerSlide.dataset.realIndex, 10) : 0;
+    if (centerSlide) currentIndex = parseInt(centerSlide.dataset.realIndex, 10);
+    syncDots(centerSlide);
   }
 
+  // Update currentIndex hanya setelah scroll benar-benar diam (debounce ~120ms),
+  // supaya nggak kebaca di tengah-tengah momentum/animasi.
+  slider.addEventListener('scroll', () => {
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
+  }, { passive: true });
+
   function autoSlideNext() {
-    const nextIndex = (getCurrentIndex() + 1) % slides.length;
-    goToSlide(slides[nextIndex], true);
+    currentIndex = (currentIndex + 1) % slides.length;
+    goToSlide(slides[currentIndex], true);
   }
 
   function startAutoSlide() {
@@ -2111,9 +2135,17 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   // Kalau user geser manual (sentuh/drag), timer di-reset biar gak nabrak auto-slide
   let userInteracting = false;
   slider.addEventListener('pointerdown', () => { userInteracting = true; stopAutoSlide(); });
-  slider.addEventListener('pointerup', () => { userInteracting = false; restartAutoSlide(); });
+  slider.addEventListener('pointerup', () => {
+    userInteracting = false;
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(() => { syncCurrentIndexFromScroll(); restartAutoSlide(); }, 120);
+  });
   slider.addEventListener('touchstart', () => { userInteracting = true; stopAutoSlide(); }, { passive: true });
-  slider.addEventListener('touchend', () => { userInteracting = false; restartAutoSlide(); }, { passive: true });
+  slider.addEventListener('touchend', () => {
+    userInteracting = false;
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(() => { syncCurrentIndexFromScroll(); restartAutoSlide(); }, 120);
+  }, { passive: true });
 
   // Pause auto-slide kalau tab/halaman gak keliatan biar gak numpuk di background
   document.addEventListener('visibilitychange', () => {
