@@ -254,12 +254,12 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding: 0 6% 4px;
-    gap: 2.5%;
+    padding: 0 3vw 4px;
+    gap: 2vw;
   }
   .produk-slider::-webkit-scrollbar { display: none; }
   .produk-slide {
-    flex: 0 0 88%;
+    flex: 0 0 94vw;
     scroll-snap-align: center;
     scroll-snap-stop: always;
     transform-origin: center center;
@@ -2060,8 +2060,7 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   }
 
   function goToSlide(slide, smooth) {
-    const left = slide.offsetLeft - (slider.clientWidth - slide.offsetWidth) / 2;
-    slider.scrollTo({ left, behavior: smooth ? 'smooth' : 'auto' });
+    slide.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', inline: 'center', block: 'nearest' });
   }
 
   function onScroll() {
@@ -2074,13 +2073,55 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   slider.addEventListener('scroll', onScroll, { passive: true });
 
   dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => goToSlide(slides[i], true));
+    dot.addEventListener('click', () => { goToSlide(slides[i], true); restartAutoSlide(); });
   });
 
   // Render awal: hitung posisi & efek coverflow begitu layout siap.
   syncDots(applyCoverflow());
   window.addEventListener('load', () => syncDots(applyCoverflow()), { once: true });
   window.addEventListener('resize', () => syncDots(applyCoverflow()));
+
+  // ── AUTO-SLIDE tiap 3 detik, tetep bisa di-geser manual ──
+  const AUTO_DELAY = 3000;
+  let autoTimer = null;
+
+  function getCurrentIndex() {
+    const centerSlide = applyCoverflow();
+    return centerSlide ? parseInt(centerSlide.dataset.realIndex, 10) : 0;
+  }
+
+  function autoSlideNext() {
+    const nextIndex = (getCurrentIndex() + 1) % slides.length;
+    goToSlide(slides[nextIndex], true);
+  }
+
+  function startAutoSlide() {
+    stopAutoSlide();
+    autoTimer = setInterval(autoSlideNext, AUTO_DELAY);
+  }
+
+  function stopAutoSlide() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  }
+
+  function restartAutoSlide() {
+    startAutoSlide();
+  }
+
+  // Kalau user geser manual (sentuh/drag), timer di-reset biar gak nabrak auto-slide
+  let userInteracting = false;
+  slider.addEventListener('pointerdown', () => { userInteracting = true; stopAutoSlide(); });
+  slider.addEventListener('pointerup', () => { userInteracting = false; restartAutoSlide(); });
+  slider.addEventListener('touchstart', () => { userInteracting = true; stopAutoSlide(); }, { passive: true });
+  slider.addEventListener('touchend', () => { userInteracting = false; restartAutoSlide(); }, { passive: true });
+
+  // Pause auto-slide kalau tab/halaman gak keliatan biar gak numpuk di background
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAutoSlide();
+    else if (!userInteracting) startAutoSlide();
+  });
+
+  startAutoSlide();
 })();
 </script>
 
