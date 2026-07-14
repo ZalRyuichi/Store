@@ -700,6 +700,62 @@
     box-shadow: none !important;
     animation: none !important;
   }
+
+  /* NOTIF OVERLAY: style seperti login.html / topup.html (dark glass card) */
+  .notif-overlay {
+    background: rgba(3,5,10,0.72) !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+  }
+  .notif-box {
+    background: rgba(15, 20, 30, 0.9) !important;
+    border: 1px solid rgba(96, 165, 250, 0.22) !important;
+    border-radius: 20px !important;
+    padding: 32px 26px 26px !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+  }
+  .notif-icon-wrap {
+    width: 64px !important; height: 64px !important; margin: 0 auto 18px !important;
+    font-size: 26px !important; border-radius: 50% !important;
+    animation: notifIconPop .35s cubic-bezier(.34,1.56,.64,1) .05s both !important;
+  }
+  @keyframes notifIconPop { 0% { transform:scale(0); } 60% { transform:scale(1.15); } 100% { transform:scale(1); } }
+  .notif-icon-wrap i { color: inherit !important; }
+  .notif-icon-wrap.success { background: rgba(52,211,153,.1) !important; border: 1px solid rgba(52,211,153,.25); color: #34d399; box-shadow: 0 0 24px rgba(52,211,153,.15); }
+  .notif-icon-wrap.error   { background: rgba(248,113,113,.1) !important; border: 1px solid rgba(248,113,113,.25); color: #f87171; box-shadow: 0 0 24px rgba(248,113,113,.15); }
+  .notif-icon-wrap.info    { background: rgba(37,99,235,.1) !important; border: 1px solid rgba(37,99,235,.3); color: #60a5fa; box-shadow: 0 0 24px rgba(37,99,235,.15); }
+  .notif-icon-wrap.warning { background: rgba(245,158,11,.1) !important; border: 1px solid rgba(245,158,11,.3); color: #fbbf24; box-shadow: 0 0 24px rgba(245,158,11,.15); }
+  .notif-title {
+    font-family: 'Orbitron', 'Inter', sans-serif !important;
+    font-size: 17px !important; font-weight: 700 !important; letter-spacing: .6px;
+    color: #f8fafc !important; margin-bottom: 8px !important;
+  }
+  .notif-desc {
+    font-family: 'Share Tech Mono', 'Inter', monospace !important;
+    font-size: 12.5px !important; line-height: 1.6 !important; color: #8ea3c2 !important;
+    letter-spacing: .2px !important; margin-bottom: 24px !important;
+  }
+  .notif-btn-ok {
+    width: 100%; padding: 13px !important; border-radius: 12px !important;
+    font-size: 13.5px !important; font-weight: 600 !important;
+    letter-spacing: 1px; text-transform: uppercase;
+    display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important;
+    margin-top: 10px !important;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  .notif-btn-ok:hover { transform: translateY(-2px); filter: brightness(1.08); }
+  .notif-btn-ok:active { transform: translateY(0); }
+  .notif-btn-ok.success { background: linear-gradient(135deg, #10b981, #047857) !important; }
+  .notif-btn-ok.error   { background: linear-gradient(135deg, #ef4444, #b91c1c) !important; }
+  .notif-btn-ok.info    { background: linear-gradient(135deg, #2563eb, #1e40af) !important; }
+  .notif-btn-ok.warning { background: linear-gradient(135deg, #f59e0b, #b45309) !important; }
+
+  /* QR WRAP: kasih jarak antara foto QR dan border biar QRIS keliatan jelas, background putih seperti topup.html */
+  .qr-wrap { padding: 5px !important; box-sizing: border-box !important; background: #ffffff !important; }
+  .qr-wrap #qr-canvas { display: flex; justify-content: center; }
+  .qr-wrap #qr-canvas img, .qr-wrap #qr-canvas canvas { max-width: 100% !important; height: auto !important; }
 </style>
 </head>
 <body>
@@ -1197,7 +1253,7 @@
     <div class="notif-icon-wrap" id="notif-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
     <div class="notif-title" id="notif-title"></div>
     <div class="notif-desc" id="notif-desc"></div>
-    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()">OK</button>
+    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()"><i class="fa-solid fa-check"></i> Mengerti</button>
   </div>
 </div>
 
