@@ -236,6 +236,40 @@
   svg.apk-banner-deco.d1 { width: 56px; height: 56px; }
   svg.apk-banner-deco.d2 { width: 32px; height: 32px; }
   svg.apk-banner-deco.d3 { width: 42px; height: 42px; }
+
+  .produk-video-banner {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    display: block;
+    object-fit: cover;
+  }
+  .produk-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-top: 14px;
+  }
+  .produk-slider::-webkit-scrollbar { display: none; }
+  .produk-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+  }
+  .produk-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .produk-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--border);
+    transition: .25s;
+    cursor: pointer;
+  }
+  .produk-dot.active { width: 18px; border-radius: 4px; background: var(--blue); }
   .apk-banner-icon {
     width: 38px; height: 38px; border-radius: 10px;
     background: rgba(255,255,255,0.18);
@@ -755,16 +789,11 @@
 
 <main>
 
-  <div class="saldo-card">
-    <div class="saldo-bottom-row-topup">
-      <div class="saldo-mid">
-        <div class="saldo-label">Saldo Kamu</div>
-        <div class="saldo-amount" id="saldo-display">Rp 0</div>
-      </div>
-      <div class="saldo-chip"><i class="fa-solid fa-circle-check"></i> Verified</div>
-    </div>
-  </div>
+  <video class="produk-video-banner" src="video/produk.mp4" autoplay muted loop playsinline></video>
 
+  <div class="produk-slider" id="produkSlider">
+
+  <div class="produk-slide">
   <div class="card" id="xyz" style="margin-top:14px">
     <div class="apk-banner-wrap xyz-wrap">
       <div class="apk-banner-photo" style="background-image:url('../image/bproduk_xyz.jpg')"></div>
@@ -830,7 +859,9 @@
       </div>
     </div>
   </div>
+  </div>
 
+  <div class="produk-slide">
   <div class="card" id="ryuichi" style="margin-top:14px">
     <div class="apk-banner-wrap ryuichi-wrap">
       <div class="apk-banner-photo" style="background-image:url('../image/bproduk_ryuichi.jpg')"></div>
@@ -900,7 +931,9 @@
       </div>
     </div>
   </div>
+  </div>
 
+  <div class="produk-slide">
   <div class="card" id="wa" style="margin-top:14px">
     <div class="apk-banner-wrap wa-wrap">
       <div class="apk-banner-photo" style="background-image:url('../image/bproduk_sewabot.jpg')"></div>
@@ -958,7 +991,9 @@
       </div>
     </div>
   </div>
+  </div>
 
+  <div class="produk-slide">
   <!-- ── JASA BUG ──────────────────────────────── -->
   <div class="card" id="jasabug" style="margin-top:14px">
     <div class="apk-banner" style="background:linear-gradient(135deg,#7C3AED 0%,#4F46E5 100%)">
@@ -989,7 +1024,16 @@
       </div>
     </div>
   </div>
+  </div>
 
+  </div>
+
+  <div class="produk-dots" id="produkDots">
+    <div class="produk-dot active" data-i="0"></div>
+    <div class="produk-dot" data-i="1"></div>
+    <div class="produk-dot" data-i="2"></div>
+    <div class="produk-dot" data-i="3"></div>
+  </div>
 
 </main>
 
@@ -1947,6 +1991,52 @@ async function bugExecute() {
 
 let saldoText = 'Rp 0';
 const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
+</script>
+
+<script>
+(function(){
+  const slider = document.getElementById('produkSlider');
+  const dots = document.querySelectorAll('#produkDots .produk-dot');
+  if (!slider || !dots.length) return;
+
+  let current = 0;
+  let autoTimer = null;
+  const total = dots.length;
+
+  function goTo(i) {
+    current = (i + total) % total;
+    slider.scrollTo({ left: slider.clientWidth * current, behavior: 'smooth' });
+    dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+  }
+
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(() => goTo(current + 1), 3000);
+  }
+  function stopAuto() {
+    if (autoTimer) clearInterval(autoTimer);
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      goTo(parseInt(dot.dataset.i, 10));
+      startAuto();
+    });
+  });
+
+  let scrollTimeout = null;
+  slider.addEventListener('scroll', () => {
+    stopAuto();
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      current = Math.round(slider.scrollLeft / slider.clientWidth);
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+      startAuto();
+    }, 150);
+  });
+
+  startAuto();
+})();
 </script>
 
 </body>
