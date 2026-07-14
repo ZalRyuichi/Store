@@ -255,16 +255,27 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding: 0 6% 4px;
-    gap: 4%;
+    padding: 0 4% 4px;
+    gap: 2%;
   }
   .produk-slider::-webkit-scrollbar { display: none; }
   .produk-slide {
-    flex: 0 0 88%;
+    flex: 0 0 92%;
     scroll-snap-align: center;
     transform-origin: center center;
     transition: transform 0.12s linear, opacity 0.12s linear;
     will-change: transform, opacity;
+  }
+
+  /* Card produk di dalam slider dibuat lebar penuh, tanpa border/padding pembatas */
+  .produk-slide .card {
+    border: none !important;
+    padding: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
   }
   .produk-dots {
     display: flex;
@@ -2007,61 +2018,127 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
 <script>
 (function(){
   const slider = document.getElementById('produkSlider');
-  const slides = Array.from(slider ? slider.querySelectorAll('.produk-slide') : []);
-  const dots = document.querySelectorAll('#produkDots .produk-dot');
-  if (!slider || !slides.length) return;
+  if (!slider) return;
+  const dots = Array.from(document.querySelectorAll('#produkDots .produk-dot'));
 
-  const total = slides.length;
-  let current = 0;
+  const originalSlides = Array.from(slider.querySelectorAll('.produk-slide'));
+  const totalReal = originalSlides.length;
+  if (!totalReal) return;
+
+  originalSlides.forEach((s, i) => { s.dataset.realIndex = i; });
+
+  // Clone slide pertama & terakhir biar carousel "muter" (infinite loop):
+  // di kiri card pertama bakal nongol preview card terakhir, begitu juga sebaliknya
+  const firstClone = originalSlides[0].cloneNode(true);
+  const lastClone  = originalSlides[totalReal - 1].cloneNode(true);
+  firstClone.dataset.clone = 'true';
+  lastClone.dataset.clone = 'true';
+  firstClone.setAttribute('aria-hidden', 'true');
+  lastClone.setAttribute('aria-hidden', 'true');
+  slider.appendChild(firstClone);
+  slider.insertBefore(lastClone, originalSlides[0]);
+
+  const slides = Array.from(slider.querySelectorAll('.produk-slide'));
   let ticking = false;
+  let jumping = false;
+  let scrollEndTimer = null;
 
-  // Hitung transform 3D tiap slide berdasarkan posisi scroll saat ini (real-time, full manual)
   function applyCoverflow() {
     const viewportCenter = slider.scrollLeft + slider.clientWidth / 2;
+    let closest = null, closestDist = Infinity;
     slides.forEach(slide => {
       const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
       const dist = slideCenter - viewportCenter;
       const ratio = Math.max(-1, Math.min(1, dist / (slide.offsetWidth * 0.9)));
-      const rotateY = ratio * -30;
-      const scale = 1 - Math.abs(ratio) * 0.15;
+      const rotateY = ratio * -32;
+      const scale = 1 - Math.abs(ratio) * 0.35;
       const translateZ = -Math.abs(ratio) * 60;
       const opacity = 1 - Math.abs(ratio) * 0.45;
       slide.style.transform = `rotateY(${rotateY}deg) scale(${scale}) translateZ(${translateZ}px)`;
       slide.style.opacity = opacity;
       slide.style.zIndex = Math.round((1 - Math.abs(ratio)) * 10);
+      if (Math.abs(dist) < closestDist) { closestDist = Math.abs(dist); closest = slide; }
     });
     ticking = false;
+    return closest;
+  }
+
+  function syncDots(centerSlide) {
+    if (!centerSlide) return;
+    const idx = parseInt(centerSlide.dataset.realIndex, 10);
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  function goToSlide(slide, smooth) {
+    const left = slide.offsetLeft - (slider.clientWidth - slide.offsetWidth) / 2;
+    if (smooth) {
+      slider.scrollTo({ left, behavior: 'smooth' });
+    } else {
+      slider.scrollLeft = left;
+    }
+  }
+
+  function findRealSlide(idx) {
+    return slides.find(s => s.dataset.realIndex == idx && s.dataset.clone !== 'true');
+  }
+
+  function handleScrollEnd() {
+    if (jumping) return;
+    const viewportCenter = slider.scrollLeft + slider.clientWidth / 2;
+    let closest = null, closestDist = Infinity;
+    slides.forEach(slide => {
+      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+      const dist = Math.abs(slideCenter - viewportCenter);
+      if (dist < closestDist) { closestDist = dist; closest = slide; }
+    });
+    // Kalau yang lagi di tengah adalah clone, lompat diam-diam ke slide asli di posisi yg sama
+    // biar scroll tetap bisa lanjut mulus ke arah yang sama (efek infinite loop)
+    if (closest && closest.dataset.clone === 'true') {
+      jumping = true;
+      const realSlide = findRealSlide(closest.dataset.realIndex);
+      if (realSlide) {
+        slider.style.scrollBehavior = 'auto';
+        goToSlide(realSlide, false);
+        requestAnimationFrame(() => {
+          slider.style.scrollBehavior = '';
+          syncDots(applyCoverflow());
+          jumping = false;
+        });
+      } else {
+        jumping = false;
+      }
+    }
   }
 
   function onScroll() {
     if (!ticking) {
-      requestAnimationFrame(applyCoverflow);
+      requestAnimationFrame(() => { syncDots(applyCoverflow()); });
       ticking = true;
     }
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(handleScrollEnd, 120);
   }
 
-  function syncDots() {
-    current = Math.round(slider.scrollLeft / (slider.scrollWidth - slider.clientWidth || 1) * (total - 1));
-    current = Math.max(0, Math.min(total - 1, current));
-    dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
-  }
+  slider.addEventListener('scroll', onScroll, { passive: true });
 
-  // Geser manual: swipe/scroll native (touch & mouse wheel/drag) langsung menggerakkan carousel
-  slider.addEventListener('scroll', () => { onScroll(); syncDots(); }, { passive: true });
-
-  dots.forEach(dot => {
+  dots.forEach((dot, i) => {
     dot.addEventListener('click', () => {
-      const i = parseInt(dot.dataset.i, 10);
-      const target = slides[i];
-      if (target) {
-        slider.scrollTo({ left: target.offsetLeft - (slider.clientWidth - target.offsetWidth) / 2, behavior: 'smooth' });
-      }
+      const target = findRealSlide(i);
+      if (target) goToSlide(target, true);
     });
   });
 
-  applyCoverflow();
-  syncDots();
-  window.addEventListener('resize', applyCoverflow);
+  // Posisi awal: slide asli pertama, tapi karena ada clone terakhir di depannya,
+  // preview kiri langsung nampilin produk terakhir sejak awal
+  const initialSlide = findRealSlide(0);
+  slider.style.scrollBehavior = 'auto';
+  goToSlide(initialSlide, false);
+  requestAnimationFrame(() => {
+    slider.style.scrollBehavior = '';
+    syncDots(applyCoverflow());
+  });
+
+  window.addEventListener('resize', () => { applyCoverflow(); });
 })();
 </script>
 
