@@ -244,18 +244,27 @@
     display: block;
     object-fit: cover;
   }
+  .produk3d-viewport {
+    perspective: 1200px;
+    margin-top: 14px;
+  }
   .produk-slider {
     display: flex;
+    align-items: flex-start;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    margin-top: 14px;
+    padding: 0 6% 4px;
+    gap: 4%;
   }
   .produk-slider::-webkit-scrollbar { display: none; }
   .produk-slide {
-    flex: 0 0 100%;
+    flex: 0 0 88%;
     scroll-snap-align: center;
+    transform-origin: center center;
+    transition: transform 0.12s linear, opacity 0.12s linear;
+    will-change: transform, opacity;
   }
   .produk-dots {
     display: flex;
@@ -789,8 +798,9 @@
 
 <main>
 
-  <video class="produk-video-banner" src="video/produk.mp4" autoplay muted loop playsinline></video>
+  <video class="produk-video-banner" src="../video/produk.mp4" autoplay muted loop playsinline></video>
 
+  <div class="produk3d-viewport">
   <div class="produk-slider" id="produkSlider">
 
   <div class="produk-slide">
@@ -1026,6 +1036,7 @@
   </div>
   </div>
 
+  </div>
   </div>
 
   <div class="produk-dots" id="produkDots">
@@ -1996,46 +2007,61 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
 <script>
 (function(){
   const slider = document.getElementById('produkSlider');
+  const slides = Array.from(slider ? slider.querySelectorAll('.produk-slide') : []);
   const dots = document.querySelectorAll('#produkDots .produk-dot');
-  if (!slider || !dots.length) return;
+  if (!slider || !slides.length) return;
 
+  const total = slides.length;
   let current = 0;
-  let autoTimer = null;
-  const total = dots.length;
+  let ticking = false;
 
-  function goTo(i) {
-    current = (i + total) % total;
-    slider.scrollTo({ left: slider.clientWidth * current, behavior: 'smooth' });
+  // Hitung transform 3D tiap slide berdasarkan posisi scroll saat ini (real-time, full manual)
+  function applyCoverflow() {
+    const viewportCenter = slider.scrollLeft + slider.clientWidth / 2;
+    slides.forEach(slide => {
+      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+      const dist = slideCenter - viewportCenter;
+      const ratio = Math.max(-1, Math.min(1, dist / (slide.offsetWidth * 0.9)));
+      const rotateY = ratio * -30;
+      const scale = 1 - Math.abs(ratio) * 0.15;
+      const translateZ = -Math.abs(ratio) * 60;
+      const opacity = 1 - Math.abs(ratio) * 0.45;
+      slide.style.transform = `rotateY(${rotateY}deg) scale(${scale}) translateZ(${translateZ}px)`;
+      slide.style.opacity = opacity;
+      slide.style.zIndex = Math.round((1 - Math.abs(ratio)) * 10);
+    });
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(applyCoverflow);
+      ticking = true;
+    }
+  }
+
+  function syncDots() {
+    current = Math.round(slider.scrollLeft / (slider.scrollWidth - slider.clientWidth || 1) * (total - 1));
+    current = Math.max(0, Math.min(total - 1, current));
     dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
   }
 
-  function startAuto() {
-    stopAuto();
-    autoTimer = setInterval(() => goTo(current + 1), 3000);
-  }
-  function stopAuto() {
-    if (autoTimer) clearInterval(autoTimer);
-  }
+  // Geser manual: swipe/scroll native (touch & mouse wheel/drag) langsung menggerakkan carousel
+  slider.addEventListener('scroll', () => { onScroll(); syncDots(); }, { passive: true });
 
   dots.forEach(dot => {
     dot.addEventListener('click', () => {
-      goTo(parseInt(dot.dataset.i, 10));
-      startAuto();
+      const i = parseInt(dot.dataset.i, 10);
+      const target = slides[i];
+      if (target) {
+        slider.scrollTo({ left: target.offsetLeft - (slider.clientWidth - target.offsetWidth) / 2, behavior: 'smooth' });
+      }
     });
   });
 
-  let scrollTimeout = null;
-  slider.addEventListener('scroll', () => {
-    stopAuto();
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-      current = Math.round(slider.scrollLeft / slider.clientWidth);
-      dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
-      startAuto();
-    }, 150);
-  });
-
-  startAuto();
+  applyCoverflow();
+  syncDots();
+  window.addEventListener('resize', applyCoverflow);
 })();
 </script>
 
