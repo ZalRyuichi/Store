@@ -5,10 +5,92 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Produk Page</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <link rel="stylesheet" href="shared.css"/>
 <style>
+  @font-face {
+    font-family: 'TitleFont';
+    src: url('/font/title.ttf') format('truetype');
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'LabelFont';
+    src: url('/font/label.ttf') format('truetype');
+    font-display: swap;
+  }
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #1E293B;
+    --slate:  #94A3B8; --dark:   #FFFFFF; --border: #27272A;
+    --white:  #000000; --bg:     #000000;
+    --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
+  }
+  body { background: var(--bg); color: var(--dark); padding-bottom: 24px; }
+
+  /* TOP NAV */
+  .top-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 8px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-brand-logo {
+    width: 58px; height: 58px;
+    object-fit: contain;
+    border-radius: 10px;
+    display: block;
+    flex-shrink: 0;
+  }
+  .nav-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .nav-brand-title {
+    font-family: 'TitleFont', 'Inter', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: 0.3px;
+  }
+  .nav-brand-sub {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.4px;
+    margin-top: 1px;
+  }
+  .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .nav-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--dark);
+    font-size: 22px;
+    width: 46px; height: 46px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .nav-icon-btn:hover { background: var(--blue-l); color: var(--blue); }
+
   .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 8px; }
   .role-card {
     border: 2px solid var(--border);
@@ -344,35 +426,28 @@
 
   /* SIDEBAR */
   .sidebar {
-    position: fixed; left: 0; top: 0; width: 280px; height: 100vh;
-    background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%);
-    border-right: 1px solid var(--border);
-    transform: translateX(-100%); transition: transform 0.3s ease;
+    position: fixed; right: 0; top: 0; width: 280px; height: 100vh;
+    background: linear-gradient(180deg, #0B0E14 0%, #000000 100%);
+    border-left: 1px solid var(--border);
+    transform: translateX(100%); transition: transform 0.3s ease;
     z-index: 99; padding-top: 0; overflow-y: auto;
-    box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+    box-shadow: -4px 0 24px rgba(0,0,0,0.5);
   }
   .sidebar.show { transform: translateX(0); }
 
   .sidebar-header {
     position: sticky; top: 0; z-index: 10;
-    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-    padding: 24px 16px;
-    display: flex; flex-direction: column; align-items: center; gap: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 4px 16px rgba(37,99,235,0.25);
+    width: 100%; height: 150px;
+    padding: 0; margin: 0;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    overflow: hidden;
   }
 
   .sidebar-logo-img {
-    width: 84px; height: 84px;
-    border-radius: 14px;
-    border: 3px solid rgba(255,255,255,0.3);
+    width: 100%; height: 100%;
+    display: block;
     object-fit: cover;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
-
-  .sidebar-app-name {
-    font-size: 14px; font-weight: 700; color: #fff;
-    text-align: center; letter-spacing: 0.5px;
   }
 
   .sidebar-content {
@@ -431,13 +506,13 @@
   }
 
   .sidebar-btn.logout {
-    background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
-    color: var(--red); border: 1px solid #FECACA;
+    background: rgba(239,68,68,0.08);
+    color: var(--red); border: 1px solid rgba(239,68,68,0.3);
     width: 100%; justify-content: center; margin-top: 12px;
   }
 
   .sidebar-btn.logout:hover {
-    background: linear-gradient(135deg, #FECACA 0%, #FCA5A5 100%);
+    background: var(--red);
     color: #fff; box-shadow: 0 4px 12px rgba(239,68,68,0.3);
   }
 
@@ -448,29 +523,48 @@
     z-index: 98;
   }
   .sidebar-overlay.show { opacity: 0.5; pointer-events: all; }
-  .sidebar-toggle {
-    background: none; border: none; cursor: pointer; color: var(--dark);
-    font-size: 16px; padding: 8px; display: flex; align-items: center;
-    transition: all 0.2s; flex-shrink: 0;
-  }
-  .sidebar-toggle:hover { color: var(--blue); }
-  .nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
 
+  /* SALDO CARD BACKGROUND PHOTO */
+  .saldo-card {
+    position: relative;
+    overflow: hidden;
+    background: #000;
+    isolation: isolate;
+    box-shadow: none !important;
+  }
+  .saldo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    background: url('../image/produk.jpg') center/cover no-repeat;
+    border-radius: inherit;
+    z-index: -1;
+  }
+  .saldo-card::after { display: none; content: none; }
+  .saldo-card > * { position: relative; z-index: 1; }
 </style>
 </head>
 <body>
 
 <nav class="top-nav">
-  <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
-    <i class="fa-solid fa-bars"></i>
-  </button>
-  <div class="nav-logo" title="Zal Яyuichi" style="position:absolute; left:50%; transform:translateX(-50%);">
-    <img src="../image/logo.png" alt="Logo" style="width:46px;height:46px;object-fit:contain;display:block;">
+  <div class="nav-brand">
+    <img src="../image/logo.png" alt="Logo" class="nav-brand-logo"/>
+    <div class="nav-brand-text">
+      <div class="nav-brand-title">RYUICHI STORE</div>
+      <div class="nav-brand-sub">#BANYAKDISKONNYA</div>
+    </div>
   </div>
-  <div style="display:flex; align-items:center; gap:8px;">
+  <div class="nav-icons">
     <a id="btn-admin" href="/admin.html" title="Admin" style="display:none; width:32px; height:32px; background:none; border:1px solid #DDD6FE; border-radius:8px; cursor:pointer; color:#6D28D9; align-items:center; justify-content:center; text-decoration:none; transition:all 0.15s;">
       <i class="fa-solid fa-shield-halved" style="font-size:13px;"></i>
     </a>
+    <button class="nav-icon-btn" title="Notifikasi">
+      <i class="fa-regular fa-bell"></i>
+    </button>
+    <button class="nav-icon-btn" title="Menu" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
+      <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
   </div>
 </nav>
 
@@ -479,7 +573,6 @@
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
     <img src="../image/logo_sidebar.jpg" alt="Logo Sidebar" class="sidebar-logo-img"/>
-    <div class="sidebar-app-name">Zal Яyuichi</div>
   </div>
 
   <div class="sidebar-content">
@@ -610,34 +703,6 @@
       </div>
     </div>
   </div>
-
-  <div class="quick-actions">
-    <a class="quick-item" href="topup.html">
-      <div class="quick-icon blue"><i class="fa-solid fa-wallet"></i></div>
-      <div class="quick-label">Top Up</div>
-    </a>
-    <a class="quick-item" href="#ryuichi" onclick="event.preventDefault();document.getElementById('ryuichi').scrollIntoView({behavior:'smooth'})">
-      <div class="quick-icon green"><i class="fa-solid fa-mobile-screen-button"></i></div>
-      <div class="quick-label">Ryuichi</div>
-    </a>
-    <a class="quick-item" href="#xyz" onclick="event.preventDefault();document.getElementById('xyz').scrollIntoView({behavior:'smooth'})">
-      <div class="quick-icon cyan"><i class="fa-solid fa-mobile-screen-button"></i></div>
-      <div class="quick-label">XyzXRat</div>
-    </a>
-    <a class="quick-item" href="#jasabug" onclick="event.preventDefault();document.getElementById('jasabug').scrollIntoView({behavior:'smooth'})">
-      <div class="quick-icon purple"><i class="fa-solid fa-bug"></i></div>
-      <div class="quick-label">JasBug</div>
-    </a>
-    <a class="quick-item" href="#wa" onclick="event.preventDefault();document.getElementById('wa').scrollIntoView({behavior:'smooth'})">
-      <div class="quick-icon green"><i class="fa-brands fa-whatsapp"></i></div>
-      <div class="quick-label">Sewa Bot</div>
-    </a>
-    <a class="quick-item" href="history.html">
-      <div class="quick-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
-      <div class="quick-label">History</div>
-    </a>
-  </div>
-
 
   <div class="card" id="xyz" style="margin-top:14px">
     <div class="apk-banner xyz">
@@ -803,29 +868,6 @@
 
 
 </main>
-
-<nav class="bottom-nav">
-  <a class="bnav-item" href="/dashboard">
-    <i class="fa-solid fa-house"></i>
-    <span class="bnav-label">Home</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/topup.html">
-    <i class="fa-solid fa-wallet"></i>
-    <span class="bnav-label">Top Up</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item active" href="/home/produk.html">
-    <i class="fa-solid fa-bag-shopping"></i>
-    <span class="bnav-label">Produk</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/history.html">
-    <i class="fa-solid fa-clock-rotate-left"></i>
-    <span class="bnav-label">History</span>
-    <div class="bnav-dot"></div>
-  </a>
-</nav>
 
 <div class="detail-overlay" id="detail-overlay" onclick="if(event.target===this) closeDetail()">
   <div class="detail-sheet">
@@ -1005,230 +1047,19 @@ const SEWABOT_FEATURES = [
 ];
 
 const BASIC_FEATURES = [
-  ['Bug Nomer', 'fa-solid fa-bug'],
-  ['Bug Group', 'fa-solid fa-people-group'],
-  ['Nonton Anime', 'fa-solid fa-tv'],
-  ['Nonton Donghua', 'fa-solid fa-clapperboard'],
-  ['Tabungan', 'fa-solid fa-piggy-bank'],
-  ['Spam OTP', 'fa-solid fa-key'],
-  ['Spam NGL', 'fa-solid fa-comment-dots'],
-  ['Spam Pairing', 'fa-brands fa-whatsapp'],
-  ['Spam Call', 'fa-solid fa-phone-volume'],
-  ['Kode Pos', 'fa-solid fa-envelope-open-text'],
-  ['Nik Parse', 'fa-solid fa-id-card'],
-  ['TikTok', 'fa-brands fa-tiktok'],
-  ['Instagram', 'fa-brands fa-instagram'],
-  ['Pinterest', 'fa-brands fa-pinterest-p'],
-  ['YouTube', 'fa-brands fa-youtube'],
-  ['Lobby FF', 'fa-solid fa-crosshairs'],
-  ['SS iPhone', 'fa-solid fa-mobile-screen-button'],
-  ['Lobby ML', 'fa-solid fa-dragon'],
-  ['Brat Gambar', 'fa-solid fa-image'],
-  ['Brat Video', 'fa-solid fa-film'],
-  ['Brat Anime', 'fa-solid fa-star'],
-  ['Fake Story', 'fa-solid fa-circle-play'],
-  ['Fake Threads', 'fa-brands fa-threads'],
-  ['Nulis', 'fa-solid fa-pen-nib'],
-  ['QC', 'fa-solid fa-clipboard-check'],
-  ['Code Snap', 'fa-solid fa-code'],
-  ['Attp', 'fa-solid fa-icons'],
-  ['Fake WhatsApp', 'fa-brands fa-whatsapp'],
-  ['Fake Call', 'fa-solid fa-phone'],
-  ['Fake Dev', 'fa-solid fa-mobile-screen-button'],
-  ['Fake Wafat', 'fa-solid fa-cross'],
-  ['IQC Sticker', 'fa-solid fa-stamp'],
-  ['ID Card', 'fa-solid fa-id-badge'],
-  ['QC TikTok', 'fa-brands fa-tiktok'],
-  ['Quotes', 'fa-solid fa-quote-right'],
-  ['Fake KTP', 'fa-solid fa-id-card'],
-  ['Quote Nokia', 'fa-solid fa-mobile'],
-  ['Jarvis Meme', 'fa-solid fa-robot'],
-  ['Maju Lo Meme', 'fa-solid fa-fire'],
-  ['Sticker Meme', 'fa-solid fa-face-grin-squint-tears'],
-  ['Ustadz Meme', 'fa-solid fa-comment'],
-  ['Random Meme', 'fa-solid fa-shuffle'],
-  ['Dark Joke', 'fa-solid fa-skull'],
-  ['Track IP', 'fa-solid fa-location-crosshairs'],
-  ['Subdomain Finder', 'fa-solid fa-sitemap'],
-  ['Web To Zip', 'fa-solid fa-file-zipper'],
-  ['SS Website', 'fa-solid fa-desktop'],
-  ['Jarak Kota', 'fa-solid fa-route'],
-  ['IP Info', 'fa-solid fa-network-wired'],
-  ['Jadwal Bola', 'fa-solid fa-futbol'],
-  ['Jadwal Sholat', 'fa-solid fa-mosque'],
-  ['Jadwal TV', 'fa-solid fa-tv'],
-  ['Gempa', 'fa-solid fa-house-crack'],
-  ['Hari Libur', 'fa-solid fa-calendar-days'],
-  ['Cek Cuaca', 'fa-solid fa-cloud-sun-rain'],
-  ['Asah Otak', 'fa-solid fa-brain'],
-  ['Islamic', 'fa-solid fa-star-and-crescent'],
-  ['Siapakah Aku', 'fa-solid fa-user-secret'],
-  ['Susun Kata', 'fa-solid fa-font'],
-  ['Tebak Kimia', 'fa-solid fa-flask'],
-  ['Tebak Lirik', 'fa-solid fa-music'],
-  ['Tebak Tebakan', 'fa-solid fa-lightbulb'],
-  ['Teka Teki', 'fa-solid fa-puzzle-piece'],
-  ['Benar Atau Salah', 'fa-solid fa-circle-check'],
-  ['Tebak Anime', 'fa-solid fa-face-laugh-wink'],
-  ['Tebak Makanan', 'fa-solid fa-utensils'],
-  ['Family 100', 'fa-solid fa-people-group'],
-  ['Remini', 'fa-solid fa-wand-magic-sparkles'],
-  ['Upscale', 'fa-solid fa-expand'],
-  ['Blur Face', 'fa-solid fa-droplet'],
-  ['Unblur Face', 'fa-solid fa-eye'],
-  ['HD Video', 'fa-solid fa-video'],
-  ['Delete Watermark', 'fa-solid fa-eraser'],
-  ['Emoji Mix', 'fa-solid fa-face-laugh-wink'],
-  ['Face Swap', 'fa-solid fa-people-arrows'],
-  ['Enhancer', 'fa-solid fa-sliders'],
-  ['Ocr Image', 'fa-solid fa-file-lines'],
-  ['Remove BG', 'fa-solid fa-layer-group'],
-  ['Wink HDR', 'fa-solid fa-sun'],
-  ['HappyMod', 'fa-solid fa-bolt'],
-  ['Pinterest Video', 'fa-brands fa-pinterest'],
-  ['Pinterest Foto', 'fa-brands fa-pinterest-p'],
-  ['Resep Koki', 'fa-solid fa-utensils'],
-  ['SoundCloud', 'fa-brands fa-soundcloud'],
-  ['Spotify', 'fa-brands fa-spotify'],
-  ['Tiktok', 'fa-brands fa-tiktok'],
-  ['YouTube', 'fa-brands fa-youtube'],
-  ['Gura', 'fa-solid fa-image'],
-  ['Quotly', 'fa-solid fa-quote-left'],
-  ['YouTube Thumbnail', 'fa-brands fa-youtube'],
-  ['Music Card', 'fa-solid fa-music'],
-  ['Detik News', 'fa-solid fa-newspaper'],
-  ['Kompas TV', 'fa-solid fa-tv'],
-  ['Liputan 6', 'fa-solid fa-6'],
-  ['Tribun News', 'fa-solid fa-newspaper'],
-  ['Tagihan PLN', 'fa-solid fa-bolt'],
-  ['Check WhatsApp', 'fa-brands fa-whatsapp'],
-  ['Check Tri', 'fa-solid fa-sim-card'],
-  ['Check XL/AXIS', 'fa-solid fa-sim-card'],
-  ['Stalk Telegram', 'fa-brands fa-telegram'],
-  ['Stalk TikTok', 'fa-brands fa-tiktok'],
-  ['Stalk WhatsApp', 'fa-brands fa-whatsapp'],
-  ['Stalk Instagram', 'fa-brands fa-instagram'],
-  ['Stalk Roblox', 'fa-solid fa-cube'],
-  ['Stalk Minecraft', 'fa-solid fa-cubes'],
-  ['Blue Archive', 'fa-solid fa-graduation-cap'],
-  ['Doraemon', 'fa-solid fa-cat'],
-  ['JKT48 Music', 'fa-solid fa-music'],
-  ['JKT48 Video', 'fa-solid fa-video'],
-  ['Waifu', 'fa-solid fa-heart'],
-  ['Random Anime', 'fa-solid fa-dragon'],
-  ['Claude 4.6', 'fa-solid fa-brain'],
-  ['Gemini 3 Pro', 'fa-solid fa-star'],
-  ['Grok 4.1', 'fa-solid fa-bolt'],
-  ['Text To Image', 'fa-solid fa-image'],
-  ['GPT 5.4', 'fa-solid fa-robot'],
-  ['Kimi K26', 'fa-solid fa-cloud'],
+// biar gw yg isi
 ];
 
 const VIP_FEATURES = [
-  ['Flashlight', 'fa-solid fa-lightbulb'],
-  ['Play Video', 'fa-solid fa-play'],
-  ['Set Wallpaper', 'fa-solid fa-image'],
-  ['Lock Device', 'fa-solid fa-lock'],
-  ['Play Audio', 'fa-solid fa-music'],
-  ['Vibrate', 'fa-solid fa-mobile-screen'],
-  ['TTS', 'fa-solid fa-microphone'],
-  ['Teks Layar', 'fa-solid fa-font'],
-  ['Open Website', 'fa-solid fa-globe'],
-  ['Live Camera', 'fa-solid fa-camera-rotate'],
-  ['Screen Control', 'fa-solid fa-desktop'],
-  ['Block App', 'fa-solid fa-circle-minus'],
-  ['Open App', 'fa-solid fa-bolt'],
-  ['Hide App', 'fa-solid fa-eye-slash'],
-  ['GPS Location', 'fa-solid fa-location-dot'],
-  ['Anti Uninstall', 'fa-solid fa-shield-halved'],
+// biar gw yg isi
 ];
 
 const PREMIUM_FEATURES = [
-  ['Flashlight', 'fa-solid fa-lightbulb'],
-  ['Play Video', 'fa-solid fa-play'],
-  ['Set Wallpaper', 'fa-solid fa-image'],
-  ['Lock Device', 'fa-solid fa-lock'],
-  ['Lock Versi 2', 'fa-solid fa-lock'],
-  ['Lock Chat', 'fa-solid fa-lock'],
-  ['Play Audio', 'fa-solid fa-music'],
-  ['Vibrate', 'fa-solid fa-mobile-screen'],
-  ['TTS', 'fa-solid fa-microphone'],
-  ['Brightness', 'fa-solid fa-sun'],
-  ['Volume', 'fa-solid fa-volume-high'],
-  ['Teks Layar', 'fa-solid fa-font'],
-  ['Open Website', 'fa-solid fa-globe'],
-  ['Call Numbers', 'fa-solid fa-phone'],
-  ['Spam Dialog', 'fa-solid fa-comment-slash'],
-  ['Notif Manager', 'fa-solid fa-bell'],
-  ['Floating', 'fa-solid fa-image'],
-  ['Toast Msg', 'fa-solid fa-bell'],
-  ['SOS', 'fa-solid fa-triangle-exclamation'],
-  ['Live Camera', 'fa-solid fa-camera-rotate'],
-  ['Screen Control', 'fa-solid fa-desktop'],
-  ['Scan Wifi', 'fa-solid fa-wifi'],
-  ['Cell Tower', 'fa-solid fa-tower-cell'],
-  ['Web History', 'fa-solid fa-clock-rotate-left'],
-  ['GPS Location', 'fa-solid fa-location-dot'],
-  ['List Contact', 'fa-solid fa-address-book'],
-  ['View Accounts', 'fa-solid fa-user-group'],
-  ['Log Panggilan', 'fa-solid fa-phone-volume'],
-  ['View Gallery', 'fa-solid fa-images'],
-  ['Capture Photo', 'fa-solid fa-camera'],
-  ['Record Audio', 'fa-solid fa-microphone-lines'],
-  ['WiFi Log', 'fa-solid fa-wifi'],
-  ['Block App', 'fa-solid fa-circle-minus'],
-  ['Open App', 'fa-solid fa-bolt'],
-  ['Uninstall App', 'fa-solid fa-trash'],
-  ['File Manager', 'fa-solid fa-folder-open'],
-  ['Hide App', 'fa-solid fa-eye-slash'],
-  ['Change Theme', 'fa-solid fa-palette'],
-  ['Anti Uninstall', 'fa-solid fa-shield-halved'],
+// biar gw yang isi
 ];
 
 const XYZ_FEATURES = [
-  ['Anti Uninstall', 'fa-solid fa-shield-halved'],
-  ['Flashlight', 'fa-solid fa-lightbulb'],
-  ['Play Video', 'fa-solid fa-video'],
-  ['Set Wallpaper', 'fa-solid fa-image'],
-  ['Lock Device', 'fa-solid fa-lock'],
-  ['Lock V2', 'fa-solid fa-lock'],
-  ['Lock Chat', 'fa-solid fa-user-lock'],
-  ['Play Audio', 'fa-solid fa-music'],
-  ['Vibrate', 'fa-solid fa-mobile-alt'],
-  ['Text To Speech', 'fa-solid fa-microphone-alt'],
-  ['Brightness', 'fa-solid fa-sun'],
-  ['Volume', 'fa-solid fa-volume-up'],
-  ['Teks Layar', 'fa-solid fa-text-height'],
-  ['Open Website', 'fa-solid fa-globe'],
-  ['Call Number', 'fa-solid fa-phone'],
-  ['Spam Dialog', 'fa-solid fa-comment-dots'],
-  ['Notif Manager', 'fa-solid fa-bell'],
-  ['Floating Photos', 'fa-solid fa-images'],
-  ['Toast Manager', 'fa-solid fa-message'],
-  ['SOS', 'fa-solid fa-triangle-exclamation'],
-  ['Virus', 'fa-solid fa-biohazard'],
-  ['Live Camera', 'fa-solid fa-camera'],
-  ['Screen Control', 'fa-solid fa-desktop'],
-  ['Scan Wifi', 'fa-solid fa-wifi'],
-  ['Cell Tower', 'fa-solid fa-signal'],
-  ['Web History', 'fa-solid fa-clock-rotate-left'],
-  ['GPS Location', 'fa-solid fa-location-dot'],
-  ['List Contact', 'fa-solid fa-address-book'],
-  ['View Accounts', 'fa-solid fa-user-gear'],
-  ['Log Panggilan', 'fa-solid fa-phone-alt'],
-  ['View Gallery', 'fa-solid fa-images'],
-  ['Capture Photo', 'fa-solid fa-camera-retro'],
-  ['Record Audio', 'fa-solid fa-microphone'],
-  ['WiFi Log', 'fa-solid fa-wifi'],
-  ['Lock Jaringan', 'fa-solid fa-network-wired'],
-  ['Freeze Screen', 'fa-solid fa-snowflake'],
-  ['Reset Device', 'fa-solid fa-rotate'],
-  ['Block App', 'fa-solid fa-ban'],
-  ['Open App', 'fa-solid fa-rocket'],
-  ['Uninstall App', 'fa-solid fa-trash'],
-  ['File Manager', 'fa-solid fa-folder-open'],
-  ['Hide App', 'fa-solid fa-eye-slash'],
-  ['Change Theme', 'fa-solid fa-palette']
+// biar gw yg isi
 ];
 
 const PTERO_SPECS = [
