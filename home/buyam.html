@@ -76,6 +76,24 @@
 
   .am-usage { font-size: 11px; color: var(--slate); text-align: center; margin-top: 10px; }
 
+  /* Guide: cara dapetin link verifikasi */
+  .am-guide { margin-bottom: 18px; }
+  .am-guide-title {
+    font-size: 12px; font-weight: 700; color: var(--dark);
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  }
+  .am-guide-title i { color: #3b82f6; }
+  .am-guide-step { margin-bottom: 14px; }
+  .am-guide-step:last-child { margin-bottom: 0; }
+  .am-guide-img-wrap { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 8px; }
+  .am-guide-img-wrap img { width: 100%; display: block; }
+  .am-guide-num {
+    position: absolute; top: 8px; left: 8px; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--blue-gradient); color: #fff; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .am-guide-text { font-size: 12px; color: var(--slate); line-height: 1.5; padding: 0 2px; }
+
   /* Notif overlay */
   .notif-overlay {
     display: none; position: fixed; inset: 0; z-index: 999;
@@ -140,6 +158,26 @@
     <div class="am-step-badge"><i class="fa-solid fa-envelope-circle-check"></i> Link Verifikasi Terkirim</div>
     <div class="am-desc" style="margin-bottom:16px">Cek email kamu, buka link verifikasinya, lalu salin link tersebut dan tempel di bawah ini.</div>
 
+    <div class="am-guide">
+      <div class="am-guide-title"><i class="fa-solid fa-circle-question"></i> Cara Dapetin Link Verifikasi</div>
+
+      <div class="am-guide-step">
+        <div class="am-guide-img-wrap">
+          <div class="am-guide-num">1</div>
+          <img src="../image/step1_am.jpg" alt="Step 1"/>
+        </div>
+        <div class="am-guide-text">Pencet Lama Teks Login ke Alight Creative</div>
+      </div>
+
+      <div class="am-guide-step">
+        <div class="am-guide-img-wrap">
+          <div class="am-guide-num">2</div>
+          <img src="../image/step2_am.jpg" alt="Step 2"/>
+        </div>
+        <div class="am-guide-text">Lalu Pencet Tombol Copy Url/Salin URL</div>
+      </div>
+    </div>
+
     <div class="am-input-wrap">
       <label class="am-input-label">Email Alight Motion</label>
       <input type="email" class="am-input" id="am-email-2" placeholder="contoh@gmail.com"/>
@@ -169,6 +207,29 @@
 
 <script src="shared.js"></script>
 <script>
+// === Session / Auth Guard ===
+async function checkAuth() {
+  const token = localStorage.getItem('pg_token');
+  if (!token) {
+    window.location.href = 'login.html';
+    return;
+  }
+  try {
+    const res  = await fetch(apiUrl('/api/auth/me'), { headers: H });
+    const data = await res.json();
+    if (res.status === 401 || !data.ok) {
+      localStorage.removeItem('pg_token');
+      localStorage.removeItem('pg_user');
+      window.location.href = 'login.html';
+    }
+  } catch (err) {
+    // Gangguan koneksi, jangan langsung logout paksa
+    console.error('Auth check gagal:', err);
+  }
+}
+checkAuth();
+setInterval(checkAuth, 30000);
+
 function showNotif(type, title, desc) {
   const iconWrap = document.getElementById('notif-icon-wrap');
   iconWrap.className = 'notif-icon-wrap ' + type;
@@ -193,7 +254,7 @@ function handleAuthError(res, data) {
     localStorage.removeItem('pg_token');
     localStorage.removeItem('pg_user');
     showNotif('warning', 'Sesi Berakhir', 'Sesi login kamu sudah habis. Silahkan login ulang.');
-    setTimeout(() => { window.location.href = '/login'; }, 1500);
+    setTimeout(() => { window.location.href = 'login.html'; }, 1500);
     return true;
   }
   return false;
