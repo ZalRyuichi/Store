@@ -108,7 +108,7 @@
 <body>
 
 <div class="top-nav">
-  <a href="/produk"><i class="fa-solid fa-arrow-left"></i></a>
+  <a href="/dashboard/produk"><i class="fa-solid fa-arrow-left"></i></a>
   <div class="top-nav-title">Alight Motion Premium</div>
 </div>
 
@@ -123,7 +123,7 @@
         <div class="am-desc">Aktivasi Akun Premium 1 Tahun</div>
       </div>
     </div>
-    <div class="am-price">Rp 15.000</div>
+    <div class="am-price">Rp 1.000</div>
 
     <div class="am-input-wrap">
       <label class="am-input-label">Email Alight Motion</label>
@@ -187,6 +187,18 @@ function setBtnLoading(btn, loading, label) {
   btn.querySelector('span').textContent = loading ? 'Memproses...' : label;
 }
 
+// Sesi habis / token invalid (server restart, dsb) -> paksa login ulang
+function handleAuthError(res, data) {
+  if (res.status === 401 || data?.message === 'Unauthorized') {
+    localStorage.removeItem('pg_token');
+    localStorage.removeItem('pg_user');
+    showNotif('warning', 'Sesi Berakhir', 'Sesi login kamu sudah habis. Silahkan login ulang.');
+    setTimeout(() => { window.location.href = '/login'; }, 1500);
+    return true;
+  }
+  return false;
+}
+
 async function amSend() {
   const emailInput = document.getElementById('am-email-1');
   const email = emailInput.value.trim();
@@ -202,6 +214,8 @@ async function amSend() {
       body: JSON.stringify({ email }),
     });
     const data = await res.json();
+
+    if (handleAuthError(res, data)) return;
 
     if (!data.ok) {
       if (/saldo/i.test(data.message || '')) {
@@ -240,6 +254,8 @@ async function amVerify() {
       body: JSON.stringify({ email, link }),
     });
     const data = await res.json();
+
+    if (handleAuthError(res, data)) return;
 
     if (!data.ok) {
       if (/saldo/i.test(data.message || '')) {
