@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Landing Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<style>
+  @font-face {
+    font-family: 'LabelFont';
+    src: url('/font/label.ttf') format('truetype');
+    font-display: swap;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #2563EB; --blue-d: #1D4ED8; --cyan: #06B6D4;
+    --slate: #94A3B8; --dark: #F1F5F9; --border: #27272A;
+    --card: #0B0E14; --bg: #000000; --radius: 14px;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before, body::after {
+    content: ''; position: fixed; border-radius: 50%; filter: blur(90px);
+    pointer-events: none; z-index: 0; animation: float 9s ease-in-out infinite;
+  }
+  body::before { width: 420px; height: 420px; background: rgba(37,99,235,0.10); top: -120px; right: -100px; }
+  body::after  { width: 320px; height: 320px; background: rgba(6,182,212,0.08); bottom: -80px; left: -80px; animation-delay: -4s; }
+  @keyframes float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(1.05); } }
+
+  .top-nav {
+    position: sticky; top: 0; z-index: 50;
+    background: #000000;
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    height: 72px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-brand-logo {
+    width: 52px; height: 52px; object-fit: contain; border-radius: 10px;
+    display: block; flex-shrink: 0;
+  }
+  .nav-brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+  .nav-brand-title {
+    font-family: 'Orbitron', sans-serif; font-size: 17px; font-weight: 700;
+    color: var(--dark); letter-spacing: 0.4px;
+  }
+  .nav-brand-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9.5px; font-weight: 700; color: var(--blue); letter-spacing: 0.4px; margin-top: 1px;
+  }
+  .nav-btn {
+    padding: 8px 18px; border-radius: 9px; font-size: 13px; font-weight: 600;
+    font-family: 'Inter', sans-serif; text-decoration: none; transition: all 0.2s;
+    background: linear-gradient(135deg, var(--blue), var(--blue-d)); color: #fff;
+  }
+  .nav-btn:hover { box-shadow: 0 4px 16px rgba(37,99,235,0.4); }
+
+  .hero {
+    position: relative; z-index: 1;
+    max-width: 1000px; margin: 12px auto 0; padding: 0 24px;
+    text-align: center;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan);
+    border: 1px solid rgba(6,182,212,0.3); background: rgba(6,182,212,0.06);
+    padding: 5px 12px; border-radius: 20px; margin-bottom: 18px; letter-spacing: 0.5px;
+  }
+  .hero-tag i { font-size: 9px; }
+  .hero h1 {
+    font-family: 'Orbitron', sans-serif; font-weight: 800;
+    font-size: clamp(24px, 5vw, 40px); line-height: 1.25;
+    color: var(--dark); margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--blue); }
+  .hero p {
+    font-size: 14px; color: var(--slate); max-width: 520px; margin: 0 auto 26px;
+    line-height: 1.6;
+  }
+  .hero-ctas { display: flex; gap: 12px; justify-content: center; margin-bottom: 36px; flex-wrap: wrap; }
+  .cta-btn {
+    padding: 12px 26px; border-radius: var(--radius); font-size: 14px; font-weight: 700;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif; transition: all 0.2s;
+  }
+  .cta-btn.primary { background: #0B0E14; border: 1px solid var(--border); color: var(--dark); }
+  .cta-btn.primary:hover { border-color: var(--cyan); box-shadow: 0 6px 20px rgba(0,0,0,0.5); transform: translateY(-1px); }
+  .cta-btn.secondary { border: 1px solid var(--border); color: var(--dark); }
+  .cta-btn.secondary:hover { border-color: var(--slate); }
+
+  .banner-wrapper {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 0 auto; padding: 0 24px;
+  }
+  .banner-inner {
+    position: relative; width: 100%; aspect-ratio: 16 / 9;
+    border-radius: 18px; overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 40px rgba(37,99,235,0.15), 0 2px 12px rgba(0,0,0,0.4);
+    background: #0B0E14;
+  }
+  .banner-inner video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .banner-inner::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.35) 100%);
+    pointer-events: none;
+  }
+
+  .why-section {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 40px auto 0; padding: 0 24px;
+  }
+  .why-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px; font-weight: 700; color: var(--dark);
+    line-height: 1.2; display: flex; align-items: center; gap: 8px;
+  }
+  .why-title i { color: var(--cyan); font-size: 0.72em; }
+  .why-desc {
+    font-size: 14px; color: var(--slate); line-height: 1.6;
+    max-width: 640px; margin-top: 10px;
+  }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    margin-top: 24px;
+  }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px 14px; text-align: center;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .stat-card:hover { transform: translateY(-3px); border-color: var(--cyan); }
+  .stat-icon {
+    width: 40px; height: 40px; border-radius: 12px; margin: 0 auto 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff;
+    background: linear-gradient(135deg, var(--blue), var(--cyan));
+  }
+  .stat-number {
+    font-family: 'Orbitron', sans-serif; font-weight: 800;
+    font-size: clamp(20px, 4vw, 26px); color: var(--dark); line-height: 1.2;
+  }
+  .stat-label { font-size: 12px; color: var(--slate); margin-top: 4px; }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat-card { padding: 14px 6px; }
+  }
+
+  .testi-section {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 44px auto 0; padding: 0 24px;
+  }
+  .testi-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px; font-weight: 700; color: var(--dark);
+    line-height: 1.2; display: flex; align-items: center; gap: 8px;
+  }
+  .testi-title i { color: var(--cyan); font-size: 0.72em; }
+  .testi-desc {
+    font-size: 14px; color: var(--slate); line-height: 1.6;
+    max-width: 640px; margin-top: 10px;
+  }
+  .testi-scroll {
+    display: flex; gap: 14px; overflow-x: auto; margin-top: 24px;
+    padding-bottom: 10px; scroll-snap-type: x mandatory;
+  }
+  .testi-scroll::-webkit-scrollbar { height: 6px; }
+  .testi-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  .testi-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 18px; min-width: 250px; max-width: 250px; flex-shrink: 0;
+    scroll-snap-align: start;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .testi-card:hover { transform: translateY(-3px); border-color: var(--cyan); }
+  .testi-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .testi-avatar {
+    width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 14px; color: #fff;
+    background: linear-gradient(135deg, var(--blue), var(--cyan));
+    overflow: hidden;
+  }
+  .testi-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .testi-name { font-size: 13px; font-weight: 700; color: var(--dark); }
+  .testi-stars { color: #FBBF24; font-size: 11px; margin-top: 2px; }
+  .testi-text { font-size: 12.5px; color: var(--slate); line-height: 1.6; }
+
+  @media (max-width: 600px) {
+    .testi-card { min-width: 220px; max-width: 220px; }
+  }
+
+  .features {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 44px auto 0; padding: 0 24px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  }
+  .feature-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px 16px; text-align: center;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .feature-card:hover { transform: translateY(-3px); border-color: var(--blue); }
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: 12px; margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff;
+    background: linear-gradient(135deg, var(--blue), var(--cyan));
+  }
+  .feature-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .feature-card p { font-size: 12px; color: var(--slate); line-height: 1.5; }
+
+  footer {
+    position: relative; z-index: 1;
+    text-align: center; padding: 56px 24px 40px; margin-top: 50px;
+  }
+  footer .foot-links { display: flex; justify-content: center; gap: 26px; margin-bottom: 20px; }
+  footer .foot-links a {
+    color: var(--slate); font-size: 30px; transition: color 0.2s, transform 0.2s;
+  }
+  footer .foot-links a:hover { color: var(--cyan); transform: translateY(-3px); }
+  footer p { font-size: 13px; color: #52525B; font-family: 'Share Tech Mono', monospace; }
+
+  @media (max-width: 600px) {
+    .features { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="/" class="nav-brand">
+    <img src="image/logo.png" alt="Logo" class="nav-brand-logo"/>
+    <div class="nav-brand-text">
+      <div class="nav-brand-title">RYUICHI STORE</div>
+      <div class="nav-brand-sub">#BANYAKDISKONNYA</div>
+    </div>
+  </a>
+</nav>
+
+<section class="hero">
+  <h1>Solusi Digital Serba Ada<br><span>Я</span>yuichi Store</h1>
+  <p>Tools, Layanan, Dan Produk Digital Dalam Satu Tempat. Cepat, Aman, Dan Terpercaya Buat Kebutuhan Digital Kamu.</p>
+  <div class="hero-ctas">
+    <a href="/login.html" class="cta-btn primary"><i class="fa-solid fa-right-to-bracket"></i> LOGIN UNTUK MELANJUTKAN</a>
+  </div>
+</section>
+
+<div class="banner-wrapper">
+  <div class="banner-inner">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="video/banner.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<section class="why-section">
+  <div class="why-title">Kenapa Di Ryuichi? <i class="fa-solid fa-circle-question"></i></div>
+  <p class="why-desc">Karena Kami Fokus Ngasih Produk Digital Yang Cepat, Aman, Dan Harga Bersahabat. Setiap Transaksi Diproses Otomatis Lewat Sistem, Jadi Kamu Ga Perlu Nunggu Lama, Dan Ada Admin Yang Siap Bantu Kapan Aja Kalau Ada Kendala.</p>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+      <div class="stat-number" id="stat-transaksi">0</div>
+      <div class="stat-label">Transaksi Selesai</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+      <div class="stat-number" id="stat-pelanggan">0</div>
+      <div class="stat-label">Pelanggan Puas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fa-solid fa-headset"></i></div>
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Support Aktif</div>
+    </div>
+  </div>
+</section>
+
+<section class="testi-section">
+  <div class="testi-title">Testimoni Pelanggan <i class="fa-solid fa-comment-dots"></i></div>
+  <p class="testi-desc">Beberapa Cerita Dari Pelanggan Yang Udah Pernah Belanja Dan Pakai Layanan Di Ryuichi Store.</p>
+
+  <div class="testi-scroll">
+    <div class="testi-card">
+      <div class="testi-head">
+        <div class="testi-avatar"><img src="https://files.catbox.moe/305yix.jpg" alt="Andra"/></div>
+        <div>
+          <div class="testi-name">Andra</div>
+          <div class="testi-stars">★★★★★</div>
+        </div>
+      </div>
+      <p class="testi-text">proses cepat banget om, gak pake nunggu lama, kece pol pokoknya 😉</p>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-head">
+        <div class="testi-avatar"><img src="https://files.catbox.moe/95734c.jpg" alt="Dimas"/></div>
+        <div>
+          <div class="testi-name">Dimas</div>
+          <div class="testi-stars">★★★★★</div>
+        </div>
+      </div>
+      <p class="testi-text">admin nya ramah dan responsif, ada kendala langsung dibantu tanpa ribet dan drama sama sekali🗿👍</p>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-head">
+        <div class="testi-avatar"><img src="https://files.catbox.moe/wgzam0.jpg" alt="Rian"/></div>
+        <div>
+          <div class="testi-name">Rian</div>
+          <div class="testi-stars">★★★★☆</div>
+        </div>
+      </div>
+      <p class="testi-text">harga bersahabat buat kantong pelajar, kualitas produk juga bagus 😋</p>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-head">
+        <div class="testi-avatar"><img src="https://files.catbox.moe/ye0peb.jpg" alt="Sinta"/></div>
+        <div>
+          <div class="testi-name">Sinta</div>
+          <div class="testi-stars">★★★★★</div>
+        </div>
+      </div>
+      <p class="testi-text">udah langganan dari lama, gak pernah kecewa sama pelayanannya 😗</p>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-head">
+        <div class="testi-avatar"><img src="https://files.catbox.moe/ld3uxt.jpg" alt="Fajar"/></div>
+        <div>
+          <div class="testi-name">Fajar</div>
+          <div class="testi-stars">★★★★★</div>
+        </div>
+      </div>
+      <p class="testi-text">sistemnya rapi bet, transaksi otomatis, cocok buat yang gasuka ribet 🤭</p>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-head">
+        <div class="testi-avatar"><img src="https://files.catbox.moe/8ccbrq.jpg" alt="Nadia"/></div>
+        <div>
+          <div class="testi-name">Nadia</div>
+          <div class="testi-stars">★★★★★</div>
+        </div>
+      </div>
+      <p class="testi-text">support 24 jam beneran aktif, malem-malem chat masih dibales 😭</p>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-head">
+        <div class="testi-avatar"><img src="https://files.catbox.moe/jqe29j.jpg" alt="Bagas"/></div>
+        <div>
+          <div class="testi-name">Bagas</div>
+          <div class="testi-stars">★★★★☆</div>
+        </div>
+      </div>
+      <p class="testi-text">tools nya lengkap, satu tempat udah bisa penuhin banyak kebutuhan anjir 😁</p>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-head">
+        <div class="testi-avatar"><img src="https://files.catbox.moe/dcd57f.jpg" alt="Caca"/></div>
+        <div>
+          <div class="testi-name">Caca</div>
+          <div class="testi-stars">★★★★★</div>
+        </div>
+      </div>
+      <p class="testi-text">aman dan terpercaya, udah beberapa kali order gak pernah ada masalah 🥰</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-links">
+    <a href="https://t.me/ZalRyuichi" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+    <a href="https://wa.me/6285809456224" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+    <a href="https://tiktok.com/@zal_ryuichi" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+    <a href="https://instagram.com/zal_ryuichi" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  </div>
+  <p>© 2026 ЯYUICHI STORE — ALL RIGHTS RESERVED</p>
+</footer>
+
+<script>
+  function animateCount(el, start, end, duration) {
+    const range = end - start;
+    const startTime = performance.now();
+    function step(now) {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(start + range * eased).toLocaleString('id-ID');
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function startLiveCounter(el, base) {
+    let current = base;
+    animateCount(el, 0, current, 1400);
+    setInterval(() => {
+      current += Math.floor(Math.random() * 8) + 1;
+      el.textContent = current.toLocaleString('id-ID');
+    }, Math.floor(Math.random() * 3000) + 3000);
+  }
+
+  const elTransaksi = document.getElementById('stat-transaksi');
+  const elPelanggan = document.getElementById('stat-pelanggan');
+  if (elTransaksi) startLiveCounter(elTransaksi, 1050);
+  if (elPelanggan) startLiveCounter(elPelanggan, 2000);
+</script>
+
+</body>
+</html>
