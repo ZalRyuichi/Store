@@ -90,12 +90,6 @@
     transform: scale(1.05); /* avoid blurred edge gaps */
     z-index: 0;
   }
-  .chat-bg-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(11,18,32,0.55);
-    z-index: 1;
-  }
 
   .messages-area {
     position: relative;
@@ -282,7 +276,7 @@
     <a href="/dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i></a>
     <div class="owner-avatar"><img src="../image/owner_pp.jpg" alt="Owner"></div>
     <div class="nav-title-wrap">
-      <div class="nav-title">Ryuichi Message</div>
+      <div class="nav-title">Zal Ryuichi</div>
       <div class="nav-sub"><span class="status-dot"></span> Online</div>
     </div>
   </div>
@@ -290,7 +284,6 @@
 
 <div class="chat-pane" id="chat-pane">
   <video class="chat-bg-video" autoplay muted loop playsinline src="../video/bgchat.mp4"></video>
-  <div class="chat-bg-overlay"></div>
   <div class="messages-area" id="messages-area">
     <div class="loading-spin"><i class="fa-solid fa-spinner fa-spin"></i> Memuat Percakapan...</div>
   </div>
