@@ -10,6 +10,8 @@
 <style>
   :root {
     --blue: #2563EB; --blue-d: #1D4ED8; --blue-l: #1E293B;
+    --blue-gradient: linear-gradient(135deg, #2563EB, #1E40AF);
+    --blue-gradient-hover: linear-gradient(135deg, #1E40AF, #1E3A8A);
     --slate: #94A3B8; --dark: #FFFFFF; --border: #27272A;
     --white: #000000; --bg: #000000;
     --red: #EF4444; --green: #10B981; --amber: #F59E0B;
@@ -22,6 +24,10 @@
     padding: 0 16px; height: 64px; display: flex; align-items: center; gap: 10px;
     position: sticky; top: 0; z-index: 10;
   }
+  .top-nav::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+    background: var(--blue-gradient);
+  }
   .top-nav a { color: var(--dark); font-size: 18px; text-decoration: none; }
   .top-nav-title { font-size: 15px; font-weight: 700; }
 
@@ -33,12 +39,15 @@
   }
   .am-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
   .am-icon {
-    width: 48px; height: 48px; border-radius: 12px; background: var(--blue-l);
-    color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;
+    width: 48px; height: 48px; border-radius: 12px; background: var(--blue-gradient);
+    color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;
   }
   .am-title { font-size: 15px; font-weight: 700; }
   .am-desc { font-size: 12px; color: var(--slate); margin-top: 2px; }
-  .am-price { font-size: 20px; font-weight: 800; color: var(--blue); margin-bottom: 16px; }
+  .am-price {
+    font-size: 20px; font-weight: 800; margin-bottom: 16px;
+    background: var(--blue-gradient); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
 
   .am-input-wrap { margin-bottom: 14px; }
   .am-input-label { font-size: 11px; font-weight: 600; color: var(--slate); margin-bottom: 6px; display: block; }
@@ -47,21 +56,22 @@
     padding: 12px 13px; font-size: 14px; outline: none; transition: .2s;
     background: var(--bg); color: var(--dark);
   }
-  .am-input:focus { border-color: var(--blue); }
+  .am-input:focus { border-color: #3b82f6; }
 
   .am-btn {
     width: 100%; padding: 13px; border-radius: 10px; border: none;
-    background: var(--blue); color: #fff; font-size: 14px; font-weight: 700;
+    background: var(--blue-gradient); color: #fff; font-size: 14px; font-weight: 700;
     cursor: pointer; transition: .2s; display: flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .am-btn:hover { background: var(--blue-d); }
+  .am-btn:hover { background: var(--blue-gradient-hover); }
   .am-btn:disabled { opacity: .6; cursor: not-allowed; }
   .am-btn-link { background: transparent; color: var(--slate); font-weight: 600; margin-top: 10px; }
   .am-btn-link:hover { color: var(--dark); background: transparent; }
 
   .am-step-badge {
     display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600;
-    color: var(--blue); background: var(--blue-l); padding: 4px 10px; border-radius: 20px; margin-bottom: 14px;
+    color: #3b82f6; background: var(--blue-l); border: 1px solid rgba(37,99,235,.35);
+    padding: 4px 10px; border-radius: 20px; margin-bottom: 14px;
   }
 
   .am-usage { font-size: 11px; color: var(--slate); text-align: center; margin-top: 10px; }
@@ -89,8 +99,10 @@
   .notif-desc { font-size: 12.5px; color: var(--slate); line-height: 1.5; margin-bottom: 18px; }
   .notif-btn-ok {
     width: 100%; padding: 12px; border-radius: 10px; border: none;
-    background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer;
+    background: var(--blue-gradient); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer;
+    transition: .2s;
   }
+  .notif-btn-ok:hover { background: var(--blue-gradient-hover); }
 </style>
 </head>
 <body>
@@ -157,16 +169,6 @@
 
 <script src="shared.js"></script>
 <script>
-function apiUrl(p) { return p; } // ganti kalau backend beda origin, mis: return 'https://api.domainkamu.com' + p;
-
-function authHeaders(json) {
-  const h = {};
-  if (json) h["Content-Type"] = "application/json";
-  const token = localStorage.getItem('pg_token');
-  if (token) h["x-auth-token"] = token;
-  return h;
-}
-
 function showNotif(type, title, desc) {
   const iconWrap = document.getElementById('notif-icon-wrap');
   iconWrap.className = 'notif-icon-wrap ' + type;
@@ -178,10 +180,6 @@ function showNotif(type, title, desc) {
   document.getElementById('notif-title').textContent = title;
   document.getElementById('notif-desc').textContent = desc;
   document.getElementById('notif-overlay').classList.add('show');
-}
-
-function closeNotif() {
-  document.getElementById('notif-overlay').classList.remove('show');
 }
 
 function setBtnLoading(btn, loading, label) {
@@ -200,7 +198,7 @@ async function amSend() {
   try {
     const res  = await fetch(apiUrl('/api/alight-motion/send'), {
       method: 'POST',
-      headers: authHeaders(true),
+      headers: H,
       body: JSON.stringify({ email }),
     });
     const data = await res.json();
@@ -238,7 +236,7 @@ async function amVerify() {
   try {
     const res  = await fetch(apiUrl('/api/alight-motion/verify'), {
       method: 'POST',
-      headers: authHeaders(true),
+      headers: H,
       body: JSON.stringify({ email, link }),
     });
     const data = await res.json();
