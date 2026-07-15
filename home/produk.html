@@ -928,26 +928,6 @@
   <div class="sidebar-content">
 
     <!-- UTAMA SECTION -->
-    <div class="sidebar-section">
-      <div class="sidebar-section-title">Utama</div>
-      <div class="sidebar-menu">
-        <a href="/dashboard" class="sidebar-item">
-          <i class="fa-solid fa-house"></i>
-          <span>Beranda</span>
-        </a>
-        <a href="/home/produk.html" class="sidebar-item">
-          <i class="fa-solid fa-bag-shopping"></i>
-          <span>Produk</span>
-        </a>
-        <a href="/home/topup.html" class="sidebar-item">
-          <i class="fa-solid fa-wallet"></i>
-          <span>Top Up</span>
-        </a>
-        <a href="/home/history.html" class="sidebar-item">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          <span>Riwayat</span>
-        </a>
-      </div>
     </div>
 
     <div class="sidebar-divider"></div>
@@ -1001,21 +981,6 @@
     </div>
 
     <div class="sidebar-divider"></div>
-
-    <!-- APLIKASI SECTION -->
-    <div class="sidebar-section">
-      <div class="sidebar-section-title">Aplikasi</div>
-      <div class="sidebar-menu">
-        <a href="/home/app_ryuichi.html" class="sidebar-item">
-          <i class="fa-solid fa-download"></i>
-          <span>Download App</span>
-        </a>
-        <a href="/home/tutorial.html" class="sidebar-item">
-          <i class="fa-solid fa-graduation-cap"></i>
-          <span>Tutorial</span>
-        </a>
-      </div>
-    </div>
 
     <button class="sidebar-btn logout" onclick="logout()">
       <i class="fa-solid fa-sign-out-alt"></i> Log Out
@@ -1501,10 +1466,10 @@ let currentSaldoVal = 0;
 
 const ROLE_DATA = {
   'member':           { name: 'Member',           price: 25000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar'], vip: false },
-  'vip':    { name: 'Vip',    price: 50000,  app: 'ryuichi', benefit: ['Akses Setengah Fitur Vip'], vip: true, vipNote: 'Akses Sebagian Fitur Vip' },
-  'premium':  { name: 'Premium',  price: 100000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
-  'reseller':         { name: 'Reseller',          price: 200000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip', 'Bisa Jualan Role Member Dan Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
-  'owner':            { name: 'Owner',             price: 400000, app: 'ryuichi', benefit: ['Akses Full Fitur Aplikasi', 'Akses Full Fitur Vip', 'Bisa Jualin Role Member, Vip, Premium Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'vip':    { name: 'Vip',    price: 50000,  app: 'ryuichi', benefit: ['Akses Sebagian Fitur Sadap/RAT'], vip: true, vipNote: 'Akses Sebagian Fitur Sadap' },
+  'premium':  { name: 'Premium',  price: 100000, app: 'ryuichi', benefit: ['Akses Full Fitur Sadap/RAT'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
+  'reseller':         { name: 'Reseller',          price: 200000, app: 'ryuichi', benefit: ['Akses Full Fitur Sadap/RAT', 'Bisa Jualan Role Member Dan Vip'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
+  'owner':            { name: 'Owner',             price: 400000, app: 'ryuichi', benefit: ['Akses Full Fitur Aplikasi', 'Bisa Jualin Role Member, Vip, Premium Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
   'xyz-member-1m':    { name: 'Member (1 Bulan)',  price: 25000,  app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Selama 1 Bulan'], vip: false },
   'xyz-member-permanen': { name: 'Member (Permanen)', price: 50000, app: 'xyz',   benefit: ['Akses Fitur Aplikasi Xyz Permanen'], vip: false },
   'xyz-reseller':     { name: 'Reseller',          price: 130000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualan Role Member 1 Bulan Dan Permanen'], vip: false },
@@ -1533,19 +1498,230 @@ const SEWABOT_FEATURES = [
 ];
 
 const BASIC_FEATURES = [
-// biar gw yg isi
+  ['Bug Nomer', 'fa-solid fa-bug'],
+  ['Bug Group', 'fa-solid fa-people-group'],
+  ['Nonton Anime', 'fa-solid fa-tv'],
+  ['Nonton Donghua', 'fa-solid fa-clapperboard'],
+  ['Tabungan', 'fa-solid fa-piggy-bank'],
+  ['Spam OTP', 'fa-solid fa-key'],
+  ['Spam NGL', 'fa-solid fa-comment-dots'],
+  ['Spam Pairing', 'fa-brands fa-whatsapp'],
+  ['Spam Call', 'fa-solid fa-phone-volume'],
+  ['Kode Pos', 'fa-solid fa-envelope-open-text'],
+  ['Nik Parse', 'fa-solid fa-id-card'],
+  ['TikTok', 'fa-brands fa-tiktok'],
+  ['Instagram', 'fa-brands fa-instagram'],
+  ['Pinterest', 'fa-brands fa-pinterest-p'],
+  ['YouTube', 'fa-brands fa-youtube'],
+  ['Lobby FF', 'fa-solid fa-crosshairs'],
+  ['SS iPhone', 'fa-solid fa-mobile-screen-button'],
+  ['Lobby ML', 'fa-solid fa-dragon'],
+  ['Brat Gambar', 'fa-solid fa-image'],
+  ['Brat Video', 'fa-solid fa-film'],
+  ['Brat Anime', 'fa-solid fa-star'],
+  ['Fake Story', 'fa-solid fa-circle-play'],
+  ['Fake Threads', 'fa-brands fa-threads'],
+  ['Nulis', 'fa-solid fa-pen-nib'],
+  ['QC', 'fa-solid fa-clipboard-check'],
+  ['Code Snap', 'fa-solid fa-code'],
+  ['Attp', 'fa-solid fa-icons'],
+  ['Fake WhatsApp', 'fa-brands fa-whatsapp'],
+  ['Fake Call', 'fa-solid fa-phone'],
+  ['Fake Dev', 'fa-solid fa-mobile-screen-button'],
+  ['Fake Wafat', 'fa-solid fa-cross'],
+  ['IQC Sticker', 'fa-solid fa-stamp'],
+  ['ID Card', 'fa-solid fa-id-badge'],
+  ['QC TikTok', 'fa-brands fa-tiktok'],
+  ['Quotes', 'fa-solid fa-quote-right'],
+  ['Fake KTP', 'fa-solid fa-id-card'],
+  ['Quote Nokia', 'fa-solid fa-mobile'],
+  ['Jarvis Meme', 'fa-solid fa-robot'],
+  ['Maju Lo Meme', 'fa-solid fa-fire'],
+  ['Sticker Meme', 'fa-solid fa-face-grin-squint-tears'],
+  ['Ustadz Meme', 'fa-solid fa-comment'],
+  ['Random Meme', 'fa-solid fa-shuffle'],
+  ['Dark Joke', 'fa-solid fa-skull'],
+  ['Track IP', 'fa-solid fa-location-crosshairs'],
+  ['Subdomain Finder', 'fa-solid fa-sitemap'],
+  ['Web To Zip', 'fa-solid fa-file-zipper'],
+  ['SS Website', 'fa-solid fa-desktop'],
+  ['Jarak Kota', 'fa-solid fa-route'],
+  ['IP Info', 'fa-solid fa-network-wired'],
+  ['Jadwal Bola', 'fa-solid fa-futbol'],
+  ['Jadwal Sholat', 'fa-solid fa-mosque'],
+  ['Jadwal TV', 'fa-solid fa-tv'],
+  ['Gempa', 'fa-solid fa-house-crack'],
+  ['Hari Libur', 'fa-solid fa-calendar-days'],
+  ['Cek Cuaca', 'fa-solid fa-cloud-sun-rain'],
+  ['Asah Otak', 'fa-solid fa-brain'],
+  ['Islamic', 'fa-solid fa-star-and-crescent'],
+  ['Siapakah Aku', 'fa-solid fa-user-secret'],
+  ['Susun Kata', 'fa-solid fa-font'],
+  ['Tebak Kimia', 'fa-solid fa-flask'],
+  ['Tebak Lirik', 'fa-solid fa-music'],
+  ['Tebak Tebakan', 'fa-solid fa-lightbulb'],
+  ['Teka Teki', 'fa-solid fa-puzzle-piece'],
+  ['Benar Atau Salah', 'fa-solid fa-circle-check'],
+  ['Tebak Anime', 'fa-solid fa-face-laugh-wink'],
+  ['Tebak Makanan', 'fa-solid fa-utensils'],
+  ['Family 100', 'fa-solid fa-people-group'],
+  ['Remini', 'fa-solid fa-wand-magic-sparkles'],
+  ['Upscale', 'fa-solid fa-expand'],
+  ['Blur Face', 'fa-solid fa-droplet'],
+  ['Unblur Face', 'fa-solid fa-eye'],
+  ['HD Video', 'fa-solid fa-video'],
+  ['Delete Watermark', 'fa-solid fa-eraser'],
+  ['Emoji Mix', 'fa-solid fa-face-laugh-wink'],
+  ['Face Swap', 'fa-solid fa-people-arrows'],
+  ['Enhancer', 'fa-solid fa-sliders'],
+  ['Ocr Image', 'fa-solid fa-file-lines'],
+  ['Remove BG', 'fa-solid fa-layer-group'],
+  ['Wink HDR', 'fa-solid fa-sun'],
+  ['HappyMod', 'fa-solid fa-bolt'],
+  ['Pinterest Video', 'fa-brands fa-pinterest'],
+  ['Pinterest Foto', 'fa-brands fa-pinterest-p'],
+  ['Resep Koki', 'fa-solid fa-utensils'],
+  ['SoundCloud', 'fa-brands fa-soundcloud'],
+  ['Spotify', 'fa-brands fa-spotify'],
+  ['Tiktok', 'fa-brands fa-tiktok'],
+  ['YouTube', 'fa-brands fa-youtube'],
+  ['Gura', 'fa-solid fa-image'],
+  ['Quotly', 'fa-solid fa-quote-left'],
+  ['YouTube Thumbnail', 'fa-brands fa-youtube'],
+  ['Music Card', 'fa-solid fa-music'],
+  ['Detik News', 'fa-solid fa-newspaper'],
+  ['Kompas TV', 'fa-solid fa-tv'],
+  ['Liputan 6', 'fa-solid fa-6'],
+  ['Tribun News', 'fa-solid fa-newspaper'],
+  ['Tagihan PLN', 'fa-solid fa-bolt'],
+  ['Check WhatsApp', 'fa-brands fa-whatsapp'],
+  ['Check Tri', 'fa-solid fa-sim-card'],
+  ['Check XL/AXIS', 'fa-solid fa-sim-card'],
+  ['Stalk Telegram', 'fa-brands fa-telegram'],
+  ['Stalk TikTok', 'fa-brands fa-tiktok'],
+  ['Stalk WhatsApp', 'fa-brands fa-whatsapp'],
+  ['Stalk Instagram', 'fa-brands fa-instagram'],
+  ['Stalk Roblox', 'fa-solid fa-cube'],
+  ['Stalk Minecraft', 'fa-solid fa-cubes'],
+  ['Blue Archive', 'fa-solid fa-graduation-cap'],
+  ['Doraemon', 'fa-solid fa-cat'],
+  ['JKT48 Music', 'fa-solid fa-music'],
+  ['JKT48 Video', 'fa-solid fa-video'],
+  ['Waifu', 'fa-solid fa-heart'],
+  ['Random Anime', 'fa-solid fa-dragon'],
+  ['Claude 4.6', 'fa-solid fa-brain'],
+  ['Gemini 3 Pro', 'fa-solid fa-star'],
+  ['Grok 4.1', 'fa-solid fa-bolt'],
+  ['Text To Image', 'fa-solid fa-image'],
+  ['GPT 5.4', 'fa-solid fa-robot'],
+  ['Kimi K26', 'fa-solid fa-cloud'],
 ];
 
 const VIP_FEATURES = [
-// biar gw yg isi
+  ['Flashlight', 'fa-solid fa-lightbulb'],
+  ['Play Video', 'fa-solid fa-play'],
+  ['Set Wallpaper', 'fa-solid fa-image'],
+  ['Lock Device', 'fa-solid fa-lock'],
+  ['Play Audio', 'fa-solid fa-music'],
+  ['Vibrate', 'fa-solid fa-mobile-screen'],
+  ['TTS', 'fa-solid fa-microphone'],
+  ['Teks Layar', 'fa-solid fa-font'],
+  ['Open Website', 'fa-solid fa-globe'],
+  ['Live Camera', 'fa-solid fa-camera-rotate'],
+  ['Screen Control', 'fa-solid fa-desktop'],
+  ['Block App', 'fa-solid fa-circle-minus'],
+  ['Open App', 'fa-solid fa-bolt'],
+  ['Hide App', 'fa-solid fa-eye-slash'],
+  ['GPS Location', 'fa-solid fa-location-dot'],
+  ['Anti Uninstall', 'fa-solid fa-shield-halved'],
 ];
 
 const PREMIUM_FEATURES = [
-// biar gw yang isi
+  ['Flashlight', 'fa-solid fa-lightbulb'],
+  ['Play Video', 'fa-solid fa-play'],
+  ['Set Wallpaper', 'fa-solid fa-image'],
+  ['Lock Device', 'fa-solid fa-lock'],
+  ['Lock Versi 2', 'fa-solid fa-lock'],
+  ['Lock Chat', 'fa-solid fa-lock'],
+  ['Play Audio', 'fa-solid fa-music'],
+  ['Vibrate', 'fa-solid fa-mobile-screen'],
+  ['TTS', 'fa-solid fa-microphone'],
+  ['Brightness', 'fa-solid fa-sun'],
+  ['Volume', 'fa-solid fa-volume-high'],
+  ['Teks Layar', 'fa-solid fa-font'],
+  ['Open Website', 'fa-solid fa-globe'],
+  ['Call Numbers', 'fa-solid fa-phone'],
+  ['Spam Dialog', 'fa-solid fa-comment-slash'],
+  ['Notif Manager', 'fa-solid fa-bell'],
+  ['Floating', 'fa-solid fa-image'],
+  ['Toast Msg', 'fa-solid fa-bell'],
+  ['SOS', 'fa-solid fa-triangle-exclamation'],
+  ['Live Camera', 'fa-solid fa-camera-rotate'],
+  ['Screen Control', 'fa-solid fa-desktop'],
+  ['Scan Wifi', 'fa-solid fa-wifi'],
+  ['Cell Tower', 'fa-solid fa-tower-cell'],
+  ['Web History', 'fa-solid fa-clock-rotate-left'],
+  ['GPS Location', 'fa-solid fa-location-dot'],
+  ['List Contact', 'fa-solid fa-address-book'],
+  ['View Accounts', 'fa-solid fa-user-group'],
+  ['Log Panggilan', 'fa-solid fa-phone-volume'],
+  ['View Gallery', 'fa-solid fa-images'],
+  ['Capture Photo', 'fa-solid fa-camera'],
+  ['Record Audio', 'fa-solid fa-microphone-lines'],
+  ['WiFi Log', 'fa-solid fa-wifi'],
+  ['Block App', 'fa-solid fa-circle-minus'],
+  ['Open App', 'fa-solid fa-bolt'],
+  ['Uninstall App', 'fa-solid fa-trash'],
+  ['File Manager', 'fa-solid fa-folder-open'],
+  ['Hide App', 'fa-solid fa-eye-slash'],
+  ['Change Theme', 'fa-solid fa-palette'],
+  ['Anti Uninstall', 'fa-solid fa-shield-halved'],
 ];
 
 const XYZ_FEATURES = [
-// biar gw yg isi
+  ['Anti Uninstall', 'fa-solid fa-shield-halved'],
+  ['Flashlight', 'fa-solid fa-lightbulb'],
+  ['Play Video', 'fa-solid fa-video'],
+  ['Set Wallpaper', 'fa-solid fa-image'],
+  ['Lock Device', 'fa-solid fa-lock'],
+  ['Lock V2', 'fa-solid fa-lock'],
+  ['Lock Chat', 'fa-solid fa-user-lock'],
+  ['Play Audio', 'fa-solid fa-music'],
+  ['Vibrate', 'fa-solid fa-mobile-alt'],
+  ['Text To Speech', 'fa-solid fa-microphone-alt'],
+  ['Brightness', 'fa-solid fa-sun'],
+  ['Volume', 'fa-solid fa-volume-up'],
+  ['Teks Layar', 'fa-solid fa-text-height'],
+  ['Open Website', 'fa-solid fa-globe'],
+  ['Call Number', 'fa-solid fa-phone'],
+  ['Spam Dialog', 'fa-solid fa-comment-dots'],
+  ['Notif Manager', 'fa-solid fa-bell'],
+  ['Floating Photos', 'fa-solid fa-images'],
+  ['Toast Manager', 'fa-solid fa-message'],
+  ['SOS', 'fa-solid fa-triangle-exclamation'],
+  ['Virus', 'fa-solid fa-biohazard'],
+  ['Live Camera', 'fa-solid fa-camera'],
+  ['Screen Control', 'fa-solid fa-desktop'],
+  ['Scan Wifi', 'fa-solid fa-wifi'],
+  ['Cell Tower', 'fa-solid fa-signal'],
+  ['Web History', 'fa-solid fa-clock-rotate-left'],
+  ['GPS Location', 'fa-solid fa-location-dot'],
+  ['List Contact', 'fa-solid fa-address-book'],
+  ['View Accounts', 'fa-solid fa-user-gear'],
+  ['Log Panggilan', 'fa-solid fa-phone-alt'],
+  ['View Gallery', 'fa-solid fa-images'],
+  ['Capture Photo', 'fa-solid fa-camera-retro'],
+  ['Record Audio', 'fa-solid fa-microphone'],
+  ['WiFi Log', 'fa-solid fa-wifi'],
+  ['Lock Jaringan', 'fa-solid fa-network-wired'],
+  ['Freeze Screen', 'fa-solid fa-snowflake'],
+  ['Reset Device', 'fa-solid fa-rotate'],
+  ['Block App', 'fa-solid fa-ban'],
+  ['Open App', 'fa-solid fa-rocket'],
+  ['Uninstall App', 'fa-solid fa-trash'],
+  ['File Manager', 'fa-solid fa-folder-open'],
+  ['Hide App', 'fa-solid fa-eye-slash'],
+  ['Change Theme', 'fa-solid fa-palette']
 ];
 
 const PTERO_SPECS = [
