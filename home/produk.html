@@ -1325,6 +1325,37 @@
   </div>
 
   <div class="produk-slide">
+  <!-- ── ALIGHT MOTION PREMIUM ────────────────────── -->
+  <div class="card" id="am" style="margin-top:14px">
+    <div class="apk-banner-wrap am-wrap">
+      <div class="apk-banner-photo" style="background-image:url('../image/bproduk_am.jpg')"></div>
+      <div class="apk-banner am" style="background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 55%, #3B82F6 100%);">
+        <div class="apk-banner-top">
+          <div class="apk-banner-icon"><i class="fa-solid fa-film"></i></div>
+          <div>
+            <div class="apk-banner-label">Alight Motion Premium</div>
+            <div class="apk-banner-sub">Edit Video &amp; Motion Graphic Tanpa Watermark</div>
+          </div>
+        </div>
+        <div class="apk-banner-pills">
+          <div class="apk-banner-pill"><i class="fa-solid fa-lock"></i> Private</div>
+          <div class="apk-banner-pill"><i class="fa-solid fa-calendar"></i> 1 Tahun</div>
+          <div class="apk-banner-pill"><i class="fa-solid fa-tag"></i> Murah</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="role-grid">
+      <div class="role-card" onclick="openDetail('am-1tahun')">
+        <div class="role-icon" style="background:#EFF6FF;color:#1E40AF"><i class="fa-solid fa-film"></i></div>
+        <div class="role-name">1 Tahun</div>
+        <div class="role-price">Rp 1.000</div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="produk-slide">
   <!-- ── JASA BUG ──────────────────────────────── -->
   <div class="card" id="jasabug" style="margin-top:14px">
     <div class="apk-banner" style="background:linear-gradient(135deg,#7C3AED 0%,#4F46E5 100%)">
@@ -1605,6 +1636,8 @@ const ROLE_DATA = {
   'ptero-9gb':       { name: 'Panel Ptero 9GB',       price: 9000,  app: 'ptero', ptero: true, ram: '9GB' },
   'ptero-10gb':      { name: 'Panel Ptero 10GB',      price: 10000, app: 'ptero', ptero: true, ram: '10GB' },
   'ptero-unlimited': { name: 'Panel Ptero Unlimited', price: 15000, app: 'ptero', ptero: true, ram: 'Unlimited' },
+
+  'am-1tahun': { name: 'Alight Motion Premium - 1 Tahun', price: 1000, app: 'am', days: 365, benefit: ['Akses Alight Motion Premium Selama 1 Tahun', 'Tanpa Watermark', 'Private'] },
 };
 
 const SEWABOT_FEATURES = [
