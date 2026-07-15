@@ -17,7 +17,7 @@
   }
   @font-face {
     font-family: 'LabelFont';
-    src: url('/font/label.ttf') format('truetype');
+    src: url('../font/label.ttf') format('truetype');
     font-display: swap;
   }
   :root {
@@ -28,7 +28,6 @@
   }
   body { background: var(--bg); color: var(--dark); padding-bottom: 24px; }
 
-  /* TOP NAV */
   .top-nav {
     background: var(--white);
     border-bottom: 1px solid var(--border);
@@ -91,10 +90,10 @@
   }
   .nav-icon-btn:hover { background: var(--blue-l); color: var(--blue); }
 
-  .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 8px; }
+  .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 8px; width: calc(100% - 9px); margin-left: auto; margin-right: auto; }
   .role-card {
     border: 2px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: 18px;
     padding: 16px 14px;
     cursor: pointer;
     transition: all 0.2s;
@@ -116,7 +115,6 @@
   .role-name { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
   .role-price { font-size: 15px; font-weight: 700; color: var(--blue); }
 
-  /* Warna berbeda-beda tiap role-card biar gak hitam polos */
   .role-grid .role-card:nth-child(6n+1) { background: linear-gradient(145deg, #7C3AED, #4C1D95); border-color: rgba(255,255,255,0.14); }
   .role-grid .role-card:nth-child(6n+2) { background: linear-gradient(145deg, #2563EB, #1D4ED8); border-color: rgba(255,255,255,0.14); }
   .role-grid .role-card:nth-child(6n+3) { background: linear-gradient(145deg, #10B981, #047857); border-color: rgba(255,255,255,0.14); }
@@ -144,7 +142,7 @@
     background: var(--blue-l); border: 1px solid #BFDBFE; border-radius: var(--radius);
     padding: 14px; text-align: center; margin-bottom: 4px;
   }
-  .detail-price-val { font-size: 22px; font-weight: 800; color: var(--blue); }
+  .detail-price-val { font-size: 22px; font-weight: 800; color: #ffffff; }
   .detail-price-sub { font-size: 11px; color: var(--slate); margin-top: 2px; }
   .benefit-row { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; padding: 6px 0; }
   .benefit-row i { color: var(--green); margin-top: 2px; font-size: 11px; }
@@ -180,12 +178,14 @@
   .quick-icon.cyan   { background: linear-gradient(135deg, #06B6D4, #0891B2); }
   .quick-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--dark); }
 
-  /* WRAPPER: foto full 16:9, banner desain nyatu langsung di bawahnya (satu blok, gak kepisah) */
   .apk-banner-wrap {
     position: relative;
     border-radius: 16px;
     overflow: hidden;
     margin-bottom: 14px;
+    margin-left: auto;
+    margin-right: auto;
+    width: calc(100% - 14px);
     display: flex;
     flex-direction: column;
   }
@@ -218,7 +218,6 @@
   }
   .apk-banner-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; position: relative; z-index: 1; }
 
-  /* Icon dekoratif silver terang, efek naik-turun, tanpa shadow/glow */
   @keyframes apkIconFloat {
     0%, 100% { transform: translateY(0) rotate(var(--deco-rot, -6deg)); }
     50%      { transform: translateY(-10px) rotate(calc(var(--deco-rot, -6deg) * -1)); }
@@ -245,47 +244,74 @@
     object-fit: cover;
   }
   .produk3d-viewport {
-    width: 100%;
-    margin-top: 14px;
+    perspective: 1200px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0;
   }
-  .produk-slider-inner {
-    position: relative;
-    perspective: 1400px;
-    overflow: hidden;
-    transition: height 0.4s cubic-bezier(.4,0,.2,1);
+  .list-produk-heading {
+    max-width: 900px;
+    margin: 16px auto 0;
+    padding: 0;
+    text-align: left;
   }
+  .list-produk-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .list-produk-title i { color: #3B82F6; font-size: 0.72em; }
+
   .produk-slider {
-    position: relative;
-    width: 100%;
-    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    overflow-x: auto;
+    overflow-anchor: none;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 0 4px;
+    gap: 0;
   }
+  .produk-slider::-webkit-scrollbar { display: none; }
   .produk-slide {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform-origin: 50% 0%;
-    transition: transform 0.5s cubic-bezier(.4,0,.2,1), opacity 0.5s ease;
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    transform-origin: center center;
     will-change: transform, opacity;
-    cursor: pointer;
+    opacity: 1;
   }
-  .produk-slide.pos-active { width: 90%; transform: translateX(-50%) rotateY(0deg); opacity: 1; z-index: 3; cursor: default; }
-  .produk-slide.pos-prev   { width: 62%; transform: translateX(-133%) rotateY(28deg); opacity: 0.5; z-index: 2; }
-  .produk-slide.pos-next   { width: 62%; transform: translateX(33%) rotateY(-28deg); opacity: 0.5; z-index: 2; }
-  .produk-slide.pos-hidden { width: 62%; transform: translateX(-50%) scale(0.4); opacity: 0; z-index: 1; pointer-events: none; }
-  .produk-slide.pos-prev *, .produk-slide.pos-next * { pointer-events: none; }
+
+  .produk-slide .card {
+    border: none !important;
+    padding: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+  }
   .produk-dots {
     display: flex;
     justify-content: center;
     gap: 6px;
-    margin-top: 10px;
+    margin-top: 14px;
+    margin-bottom: 6px;
   }
   .produk-dot {
     width: 6px; height: 6px; border-radius: 50%;
-    background: var(--border);
+    background: rgba(255,255,255,0.4);
     transition: .25s;
     cursor: pointer;
   }
-  .produk-dot.active { width: 18px; border-radius: 4px; background: var(--blue); }
+  .produk-dot.active { width: 18px; border-radius: 4px; background: #FFFFFF; }
   .apk-banner-icon {
     width: 38px; height: 38px; border-radius: 10px;
     background: rgba(255,255,255,0.18);
@@ -453,7 +479,6 @@
   .pay-saldo-val { font-size: 12px; font-weight: 700; color: #2563EB; margin-top: 3px; }
   .pay-method-arrow { color: var(--slate); font-size: 12px; }
 
-  /* ── JASA BUG ─────────────────────────────────── */
   .bug-overlay {
     display:none;position:fixed;inset:0;z-index:999;
     background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
@@ -529,7 +554,6 @@
   }
   .bug-step.done { background:var(--blue); }
 
-  /* SIDEBAR */
   .sidebar {
     position: fixed; right: 0; top: 0; width: 280px; height: 100vh;
     background: linear-gradient(180deg, #0B0E14 0%, #000000 100%);
@@ -629,7 +653,6 @@
   }
   .sidebar-overlay.show { opacity: 0.5; pointer-events: all; }
 
-  /* SALDO CARD BACKGROUND PHOTO */
   .saldo-card {
     position: relative;
     overflow: hidden;
@@ -662,16 +685,214 @@
   }
   .saldo-bottom-row-topup .saldo-mid { margin-bottom: 0; }
 
-  /* FAB WhatsApp & Customer Service: no shadow/glow, posisi lebih bawah seperti topup.html */
-  .contact-fab {
-    position: fixed; right: 16px; bottom: 20px;
-    box-shadow: none !important;
-  }
   .sewabot-fab {
     position: fixed; left: 16px; bottom: 20px;
     box-shadow: none !important;
     animation: none !important;
   }
+
+  .notif-overlay {
+    background: rgba(3,5,10,0.72) !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+  }
+  .notif-box {
+    background: rgba(15, 20, 30, 0.9) !important;
+    border: 1px solid rgba(96, 165, 250, 0.22) !important;
+    border-radius: 20px !important;
+    padding: 32px 26px 26px !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+  }
+  .notif-icon-wrap {
+    width: 64px !important; height: 64px !important; margin: 0 auto 18px !important;
+    font-size: 26px !important; border-radius: 50% !important;
+    animation: notifIconPop .35s cubic-bezier(.34,1.56,.64,1) .05s both !important;
+  }
+  @keyframes notifIconPop { 0% { transform:scale(0); } 60% { transform:scale(1.15); } 100% { transform:scale(1); } }
+  .notif-icon-wrap i { color: inherit !important; }
+  .notif-icon-wrap.success { background: rgba(52,211,153,.1) !important; border: 1px solid rgba(52,211,153,.25); color: #34d399; box-shadow: 0 0 24px rgba(52,211,153,.15); }
+  .notif-icon-wrap.error   { background: rgba(248,113,113,.1) !important; border: 1px solid rgba(248,113,113,.25); color: #f87171; box-shadow: 0 0 24px rgba(248,113,113,.15); }
+  .notif-icon-wrap.info    { background: rgba(37,99,235,.1) !important; border: 1px solid rgba(37,99,235,.3); color: #60a5fa; box-shadow: 0 0 24px rgba(37,99,235,.15); }
+  .notif-icon-wrap.warning { background: rgba(245,158,11,.1) !important; border: 1px solid rgba(245,158,11,.3); color: #fbbf24; box-shadow: 0 0 24px rgba(245,158,11,.15); }
+  .notif-title {
+    font-family: 'Orbitron', 'Inter', sans-serif !important;
+    font-size: 17px !important; font-weight: 700 !important; letter-spacing: .6px;
+    color: #f8fafc !important; margin-bottom: 8px !important;
+  }
+  .notif-desc {
+    font-family: 'Share Tech Mono', 'Inter', monospace !important;
+    font-size: 12.5px !important; line-height: 1.6 !important; color: #8ea3c2 !important;
+    letter-spacing: .2px !important; margin-bottom: 24px !important;
+  }
+  .notif-btn-ok {
+    width: 100%; padding: 13px !important; border-radius: 12px !important;
+    font-size: 13.5px !important; font-weight: 600 !important;
+    letter-spacing: 1px; text-transform: uppercase;
+    display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important;
+    margin-top: 10px !important;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  .notif-btn-ok:hover { transform: translateY(-2px); filter: brightness(1.08); }
+  .notif-btn-ok:active { transform: translateY(0); }
+  .notif-btn-ok.success { background: linear-gradient(135deg, #10b981, #047857) !important; }
+  .notif-btn-ok.error   { background: linear-gradient(135deg, #ef4444, #b91c1c) !important; }
+  .notif-btn-ok.info    { background: linear-gradient(135deg, #2563eb, #1e40af) !important; }
+  .notif-btn-ok.warning { background: linear-gradient(135deg, #f59e0b, #b45309) !important; }
+
+  .qr-wrap { padding: 5px !important; box-sizing: border-box !important; background: #ffffff !important; }
+  .qr-wrap #qr-canvas { display: flex; justify-content: center; }
+  .qr-wrap #qr-canvas img, .qr-wrap #qr-canvas canvas { max-width: 100% !important; height: auto !important; }
+
+  .pay-method-sheet {
+    background: #0b0e14 !important;
+    border: 1px solid rgba(96,165,250,0.18) !important;
+    box-shadow: 0 -20px 60px rgba(0,0,0,0.6) !important;
+  }
+  .pay-method-title { color: #f8fafc !important; }
+  .pay-method-sub { color: #8ea3c2 !important; }
+  .pay-method-close {
+    background: rgba(255,255,255,0.04) !important;
+    border-color: rgba(255,255,255,0.08) !important;
+    color: #94A3B8 !important;
+  }
+  .pay-method-close:hover {
+    background: rgba(248,113,113,0.1) !important;
+    color: #f87171 !important;
+    border-color: rgba(248,113,113,0.3) !important;
+  }
+  .pay-method-btn { background: rgba(255,255,255,0.03) !important; }
+  .pay-method-btn.saldo { border-color: rgba(37,99,235,0.3) !important; background: rgba(37,99,235,0.08) !important; }
+  .pay-method-btn.saldo:hover { border-color: #2563EB !important; box-shadow: 0 2px 10px rgba(37,99,235,0.25) !important; }
+  .pay-method-btn.qris { border-color: rgba(34,197,94,0.3) !important; background: rgba(34,197,94,0.08) !important; }
+  .pay-method-btn.qris:hover { border-color: #22C55E !important; box-shadow: 0 2px 10px rgba(34,197,94,0.25) !important; }
+  .pay-method-btn.saldo .pay-method-icon { background: rgba(37,99,235,0.15) !important; color: #60a5fa !important; }
+  .pay-method-btn.qris .pay-method-icon { background: rgba(34,197,94,0.15) !important; color: #4ade80 !important; }
+  .pay-method-btn.saldo .pay-method-name,
+  .pay-method-btn.qris .pay-method-name { color: #f8fafc !important; }
+  .pay-method-desc { color: #8ea3c2 !important; }
+  .pay-method-arrow { color: #64748b !important; }
+
+  .pay-saldo-val { color: #ffffff !important; }
+
+  .aksi-lainnya-heading {
+    max-width: 900px;
+    margin: 24px auto 0;
+    padding: 0;
+    text-align: left;
+  }
+  .aksi-lainnya-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .aksi-lainnya-title i { color: #F97316; font-size: 0.72em; }
+  .aksi-lainnya-box {
+    max-width: 900px;
+    margin: 12px auto 0;
+    padding: 0;
+  }
+  .aksi-lainnya-slider {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    padding: 12px;
+  }
+  .aksi-lainnya-slider::-webkit-scrollbar { display: none; }
+  .aksi-card {
+    position: relative;
+    overflow: hidden;
+    flex: 0 0 calc(50% - 6px);
+    scroll-snap-align: start;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+  }
+  .aksi-card:active { transform: scale(0.96); }
+  .aksi-card-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .aksi-card-decor i { position: absolute; color: rgba(255,255,255,0.32); }
+  .aksi-card-decor i.d1 { top: -14px; left: -12px; font-size: 62px; opacity: 0.75; animation: floatD1 3.2s ease-in-out infinite; }
+  .aksi-card-decor i.d2 { bottom: -18px; right: -14px; font-size: 78px; opacity: 0.65; animation: floatD2 3.8s ease-in-out infinite; animation-delay: 0.3s; }
+  .aksi-card-decor i.d3 { top: 14%; right: -10px; font-size: 30px; opacity: 0.85; animation: floatD3 2.8s ease-in-out infinite; animation-delay: 0.6s; }
+  .aksi-card-decor i.d4 { bottom: 16%; left: -8px; font-size: 26px; opacity: 0.7; animation: floatD4 3.5s ease-in-out infinite; animation-delay: 0.2s; }
+  .aksi-card-decor i.d5 { top: 50%; left: 50%; font-size: 100px; opacity: 0.32; animation: floatD5 4.2s ease-in-out infinite; animation-delay: 0.1s; }
+  @keyframes floatD1 { 0%,100% { transform: rotate(-18deg) translateY(0); } 50% { transform: rotate(-18deg) translateY(-9px); } }
+  @keyframes floatD2 { 0%,100% { transform: rotate(16deg) translateY(0); } 50% { transform: rotate(16deg) translateY(9px); } }
+  @keyframes floatD3 { 0%,100% { transform: rotate(12deg) translateY(0); } 50% { transform: rotate(12deg) translateY(-7px); } }
+  @keyframes floatD4 { 0%,100% { transform: rotate(-20deg) translateY(0); } 50% { transform: rotate(-20deg) translateY(8px); } }
+  @keyframes floatD5 { 0%,100% { transform: translate(-50%,-50%) rotate(-8deg) translateY(0); } 50% { transform: translate(-50%,-50%) rotate(-8deg) translateY(-10px); } }
+  .aksi-card-icon {
+    position: relative;
+    z-index: 1;
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(2px);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .aksi-card-badge-top {
+    position: absolute;
+    top: 0; right: 0;
+    z-index: 2;
+    background: rgba(0,0,0,0.28);
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 0 12px 0 12px;
+    backdrop-filter: blur(2px);
+  }
+  .aksi-card-badge-bottom {
+    position: absolute;
+    bottom: 0; left: 0;
+    z-index: 2;
+    background: rgba(0,0,0,0.28);
+    color: #fff;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 6px 18px 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    clip-path: polygon(0 0, 70% 0, 100% 100%, 0 100%);
+    border-top: 1.5px solid rgba(255,255,255,0.45);
+    border-left: 1.5px solid rgba(255,255,255,0.45);
+  }
+  .aksi-card-badge-bottom i { font-size: 10px; }
+  .aksi-card.aksi-tools   { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 60%, #1D4ED8 100%); }
+  .aksi-card.aksi-beranda { background: radial-gradient(120% 120% at 15% 10%, #67E8F9 0%, #0891B2 45%, #164E63 100%); }
+  .aksi-card.aksi-topup   { background: radial-gradient(120% 120% at 15% 10%, #6EE7B7 0%, #10B981 45%, #047857 100%); }
+  .aksi-card.aksi-history { background: radial-gradient(120% 120% at 15% 10%, #C4B5FD 0%, #7C3AED 45%, #4C1D95 100%); }
+  .aksi-card.aksi-voucher { background: radial-gradient(120% 120% at 15% 10%, #FBCFE8 0%, #EC4899 45%, #9D174D 100%); }
 </style>
 </head>
 <body>
@@ -688,8 +909,10 @@
     <a id="btn-admin" href="/admin.html" title="Admin" style="display:none; width:32px; height:32px; background:none; border:1px solid #DDD6FE; border-radius:8px; cursor:pointer; color:#6D28D9; align-items:center; justify-content:center; text-decoration:none; transition:all 0.15s;">
       <i class="fa-solid fa-shield-halved" style="font-size:13px;"></i>
     </a>
-    <button class="nav-icon-btn" title="Notifikasi">
-      <i class="fa-regular fa-bell"></i>
+    <button class="nav-icon-btn" title="Pesan" onclick="window.location.href='/home/message.html'" style="font-size:25px">
+      <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+      </svg>
     </button>
     <button class="nav-icon-btn" title="Menu" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
       <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -705,31 +928,6 @@
   </div>
 
   <div class="sidebar-content">
-
-    <!-- UTAMA SECTION -->
-    <div class="sidebar-section">
-      <div class="sidebar-section-title">Utama</div>
-      <div class="sidebar-menu">
-        <a href="/dashboard" class="sidebar-item">
-          <i class="fa-solid fa-house"></i>
-          <span>Beranda</span>
-        </a>
-        <a href="/home/produk.html" class="sidebar-item">
-          <i class="fa-solid fa-bag-shopping"></i>
-          <span>Produk</span>
-        </a>
-        <a href="/home/topup.html" class="sidebar-item">
-          <i class="fa-solid fa-wallet"></i>
-          <span>Top Up</span>
-        </a>
-        <a href="/home/history.html" class="sidebar-item">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          <span>Riwayat</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="sidebar-divider"></div>
 
     <!-- INFORMASI SECTION -->
     <div class="sidebar-section">
@@ -781,107 +979,29 @@
 
     <div class="sidebar-divider"></div>
 
-    <!-- APLIKASI SECTION -->
-    <div class="sidebar-section">
-      <div class="sidebar-section-title">Aplikasi</div>
-      <div class="sidebar-menu">
-        <a href="/home/app_ryuichi.html" class="sidebar-item">
-          <i class="fa-solid fa-download"></i>
-          <span>Download App</span>
-        </a>
-        <a href="/home/tutorial.html" class="sidebar-item">
-          <i class="fa-solid fa-graduation-cap"></i>
-          <span>Tutorial</span>
-        </a>
-      </div>
-    </div>
-
     <button class="sidebar-btn logout" onclick="logout()">
       <i class="fa-solid fa-sign-out-alt"></i> Log Out
     </button>
   </div>
 </aside>
 
-
 <main>
 
   <video class="produk-video-banner" src="../video/produk.mp4" autoplay muted loop playsinline></video>
 
+  <div class="list-produk-heading">
+    <div class="list-produk-title">List Produk <i class="fa-solid fa-basket-shopping"></i></div>
+  </div>
+
+  <div class="produk-dots" id="produkDots">
+    <div class="produk-dot active" data-i="0"></div>
+    <div class="produk-dot" data-i="1"></div>
+    <div class="produk-dot" data-i="2"></div>
+    <div class="produk-dot" data-i="3"></div>
+  </div>
+
   <div class="produk3d-viewport">
-  <div class="produk-slider-inner" id="produkSliderInner">
   <div class="produk-slider" id="produkSlider">
-
-  <div class="produk-slide">
-  <div class="card" id="ryuichi" style="margin-top:14px">
-    <div class="apk-banner-wrap ryuichi-wrap">
-      <div class="apk-banner-photo" style="background-image:url('../image/bproduk_ryuichi.jpg')"></div>
-      <div class="apk-banner ryuichi">
-      <svg class="apk-banner-deco d1" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="4" width="14" height="10" rx="1.5"/>
-        <path d="M1 18h16"/>
-        <rect x="16.5" y="9" width="6.5" height="11" rx="1.2"/>
-        <line x1="19.75" y1="17.2" x2="19.76" y2="17.2"/>
-      </svg>
-      <svg class="apk-banner-deco d2" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 8h-2.81c-.45-.78-1.07-1.45-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5c-.49 0-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8zm-6 8h-4v-2h4v2zm0-4h-4v-2h4v2z"/>
-      </svg>
-      <svg class="apk-banner-deco d3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-      </svg>
-      <div class="apk-banner-top">
-        <div class="apk-banner-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="4"/>
-            <rect x="6" y="6" width="4" height="4" rx="1"/>
-            <rect x="14" y="6" width="4" height="4" rx="1"/>
-            <rect x="6" y="14" width="4" height="4" rx="1"/>
-            <rect x="14" y="14" width="4" height="4" rx="1"/>
-          </svg>
-        </div>
-        <div>
-          <div class="apk-banner-label">Aplikasi Ryuichi</div>
-          <div class="apk-banner-sub">Akses Fitur Lengkap</div>
-        </div>
-      </div>
-      <div class="apk-banner-pills">
-        <div class="apk-banner-pill"><i class="fa-solid fa-user"></i>Member</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-star-half-stroke"></i>Vip</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-star"></i>Premium</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-shop"></i>Reseller</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-crown"></i>Admin</div>
-      </div>
-    </div>
-    </div>
-
-    <div class="role-grid">
-      <div class="role-card member" onclick="openDetail('member')">
-        <div class="role-icon"><i class="fa-solid fa-user"></i></div>
-        <div class="role-name">Member</div>
-        <div class="role-price">Rp 25.000</div>
-      </div>
-      <div class="role-card vipnoupdate" onclick="openDetail('vip')">
-        <div class="role-icon"><i class="fa-solid fa-star-half-stroke"></i></div>
-        <div class="role-name">Vip</div>
-        <div class="role-price">Rp 50.000</div>
-      </div>
-      <div class="role-card vipfull" onclick="openDetail('premium')">
-        <div class="role-icon"><i class="fa-solid fa-star"></i></div>
-        <div class="role-name">Premium</div>
-        <div class="role-price">Rp 100.000</div>
-      </div>
-      <div class="role-card reseller" onclick="openDetail('reseller')">
-        <div class="role-icon"><i class="fa-solid fa-shop"></i></div>
-        <div class="role-name">Reseller</div>
-        <div class="role-price">Rp 200.000</div>
-      </div>
-      <div class="role-card admin" onclick="openDetail('owner')">
-        <div class="role-icon"><i class="fa-solid fa-crown"></i></div>
-        <div class="role-name">Owner</div>
-        <div class="role-price">Rp 400.000</div>
-      </div>
-    </div>
-  </div>
-  </div>
 
   <div class="produk-slide">
   <div class="card" id="xyz" style="margin-top:14px">
@@ -920,10 +1040,12 @@
         </div>
       </div>
       <div class="apk-banner-pills">
-        <div class="apk-banner-pill"><i class="fa-solid fa-binoculars"></i> Sadap Jarak Jauh</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-user"></i>Member 1 Bulan</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-infinity"></i>Member Permanen</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-shop"></i>Reseller</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-eye"></i> Fitur Spyware</div>
+<div class="apk-banner-pill"><i class="fa-solid fa-gamepad"></i> Fitur Kontrol</div>
+<div class="apk-banner-pill"><i class="fa-solid fa-folder"></i> Fitur Management</div>
+<div class="apk-banner-pill">
+  <i class="fa-solid fa-tower-broadcast"></i> Fitur Live
+</div>
       </div>
     </div>
     </div>
@@ -947,6 +1069,87 @@
         <div class="role-price" style="font-size:11px;color:var(--slate);font-weight:600;margin-bottom:2px">Permanen</div>
         <div class="role-price">Rp 130.000</div>
       </div>
+      <div class="role-card admin" onclick="openDetail('xyz-owner')">
+        <div class="role-icon"><i class="fa-solid fa-crown"></i></div>
+        <div class="role-name">Owner</div>
+        <div class="role-price">Rp 230.000</div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="produk-slide">
+  <div class="card" id="ryuichi" style="margin-top:14px">
+    <div class="apk-banner-wrap ryuichi-wrap">
+      <div class="apk-banner-photo" style="background-image:url('../image/bproduk_ryuichi.jpg')"></div>
+      <div class="apk-banner ryuichi">
+      <svg class="apk-banner-deco d1" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="14" height="10" rx="1.5"/>
+        <path d="M1 18h16"/>
+        <rect x="16.5" y="9" width="6.5" height="11" rx="1.2"/>
+        <line x1="19.75" y1="17.2" x2="19.76" y2="17.2"/>
+      </svg>
+      <svg class="apk-banner-deco d2" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 8h-2.81c-.45-.78-1.07-1.45-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5c-.49 0-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8zm-6 8h-4v-2h4v2zm0-4h-4v-2h4v2z"/>
+      </svg>
+      <svg class="apk-banner-deco d3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
+      <div class="apk-banner-top">
+        <div class="apk-banner-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="4"/>
+            <rect x="6" y="6" width="4" height="4" rx="1"/>
+            <rect x="14" y="6" width="4" height="4" rx="1"/>
+            <rect x="6" y="14" width="4" height="4" rx="1"/>
+            <rect x="14" y="14" width="4" height="4" rx="1"/>
+          </svg>
+        </div>
+        <div>
+          <div class="apk-banner-label">Aplikasi Ryuichi</div>
+          <div class="apk-banner-sub">Akses Fitur Lengkap</div>
+        </div>
+      </div>
+      <div class="apk-banner-pills">
+        <div class="apk-banner-pill"><i class="fa-solid fa-infinity"></i> 100+ Fitur Beragam</div>
+<div class="apk-banner-pill">
+  <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 8h-2.81c-.45-.78-1.07-1.45-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5c-.49 0-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8zm-6 8h-4v-2h4v2zm0-4h-4v-2h4v2z"/>
+  </svg>
+  Bug WhatsApp
+</div>
+<div class="apk-banner-pill"><i class="fa-solid fa-satellite-dish"></i> Sadap / RAT</div>
+<div class="apk-banner-pill"><i class="fa-solid fa-film"></i> Donghua & Anime</div>
+      </div>
+    </div>
+    </div>
+
+    <div class="role-grid">
+      <div class="role-card member" onclick="openDetail('member')">
+        <div class="role-icon"><i class="fa-solid fa-user"></i></div>
+        <div class="role-name">Member</div>
+        <div class="role-price">Rp 25.000</div>
+      </div>
+      <div class="role-card vipnoupdate" onclick="openDetail('vip')">
+        <div class="role-icon"><i class="fa-solid fa-star-half-stroke"></i></div>
+        <div class="role-name">Vip</div>
+        <div class="role-price">Rp 50.000</div>
+      </div>
+      <div class="role-card vipfull" onclick="openDetail('premium')">
+        <div class="role-icon"><i class="fa-solid fa-star"></i></div>
+        <div class="role-name">Premium</div>
+        <div class="role-price">Rp 100.000</div>
+      </div>
+      <div class="role-card reseller" onclick="openDetail('reseller')">
+        <div class="role-icon"><i class="fa-solid fa-shop"></i></div>
+        <div class="role-name">Reseller</div>
+        <div class="role-price">Rp 200.000</div>
+      </div>
+      <div class="role-card admin" onclick="openDetail('owner')">
+        <div class="role-icon"><i class="fa-solid fa-crown"></i></div>
+        <div class="role-name">Owner</div>
+        <div class="role-price">Rp 400.000</div>
+      </div>
     </div>
   </div>
   </div>
@@ -967,16 +1170,21 @@
         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
       </svg>
       <div class="apk-banner-top">
-        <div class="apk-banner-icon"><i class="fa-brands fa-whatsapp"></i></div>
+        <div class="apk-banner-icon">
+  <svg viewBox="0 0 24 24" width="25" height="25" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.87 9.87 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24a8.19 8.19 0 0 1 5.83 2.42 8.19 8.19 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.24 8.24zm4.52-6.17c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.04-.38-1.99-1.22-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.17 0-.43.06-.66.31-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.12.17 1.73 2.64 4.2 3.7.59.25 1.04.4 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.23-.16-.48-.28z"/>
+  </svg>
+</div>
         <div>
           <div class="apk-banner-label">Sewa Bot WhatsApp</div>
-          <div class="apk-banner-sub">Bot Pribadi · 1 Nomor / User</div>
+          <div class="apk-banner-sub">Bot Buat Sticker Dan Bug Nomer Atau Group</div>
         </div>
       </div>
       <div class="apk-banner-pills">
-        <div class="apk-banner-pill"><i class="fa-solid fa-image"></i>Convert Stiker</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-lock"></i>Sesi Pribadi</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-tower-broadcast"></i>Status Online/Offline</div>
+        <div class="apk-banner-pill"><i class="fa-solid fa-bug"></i> Bug Nomer</div>
+<div class="apk-banner-pill"><i class="fa-brands fa-telegram"></i> Bug Group</div>
+<div class="apk-banner-pill"><i class="fa-solid fa-image"></i> Convert Sticker</div>
+<div class="apk-banner-pill"><i class="fa-solid fa-house"></i> Main Menu</div>
       </div>
     </div>
     </div>
@@ -1044,16 +1252,76 @@
   </div>
   </div>
 
-  </div>
-  </div>
-  </div>
+</div>
+</div>
 
-  <div class="produk-dots" id="produkDots">
-    <div class="produk-dot active" data-i="0"></div>
-    <div class="produk-dot" data-i="1"></div>
-    <div class="produk-dot" data-i="2"></div>
-    <div class="produk-dot" data-i="3"></div>
+<div class="aksi-lainnya-heading">
+  <div class="aksi-lainnya-title">Aksi Lainnya <i class="fa-solid fa-bolt"></i></div>
+</div>
+<div class="aksi-lainnya-box">
+  <div class="aksi-lainnya-slider" id="aksi-lainnya-slider">
+    <a href="/dashboard.html" class="aksi-card aksi-beranda">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-house d1"></i>
+        <i class="fa-solid fa-compass d2"></i>
+        <i class="fa-solid fa-store d3"></i>
+        <i class="fa-solid fa-house-chimney d4"></i>
+        <i class="fa-solid fa-house-user d5"></i>
+      </div>
+      <div class="aksi-card-badge-top">Utama</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-house"></i> Beranda</div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-house"></i></div>
+    </a>
+    <a href="/home/topup.html" class="aksi-card aksi-topup">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-coins d1"></i>
+        <i class="fa-solid fa-sack-dollar d2"></i>
+        <i class="fa-solid fa-money-bill-wave d3"></i>
+        <i class="fa-solid fa-credit-card d4"></i>
+        <i class="fa-solid fa-wallet d5"></i>
+      </div>
+      <div class="aksi-card-badge-top">Saldo</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-wallet"></i> Top Up</div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-wallet"></i></div>
+    </a>
+    <a href="/home/history.html" class="aksi-card aksi-history">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-hourglass-half d1"></i>
+        <i class="fa-solid fa-calendar-days d2"></i>
+        <i class="fa-solid fa-receipt d3"></i>
+        <i class="fa-solid fa-list-check d4"></i>
+        <i class="fa-solid fa-clock-rotate-left d5"></i>
+      </div>
+      <div class="aksi-card-badge-top">Riwayat</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-clock-rotate-left"></i> History</div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+    </a>
+    <a href="/home/voucher.html" class="aksi-card aksi-voucher">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-ticket d1"></i>
+        <i class="fa-solid fa-gift d2"></i>
+        <i class="fa-solid fa-percent d3"></i>
+        <i class="fa-solid fa-tags d4"></i>
+        <i class="fa-solid fa-ticket-simple d5"></i>
+      </div>
+      <div class="aksi-card-badge-top">Promo</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-ticket"></i> Voucher</div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-ticket"></i></div>
+    </a>
+    <a href="/tools.html" class="aksi-card aksi-tools">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-gear d1"></i>
+        <i class="fa-solid fa-screwdriver-wrench d2"></i>
+        <i class="fa-solid fa-hammer d3"></i>
+        <i class="fa-solid fa-toolbox d4"></i>
+        <i class="fa-solid fa-wrench d5"></i>
+      </div>
+      <div class="aksi-card-badge-top">Gratis</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-wrench"></i> Tools</div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-wrench"></i></div>
+    </a>
   </div>
+</div>
 
 </main>
 
@@ -1167,7 +1435,7 @@
     <div class="notif-icon-wrap" id="notif-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
     <div class="notif-title" id="notif-title"></div>
     <div class="notif-desc" id="notif-desc"></div>
-    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()">OK</button>
+    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()"><i class="fa-solid fa-check"></i> Mengerti</button>
   </div>
 </div>
 
@@ -1206,13 +1474,14 @@ let currentSaldoVal = 0;
 
 const ROLE_DATA = {
   'member':           { name: 'Member',           price: 25000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar'], vip: false },
-  'vip':    { name: 'Vip',    price: 50000,  app: 'ryuichi', benefit: ['Akses Setengah Fitur Vip'], vip: true, vipNote: 'Akses Sebagian Fitur Vip' },
-  'premium':  { name: 'Premium',  price: 100000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
-  'reseller':         { name: 'Reseller',          price: 200000, app: 'ryuichi', benefit: ['Akses Full Fitur Vip', 'Bisa Jualan Role Member Dan Vip'], vip: true, vipNote: 'Akses Full Fitur Vip' },
-  'owner':            { name: 'Owner',             price: 400000, app: 'ryuichi', benefit: ['Akses Full Fitur Aplikasi', 'Akses Full Fitur Vip', 'Bisa Jualin Role Member, Vip, Premium Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
+  'vip':    { name: 'Vip',    price: 50000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar', 'Akses Sebagian Fitur Sadap/RAT'], vip: true, vipNote: 'Akses Sebagian Fitur Sadap' },
+  'premium':  { name: 'Premium',  price: 100000, app: 'ryuichi', benefit: ['Akses Semua Fitur Aplikasi', 'Akses Full Fitur Sadap/RAT'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
+  'reseller':         { name: 'Reseller',          price: 200000, app: 'ryuichi', benefit: ['Akses Semua Fitur Aplikasi', 'Akses Full Fitur Sadap/RAT', 'Bisa Jualan Role Member Dan Vip'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
+  'owner':            { name: 'Owner',             price: 400000, app: 'ryuichi', benefit: ['Akses Full Fitur Aplikasi', 'Bisa Jualin Role Member, Vip, Premium Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
   'xyz-member-1m':    { name: 'Member (1 Bulan)',  price: 25000,  app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Selama 1 Bulan'], vip: false },
   'xyz-member-permanen': { name: 'Member (Permanen)', price: 50000, app: 'xyz',   benefit: ['Akses Fitur Aplikasi Xyz Permanen'], vip: false },
   'xyz-reseller':     { name: 'Reseller',          price: 130000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualan Role Member 1 Bulan Dan Permanen'], vip: false },
+  'xyz-owner':        { name: 'Owner',             price: 230000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualin Role Member Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
 
   'sewabot-1hari':    { name: 'Sewa Bot WhatsApp - 1 Hari',    price: 1000,  app: 'sewabot', days: 1,    benefit: ['Bot WhatsApp Pribadi Aktif Selama 1 Hari'] },
   'sewabot-1minggu':  { name: 'Sewa Bot WhatsApp - 1 Minggu',  price: 5000,  app: 'sewabot', days: 7,    benefit: ['Bot WhatsApp Pribadi Aktif Selama 1 Minggu'] },
@@ -1237,19 +1506,230 @@ const SEWABOT_FEATURES = [
 ];
 
 const BASIC_FEATURES = [
-// biar gw yg isi
+  ['Bug Nomer', 'fa-solid fa-bug'],
+  ['Bug Group', 'fa-solid fa-people-group'],
+  ['Nonton Anime', 'fa-solid fa-tv'],
+  ['Nonton Donghua', 'fa-solid fa-clapperboard'],
+  ['Tabungan', 'fa-solid fa-piggy-bank'],
+  ['Spam OTP', 'fa-solid fa-key'],
+  ['Spam NGL', 'fa-solid fa-comment-dots'],
+  ['Spam Pairing', 'fa-brands fa-whatsapp'],
+  ['Spam Call', 'fa-solid fa-phone-volume'],
+  ['Kode Pos', 'fa-solid fa-envelope-open-text'],
+  ['Nik Parse', 'fa-solid fa-id-card'],
+  ['TikTok', 'fa-brands fa-tiktok'],
+  ['Instagram', 'fa-brands fa-instagram'],
+  ['Pinterest', 'fa-brands fa-pinterest-p'],
+  ['YouTube', 'fa-brands fa-youtube'],
+  ['Lobby FF', 'fa-solid fa-crosshairs'],
+  ['SS iPhone', 'fa-solid fa-mobile-screen-button'],
+  ['Lobby ML', 'fa-solid fa-dragon'],
+  ['Brat Gambar', 'fa-solid fa-image'],
+  ['Brat Video', 'fa-solid fa-film'],
+  ['Brat Anime', 'fa-solid fa-star'],
+  ['Fake Story', 'fa-solid fa-circle-play'],
+  ['Fake Threads', 'fa-brands fa-threads'],
+  ['Nulis', 'fa-solid fa-pen-nib'],
+  ['QC', 'fa-solid fa-clipboard-check'],
+  ['Code Snap', 'fa-solid fa-code'],
+  ['Attp', 'fa-solid fa-icons'],
+  ['Fake WhatsApp', 'fa-brands fa-whatsapp'],
+  ['Fake Call', 'fa-solid fa-phone'],
+  ['Fake Dev', 'fa-solid fa-mobile-screen-button'],
+  ['Fake Wafat', 'fa-solid fa-cross'],
+  ['IQC Sticker', 'fa-solid fa-stamp'],
+  ['ID Card', 'fa-solid fa-id-badge'],
+  ['QC TikTok', 'fa-brands fa-tiktok'],
+  ['Quotes', 'fa-solid fa-quote-right'],
+  ['Fake KTP', 'fa-solid fa-id-card'],
+  ['Quote Nokia', 'fa-solid fa-mobile'],
+  ['Jarvis Meme', 'fa-solid fa-robot'],
+  ['Maju Lo Meme', 'fa-solid fa-fire'],
+  ['Sticker Meme', 'fa-solid fa-face-grin-squint-tears'],
+  ['Ustadz Meme', 'fa-solid fa-comment'],
+  ['Random Meme', 'fa-solid fa-shuffle'],
+  ['Dark Joke', 'fa-solid fa-skull'],
+  ['Track IP', 'fa-solid fa-location-crosshairs'],
+  ['Subdomain Finder', 'fa-solid fa-sitemap'],
+  ['Web To Zip', 'fa-solid fa-file-zipper'],
+  ['SS Website', 'fa-solid fa-desktop'],
+  ['Jarak Kota', 'fa-solid fa-route'],
+  ['IP Info', 'fa-solid fa-network-wired'],
+  ['Jadwal Bola', 'fa-solid fa-futbol'],
+  ['Jadwal Sholat', 'fa-solid fa-mosque'],
+  ['Jadwal TV', 'fa-solid fa-tv'],
+  ['Gempa', 'fa-solid fa-house-crack'],
+  ['Hari Libur', 'fa-solid fa-calendar-days'],
+  ['Cek Cuaca', 'fa-solid fa-cloud-sun-rain'],
+  ['Asah Otak', 'fa-solid fa-brain'],
+  ['Islamic', 'fa-solid fa-star-and-crescent'],
+  ['Siapakah Aku', 'fa-solid fa-user-secret'],
+  ['Susun Kata', 'fa-solid fa-font'],
+  ['Tebak Kimia', 'fa-solid fa-flask'],
+  ['Tebak Lirik', 'fa-solid fa-music'],
+  ['Tebak Tebakan', 'fa-solid fa-lightbulb'],
+  ['Teka Teki', 'fa-solid fa-puzzle-piece'],
+  ['Benar Atau Salah', 'fa-solid fa-circle-check'],
+  ['Tebak Anime', 'fa-solid fa-face-laugh-wink'],
+  ['Tebak Makanan', 'fa-solid fa-utensils'],
+  ['Family 100', 'fa-solid fa-people-group'],
+  ['Remini', 'fa-solid fa-wand-magic-sparkles'],
+  ['Upscale', 'fa-solid fa-expand'],
+  ['Blur Face', 'fa-solid fa-droplet'],
+  ['Unblur Face', 'fa-solid fa-eye'],
+  ['HD Video', 'fa-solid fa-video'],
+  ['Delete Watermark', 'fa-solid fa-eraser'],
+  ['Emoji Mix', 'fa-solid fa-face-laugh-wink'],
+  ['Face Swap', 'fa-solid fa-people-arrows'],
+  ['Enhancer', 'fa-solid fa-sliders'],
+  ['Ocr Image', 'fa-solid fa-file-lines'],
+  ['Remove BG', 'fa-solid fa-layer-group'],
+  ['Wink HDR', 'fa-solid fa-sun'],
+  ['HappyMod', 'fa-solid fa-bolt'],
+  ['Pinterest Video', 'fa-brands fa-pinterest'],
+  ['Pinterest Foto', 'fa-brands fa-pinterest-p'],
+  ['Resep Koki', 'fa-solid fa-utensils'],
+  ['SoundCloud', 'fa-brands fa-soundcloud'],
+  ['Spotify', 'fa-brands fa-spotify'],
+  ['Tiktok', 'fa-brands fa-tiktok'],
+  ['YouTube', 'fa-brands fa-youtube'],
+  ['Gura', 'fa-solid fa-image'],
+  ['Quotly', 'fa-solid fa-quote-left'],
+  ['YouTube Thumbnail', 'fa-brands fa-youtube'],
+  ['Music Card', 'fa-solid fa-music'],
+  ['Detik News', 'fa-solid fa-newspaper'],
+  ['Kompas TV', 'fa-solid fa-tv'],
+  ['Liputan 6', 'fa-solid fa-6'],
+  ['Tribun News', 'fa-solid fa-newspaper'],
+  ['Tagihan PLN', 'fa-solid fa-bolt'],
+  ['Check WhatsApp', 'fa-brands fa-whatsapp'],
+  ['Check Tri', 'fa-solid fa-sim-card'],
+  ['Check XL/AXIS', 'fa-solid fa-sim-card'],
+  ['Stalk Telegram', 'fa-brands fa-telegram'],
+  ['Stalk TikTok', 'fa-brands fa-tiktok'],
+  ['Stalk WhatsApp', 'fa-brands fa-whatsapp'],
+  ['Stalk Instagram', 'fa-brands fa-instagram'],
+  ['Stalk Roblox', 'fa-solid fa-cube'],
+  ['Stalk Minecraft', 'fa-solid fa-cubes'],
+  ['Blue Archive', 'fa-solid fa-graduation-cap'],
+  ['Doraemon', 'fa-solid fa-cat'],
+  ['JKT48 Music', 'fa-solid fa-music'],
+  ['JKT48 Video', 'fa-solid fa-video'],
+  ['Waifu', 'fa-solid fa-heart'],
+  ['Random Anime', 'fa-solid fa-dragon'],
+  ['Claude 4.6', 'fa-solid fa-brain'],
+  ['Gemini 3 Pro', 'fa-solid fa-star'],
+  ['Grok 4.1', 'fa-solid fa-bolt'],
+  ['Text To Image', 'fa-solid fa-image'],
+  ['GPT 5.4', 'fa-solid fa-robot'],
+  ['Kimi K26', 'fa-solid fa-cloud'],
 ];
 
 const VIP_FEATURES = [
-// biar gw yg isi
+  ['Flashlight', 'fa-solid fa-lightbulb'],
+  ['Play Video', 'fa-solid fa-play'],
+  ['Set Wallpaper', 'fa-solid fa-image'],
+  ['Lock Device', 'fa-solid fa-lock'],
+  ['Play Audio', 'fa-solid fa-music'],
+  ['Vibrate', 'fa-solid fa-mobile-screen'],
+  ['TTS', 'fa-solid fa-microphone'],
+  ['Teks Layar', 'fa-solid fa-font'],
+  ['Open Website', 'fa-solid fa-globe'],
+  ['Live Camera', 'fa-solid fa-camera-rotate'],
+  ['Screen Control', 'fa-solid fa-desktop'],
+  ['Block App', 'fa-solid fa-circle-minus'],
+  ['Open App', 'fa-solid fa-bolt'],
+  ['Hide App', 'fa-solid fa-eye-slash'],
+  ['GPS Location', 'fa-solid fa-location-dot'],
+  ['Anti Uninstall', 'fa-solid fa-shield-halved'],
 ];
 
 const PREMIUM_FEATURES = [
-// biar gw yang isi
+  ['Flashlight', 'fa-solid fa-lightbulb'],
+  ['Play Video', 'fa-solid fa-play'],
+  ['Set Wallpaper', 'fa-solid fa-image'],
+  ['Lock Device', 'fa-solid fa-lock'],
+  ['Lock Versi 2', 'fa-solid fa-lock'],
+  ['Lock Chat', 'fa-solid fa-lock'],
+  ['Play Audio', 'fa-solid fa-music'],
+  ['Vibrate', 'fa-solid fa-mobile-screen'],
+  ['TTS', 'fa-solid fa-microphone'],
+  ['Brightness', 'fa-solid fa-sun'],
+  ['Volume', 'fa-solid fa-volume-high'],
+  ['Teks Layar', 'fa-solid fa-font'],
+  ['Open Website', 'fa-solid fa-globe'],
+  ['Call Numbers', 'fa-solid fa-phone'],
+  ['Spam Dialog', 'fa-solid fa-comment-slash'],
+  ['Notif Manager', 'fa-solid fa-bell'],
+  ['Floating', 'fa-solid fa-image'],
+  ['Toast Msg', 'fa-solid fa-bell'],
+  ['SOS', 'fa-solid fa-triangle-exclamation'],
+  ['Live Camera', 'fa-solid fa-camera-rotate'],
+  ['Screen Control', 'fa-solid fa-desktop'],
+  ['Scan Wifi', 'fa-solid fa-wifi'],
+  ['Cell Tower', 'fa-solid fa-tower-cell'],
+  ['Web History', 'fa-solid fa-clock-rotate-left'],
+  ['GPS Location', 'fa-solid fa-location-dot'],
+  ['List Contact', 'fa-solid fa-address-book'],
+  ['View Accounts', 'fa-solid fa-user-group'],
+  ['Log Panggilan', 'fa-solid fa-phone-volume'],
+  ['View Gallery', 'fa-solid fa-images'],
+  ['Capture Photo', 'fa-solid fa-camera'],
+  ['Record Audio', 'fa-solid fa-microphone-lines'],
+  ['WiFi Log', 'fa-solid fa-wifi'],
+  ['Block App', 'fa-solid fa-circle-minus'],
+  ['Open App', 'fa-solid fa-bolt'],
+  ['Uninstall App', 'fa-solid fa-trash'],
+  ['File Manager', 'fa-solid fa-folder-open'],
+  ['Hide App', 'fa-solid fa-eye-slash'],
+  ['Change Theme', 'fa-solid fa-palette'],
+  ['Anti Uninstall', 'fa-solid fa-shield-halved'],
 ];
 
 const XYZ_FEATURES = [
-// biar gw yg isi
+  ['Anti Uninstall', 'fa-solid fa-shield-halved'],
+  ['Flashlight', 'fa-solid fa-lightbulb'],
+  ['Play Video', 'fa-solid fa-video'],
+  ['Set Wallpaper', 'fa-solid fa-image'],
+  ['Lock Device', 'fa-solid fa-lock'],
+  ['Lock V2', 'fa-solid fa-lock'],
+  ['Lock Chat', 'fa-solid fa-user-lock'],
+  ['Play Audio', 'fa-solid fa-music'],
+  ['Vibrate', 'fa-solid fa-mobile-alt'],
+  ['Text To Speech', 'fa-solid fa-microphone-alt'],
+  ['Brightness', 'fa-solid fa-sun'],
+  ['Volume', 'fa-solid fa-volume-up'],
+  ['Teks Layar', 'fa-solid fa-text-height'],
+  ['Open Website', 'fa-solid fa-globe'],
+  ['Call Number', 'fa-solid fa-phone'],
+  ['Spam Dialog', 'fa-solid fa-comment-dots'],
+  ['Notif Manager', 'fa-solid fa-bell'],
+  ['Floating Photos', 'fa-solid fa-images'],
+  ['Toast Manager', 'fa-solid fa-message'],
+  ['SOS', 'fa-solid fa-triangle-exclamation'],
+  ['Virus', 'fa-solid fa-biohazard'],
+  ['Live Camera', 'fa-solid fa-camera'],
+  ['Screen Control', 'fa-solid fa-desktop'],
+  ['Scan Wifi', 'fa-solid fa-wifi'],
+  ['Cell Tower', 'fa-solid fa-signal'],
+  ['Web History', 'fa-solid fa-clock-rotate-left'],
+  ['GPS Location', 'fa-solid fa-location-dot'],
+  ['List Contact', 'fa-solid fa-address-book'],
+  ['View Accounts', 'fa-solid fa-user-gear'],
+  ['Log Panggilan', 'fa-solid fa-phone-alt'],
+  ['View Gallery', 'fa-solid fa-images'],
+  ['Capture Photo', 'fa-solid fa-camera-retro'],
+  ['Record Audio', 'fa-solid fa-microphone'],
+  ['WiFi Log', 'fa-solid fa-wifi'],
+  ['Lock Jaringan', 'fa-solid fa-network-wired'],
+  ['Freeze Screen', 'fa-solid fa-snowflake'],
+  ['Reset Device', 'fa-solid fa-rotate'],
+  ['Block App', 'fa-solid fa-ban'],
+  ['Open App', 'fa-solid fa-rocket'],
+  ['Uninstall App', 'fa-solid fa-trash'],
+  ['File Manager', 'fa-solid fa-folder-open'],
+  ['Hide App', 'fa-solid fa-eye-slash'],
+  ['Change Theme', 'fa-solid fa-palette']
 ];
 
 const PTERO_SPECS = [
@@ -1379,8 +1859,7 @@ async function doBeliSaldo() {
       if (role.app === 'sewabot') {
         toast('Sewa Bot Berhasil Diaktifkan! Yuk Hubungkan Nomor WhatsApp Kamu.', 'success');
         refreshSewaBotFloating();
-      } else {
-        // Notif telegram sudah dikirim dari backend /api/buy/saldo — tidak perlu call lagi
+      } else {        
         toast('Pembelian Berhasil!', 'success');
         setTimeout(() => openAccountForm(data.transaction), 500);
       }
@@ -1448,10 +1927,8 @@ async function doBeliPtero() {
       if (qData.ok) {
         const _pteroProduct  = data.product;
         const _pteroProduct2 = selectedProduct;
-        onPaymentCompleted = async (_tx) => {
-          // Setelah bayar QRIS → saldo sudah ter-topup → langsung buka form username panel
+        onPaymentCompleted = async (_tx) => {  
           closeModal();
-          // Refresh saldo supaya data.balance akurat
           const balRes = await fetch(apiUrl('/api/balance'), { headers: H });
           const balData = await balRes.json();
           const newBalance = balData.ok ? balData.balance : (_pteroProduct.price);
@@ -1475,12 +1952,12 @@ async function sendTelegramNotif(role, tx, method) {
         product_name: role.name,
         product_app: role.app || (role.ptero ? 'ptero' : ''),
         price: role.price,
-        method: method, // 'saldo' atau 'qris'
+        method: method,
         order_id: tx?.order_id || '—',
         username: localStorage.getItem('pg_user') || '—',
       })
     });
-  } catch { /* notif gagal tidak block user */ }
+  } catch {}
 }
 
 function openAccountForm(tx) {
@@ -1861,12 +2338,10 @@ async function openBugOrder() {
   _bugSenderOnline = false;
   bugSetStep(1);
 
-  // Reset status sender step1
   const sBox = document.getElementById('bug-sender-status-step1');
   sBox.className = 'bug-sender-status';
-  sBox.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Mengecek ketersediaan sender...';
+  sBox.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Mengecek Ketersediaan Sender...';
 
-  // Disable tombol bayar dulu selama pengecekan
   const btnSaldo = document.querySelector('#bug-step1 .pay-method-btn.saldo');
   const btnQris  = document.querySelector('#bug-step1 .pay-method-btn.qris');
   if (btnSaldo) btnSaldo.disabled = true;
@@ -1875,13 +2350,11 @@ async function openBugOrder() {
   document.getElementById('bug-saldo-preview').textContent = 'Saldo: Memuat...';
   document.getElementById('bug-overlay').classList.add('active');
 
-  // Fetch saldo & cek sender paralel
   const [saldoRes, senderRes] = await Promise.allSettled([
     fetch(apiUrl('/api/user/saldo'), { headers: H }).then(r => r.json()),
     fetch(apiUrl('/api/bug/sender/status'), { headers: H }).then(r => r.json()),
   ]);
 
-  // Update saldo
   if (saldoRes.status === 'fulfilled') {
     currentSaldoVal = saldoRes.value.saldo || 0;
     document.getElementById('bug-saldo-preview').textContent = 'Saldo: ' + rupiah(currentSaldoVal);
@@ -1889,7 +2362,6 @@ async function openBugOrder() {
     document.getElementById('bug-saldo-preview').textContent = 'Saldo: Gagal Memuat';
   }
 
-  // Update status sender
   if (senderRes.status === 'fulfilled' && senderRes.value.online) {
     _bugSenderOnline = true;
     sBox.className = 'bug-sender-status online';
@@ -1899,8 +2371,7 @@ async function openBugOrder() {
   } else {
     _bugSenderOnline = false;
     sBox.className = 'bug-sender-status offline';
-    sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Sender Offline, Order Tidak Tersedia Saat Ini';
-    // Tombol tetap disabled
+    sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Sender Offline, Order Tidak Tersedia Saat Ini';    
   }
 }
 
@@ -1925,9 +2396,9 @@ async function bugPaySaldo() {
       _bugPaid = true; _bugOrderId = data.order_id;
       bugSetStep(2);
     } else {
-      toast(data.message || 'Gagal bayar', 'error');
+      toast(data.message || 'Gagal Bayar', 'error');
     }
-  } catch { toast('Koneksi gagal', 'error'); }
+  } catch { toast('Koneksi Gagal', 'error'); }
   finally { btn.disabled = false; }
 }
 
@@ -1935,7 +2406,7 @@ async function bugPayQris() {
   try {
     const res  = await fetch(apiUrl('/api/buy'), { method:'POST', headers:H, body:JSON.stringify({ product_id: BUG_PRODUCT_ID }) });
     const data = await res.json();
-    if (!data.ok) return toast(data.message || 'Gagal buat QRIS', 'error');
+    if (!data.ok) return toast(data.message || 'Gagal Buat QRIS', 'error');
     closeBugOrder();
     onPaymentCompleted = async (tx) => {
       _bugPaid = true; _bugOrderId = tx.order_id;
@@ -1968,10 +2439,10 @@ async function bugGoStep3() {
   bugSetStep(3);
 
   const labels = {
-    spam_invisible: 'Spam Invisible — Masukkan nomor target',
-    crash_iphone:   'Crash iPhone — Masukkan nomor target',
-    delay_hard:     'Delay Hard — Masukkan link grup target',
-    blank_group:    'Blank Group — Masukkan link grup target',
+    spam_invisible: 'Spam Invisible — Masukkan Nomor target',
+    crash_iphone:   'Crash iPhone — Masukkan Nomor target',
+    delay_hard:     'Delay Hard — Masukkan Link Grup Target',
+    blank_group:    'Blank Group — Masukkan Link Grup Target',
   };
   document.getElementById('bug-step3-sub').textContent = labels[_bugType] || '—';
 
@@ -1987,7 +2458,7 @@ async function bugExecute() {
     : document.getElementById('bug-input-group').value.trim();
 
   if (!target) return toast('Isi target dulu!', 'error');
-  if (isNomer && !/^62\d{8,14}$/.test(target)) return toast('Format nomor salah! Awali 62', 'error');
+  if (isNomer && !/^62\d{8,14}$/.test(target)) return toast('Format Nomor Salah! Awali 62', 'error');
   if (!isNomer && !target.includes('chat.whatsapp.com')) return toast('Link grup tidak valid!', 'error');
 
   const btn = document.getElementById('bug-btn-execute');
@@ -2003,7 +2474,7 @@ async function bugExecute() {
       closeBugOrder();
       toast('Bug ' + _bugType.replace('_',' ') + ' berhasil dikirim ke target!', 'success');
     } else {
-      toast(data.message || 'Gagal eksekusi', 'error');
+      toast(data.message || 'Gagal Eksekusi', 'error');
     }
   } catch { toast('Koneksi gagal', 'error'); }
   finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Eksekusi Bug'; }
@@ -2015,99 +2486,160 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
 
 <script>
 (function(){
-  const inner = document.getElementById('produkSliderInner');
   const slider = document.getElementById('produkSlider');
-  const slides = Array.from(slider ? slider.querySelectorAll('.produk-slide') : []);
-  const dots = document.querySelectorAll('#produkDots .produk-dot');
-  if (!inner || !slider || !slides.length) return;
+  if (!slider) return;
+  const dots = Array.from(document.querySelectorAll('#produkDots .produk-dot'));
 
-  const n = slides.length;
-  let idx = 0;
-  let autoTimer = null;
+  const slides = Array.from(slider.querySelectorAll('.produk-slide'));
+  if (!slides.length) return;
+  slides.forEach((s, i) => { s.dataset.realIndex = i; });
+  
+  let ticking = false;
 
-  function setHeight() {
-    const active = slides[idx];
-    if (active) inner.style.height = active.scrollHeight + 'px';
+  function applyCoverflow() {
+    const viewportCenter = slider.scrollLeft + slider.clientWidth / 2;
+    let closest = null, closestDist = Infinity;
+    slides.forEach(slide => {
+      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+      const dist = slideCenter - viewportCenter;
+      const ratio = Math.max(-1, Math.min(1, dist / (slide.offsetWidth * 0.9)));
+      const rotateY = ratio * -32;
+      const scale = 1 - Math.abs(ratio) * 0.22;
+      const translateZ = -Math.abs(ratio) * 60;
+      const opacity = 1 - Math.abs(ratio) * 0.45;
+      slide.style.transform = `rotateY(${rotateY}deg) scale(${scale}) translateZ(${translateZ}px)`;
+      slide.style.opacity = opacity;
+      slide.style.zIndex = Math.round((1 - Math.abs(ratio)) * 10);
+      if (Math.abs(dist) < closestDist) { closestDist = Math.abs(dist); closest = slide; }
+    });
+    ticking = false;
+    return closest;
   }
 
-  function render() {
-    slides.forEach((el, i) => {
-      let diff = i - idx;
-      diff = ((diff % n) + n) % n;
-      if (diff > Math.floor(n / 2)) diff -= n;
-      el.classList.remove('pos-active', 'pos-prev', 'pos-next', 'pos-hidden');
-      if (diff === 0) el.classList.add('pos-active');
-      else if (diff === -1) el.classList.add('pos-prev');
-      else if (diff === 1) el.classList.add('pos-next');
-      else el.classList.add('pos-hidden');
-    });
+  function syncDots(centerSlide) {
+    if (!centerSlide) return;
+    const idx = parseInt(centerSlide.dataset.realIndex, 10);
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    setHeight();
   }
 
-  function goTo(i) {
-    idx = ((i % n) + n) % n;
-    render();
-  }
-  function next() { goTo(idx + 1); }
-  function prev() { goTo(idx - 1); }
-
-  function startAuto() {
-    stopAuto();
-    autoTimer = setInterval(next, 3000);
-  }
-  function stopAuto() {
-    if (autoTimer) clearInterval(autoTimer);
-  }
-
-  // Tap kartu preview kiri/kanan buat langsung pindah ke situ (manual)
-  slides.forEach((el, i) => {
-    el.addEventListener('click', () => {
-      if (el.classList.contains('pos-prev') || el.classList.contains('pos-next')) {
-        goTo(i);
-        startAuto();
+  let scrollAnim = null;
+  function animateScrollTo(targetLeft, duration) {
+    if (scrollAnim) cancelAnimationFrame(scrollAnim);
+    const startLeft = slider.scrollLeft;
+    const distance = targetLeft - startLeft;
+    if (Math.abs(distance) < 1) { slider.scrollLeft = targetLeft; return; }
+    const startTime = performance.now();
+    const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    function step(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(1, elapsed / duration);
+      slider.scrollLeft = startLeft + distance * ease(t);
+      if (t < 1) {
+        scrollAnim = requestAnimationFrame(step);
+      } else {
+        slider.scrollLeft = targetLeft;
+        scrollAnim = null;
       }
-    });
-  });
-
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      goTo(parseInt(dot.dataset.i, 10));
-      startAuto();
-    });
-  });
-
-  // Swipe manual (touch & mouse drag) kiri/kanan
-  let startX = 0, startY = 0, dragging = false, moved = false;
-  function dragStart(x, y) { startX = x; startY = y; dragging = true; moved = false; stopAuto(); }
-  function dragEnd(x, y) {
-    if (!dragging) return;
-    dragging = false;
-    const dx = x - startX, dy = y - startY;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-      moved = true;
-      if (dx < 0) next(); else prev();
     }
-    startAuto();
+    scrollAnim = requestAnimationFrame(step);
   }
 
-  slider.addEventListener('touchstart', e => {
-    const t = e.touches[0];
-    dragStart(t.clientX, t.clientY);
+  function goToSlide(slide, smooth) {
+    const target = slide.offsetLeft + slide.offsetWidth / 2 - slider.clientWidth / 2;
+    if (smooth) {
+      animateScrollTo(target, 450);
+    } else {
+      if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
+      slider.scrollLeft = target;
+    }
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => syncDots(applyCoverflow()));
+    }
+  }
+
+  slider.addEventListener('scroll', onScroll, { passive: true });
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      currentIndex = i;
+      goToSlide(slides[i], true);
+    });
+  });
+  
+  syncDots(applyCoverflow());
+  window.addEventListener('load', () => syncDots(applyCoverflow()), { once: true });
+  window.addEventListener('resize', () => syncDots(applyCoverflow()));
+
+  let currentIndex = 0;
+  let scrollEndTimer = null;
+
+  function syncCurrentIndexFromScroll() {
+    const centerSlide = applyCoverflow();
+    if (centerSlide) currentIndex = parseInt(centerSlide.dataset.realIndex, 10);
+    syncDots(centerSlide);
+  }
+
+  slider.addEventListener('scroll', () => {
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
   }, { passive: true });
-  slider.addEventListener('touchend', e => {
-    const t = e.changedTouches[0];
-    dragEnd(t.clientX, t.clientY);
+
+  slider.addEventListener('pointerdown', () => {
+    if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
+  });
+  slider.addEventListener('pointerup', () => {
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
+  });
+  slider.addEventListener('touchstart', () => {
+    if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
   }, { passive: true });
-
-  slider.addEventListener('mousedown', e => dragStart(e.clientX, e.clientY));
-  window.addEventListener('mouseup', e => { if (dragging) dragEnd(e.clientX, e.clientY); });
-
-  window.addEventListener('resize', setHeight);
-
-  render();
-  startAuto();
+  slider.addEventListener('touchend', () => {
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
+  }, { passive: true });
 })();
+
+function autoSlideRow(containerId, intervalMs) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  let paused = false;
+  let resumeTimer = null;
+
+  function tick() {
+    if (paused) return;
+    const itemEl = el.children[0];
+    if (!itemEl) return;
+    const style = getComputedStyle(el);
+    const gap = parseFloat(style.columnGap || style.gap || '0') || 0;
+    const step = itemEl.getBoundingClientRect().width + gap;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    if (el.scrollLeft >= maxScroll - 2) {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      const next = Math.min(el.scrollLeft + step, maxScroll);
+      el.scrollTo({ left: next, behavior: 'smooth' });
+    }
+  }
+
+  function pauseThenResume() {
+    paused = true;
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => { paused = false; }, 3000);
+  }
+
+  el.addEventListener('touchstart', pauseThenResume, { passive: true });
+  el.addEventListener('mousedown', pauseThenResume);
+  el.addEventListener('wheel', pauseThenResume, { passive: true });
+
+  setInterval(tick, intervalMs);
+}
+
+autoSlideRow('aksi-lainnya-slider', 2000);
 </script>
 
 </body>
