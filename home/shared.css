@@ -599,7 +599,7 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; margin-top: 1px;
   }
-  .hist-type-icon.blue  { background: var(--blue-l); color: var(--blue); }
+  .hist-type-icon.blue  { background: #16A34A; color: #ffffff; }
   .hist-type-icon.green { background: #F0FDF4; color: #16A34A; }
 
   /* Admin contact FAB */
