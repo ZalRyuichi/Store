@@ -8,37 +8,104 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <link rel="stylesheet" href="shared.css"/>
 <style>
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #1E293B;
+    --slate:  #94A3B8; --dark:   #FFFFFF; --border: #27272A;
+    --white:  #000000; --bg:     #000000;
+    --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
+    --radius: 12px;
+  }
+  body {
+    background: var(--bg);
+    color: var(--dark);
+  }
+  /* TOP NAV */
+  .top-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 8px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-brand-logo {
+    width: 58px; height: 58px;
+    object-fit: contain;
+    border-radius: 10px;
+    display: block;
+    flex-shrink: 0;
+  }
+  .nav-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .nav-brand-title {
+    font-family: 'TitleFont', 'Inter', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: 0.3px;
+  }
+  .nav-brand-sub {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.4px;
+    margin-top: 1px;
+  }
+  .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .nav-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--dark);
+    font-size: 22px;
+    width: 46px; height: 46px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .nav-icon-btn:hover { background: var(--blue-l); color: var(--blue); }
+
   /* SIDEBAR */
   .sidebar {
-    position: fixed; left: 0; top: 0; width: 280px; height: 100vh;
-    background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%);
-    border-right: 1px solid var(--border);
-    transform: translateX(-100%); transition: transform 0.3s ease;
+    position: fixed; right: 0; top: 0; width: 280px; height: 100vh;
+    background: linear-gradient(180deg, #0B0E14 0%, #000000 100%);
+    border-left: 1px solid var(--border);
+    transform: translateX(100%); transition: transform 0.3s ease;
     z-index: 99; padding-top: 0; overflow-y: auto;
-    box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+    box-shadow: -4px 0 24px rgba(0,0,0,0.5);
   }
   .sidebar.show { transform: translateX(0); }
 
   .sidebar-header {
     position: sticky; top: 0; z-index: 10;
-    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-    padding: 24px 16px;
-    display: flex; flex-direction: column; align-items: center; gap: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 4px 16px rgba(37,99,235,0.25);
+    width: 100%; height: 150px;
+    padding: 0; margin: 0;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    overflow: hidden;
   }
 
   .sidebar-logo-img {
-    width: 84px; height: 84px;
-    border-radius: 14px;
-    border: 3px solid rgba(255,255,255,0.3);
+    width: 100%; height: 100%;
+    display: block;
     object-fit: cover;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
-
-  .sidebar-app-name {
-    font-size: 14px; font-weight: 700; color: #fff;
-    text-align: center; letter-spacing: 0.5px;
   }
 
   .sidebar-content {
@@ -114,24 +181,26 @@
     z-index: 98;
   }
   .sidebar-overlay.show { opacity: 0.5; pointer-events: all; }
-  .sidebar-toggle {
-    background: none; border: none; cursor: pointer; color: var(--dark);
-    font-size: 16px; padding: 8px; display: flex; align-items: center;
-    transition: all 0.2s; flex-shrink: 0;
-  }
-  .sidebar-toggle:hover { color: var(--blue); }
 </style>
 </head>
 <body>
 
 <nav class="top-nav">
-  <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
-    <i class="fa-solid fa-bars"></i>
-  </button>
-  <div class="nav-logo" title="Zal Яyuichi" style="position:absolute; left:50%; transform:translateX(-50%);">
-    <img src="../image/logo.png" alt="Logo" style="width:46px;height:46px;object-fit:contain;display:block;">
+  <div class="nav-brand">
+    <img src="../image/logo.png" alt="Logo" class="nav-brand-logo"/>
+    <div class="nav-brand-text">
+      <div class="nav-brand-title">RYUICHI STORE</div>
+      <div class="nav-brand-sub">#BANYAKDISKONNYA</div>
+    </div>
   </div>
-  <div style="width:40px;"></div>
+  <div class="nav-icons">
+    <button class="nav-icon-btn" title="Notifikasi">
+      <i class="fa-regular fa-bell"></i>
+    </button>
+    <button class="nav-icon-btn" title="Menu" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
+      <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
+  </div>
 </nav>
 
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="document.getElementById('sidebar').classList.remove('show'); this.classList.remove('show')"></div>
@@ -139,7 +208,6 @@
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
     <img src="../image/logo_sidebar.jpg" alt="Logo Sidebar" class="sidebar-logo-img"/>
-    <div class="sidebar-app-name">Zal Яyuichi</div>
   </div>
 
   <div class="sidebar-content">
@@ -242,28 +310,6 @@
 
 <main>
 
-  <div class="saldo-card">
-    <div class="saldo-top-row">
-      <div class="saldo-chip"><i class="fa-solid fa-circle-check"></i> Verified</div>
-      <div class="saldo-logo">PayGet</div>
-    </div>
-    <div class="saldo-mid">
-      <div class="saldo-label">Saldo Kamu</div>
-      <div class="saldo-amount" id="saldo-display">Rp 0</div>
-    </div>
-    <div class="saldo-bottom-row">
-      <div class="saldo-user">
-        <i class="fa-solid fa-circle-user" style="opacity:0.85"></i>
-        <span id="home-username">—</span>
-      </div>
-      <div class="saldo-actions">
-        <button class="saldo-btn" onclick="window.location.href='topup.html'">
-          <i class="fa-solid fa-plus"></i> Top Up
-        </button>
-      </div>
-    </div>
-  </div>
-
   <div class="hist-stats" id="hist-stats">
     <div class="hist-stat-item">
       <div class="hist-stat-icon blue"><i class="fa-solid fa-receipt"></i></div>
@@ -304,29 +350,6 @@
 
 </main>
 
-<nav class="bottom-nav">
-  <a class="bnav-item" href="/dashboard">
-    <i class="fa-solid fa-house"></i>
-    <span class="bnav-label">Home</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/topup.html">
-    <i class="fa-solid fa-wallet"></i>
-    <span class="bnav-label">Top Up</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/produk.html">
-    <i class="fa-solid fa-bag-shopping"></i>
-    <span class="bnav-label">Produk</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item active" href="/home/history.html">
-    <i class="fa-solid fa-clock-rotate-left"></i>
-    <span class="bnav-label">History</span>
-    <div class="bnav-dot"></div>
-  </a>
-</nav>
-
 <div class="notif-overlay" id="notif-overlay">
   <div class="notif-box">
     <div class="notif-icon-wrap" id="notif-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
@@ -338,11 +361,7 @@
 
 <script src="shared.js"></script>
 <script>
-const savedUserName = localStorage.getItem('pg_user') || 'User';
-document.getElementById('home-username').textContent = savedUserName;
-
 function onApiReady() {
-  loadSaldo();
   loadHistory();
 }
 
