@@ -2668,6 +2668,23 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
 
   const viewport = slider.closest('.produk3d-viewport') || slider.parentElement;
 
+  // Ukur tinggi asli tiap slide SEKALI di awal (bukan tiap kali sync), supaya nilainya
+  // tidak goyah akibat transform 3D (rotateY/scale) yang aktif terus di slide yang sedang
+  // bergerak. scrollHeight yang dibaca langsung dari elemen ter-transform bisa berubah-ubah
+  // sedikit antar frame, dan itu yang bikin "Aksi Lainnya" ikut lompat-lompat sendiri.
+  const heightCache = new Map();
+  function measureNaturalHeight(slide) {
+    const prevTransform = slide.style.transform;
+    slide.style.transform = 'none';
+    const h = slide.scrollHeight;
+    slide.style.transform = prevTransform;
+    return h;
+  }
+  function cacheAllHeights() {
+    slides.forEach(slide => heightCache.set(slide, measureNaturalHeight(slide)));
+  }
+  cacheAllHeights();
+
   function applyCoverflow() {
     const viewportCenter = slider.scrollLeft + slider.clientWidth / 2;
     let closest = null, closestDist = Infinity;
@@ -2692,9 +2709,10 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   // dan target-nya wrapper luar yang tidak ikut di-scroll — bukan #produkSlider itu sendiri.
   // Kalau di-set di elemen yang sedang di-scroll, resize itu memicu reflow yang menggeser
   // scrollLeft/offsetLeft slide lain, jadi ikut "menarik" posisi scroll (itu bug sebelumnya).
+  // Tinggi diambil dari cache (bukan scrollHeight langsung) supaya stabil dan tidak lompat.
   function syncHeightToActive(centerSlide) {
     if (!centerSlide || !viewport) return;
-    const activeHeight = centerSlide.scrollHeight;
+    const activeHeight = heightCache.get(centerSlide) || measureNaturalHeight(centerSlide);
     if (activeHeight && Math.abs(viewport.clientHeight - activeHeight) > 1) {
       viewport.style.height = activeHeight + 'px';
     }
@@ -2758,13 +2776,13 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   
   syncDots(applyCoverflow());
   syncHeightToActive(slides[0]);
-  window.addEventListener('load', () => { const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); }, { once: true });
-  window.addEventListener('resize', () => { const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); });
+  window.addEventListener('load', () => { cacheAllHeights(); const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); }, { once: true });
+  window.addEventListener('resize', () => { cacheAllHeights(); const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); });
 
   // Recalc sekali lagi setelah gambar banner (misal AM Prem/Ryuichi) selesai load,
   // karena tinggi asli slide baru diketahui setelah gambar punya ukuran.
   slider.querySelectorAll('img').forEach(img => {
-    if (!img.complete) img.addEventListener('load', () => { const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); }, { once: true });
+    if (!img.complete) img.addEventListener('load', () => { cacheAllHeights(); const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); }, { once: true });
   });
 
   let currentIndex = 0;
