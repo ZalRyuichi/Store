@@ -1062,8 +1062,10 @@
     </div>
   </div>
   <div class="nav-icons">
-    <button class="nav-icon-btn" title="Notifikasi">
-      <i class="fa-regular fa-bell"></i>
+    <button class="nav-icon-btn" title="Pesan" onclick="window.location.href='/home/message.html'" style="font-size:25px">
+      <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+      </svg>
     </button>
     <button class="nav-icon-btn" title="Menu" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
       <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -1330,25 +1332,6 @@
 </main>
 
 
-<button id="contact-fab" class="contact-fab" onclick="document.getElementById('contact-panel').classList.toggle('show')">
-  <i class="fa-solid fa-headset"></i>
-</button>
-<div id="contact-panel" class="contact-panel">
-  <div class="contact-panel-title">Hubungi Admin</div>
-  <a class="contact-item" href="https://t.me/ZalRyuichi" target="_blank">
-    <div class="contact-item-icon tg"><i class="fa-brands fa-telegram"></i></div> Telegram
-  </a>
-  <a class="contact-item" href="https://wa.me/6285809456224" target="_blank">
-    <div class="contact-item-icon wa"><i class="fa-brands fa-whatsapp"></i></div> WhatsApp
-  </a>
-  <a class="contact-item" href="https://tiktok.com/@zal_ryuichi" target="_blank">
-    <div class="contact-item-icon tt"><i class="fa-brands fa-tiktok"></i></div> TikTok
-  </a>
-  <a class="contact-item" href="https://instagram.com/zal_ryuichi" target="_blank">
-    <div class="contact-item-icon ig"><i class="fa-brands fa-instagram"></i></div> Instagram
-  </a>
-</div>
-
 <script>
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
 let API_BASE = "";
@@ -1516,14 +1499,6 @@ function autoSlideRow(containerId, intervalMs) {
 
 autoSlideRow('produk-populer-slider', 2000);
 autoSlideRow('aksi-lainnya-slider', 2000);
-
-document.addEventListener('click', e => {
-  const panel = document.getElementById('contact-panel');
-  const fab = document.getElementById('contact-fab');
-  if (panel.classList.contains('show') && !panel.contains(e.target) && !fab.contains(e.target)) {
-    panel.classList.remove('show');
-  }
-});
 
 // Update greeting based on WIB time
 function updateGreeting() {
