@@ -604,12 +604,12 @@
 
   /* Admin contact FAB */
   .contact-fab {
-    position: fixed; right: 16px; bottom: 84px;
+    position: fixed; right: 16px; bottom: 20px;
     width: 48px; height: 48px; border-radius: 50%;
     background: linear-gradient(135deg, var(--blue), var(--blue-d));
     color: #fff; border: none; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px; box-shadow: 0 6px 18px rgba(37,99,235,0.4);
+    font-size: 18px;
     z-index: 50; transition: transform 0.2s;
   }
   .contact-fab:active { transform: scale(0.94); }
@@ -640,17 +640,12 @@
 
   /* Sewa Bot floating button */
   .sewabot-fab {
-    position: fixed; left: 16px; bottom: 84px;
+    position: fixed; left: 16px; bottom: 20px;
     width: 48px; height: 48px; border-radius: 50%;
     background: linear-gradient(135deg, #25D366, #128C7E);
     color: #fff; border: none; cursor: pointer; text-decoration: none;
     display: flex; align-items: center; justify-content: center;
-    font-size: 20px; box-shadow: 0 6px 18px rgba(37,211,102,0.45);
+    font-size: 20px;
     z-index: 50; transition: transform 0.2s;
-    animation: sewabotPulse 2.2s infinite;
   }
   .sewabot-fab:active { transform: scale(0.94); }
-  @keyframes sewabotPulse {
-    0%, 100% { box-shadow: 0 6px 18px rgba(37,211,102,0.45); }
-    50%      { box-shadow: 0 6px 24px rgba(37,211,102,0.8); }
-  }
