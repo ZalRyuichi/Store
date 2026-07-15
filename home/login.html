@@ -116,26 +116,28 @@
   }
   @keyframes overlayIn { from { opacity:0; } to { opacity:1; } }
   @keyframes cardIn { from { opacity:0; transform:translateY(14px) scale(.96); } to { opacity:1; transform:translateY(0) scale(1); } }
-  @keyframes iconPop { 0% { transform:scale(0); } 60% { transform:scale(1.15); } 100% { transform:scale(1); } }
-  .notif-icon {
+  @keyframes notifIconPop { 0% { transform:scale(0); } 60% { transform:scale(1.15); } 100% { transform:scale(1); } }
+  .notif-icon-wrap {
     width: 64px; height: 64px; margin: 0 auto 18px;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 26px;
-    animation: iconPop .35s cubic-bezier(.34,1.56,.64,1) .05s both;
+    animation: notifIconPop .35s cubic-bezier(.34,1.56,.64,1) .05s both;
   }
-  .notif-icon.success { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.25); color: #34d399; box-shadow: 0 0 24px rgba(52,211,153,.15); }
-  .notif-icon.error   { background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.25); color: #f87171; box-shadow: 0 0 24px rgba(248,113,113,.15); }
-  .notif-icon.info    { background: rgba(37,99,235,.1); border: 1px solid rgba(37,99,235,.3); color: #60a5fa; box-shadow: 0 0 24px rgba(37,99,235,.15); }
-  .notif-msg {
-    font-family: 'Orbitron', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: .6px;
+  .notif-icon-wrap i { color: inherit; }
+  .notif-icon-wrap.success { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.25); color: #34d399; box-shadow: 0 0 24px rgba(52,211,153,.15); }
+  .notif-icon-wrap.error   { background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.25); color: #f87171; box-shadow: 0 0 24px rgba(248,113,113,.15); }
+  .notif-icon-wrap.info    { background: rgba(37,99,235,.1); border: 1px solid rgba(37,99,235,.3); color: #60a5fa; box-shadow: 0 0 24px rgba(37,99,235,.15); }
+  .notif-icon-wrap.warning { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.3); color: #fbbf24; box-shadow: 0 0 24px rgba(245,158,11,.15); }
+  .notif-title {
+    font-family: 'Orbitron', 'Inter', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: .6px;
     color: #f8fafc; margin-bottom: 8px;
   }
-  .notif-sub {
-    font-family: 'Share Tech Mono', monospace; font-size: 12.5px; line-height: 1.6; color: #8ea3c2;
+  .notif-desc {
+    font-family: 'Share Tech Mono', 'Inter', monospace; font-size: 12.5px; line-height: 1.6; color: #8ea3c2;
     margin-bottom: 24px; letter-spacing: .2px;
   }
-  .notif-ok {
+  .notif-btn-ok {
     width: 100%; padding: 13px; border: none; border-radius: 12px;
     background: linear-gradient(135deg, #2563eb, #1e40af); color: #fff; font-size: 13.5px; font-weight: 600;
     letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
@@ -143,10 +145,12 @@
     transition: transform 0.2s ease, filter 0.2s ease;
     margin-top: 10px;
   }
-  .notif-ok:hover { transform: translateY(-2px); filter: brightness(1.08); }
-  .notif-ok:active { transform: translateY(0); }
-  .notif-ok.error   { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-  .notif-ok.success { background: linear-gradient(135deg, #10b981, #047857); }
+  .notif-btn-ok:hover { transform: translateY(-2px); filter: brightness(1.08); }
+  .notif-btn-ok:active { transform: translateY(0); }
+  .notif-btn-ok.error   { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+  .notif-btn-ok.success { background: linear-gradient(135deg, #10b981, #047857); }
+  .notif-btn-ok.info    { background: linear-gradient(135deg, #2563eb, #1e40af); }
+  .notif-btn-ok.warning { background: linear-gradient(135deg, #f59e0b, #b45309); }
 
   .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -191,10 +195,10 @@
 
 <div class="notif-overlay" id="notif-overlay">
   <div class="notif-box">
-    <div class="notif-icon" id="notif-icon"><i id="notif-icon-i" class="fa-solid fa-circle-xmark"></i></div>
-    <div class="notif-msg" id="notif-msg"></div>
-    <div class="notif-sub" id="notif-sub"></div>
-    <button class="notif-ok" id="notif-ok" onclick="closeNotif()"><i class="fa-solid fa-check"></i> Mengerti</button>
+    <div class="notif-icon-wrap" id="notif-icon-wrap"><i id="notif-icon-i" class="fa-solid fa-circle-check"></i></div>
+    <div class="notif-title" id="notif-title"></div>
+    <div class="notif-desc" id="notif-desc"></div>
+    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()"><i class="fa-solid fa-check"></i> Mengerti</button>
   </div>
 </div>
 
@@ -223,14 +227,15 @@ function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
     const icons = {
       error:   'fa-solid fa-circle-exclamation',
       success: 'fa-solid fa-circle-check',
-      info:    'fa-solid fa-circle-info'
+      info:    'fa-solid fa-circle-info',
+      warning: 'fa-solid fa-triangle-exclamation'
     };
     const iconEl = document.getElementById('notif-icon-i');
     iconEl.className = icons[type] || icons.info;
-    document.getElementById('notif-icon').className = `notif-icon ${type}`;
-    document.getElementById('notif-msg').textContent = msg;
-    document.getElementById('notif-sub').textContent = sub;
-    document.getElementById('notif-ok').className = `notif-ok ${type}`;
+    document.getElementById('notif-icon-wrap').className = `notif-icon-wrap ${type}`;
+    document.getElementById('notif-title').textContent = msg;
+    document.getElementById('notif-desc').textContent = sub;
+    document.getElementById('notif-btn-ok').className = `notif-btn-ok ${type}`;
     document.getElementById('notif-overlay').classList.add('show');
   }
 
