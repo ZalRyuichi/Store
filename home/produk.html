@@ -245,6 +245,9 @@
   }
   .produk3d-viewport {
     perspective: 1200px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
   .list-produk-heading {
     max-width: 900px;
@@ -289,7 +292,7 @@
     border: none !important;
     padding: 0 !important;
     max-width: none !important;
-    width: 90% !important;
+    width: 100% !important;
     margin: 0 auto !important;
     box-shadow: none !important;
     background: transparent !important;
@@ -780,7 +783,7 @@
     text-align: left;
   }
   .aksi-lainnya-title {
-    font-family: 'LabelFont', 'Orbitron', 'Inter', sans-serif;
+    font-family: 'LabelFont', 'Inter', sans-serif;
     font-size: 26px;
     font-weight: 700;
     color: var(--dark);
@@ -886,6 +889,7 @@
   }
   .aksi-card-badge-bottom i { font-size: 10px; }
   .aksi-card.aksi-tools   { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 60%, #1D4ED8 100%); }
+  .aksi-card.aksi-beranda { background: radial-gradient(120% 120% at 15% 10%, #67E8F9 0%, #0891B2 45%, #164E63 100%); }
   .aksi-card.aksi-topup   { background: radial-gradient(120% 120% at 15% 10%, #6EE7B7 0%, #10B981 45%, #047857 100%); }
   .aksi-card.aksi-history { background: radial-gradient(120% 120% at 15% 10%, #C4B5FD 0%, #7C3AED 45%, #4C1D95 100%); }
   .aksi-card.aksi-voucher { background: radial-gradient(120% 120% at 15% 10%, #FBCFE8 0%, #EC4899 45%, #9D174D 100%); }
@@ -1256,6 +1260,18 @@
 </div>
 <div class="aksi-lainnya-box">
   <div class="aksi-lainnya-slider" id="aksi-lainnya-slider">
+    <a href="/dashboard.html" class="aksi-card aksi-beranda">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-house d1"></i>
+        <i class="fa-solid fa-compass d2"></i>
+        <i class="fa-solid fa-store d3"></i>
+        <i class="fa-solid fa-house-chimney d4"></i>
+        <i class="fa-solid fa-house-user d5"></i>
+      </div>
+      <div class="aksi-card-badge-top">Utama</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-house"></i> Beranda</div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-house"></i></div>
+    </a>
     <a href="/home/topup.html" class="aksi-card aksi-topup">
       <div class="aksi-card-decor">
         <i class="fa-solid fa-coins d1"></i>
@@ -1280,18 +1296,6 @@
       <div class="aksi-card-badge-bottom"><i class="fa-solid fa-clock-rotate-left"></i> History</div>
       <div class="aksi-card-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
     </a>
-    <a href="/tools.html" class="aksi-card aksi-tools">
-      <div class="aksi-card-decor">
-        <i class="fa-solid fa-gear d1"></i>
-        <i class="fa-solid fa-screwdriver-wrench d2"></i>
-        <i class="fa-solid fa-hammer d3"></i>
-        <i class="fa-solid fa-toolbox d4"></i>
-        <i class="fa-solid fa-wrench d5"></i>
-      </div>
-      <div class="aksi-card-badge-top">Gratis</div>
-      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-wrench"></i> Tools</div>
-      <div class="aksi-card-icon"><i class="fa-solid fa-wrench"></i></div>
-    </a>
     <a href="/home/voucher.html" class="aksi-card aksi-voucher">
       <div class="aksi-card-decor">
         <i class="fa-solid fa-ticket d1"></i>
@@ -1303,6 +1307,18 @@
       <div class="aksi-card-badge-top">Promo</div>
       <div class="aksi-card-badge-bottom"><i class="fa-solid fa-ticket"></i> Voucher</div>
       <div class="aksi-card-icon"><i class="fa-solid fa-ticket"></i></div>
+    </a>
+    <a href="/tools.html" class="aksi-card aksi-tools">
+      <div class="aksi-card-decor">
+        <i class="fa-solid fa-gear d1"></i>
+        <i class="fa-solid fa-screwdriver-wrench d2"></i>
+        <i class="fa-solid fa-hammer d3"></i>
+        <i class="fa-solid fa-toolbox d4"></i>
+        <i class="fa-solid fa-wrench d5"></i>
+      </div>
+      <div class="aksi-card-badge-top">Gratis</div>
+      <div class="aksi-card-badge-bottom"><i class="fa-solid fa-wrench"></i> Tools</div>
+      <div class="aksi-card-icon"><i class="fa-solid fa-wrench"></i></div>
     </a>
   </div>
 </div>
@@ -2587,6 +2603,43 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
   }, { passive: true });
 })();
+
+function autoSlideRow(containerId, intervalMs) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  let paused = false;
+  let resumeTimer = null;
+
+  function tick() {
+    if (paused) return;
+    const itemEl = el.children[0];
+    if (!itemEl) return;
+    const style = getComputedStyle(el);
+    const gap = parseFloat(style.columnGap || style.gap || '0') || 0;
+    const step = itemEl.getBoundingClientRect().width + gap;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    if (el.scrollLeft >= maxScroll - 2) {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      const next = Math.min(el.scrollLeft + step, maxScroll);
+      el.scrollTo({ left: next, behavior: 'smooth' });
+    }
+  }
+
+  function pauseThenResume() {
+    paused = true;
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => { paused = false; }, 3000);
+  }
+
+  el.addEventListener('touchstart', pauseThenResume, { passive: true });
+  el.addEventListener('mousedown', pauseThenResume);
+  el.addEventListener('wheel', pauseThenResume, { passive: true });
+
+  setInterval(tick, intervalMs);
+}
+
+autoSlideRow('aksi-lainnya-slider', 2000);
 </script>
 
 </body>
