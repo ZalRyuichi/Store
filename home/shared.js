@@ -262,7 +262,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const ov = document.getElementById('modal-overlay');
   if (ov) ov.addEventListener('click', e => { if (e.target === ov) closeModal(); });
 
-  if (!document.getElementById('contact-fab')) {
+  const p = location.pathname.toLowerCase();
+  const contactFabExcluded = p.endsWith('produk.html') || p.endsWith('topup.html') || p.endsWith('history.html');
+
+  if (!contactFabExcluded && !document.getElementById('contact-fab')) {
     const fab = document.createElement('button');
     fab.id = 'contact-fab';
     fab.className = 'contact-fab';

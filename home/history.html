@@ -175,7 +175,7 @@
 
   .sidebar-btn.logout {
     background: #000000;
-    color: var(--red); border: 1px solid #FECACA;
+    color: var(--red); border: 1px solid var(--red);
     width: 100%; justify-content: center; margin-top: 12px;
   }
 
@@ -342,8 +342,10 @@
     </div>
   </div>
   <div class="nav-icons">
-    <button class="nav-icon-btn" title="Notifikasi">
-      <i class="fa-regular fa-bell"></i>
+    <button class="nav-icon-btn" title="Pesan" onclick="window.location.href='../home/message.html'" style="font-size:25px">
+      <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+      </svg>
     </button>
     <button class="nav-icon-btn" title="Menu" onclick="document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebar-overlay').classList.toggle('show')">
       <i class="fa-solid fa-ellipsis-vertical"></i>
