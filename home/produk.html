@@ -277,6 +277,7 @@
     scrollbar-width: none;
     padding: 0 0 4px;
     gap: 0;
+    transition: height 0.25s ease;
   }
   .produk-slider::-webkit-scrollbar { display: none; }
   .produk-slide {
@@ -1021,6 +1022,8 @@
     <div class="produk-dot" data-i="1"></div>
     <div class="produk-dot" data-i="2"></div>
     <div class="produk-dot" data-i="3"></div>
+    <div class="produk-dot" data-i="4"></div>
+    <div class="produk-dot" data-i="5"></div>
   </div>
 
   <div class="produk3d-viewport">
@@ -1477,7 +1480,7 @@
       <div id="detail-benefit"></div>
     </div>
 
-    <div class="detail-section">
+    <div class="detail-section" id="basic-feature-section">
       <div class="detail-section-title" id="basic-feature-title"><i class="fa-solid fa-layer-group"></i> Fitur Dasar Aplikasi</div>
       <div class="feature-grid" id="detail-features-basic"></div>
     </div>
@@ -1906,6 +1909,8 @@ function openDetail(id) {
   document.getElementById('detail-price').textContent = rupiah(role.price);
   const vipSection = document.getElementById('vip-feature-section');
 
+  document.getElementById('basic-feature-section').style.display = '';
+
   if (role.ptero) {
     document.getElementById('detail-sub-label').textContent = 'Panel Ptero';
     document.getElementById('detail-price-sub').textContent = 'RAM ' + role.ram;
@@ -1915,6 +1920,13 @@ function openDetail(id) {
     ].map(b => `<div class="benefit-row"><i class="fa-solid fa-circle-check"></i><span>${b}</span></div>`).join('');
     document.getElementById('basic-feature-title').innerHTML = '<i class="fa-solid fa-layer-group"></i> Spesifikasi';
     renderFeaturePills(document.getElementById('detail-features-basic'), PTERO_SPECS);
+    vipSection.style.display = 'none';
+  } else if (role.app === 'am') {
+    document.getElementById('detail-sub-label').textContent = 'Alight Motion Premium';
+    document.getElementById('detail-price-sub').textContent = '1 Tahun';
+    document.getElementById('detail-benefit').innerHTML = role.benefit.map(b =>
+      `<div class="benefit-row"><i class="fa-solid fa-circle-check"></i><span>${b}</span></div>`).join('');
+    document.getElementById('basic-feature-section').style.display = 'none';
     vipSection.style.display = 'none';
   } else if (role.app === 'xyz') {
     document.getElementById('detail-sub-label').textContent = 'XyzXRat';
@@ -1967,6 +1979,12 @@ async function onBeliClick() {
 
   if (role.ptero) {
     await doBeliPtero();
+    return;
+  }
+
+  if (role.app === 'am') {
+    closeDetail();
+    window.location.href = '../home/buyam.html';
     return;
   }
 
@@ -2663,6 +2681,14 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
       if (Math.abs(dist) < closestDist) { closestDist = Math.abs(dist); closest = slide; }
     });
     ticking = false;
+    if (closest) {
+      // Samakan tinggi slider dengan tinggi slide yang sedang aktif (bukan slide terpanjang),
+      // supaya "Aksi Lainnya" ikut naik/turun sesuai konten slide yang tampil.
+      const activeHeight = closest.scrollHeight;
+      if (activeHeight && Math.abs(slider.clientHeight - activeHeight) > 1) {
+        slider.style.height = activeHeight + 'px';
+      }
+    }
     return closest;
   }
 
@@ -2725,6 +2751,12 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   syncDots(applyCoverflow());
   window.addEventListener('load', () => syncDots(applyCoverflow()), { once: true });
   window.addEventListener('resize', () => syncDots(applyCoverflow()));
+
+  // Recalc sekali lagi setelah gambar banner (misal AM Prem/Ryuichi) selesai load,
+  // karena tinggi asli slide baru diketahui setelah gambar punya ukuran.
+  slider.querySelectorAll('img').forEach(img => {
+    if (!img.complete) img.addEventListener('load', () => syncDots(applyCoverflow()), { once: true });
+  });
 
   let currentIndex = 0;
   let scrollEndTimer = null;
