@@ -262,40 +262,5 @@ document.addEventListener('DOMContentLoaded', () => {
   const ov = document.getElementById('modal-overlay');
   if (ov) ov.addEventListener('click', e => { if (e.target === ov) closeModal(); });
 
-  const p = location.pathname.toLowerCase();
-  const contactFabExcluded = p.endsWith('produk.html') || p.endsWith('topup.html') || p.endsWith('history.html');
 
-  if (!contactFabExcluded && !document.getElementById('contact-fab')) {
-    const fab = document.createElement('button');
-    fab.id = 'contact-fab';
-    fab.className = 'contact-fab';
-    fab.innerHTML = '<i class="fa-solid fa-headset"></i>';
-    fab.onclick = () => document.getElementById('contact-panel').classList.toggle('show');
-
-    const panel = document.createElement('div');
-    panel.id = 'contact-panel';
-    panel.className = 'contact-panel';
-    panel.innerHTML = `
-      <div class="contact-panel-title">Hubungi Admin</div>
-      <a class="contact-item" href="https://t.me/ZalRyuichi" target="_blank">
-        <div class="contact-item-icon tg"><i class="fa-brands fa-telegram"></i></div> Telegram
-      </a>
-      <a class="contact-item" href="https://wa.me/6285809456224" target="_blank">
-        <div class="contact-item-icon wa"><i class="fa-brands fa-whatsapp"></i></div> WhatsApp
-      </a>
-      <a class="contact-item" href="https://tiktok.com/@zal_ryuichi" target="_blank">
-        <div class="contact-item-icon tt"><i class="fa-brands fa-tiktok"></i></div> TikTok
-      </a>
-      <a class="contact-item" href="https://instagram.com/zal_ryuichi" target="_blank">
-        <div class="contact-item-icon ig"><i class="fa-brands fa-instagram"></i></div> Instagram
-      </a>
-    `;
-
-    document.body.appendChild(panel);
-    document.body.appendChild(fab);
-
-    document.addEventListener('click', e => {
-      if (!panel.contains(e.target) && !fab.contains(e.target)) panel.classList.remove('show');
-    });
-  }
 });
