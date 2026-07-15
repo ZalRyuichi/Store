@@ -209,7 +209,126 @@
     align-items: center;
     gap: 8px;
   }
-  .riwayat-title i { color: #F97316; font-size: 0.72em; }
+  .riwayat-title i { color: #10B981; font-size: 0.72em; }
+
+  /* AKSI LAINNYA: sama seperti dashboard.html */
+  .aksi-lainnya-heading {
+    max-width: 900px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+    text-align: left;
+  }
+  .aksi-lainnya-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .aksi-lainnya-title i { color: #F97316; font-size: 0.72em; }
+  .aksi-lainnya-box {
+    max-width: 900px;
+    margin: 12px auto 0;
+    padding: 0 20px;
+  }
+  .aksi-lainnya-slider {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    padding: 12px;
+  }
+  .aksi-lainnya-slider::-webkit-scrollbar { display: none; }
+  .aksi-card {
+    position: relative;
+    overflow: hidden;
+    flex: 0 0 calc(50% - 6px);
+    scroll-snap-align: start;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+  }
+  .aksi-card:active { transform: scale(0.96); }
+  .aksi-card-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .aksi-card-decor i { position: absolute; color: rgba(255,255,255,0.32); }
+  .aksi-card-decor i.d1 { top: -14px; left: -12px; font-size: 62px; opacity: 0.75; animation: aksiFloatD1 3.2s ease-in-out infinite; }
+  .aksi-card-decor i.d2 { bottom: -18px; right: -14px; font-size: 78px; opacity: 0.65; animation: aksiFloatD2 3.8s ease-in-out infinite; animation-delay: 0.3s; }
+  .aksi-card-decor i.d3 { top: 14%; right: -10px; font-size: 30px; opacity: 0.85; animation: aksiFloatD3 2.8s ease-in-out infinite; animation-delay: 0.6s; }
+  .aksi-card-decor i.d4 { bottom: 16%; left: -8px; font-size: 26px; opacity: 0.7; animation: aksiFloatD4 3.5s ease-in-out infinite; animation-delay: 0.2s; }
+  .aksi-card-decor i.d5 { top: 50%; left: 50%; font-size: 100px; opacity: 0.32; animation: aksiFloatD5 4.2s ease-in-out infinite; animation-delay: 0.1s; }
+  @keyframes aksiFloatD1 { 0%,100% { transform: rotate(-18deg) translateY(0); } 50% { transform: rotate(-18deg) translateY(-9px); } }
+  @keyframes aksiFloatD2 { 0%,100% { transform: rotate(16deg) translateY(0); } 50% { transform: rotate(16deg) translateY(9px); } }
+  @keyframes aksiFloatD3 { 0%,100% { transform: rotate(12deg) translateY(0); } 50% { transform: rotate(12deg) translateY(-7px); } }
+  @keyframes aksiFloatD4 { 0%,100% { transform: rotate(-20deg) translateY(0); } 50% { transform: rotate(-20deg) translateY(8px); } }
+  @keyframes aksiFloatD5 { 0%,100% { transform: translate(-50%,-50%) rotate(-8deg) translateY(0); } 50% { transform: translate(-50%,-50%) rotate(-8deg) translateY(-10px); } }
+  .aksi-card-icon {
+    position: relative;
+    z-index: 1;
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(2px);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .aksi-card-badge-top {
+    position: absolute;
+    top: 0; right: 0;
+    z-index: 2;
+    background: rgba(0,0,0,0.28);
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 0 12px 0 12px;
+    backdrop-filter: blur(2px);
+  }
+  .aksi-card-badge-bottom {
+    position: absolute;
+    bottom: 0; left: 0;
+    z-index: 2;
+    background: rgba(0,0,0,0.28);
+    color: #fff;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 6px 18px 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    clip-path: polygon(0 0, 70% 0, 100% 100%, 0 100%);
+    border-top: 1.5px solid rgba(255,255,255,0.45);
+    border-left: 1.5px solid rgba(255,255,255,0.45);
+  }
+  .aksi-card-badge-bottom i { font-size: 10px; }
+  .aksi-card.aksi-tools   { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 60%, #1D4ED8 100%); }
+  .aksi-card.aksi-topup   { background: radial-gradient(120% 120% at 15% 10%, #6EE7B7 0%, #10B981 45%, #047857 100%); }
+  .aksi-card.aksi-produk  { background: radial-gradient(120% 120% at 15% 10%, #93C5FD 0%, #2563EB 45%, #1E40AF 100%); }
+  .aksi-card.aksi-history { background: radial-gradient(120% 120% at 15% 10%, #C4B5FD 0%, #7C3AED 45%, #4C1D95 100%); }
+  .aksi-card.aksi-voucher { background: radial-gradient(120% 120% at 15% 10%, #FBCFE8 0%, #EC4899 45%, #9D174D 100%); }
 </style>
 </head>
 <body>
@@ -367,6 +486,62 @@
     <div class="riwayat-title">Riwayat Transaksi <i class="fa-solid fa-clock-rotate-left"></i></div>
   </div>
 
+  <div class="aksi-lainnya-heading">
+    <div class="aksi-lainnya-title">Aksi Lainnya <i class="fa-solid fa-bolt"></i></div>
+  </div>
+  <div class="aksi-lainnya-box">
+    <div class="aksi-lainnya-slider" id="aksi-lainnya-slider">
+      <a href="/home/topup.html" class="aksi-card aksi-topup">
+        <div class="aksi-card-decor">
+          <i class="fa-solid fa-coins d1"></i>
+          <i class="fa-solid fa-sack-dollar d2"></i>
+          <i class="fa-solid fa-money-bill-wave d3"></i>
+          <i class="fa-solid fa-credit-card d4"></i>
+          <i class="fa-solid fa-wallet d5"></i>
+        </div>
+        <div class="aksi-card-badge-top">Saldo</div>
+        <div class="aksi-card-badge-bottom"><i class="fa-solid fa-wallet"></i> Top Up</div>
+        <div class="aksi-card-icon"><i class="fa-solid fa-wallet"></i></div>
+      </a>
+      <a href="/home/produk.html" class="aksi-card aksi-produk">
+        <div class="aksi-card-decor">
+          <i class="fa-solid fa-box d1"></i>
+          <i class="fa-solid fa-cart-shopping d2"></i>
+          <i class="fa-solid fa-tags d3"></i>
+          <i class="fa-solid fa-boxes-stacked d4"></i>
+          <i class="fa-solid fa-bag-shopping d5"></i>
+        </div>
+        <div class="aksi-card-badge-top">Belanja</div>
+        <div class="aksi-card-badge-bottom"><i class="fa-solid fa-bag-shopping"></i> Produk</div>
+        <div class="aksi-card-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+      </a>
+      <a href="/tools.html" class="aksi-card aksi-tools">
+        <div class="aksi-card-decor">
+          <i class="fa-solid fa-gear d1"></i>
+          <i class="fa-solid fa-screwdriver-wrench d2"></i>
+          <i class="fa-solid fa-hammer d3"></i>
+          <i class="fa-solid fa-toolbox d4"></i>
+          <i class="fa-solid fa-wrench d5"></i>
+        </div>
+        <div class="aksi-card-badge-top">Gratis</div>
+        <div class="aksi-card-badge-bottom"><i class="fa-solid fa-wrench"></i> Tools</div>
+        <div class="aksi-card-icon"><i class="fa-solid fa-wrench"></i></div>
+      </a>
+      <a href="/home/voucher.html" class="aksi-card aksi-voucher">
+        <div class="aksi-card-decor">
+          <i class="fa-solid fa-ticket d1"></i>
+          <i class="fa-solid fa-gift d2"></i>
+          <i class="fa-solid fa-percent d3"></i>
+          <i class="fa-solid fa-tags d4"></i>
+          <i class="fa-solid fa-ticket-simple d5"></i>
+        </div>
+        <div class="aksi-card-badge-top">Promo</div>
+        <div class="aksi-card-badge-bottom"><i class="fa-solid fa-ticket"></i> Voucher</div>
+        <div class="aksi-card-icon"><i class="fa-solid fa-ticket"></i></div>
+      </a>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-sub">Semua Transaksi Yang Pernah Dibuat</div>
     <div id="history-content">
@@ -393,6 +568,43 @@
 function onApiReady() {
   loadHistory();
 }
+
+function autoSlideRow(containerId, intervalMs) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  let paused = false;
+  let resumeTimer = null;
+
+  function tick() {
+    if (paused) return;
+    const itemEl = el.children[0];
+    if (!itemEl) return;
+    const style = getComputedStyle(el);
+    const gap = parseFloat(style.columnGap || style.gap || '0') || 0;
+    const step = itemEl.getBoundingClientRect().width + gap;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    if (el.scrollLeft >= maxScroll - 2) {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      const next = Math.min(el.scrollLeft + step, maxScroll);
+      el.scrollTo({ left: next, behavior: 'smooth' });
+    }
+  }
+
+  function pauseThenResume() {
+    paused = true;
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => { paused = false; }, 3000);
+  }
+
+  el.addEventListener('touchstart', pauseThenResume, { passive: true });
+  el.addEventListener('mousedown', pauseThenResume);
+  el.addEventListener('wheel', pauseThenResume, { passive: true });
+
+  setInterval(tick, intervalMs);
+}
+
+autoSlideRow('aksi-lainnya-slider', 2000);
 
 async function loadHistory() {
   try {
