@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Alight Motion Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+  :root {
+    --blue: #2563EB; --blue-d: #1D4ED8; --blue-l: #1E293B;
+    --slate: #94A3B8; --dark: #FFFFFF; --border: #27272A;
+    --white: #000000; --bg: #000000;
+    --red: #EF4444; --green: #10B981; --amber: #F59E0B;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--dark); font-family: 'Inter', sans-serif; padding: 0 0 40px; margin: 0; }
+
+  .top-nav {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 0 16px; height: 64px; display: flex; align-items: center; gap: 10px;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .top-nav a { color: var(--dark); font-size: 18px; text-decoration: none; }
+  .top-nav-title { font-size: 15px; font-weight: 700; }
+
+  .wrap { max-width: 480px; margin: 0 auto; padding: 20px 16px; }
+
+  .am-card {
+    background: var(--white); border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px; margin-bottom: 16px;
+  }
+  .am-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .am-icon {
+    width: 48px; height: 48px; border-radius: 12px; background: var(--blue-l);
+    color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;
+  }
+  .am-title { font-size: 15px; font-weight: 700; }
+  .am-desc { font-size: 12px; color: var(--slate); margin-top: 2px; }
+  .am-price { font-size: 20px; font-weight: 800; color: var(--blue); margin-bottom: 16px; }
+
+  .am-input-wrap { margin-bottom: 14px; }
+  .am-input-label { font-size: 11px; font-weight: 600; color: var(--slate); margin-bottom: 6px; display: block; }
+  .am-input {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 12px 13px; font-size: 14px; outline: none; transition: .2s;
+    background: var(--bg); color: var(--dark);
+  }
+  .am-input:focus { border-color: var(--blue); }
+
+  .am-btn {
+    width: 100%; padding: 13px; border-radius: 10px; border: none;
+    background: var(--blue); color: #fff; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: .2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .am-btn:hover { background: var(--blue-d); }
+  .am-btn:disabled { opacity: .6; cursor: not-allowed; }
+  .am-btn-link { background: transparent; color: var(--slate); font-weight: 600; margin-top: 10px; }
+  .am-btn-link:hover { color: var(--dark); background: transparent; }
+
+  .am-step-badge {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600;
+    color: var(--blue); background: var(--blue-l); padding: 4px 10px; border-radius: 20px; margin-bottom: 14px;
+  }
+
+  .am-usage { font-size: 11px; color: var(--slate); text-align: center; margin-top: 10px; }
+
+  /* Notif overlay */
+  .notif-overlay {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,.6); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .notif-overlay.show { display: flex; animation: fadeIn .2s ease; }
+  @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+  .notif-box {
+    background: var(--white); border: 1px solid var(--border); border-radius: 18px;
+    padding: 28px 22px; max-width: 340px; width: 100%; text-align: center;
+  }
+  .notif-icon-wrap {
+    width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center; font-size: 24px;
+  }
+  .notif-icon-wrap.success { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.25); color: #34d399; }
+  .notif-icon-wrap.error   { background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.25); color: #f87171; }
+  .notif-icon-wrap.warning { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.3); color: #fbbf24; }
+  .notif-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .notif-desc { font-size: 12.5px; color: var(--slate); line-height: 1.5; margin-bottom: 18px; }
+  .notif-btn-ok {
+    width: 100%; padding: 12px; border-radius: 10px; border: none;
+    background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="/produk"><i class="fa-solid fa-arrow-left"></i></a>
+  <div class="top-nav-title">Alight Motion Premium</div>
+</div>
+
+<div class="wrap">
+
+  <!-- STEP 1: Input email + Beli Sekarang -->
+  <div class="am-card" id="am-step1">
+    <div class="am-head">
+      <div class="am-icon"><i class="fa-solid fa-clapperboard"></i></div>
+      <div>
+        <div class="am-title">Alight Motion Premium</div>
+        <div class="am-desc">Aktivasi Akun Premium 1 Tahun</div>
+      </div>
+    </div>
+    <div class="am-price">Rp 15.000</div>
+
+    <div class="am-input-wrap">
+      <label class="am-input-label">Email Alight Motion</label>
+      <input type="email" class="am-input" id="am-email-1" placeholder="contoh@gmail.com" autocomplete="email"/>
+    </div>
+
+    <button class="am-btn" id="am-btn-send" onclick="amSend()">
+      <i class="fa-solid fa-cart-shopping"></i> <span>Beli Sekarang</span>
+    </button>
+  </div>
+
+  <!-- STEP 2: Input ulang email + link verifikasi -->
+  <div class="am-card" id="am-step2" style="display:none">
+    <div class="am-step-badge"><i class="fa-solid fa-envelope-circle-check"></i> Link Verifikasi Terkirim</div>
+    <div class="am-desc" style="margin-bottom:16px">Cek email kamu, buka link verifikasinya, lalu salin link tersebut dan tempel di bawah ini.</div>
+
+    <div class="am-input-wrap">
+      <label class="am-input-label">Email Alight Motion</label>
+      <input type="email" class="am-input" id="am-email-2" placeholder="contoh@gmail.com"/>
+    </div>
+
+    <div class="am-input-wrap">
+      <label class="am-input-label">Link Verifikasi</label>
+      <input type="text" class="am-input" id="am-link" placeholder="Tempel link verifikasi dari email di sini"/>
+    </div>
+
+    <button class="am-btn" id="am-btn-verify" onclick="amVerify()">
+      <i class="fa-solid fa-shield-halved"></i> <span>Verifikasi Sekarang</span>
+    </button>
+    <button class="am-btn am-btn-link" onclick="amBackToStep1()">Batal, Kembali</button>
+  </div>
+
+</div>
+
+<div class="notif-overlay" id="notif-overlay">
+  <div class="notif-box">
+    <div class="notif-icon-wrap" id="notif-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
+    <div class="notif-title" id="notif-title"></div>
+    <div class="notif-desc" id="notif-desc"></div>
+    <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()">Mengerti</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+function apiUrl(p) { return p; } // ganti kalau backend beda origin, mis: return 'https://api.domainkamu.com' + p;
+
+function authHeaders(json) {
+  const h = {};
+  if (json) h["Content-Type"] = "application/json";
+  const token = localStorage.getItem('pg_token');
+  if (token) h["x-auth-token"] = token;
+  return h;
+}
+
+function showNotif(type, title, desc) {
+  const iconWrap = document.getElementById('notif-icon-wrap');
+  iconWrap.className = 'notif-icon-wrap ' + type;
+  iconWrap.innerHTML = type === 'success'
+    ? '<i class="fa-solid fa-circle-check"></i>'
+    : type === 'warning'
+      ? '<i class="fa-solid fa-triangle-exclamation"></i>'
+      : '<i class="fa-solid fa-circle-xmark"></i>';
+  document.getElementById('notif-title').textContent = title;
+  document.getElementById('notif-desc').textContent = desc;
+  document.getElementById('notif-overlay').classList.add('show');
+}
+
+function closeNotif() {
+  document.getElementById('notif-overlay').classList.remove('show');
+}
+
+function setBtnLoading(btn, loading, label) {
+  btn.disabled = loading;
+  btn.querySelector('span').textContent = loading ? 'Memproses...' : label;
+}
+
+async function amSend() {
+  const emailInput = document.getElementById('am-email-1');
+  const email = emailInput.value.trim();
+  if (!email) return showNotif('error', 'Email Kosong', 'Silahkan Isi Email Alight Motion Kamu Terlebih Dahulu.');
+
+  const btn = document.getElementById('am-btn-send');
+  setBtnLoading(btn, true, 'Beli Sekarang');
+
+  try {
+    const res  = await fetch(apiUrl('/api/alight-motion/send'), {
+      method: 'POST',
+      headers: authHeaders(true),
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+
+    if (!data.ok) {
+      if (/saldo/i.test(data.message || '')) {
+        showNotif('warning', 'Saldo Anda Tidak Cukup', 'Saldo Anda Tidak Cukup, Silahkan TopUp Terlebih Dahulu.');
+      } else {
+        showNotif('error', 'Gagal Mengirim Link', data.message || 'Terjadi Kesalahan, Silahkan Coba Lagi.');
+      }
+      return;
+    }
+
+    document.getElementById('am-email-2').value = email;
+    document.getElementById('am-step1').style.display = 'none';
+    document.getElementById('am-step2').style.display = 'block';
+    showNotif('success', 'Link Verifikasi Terkirim', data.message || 'Link Verifikasi Berhasil Dikirim Ke Email Kamu.');
+  } catch (err) {
+    showNotif('error', 'Gagal Terhubung', 'Tidak Bisa Menghubungi Server, Silahkan Coba Lagi.');
+  } finally {
+    setBtnLoading(btn, false, 'Beli Sekarang');
+  }
+}
+
+async function amVerify() {
+  const email = document.getElementById('am-email-2').value.trim();
+  const link  = document.getElementById('am-link').value.trim();
+
+  if (!email) return showNotif('error', 'Email Kosong', 'Silahkan Isi Ulang Email Alight Motion Kamu.');
+  if (!link)  return showNotif('error', 'Link Kosong', 'Silahkan Tempel Link Verifikasi Dari Email Kamu.');
+
+  const btn = document.getElementById('am-btn-verify');
+  setBtnLoading(btn, true, 'Verifikasi Sekarang');
+
+  try {
+    const res  = await fetch(apiUrl('/api/alight-motion/verify'), {
+      method: 'POST',
+      headers: authHeaders(true),
+      body: JSON.stringify({ email, link }),
+    });
+    const data = await res.json();
+
+    if (!data.ok) {
+      if (/saldo/i.test(data.message || '')) {
+        showNotif('warning', 'Saldo Anda Tidak Cukup', 'Saldo Anda Tidak Cukup, Silahkan TopUp Terlebih Dahulu.');
+      } else {
+        showNotif('error', 'Verifikasi Gagal', data.message || 'Pastikan Link Verifikasi Sudah Benar.');
+      }
+      return;
+    }
+
+    showNotif('success', 'Premium Aktif!', `${data.message} Durasi: ${data.duration || '1 Tahun'}.`);
+    amBackToStep1(true);
+  } catch (err) {
+    showNotif('error', 'Gagal Terhubung', 'Tidak Bisa Menghubungi Server, Silahkan Coba Lagi.');
+  } finally {
+    setBtnLoading(btn, false, 'Verifikasi Sekarang');
+  }
+}
+
+function amBackToStep1(resetFields) {
+  document.getElementById('am-step2').style.display = 'none';
+  document.getElementById('am-step1').style.display = 'block';
+  if (resetFields) {
+    document.getElementById('am-email-1').value = '';
+    document.getElementById('am-email-2').value = '';
+    document.getElementById('am-link').value = '';
+  }
+}
+</script>
+</body>
+</html>
