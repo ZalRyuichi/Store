@@ -2530,6 +2530,7 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     if (Math.abs(distance) < 1) { slider.scrollLeft = targetLeft; return; }
     const startTime = performance.now();
     const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    slider.style.scrollSnapType = 'none';
     function step(now) {
       const elapsed = now - startTime;
       const t = Math.min(1, elapsed / duration);
@@ -2539,15 +2540,16 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
       } else {
         slider.scrollLeft = targetLeft;
         scrollAnim = null;
+        slider.style.scrollSnapType = '';
       }
     }
     scrollAnim = requestAnimationFrame(step);
   }
 
-  function goToSlide(slide, smooth) {
+  function goToSlide(slide, smooth, duration) {
     const target = slide.offsetLeft + slide.offsetWidth / 2 - slider.clientWidth / 2;
     if (smooth) {
-      animateScrollTo(target, 450);
+      animateScrollTo(target, duration || 450);
     } else {
       if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
       slider.scrollLeft = target;
@@ -2590,6 +2592,7 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
 
   slider.addEventListener('pointerdown', () => {
     if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
+    slider.style.scrollSnapType = '';
   });
   slider.addEventListener('pointerup', () => {
     clearTimeout(scrollEndTimer);
@@ -2597,14 +2600,16 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   });
   slider.addEventListener('touchstart', () => {
     if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
+    slider.style.scrollSnapType = '';
   }, { passive: true });
   slider.addEventListener('touchend', () => {
     clearTimeout(scrollEndTimer);
     scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
   }, { passive: true });
 
-  // Auto-slide setiap 3 detik
+  // Auto-slide setiap 3 detik (transisi 3D dibuat lebih pelan dari slide manual)
   const AUTO_SLIDE_MS = 3000;
+  const AUTO_SLIDE_ANIM_MS = 2000;
   let autoSlideTimer = null;
   let autoSlidePaused = false;
   let pauseResumeTimer = null;
@@ -2613,7 +2618,7 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     if (autoSlidePaused) return;
     const nextIndex = (currentIndex + 1) % slides.length;
     currentIndex = nextIndex;
-    goToSlide(slides[nextIndex], true);
+    goToSlide(slides[nextIndex], true, AUTO_SLIDE_ANIM_MS);
     syncDots(slides[nextIndex]);
   }
 
