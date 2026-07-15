@@ -196,7 +196,7 @@
   .riwayat-heading {
     max-width: 900px;
     margin: 24px auto 0;
-    padding: 0 20px;
+    padding: 0;
     text-align: left;
   }
   .riwayat-title {
@@ -215,7 +215,7 @@
   .aksi-lainnya-heading {
     max-width: 900px;
     margin: 24px auto 0;
-    padding: 0 20px;
+    padding: 0;
     text-align: left;
   }
   .aksi-lainnya-title {
@@ -232,7 +232,7 @@
   .aksi-lainnya-box {
     max-width: 900px;
     margin: 12px auto 0;
-    padding: 0 20px;
+    padding: 0;
   }
   .aksi-lainnya-slider {
     display: flex;
@@ -325,6 +325,7 @@
   }
   .aksi-card-badge-bottom i { font-size: 10px; }
   .aksi-card.aksi-tools   { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 60%, #1D4ED8 100%); }
+  .aksi-card.aksi-beranda { background: radial-gradient(120% 120% at 15% 10%, #67E8F9 0%, #0891B2 45%, #164E63 100%); }
   .aksi-card.aksi-topup   { background: radial-gradient(120% 120% at 15% 10%, #6EE7B7 0%, #10B981 45%, #047857 100%); }
   .aksi-card.aksi-produk  { background: radial-gradient(120% 120% at 15% 10%, #93C5FD 0%, #2563EB 45%, #1E40AF 100%); }
   .aksi-card.aksi-history { background: radial-gradient(120% 120% at 15% 10%, #C4B5FD 0%, #7C3AED 45%, #4C1D95 100%); }
@@ -461,6 +462,18 @@
   </div>
   <div class="aksi-lainnya-box">
     <div class="aksi-lainnya-slider" id="aksi-lainnya-slider">
+      <a href="/dashboard.html" class="aksi-card aksi-beranda">
+        <div class="aksi-card-decor">
+          <i class="fa-solid fa-house d1"></i>
+          <i class="fa-solid fa-compass d2"></i>
+          <i class="fa-solid fa-store d3"></i>
+          <i class="fa-solid fa-house-chimney d4"></i>
+          <i class="fa-solid fa-house-user d5"></i>
+        </div>
+        <div class="aksi-card-badge-top">Utama</div>
+        <div class="aksi-card-badge-bottom"><i class="fa-solid fa-house"></i> Beranda</div>
+        <div class="aksi-card-icon"><i class="fa-solid fa-house"></i></div>
+      </a>
       <a href="/home/topup.html" class="aksi-card aksi-topup">
         <div class="aksi-card-decor">
           <i class="fa-solid fa-coins d1"></i>
@@ -485,18 +498,6 @@
         <div class="aksi-card-badge-bottom"><i class="fa-solid fa-bag-shopping"></i> Produk</div>
         <div class="aksi-card-icon"><i class="fa-solid fa-bag-shopping"></i></div>
       </a>
-      <a href="/tools.html" class="aksi-card aksi-tools">
-        <div class="aksi-card-decor">
-          <i class="fa-solid fa-gear d1"></i>
-          <i class="fa-solid fa-screwdriver-wrench d2"></i>
-          <i class="fa-solid fa-hammer d3"></i>
-          <i class="fa-solid fa-toolbox d4"></i>
-          <i class="fa-solid fa-wrench d5"></i>
-        </div>
-        <div class="aksi-card-badge-top">Gratis</div>
-        <div class="aksi-card-badge-bottom"><i class="fa-solid fa-wrench"></i> Tools</div>
-        <div class="aksi-card-icon"><i class="fa-solid fa-wrench"></i></div>
-      </a>
       <a href="/home/voucher.html" class="aksi-card aksi-voucher">
         <div class="aksi-card-decor">
           <i class="fa-solid fa-ticket d1"></i>
@@ -508,6 +509,18 @@
         <div class="aksi-card-badge-top">Promo</div>
         <div class="aksi-card-badge-bottom"><i class="fa-solid fa-ticket"></i> Voucher</div>
         <div class="aksi-card-icon"><i class="fa-solid fa-ticket"></i></div>
+      </a>
+      <a href="/tools.html" class="aksi-card aksi-tools">
+        <div class="aksi-card-decor">
+          <i class="fa-solid fa-gear d1"></i>
+          <i class="fa-solid fa-screwdriver-wrench d2"></i>
+          <i class="fa-solid fa-hammer d3"></i>
+          <i class="fa-solid fa-toolbox d4"></i>
+          <i class="fa-solid fa-wrench d5"></i>
+        </div>
+        <div class="aksi-card-badge-top">Gratis</div>
+        <div class="aksi-card-badge-bottom"><i class="fa-solid fa-wrench"></i> Tools</div>
+        <div class="aksi-card-icon"><i class="fa-solid fa-wrench"></i></div>
       </a>
     </div>
   </div>
