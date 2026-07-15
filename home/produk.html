@@ -248,6 +248,8 @@
     max-width: 900px;
     margin: 0 auto;
     padding: 0;
+    transition: height 0.25s ease;
+    overflow: hidden;
   }
   .list-produk-heading {
     max-width: 900px;
@@ -271,13 +273,13 @@
     display: flex;
     align-items: flex-start;
     overflow-x: auto;
+    overflow-y: visible;
     overflow-anchor: none;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding: 0 0 4px;
     gap: 0;
-    transition: height 0.25s ease;
   }
   .produk-slider::-webkit-scrollbar { display: none; }
   .produk-slide {
@@ -2664,6 +2666,8 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   
   let ticking = false;
 
+  const viewport = slider.closest('.produk3d-viewport') || slider.parentElement;
+
   function applyCoverflow() {
     const viewportCenter = slider.scrollLeft + slider.clientWidth / 2;
     let closest = null, closestDist = Infinity;
@@ -2681,15 +2685,19 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
       if (Math.abs(dist) < closestDist) { closestDist = Math.abs(dist); closest = slide; }
     });
     ticking = false;
-    if (closest) {
-      // Samakan tinggi slider dengan tinggi slide yang sedang aktif (bukan slide terpanjang),
-      // supaya "Aksi Lainnya" ikut naik/turun sesuai konten slide yang tampil.
-      const activeHeight = closest.scrollHeight;
-      if (activeHeight && Math.abs(slider.clientHeight - activeHeight) > 1) {
-        slider.style.height = activeHeight + 'px';
-      }
-    }
     return closest;
+  }
+
+  // Update tinggi viewport HANYA saat scroll benar-benar berhenti (bukan tiap frame saat drag),
+  // dan target-nya wrapper luar yang tidak ikut di-scroll — bukan #produkSlider itu sendiri.
+  // Kalau di-set di elemen yang sedang di-scroll, resize itu memicu reflow yang menggeser
+  // scrollLeft/offsetLeft slide lain, jadi ikut "menarik" posisi scroll (itu bug sebelumnya).
+  function syncHeightToActive(centerSlide) {
+    if (!centerSlide || !viewport) return;
+    const activeHeight = centerSlide.scrollHeight;
+    if (activeHeight && Math.abs(viewport.clientHeight - activeHeight) > 1) {
+      viewport.style.height = activeHeight + 'px';
+    }
   }
 
   function syncDots(centerSlide) {
@@ -2749,13 +2757,14 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   });
   
   syncDots(applyCoverflow());
-  window.addEventListener('load', () => syncDots(applyCoverflow()), { once: true });
-  window.addEventListener('resize', () => syncDots(applyCoverflow()));
+  syncHeightToActive(slides[0]);
+  window.addEventListener('load', () => { const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); }, { once: true });
+  window.addEventListener('resize', () => { const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); });
 
   // Recalc sekali lagi setelah gambar banner (misal AM Prem/Ryuichi) selesai load,
   // karena tinggi asli slide baru diketahui setelah gambar punya ukuran.
   slider.querySelectorAll('img').forEach(img => {
-    if (!img.complete) img.addEventListener('load', () => syncDots(applyCoverflow()), { once: true });
+    if (!img.complete) img.addEventListener('load', () => { const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); }, { once: true });
   });
 
   let currentIndex = 0;
@@ -2765,6 +2774,7 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     const centerSlide = applyCoverflow();
     if (centerSlide) currentIndex = parseInt(centerSlide.dataset.realIndex, 10);
     syncDots(centerSlide);
+    syncHeightToActive(centerSlide);
   }
 
   slider.addEventListener('scroll', () => {
