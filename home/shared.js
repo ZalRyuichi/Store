@@ -29,22 +29,17 @@ function apiUrl(path) {
 }
 
 const TOKEN = localStorage.getItem('pg_token');
-if (!TOKEN) window.location.href = '/login.html';
+if (!TOKEN) window.location.href = '/login';
 
 const H = { 'Content-Type': 'application/json', 'x-auth-token': TOKEN };
 
-// Cegat SEMUA request yang pake header H (artinya request ke API kita
-// yang butuh login). Kalau server balikin 401/403 -- entah karena token
-// gak pernah valid, atau sesi udah expired/ke-reset (server restart, dsb)
-// -- langsung logout & tendang ke halaman login. Gak perlu cek manual
-// di tiap halaman lagi.
 const _origFetch = window.fetch.bind(window);
 window.fetch = function (input, init) {
   return _origFetch(input, init).then((res) => {
     const isAuthedCall = init && init.headers === H;
     if (isAuthedCall && (res.status === 401 || res.status === 403)) {
       logout();
-      return new Promise(() => {}); // hentikan chain, halaman lagi redirect
+      return new Promise(() => {});
     }
     return res;
   });
@@ -93,9 +88,6 @@ async function loadSaldo(retry = 2) {
   }
 }
 
-// Tampilkan / sembunyikan tombol mengambang "Sewa Bot WhatsApp"
-// sesuai status masa aktif sewa bot user. Dipanggil otomatis saat
-// halaman dimuat, dan juga bisa dipanggil ulang setelah pembelian.
 async function refreshSewaBotFloating() {
   const _p = location.pathname.toLowerCase();
   if (_p.endsWith('whatsapp') || _p.endsWith('tutor')) return;
