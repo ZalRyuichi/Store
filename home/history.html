@@ -648,7 +648,7 @@ async function loadHistory() {
       return tx.product_name || 'Pembelian';
     };
 
-    container.innerHTML = data.transactions.map(tx => {
+    const renderItem = tx => {
       const st = statusInfo(tx.status);
       const isPanel = tx.type === 'panel' && tx.panelDetail;
       const p = tx.panelDetail;
@@ -701,9 +701,39 @@ async function loadHistory() {
           </div>
         </div>` : ''}
       </div>`;
-    }).join('');
+    };
+
+    const VISIBLE_COUNT = 3;
+    const firstItems = data.transactions.slice(0, VISIBLE_COUNT);
+    const restItems = data.transactions.slice(VISIBLE_COUNT);
+
+    let html = firstItems.map(renderItem).join('');
+
+    if (restItems.length > 0) {
+      html += `<div id="history-more" style="display:none">${restItems.map(renderItem).join('')}</div>`;
+      html += `
+      <button id="history-toggle-btn" onclick="toggleHistoryMore()" data-count="${restItems.length}"
+        style="width:100%;padding:11px;border:1px solid var(--border);border-radius:12px;background:var(--white);color:var(--slate);font-weight:700;font-size:12.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:2px">
+        <span id="history-toggle-text">Lihat Selengkapnya (${restItems.length})</span>
+        <i class="fa-solid fa-chevron-down" id="history-toggle-icon" style="font-size:11px;transition:transform 0.2s"></i>
+      </button>`;
+    }
+
+    container.innerHTML = html;
 
   } catch { toast('Gagal Memuat Riwayat', 'error'); }
+}
+
+function toggleHistoryMore() {
+  const more = document.getElementById('history-more');
+  const btn = document.getElementById('history-toggle-btn');
+  const text = document.getElementById('history-toggle-text');
+  const icon = document.getElementById('history-toggle-icon');
+  if (!more) return;
+  const isHidden = more.style.display === 'none';
+  more.style.display = isHidden ? 'block' : 'none';
+  text.textContent = isHidden ? 'Sembunyikan' : `Lihat Selengkapnya (${btn.dataset.count})`;
+  icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
 }
 </script>
 <nav class="bottom-navbar">
