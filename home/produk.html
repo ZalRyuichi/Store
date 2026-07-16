@@ -357,7 +357,7 @@
   .detail-title { font-size: 17px; font-weight: 800; margin-bottom: 2px; padding-right: 36px; }
   .detail-sub { font-size: 12px; color: var(--slate); margin-bottom: 12px; }
   .detail-footer {
-    position: fixed; bottom: 0; left: 0; right: 0;
+    position: fixed; bottom: calc(58px + env(safe-area-inset-bottom, 0)); left: 0; right: 0;
     max-width: 480px; margin: 0 auto;
     background: var(--white); border-top: 1px solid var(--border);
     padding: 12px 16px; z-index: 95; display: none;
@@ -2234,7 +2234,7 @@ let _accountTx = null;
     <div style="height:80px"></div>
   </div>
 </div>
-<div style="position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--white);border-top:1px solid var(--border);padding:12px 16px;z-index:96;display:none" id="account-form-footer">
+<div style="position:fixed;bottom:calc(58px + env(safe-area-inset-bottom, 0));left:0;right:0;max-width:480px;margin:0 auto;background:var(--white);border-top:1px solid var(--border);padding:12px 16px;z-index:96;display:none" id="account-form-footer">
   <button id="af-submit-btn" onclick="submitAccountForm()"
     style="width:100%;background:var(--blue);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
     <i class="fa-solid fa-user-plus"></i> Buat Akun
@@ -2336,7 +2336,7 @@ let _panelProduct = null;
     <div style="height:80px"></div>
   </div>
 </div>
-<div style="position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--white);border-top:1px solid var(--border);padding:12px 16px;z-index:96;display:none" id="panel-form-footer">
+<div style="position:fixed;bottom:calc(58px + env(safe-area-inset-bottom, 0));left:0;right:0;max-width:480px;margin:0 auto;background:var(--white);border-top:1px solid var(--border);padding:12px 16px;z-index:96;display:none" id="panel-form-footer">
   <button id="pf-submit-btn" onclick="submitPanelForm()"
     style="width:100%;background:#2563EB;color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
     <i class="fa-solid fa-server"></i> Buat Panel Sekarang
@@ -2392,7 +2392,7 @@ let _panelProduct = null;
     <div style="height:80px"></div>
   </div>
 </div>
-<div style="position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--white);border-top:1px solid var(--border);padding:12px 16px;z-index:96;display:none" id="panel-result-footer">
+<div style="position:fixed;bottom:calc(58px + env(safe-area-inset-bottom, 0));left:0;right:0;max-width:480px;margin:0 auto;background:var(--white);border-top:1px solid var(--border);padding:12px 16px;z-index:96;display:none" id="panel-result-footer">
   <button onclick="closePanelResult()" style="width:100%;background:var(--blue);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer">
     OK, Sudah Disimpan
   </button>
