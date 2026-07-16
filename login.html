@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -154,6 +155,20 @@
 
   .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  .gmodal-box .notif-title { margin-bottom: 4px; }
+  .gsi-holder { display: flex; justify-content: center; margin: 18px 0 6px; min-height: 44px; }
+  .gsi-hint { font-family: 'Share Tech Mono', 'Inter', monospace; font-size: 11.5px; color: #5b6b85; margin-top: 4px; }
+  .gmodal-cancel {
+    margin-top: 14px; background: none; border: none; color: #5b6b85; font-size: 12.5px;
+    font-family: 'Inter', sans-serif; cursor: pointer; text-decoration: underline;
+  }
+
+  .btn-link {
+    background: none; border: none; color: var(--slate); font-size: 12.5px;
+    font-family: 'Inter', sans-serif; cursor: pointer; text-decoration: underline; margin-top: 10px;
+    display: block; text-align: center; width: 100%;
+  }
 </style>
 </head>
 <body>
@@ -166,8 +181,12 @@
   </div>
 
   <div class="card-body">
-    <h1>Selamat Datang Kembali</h1>
-    <p class="subtitle">Masuk Ke Akun Kamu</p>
+    <h1 id="card-title">Selamat Datang Kembali</h1>
+    <p class="subtitle" id="card-subtitle">Masuk Ke Akun Kamu</p>
+
+    <div id="google-email-badge" style="display:none; background:#0f1c33; border:1px solid rgba(96,165,250,.25); color:#93c5fd; font-size:12px; font-family:'Share Tech Mono',monospace; padding:8px 12px; border-radius:10px; margin-bottom:16px;">
+      <i class="fa-brands fa-google"></i> <span id="google-email-text"></span>
+    </div>
 
     <label>Username</label>
     <div class="input-wrap">
@@ -184,9 +203,10 @@
     <button class="btn" id="btn-login" onclick="doLogin()">
       <span id="btn-text">Masuk</span>
     </button>
+    <button class="btn-link" id="btn-cancel-google-register" style="display:none;" onclick="cancelGoogleRegisterMode()">Batal, Kembali Ke Login</button>
 
-    <div class="divider">Atau</div>
-    <button class="btn-google" id="btn-google" type="button">
+    <div class="divider" id="btn-google-divider">Atau</div>
+    <button class="btn-google" id="btn-google" type="button" onclick="startGoogleRegister()">
       <svg viewBox="0 0 48 48" width="18" height="18"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
       Lanjutkan Dengan Google
     </button>
@@ -199,6 +219,17 @@
     <div class="notif-title" id="notif-title"></div>
     <div class="notif-desc" id="notif-desc"></div>
     <button class="notif-btn-ok" id="notif-btn-ok" onclick="closeNotif()"><i class="fa-solid fa-check"></i> Mengerti</button>
+  </div>
+</div>
+
+<div class="notif-overlay" id="gmodal-overlay">
+  <div class="notif-box gmodal-box">
+    <div class="notif-icon-wrap info"><i class="fa-brands fa-google"></i></div>
+    <div class="notif-title" id="gmodal-title">Pilih Akun Google</div>
+    <div class="notif-desc" id="gmodal-desc">Pilih Akun Google Untuk Melanjutkan.</div>
+    <div class="gsi-holder" id="gsi-holder"></div>
+    <div class="gsi-hint">Jika Tidak Muncul, Klik Tombol Google Di Atas.</div>
+    <button class="gmodal-cancel" onclick="closeGoogleModal()">Batal</button>
   </div>
 </div>
 
@@ -219,6 +250,8 @@ async function loadApiBase() {
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
 </script>
 <script>
+  const GOOGLE_CLIENT_ID = "156829624887-o5136fanml8smi5r10ojqimrib1h520p.apps.googleusercontent.com";
+
   if (localStorage.getItem('pg_token')) window.location.href = '/dashboard';
 
   let _notifCallback = null;
@@ -248,6 +281,10 @@ function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
     if (e.target === this) closeNotif();
   });
 
+  document.getElementById('gmodal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeGoogleModal();
+  });
+
   function setLoading(v) {
     const btn = document.getElementById('btn-login');
     btn.disabled = v;
@@ -256,6 +293,15 @@ function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
     else btn.querySelector('.spinner')?.remove();
   }
 
+  function goToDashboard(data, username) {
+    localStorage.setItem('pg_token', data.token);
+    localStorage.setItem('pg_user', data.username || username);
+    _notifCallback = () => window.location.href = '/dashboard';
+    showNotif('Login Berhasil!', 'success', 'Mengalihkan Ke Dashboard...');
+    setTimeout(() => window.location.href = '/dashboard', 1200);
+  }
+
+  // ---------- Mode Utama: Login Biasa ----------
   async function doLogin() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
@@ -268,14 +314,159 @@ function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
         body: JSON.stringify({ username, password })
       });
       const data = await res.json();
+
+      if (!data.ok) {
+        showNotif(data.message || 'Login Gagal', 'error', 'Periksa Username Dan Password Anda.');
+        setLoading(false);
+        return;
+      }
+
+      if (data.needs_google) {
+        // Akun ini belum terhubung Google, minta pilih akun dulu lalu auto-link
+        setLoading(false);
+        showNotif('Akun Belum Terhubung Google', 'info', 'Silakan Pilih Akun Google Untuk Melanjutkan.');
+        _notifCallback = () => openGoogleModal('link', { username, password });
+        return;
+      }
+
+      goToDashboard(data, username);
+    } catch {
+      showNotif('Tidak Dapat Terhubung Ke Server', 'error', 'Periksa Koneksi Internet Anda.');
+      setLoading(false);
+    }
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter' && !isGoogleRegisterMode) doLogin(); });
+
+  // ---------- Google Identity Services ----------
+  let googleInitialized = false;
+  let googleModalMode = null;    // 'register' | 'link'
+  let googleLinkCreds = null;    // { username, password } saat mode 'link'
+  let isGoogleRegisterMode = false;
+
+  function initGoogleIdentity() {
+    if (googleInitialized || !window.google?.accounts?.id) return;
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: onGoogleCredential,
+      auto_select: false,
+      cancel_on_tap_outside: false,
+    });
+    googleInitialized = true;
+  }
+
+  function openGoogleModal(mode, linkCreds = null) {
+    googleModalMode = mode;
+    googleLinkCreds = linkCreds;
+    initGoogleIdentity();
+
+    const titleEl = document.getElementById('gmodal-title');
+    const descEl  = document.getElementById('gmodal-desc');
+    if (mode === 'register') {
+      titleEl.textContent = 'Pilih Akun Google';
+      descEl.textContent  = 'Pilih Akun Google Untuk Membuat Akun Baru.';
+    } else {
+      titleEl.textContent = 'Hubungkan Akun Google';
+      descEl.textContent  = 'Akun Kamu Belum Terhubung Google, Pilih Akun Untuk Melanjutkan Login.';
+    }
+
+    document.getElementById('gmodal-overlay').classList.add('show');
+
+    const holder = document.getElementById('gsi-holder');
+    holder.innerHTML = '';
+
+    if (window.google?.accounts?.id) {
+      google.accounts.id.renderButton(holder, {
+        theme: 'filled_black', size: 'large', type: 'standard',
+        text: 'continue_with', shape: 'pill', width: 280,
+      });
+      google.accounts.id.prompt();
+    } else {
+      descEl.textContent = 'Google Belum Siap, Coba Muat Ulang Halaman.';
+    }
+  }
+
+  function closeGoogleModal() {
+    document.getElementById('gmodal-overlay').classList.remove('show');
+    googleModalMode = null;
+    googleLinkCreds = null;
+  }
+
+  async function onGoogleCredential(response) {
+    const credential = response.credential;
+    const mode = googleModalMode;
+    closeGoogleModal();
+    if (!credential) return;
+
+    if (mode === 'register') {
+      enterGoogleRegisterMode(credential);
+    } else if (mode === 'link') {
+      await finishGoogleLink(credential, googleLinkCreds);
+    }
+  }
+
+  // ---------- Mode Daftar Akun Baru Via Google ----------
+  function startGoogleRegister() {
+    openGoogleModal('register');
+  }
+
+  function enterGoogleRegisterMode(credential) {
+    isGoogleRegisterMode = true;
+    window._pendingGoogleCredential = credential;
+
+    document.getElementById('card-title').textContent = 'Buat Akun Baru';
+    document.getElementById('card-subtitle').textContent = 'Lengkapi Username Dan Password Untuk Akun Kamu';
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('username').focus();
+
+    document.getElementById('btn-text').textContent = 'Buat Akun & Login';
+    document.getElementById('btn-login').onclick = doRegisterWithGoogle;
+
+    document.getElementById('btn-google').style.display = 'none';
+    document.getElementById('btn-google-divider').style.display = 'none';
+    document.getElementById('btn-cancel-google-register').style.display = 'block';
+
+    showNotif('Akun Google Terpilih', 'success', 'Sekarang Isi Username Dan Password Untuk Menyelesaikan Pendaftaran.');
+  }
+
+  function cancelGoogleRegisterMode() {
+    isGoogleRegisterMode = false;
+    window._pendingGoogleCredential = null;
+
+    document.getElementById('card-title').textContent = 'Selamat Datang Kembali';
+    document.getElementById('card-subtitle').textContent = 'Masuk Ke Akun Kamu';
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+
+    document.getElementById('btn-text').textContent = 'Masuk';
+    document.getElementById('btn-login').onclick = doLogin;
+
+    document.getElementById('btn-google').style.display = 'flex';
+    document.getElementById('btn-google-divider').style.display = 'block';
+    document.getElementById('btn-cancel-google-register').style.display = 'none';
+  }
+
+  async function doRegisterWithGoogle() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const credential = window._pendingGoogleCredential;
+
+    if (!username || !password) { showNotif('Username Dan Password Wajib Diisi', 'error', 'Pastikan Kedua Data Sudah Terisi.'); return; }
+    if (!credential) { showNotif('Sesi Google Habis', 'error', 'Silakan Ulangi Pilih Akun Google.'); cancelGoogleRegisterMode(); return; }
+
+    setLoading(true);
+    await loadApiBase();
+    try {
+      const res = await fetch(apiUrl('/api/auth/google/register'), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, credential })
+      });
+      const data = await res.json();
       if (data.ok) {
-        localStorage.setItem('pg_token', data.token);
-        localStorage.setItem('pg_user', data.username || username);
-        _notifCallback = () => window.location.href = '/dashboard';
-        showNotif('Login berhasil!', 'success', 'Mengalihkan Ke Dashboard...');
-        setTimeout(() => window.location.href = '/dashboard', 1200);
+        goToDashboard(data, username);
       } else {
-        showNotif(data.message || 'Login gagal', 'error', 'Periksa Username Dan Password Anda.');
+        showNotif(data.message || 'Gagal Membuat Akun', 'error', 'Periksa Kembali Data Kamu.');
         setLoading(false);
       }
     } catch {
@@ -284,7 +475,28 @@ function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
     }
   }
 
-  document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  // ---------- Mode Link Google Saat Login ----------
+  async function finishGoogleLink(credential, creds) {
+    if (!creds) return;
+    setLoading(true);
+    await loadApiBase();
+    try {
+      const res = await fetch(apiUrl('/api/auth/google/link'), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: creds.username, password: creds.password, credential })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        goToDashboard(data, creds.username);
+      } else {
+        showNotif(data.message || 'Gagal Menghubungkan Akun Google', 'error', 'Silakan Coba Lagi.');
+        setLoading(false);
+      }
+    } catch {
+      showNotif('Tidak Dapat Terhubung Ke Server', 'error', 'Periksa Koneksi Internet Anda.');
+      setLoading(false);
+    }
+  }
 </script>
 </body>
 </html>
