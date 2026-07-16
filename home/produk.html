@@ -214,7 +214,7 @@
     background: linear-gradient(135deg, #DC2626 0%, #7F1D1D 100%);
   }
   .apk-banner.ryuichi {
-    background: linear-gradient(135deg, #0B1220 0%, #1E40AF 55%, #94A3B8 100%);
+    background: linear-gradient(135deg, #EC4899 0%, #BE185D 100%);
   }
   .apk-banner-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; position: relative; z-index: 1; }
 
@@ -963,9 +963,9 @@
     </div>
   </div>
   <div class="nav-icons">
-    <a id="btn-admin" href="/admin.html" title="Admin" style="display:none; width:32px; height:32px; background:none; border:1px solid #DDD6FE; border-radius:8px; cursor:pointer; color:#6D28D9; align-items:center; justify-content:center; text-decoration:none; transition:all 0.15s;">
-      <i class="fa-solid fa-shield-halved" style="font-size:13px;"></i>
-    </a>
+    <button class="nav-icon-btn" title="Profil" onclick="window.location.href='/home/profil.html'">
+      <i class="fa-solid fa-circle-user"></i>
+    </button>
     <button class="nav-icon-btn" title="Pesan" onclick="window.location.href='/home/message.html'" style="font-size:25px">
       <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
@@ -1616,11 +1616,6 @@
 const savedUserName = localStorage.getItem('pg_user') || 'User';
 const homeUsernameEl = document.getElementById('home-username');
 if (homeUsernameEl) homeUsernameEl.textContent = savedUserName;
-
-if (savedUserName === 'Zal') {
-  const btnAdmin = document.getElementById('btn-admin');
-  if (btnAdmin) btnAdmin.style.display = 'inline-flex';
-}
 
 function logout() {
   localStorage.removeItem('pg_token');
