@@ -1081,7 +1081,7 @@
       <div class="role-card member" onclick="openDetail('member')">
         <div class="role-icon"><i class="fa-solid fa-user"></i></div>
         <div class="role-name">Member</div>
-        <div class="role-price">Rp 25.000</div>
+        <div class="role-price">Rp 1.000</div>
       </div>
       <div class="role-card vipnoupdate" onclick="openDetail('vip')">
         <div class="role-icon"><i class="fa-solid fa-star-half-stroke"></i></div>
@@ -1159,7 +1159,7 @@
         <div class="role-icon" style="background:#F1F5F9;color:#475569"><i class="fa-solid fa-user-clock"></i></div>
         <div class="role-name">Member</div>
         <div class="role-price" style="font-size:11px;color:var(--slate);font-weight:600;margin-bottom:2px">1 Bulan</div>
-        <div class="role-price">Rp 25.000</div>
+        <div class="role-price">Rp 1.000</div>
       </div>
       <div class="role-card" onclick="openDetail('xyz-member-permanen')">
         <div class="role-icon" style="background:#FFFBEB;color:#B45309"><i class="fa-solid fa-user"></i></div>
@@ -1614,12 +1614,12 @@ let onPaymentCompleted = null;
 let currentSaldoVal = 0;
 
 const ROLE_DATA = {
-  'member':           { name: 'Member',           price: 25000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar'], vip: false },
+  'member':           { name: 'Member',           price: 1000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar'], vip: false },
   'vip':    { name: 'Vip',    price: 50000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar', 'Akses Sebagian Fitur Sadap/RAT'], vip: true, vipNote: 'Akses Sebagian Fitur Sadap' },
   'premium':  { name: 'Premium',  price: 100000, app: 'ryuichi', benefit: ['Akses Semua Fitur Aplikasi', 'Akses Full Fitur Sadap/RAT'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
   'reseller':         { name: 'Reseller',          price: 200000, app: 'ryuichi', benefit: ['Akses Semua Fitur Aplikasi', 'Akses Full Fitur Sadap/RAT', 'Bisa Jualan Role Member Dan Vip'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
   'owner':            { name: 'Owner',             price: 400000, app: 'ryuichi', benefit: ['Akses Full Fitur Aplikasi', 'Bisa Jualin Role Member, Vip, Premium Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
-  'xyz-member-1m':    { name: 'Member (1 Bulan)',  price: 25000,  app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Selama 1 Bulan'], vip: false },
+  'xyz-member-1m':    { name: 'Member (1 Bulan)',  price: 1000,  app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Selama 1 Bulan'], vip: false },
   'xyz-member-permanen': { name: 'Member (Permanen)', price: 50000, app: 'xyz',   benefit: ['Akses Fitur Aplikasi Xyz Permanen'], vip: false },
   'xyz-reseller':     { name: 'Reseller',          price: 130000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualan Role Member 1 Bulan Dan Permanen'], vip: false },
   'xyz-owner':        { name: 'Owner',             price: 230000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualin Role Member Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
