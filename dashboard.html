@@ -896,7 +896,7 @@
   .contact-item-icon.ig { background: linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4); }
 
   .sewabot-fab {
-    position: fixed; left: 16px; bottom: 20px;
+    position: fixed; left: 16px; bottom: calc(58px + env(safe-area-inset-bottom, 0) + 12px);
     width: 48px; height: 48px; border-radius: 50%;
     background: linear-gradient(135deg, #25D366, #128C7E);
     color: #fff; border: none; cursor: pointer; text-decoration: none;
