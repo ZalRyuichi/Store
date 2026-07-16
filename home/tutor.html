@@ -8,6 +8,109 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <link rel="stylesheet" href="shared.css"/>
 <style>
+  @font-face {
+    font-family: 'TitleFont';
+    src: url('/font/title.ttf') format('truetype');
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'LabelFont';
+    src: url('/font/label.ttf') format('truetype');
+    font-display: swap;
+  }
+  :root {
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #1E293B;
+    --slate:  #94A3B8; --dark:   #FFFFFF; --border: #27272A;
+    --white:  #000000; --bg:     #000000;
+    --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
+    --radius: 12px;
+  }
+  body { background: var(--bg); color: var(--dark); padding-bottom: 24px; }
+
+  /* TOP NAV */
+  .top-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 8px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-brand-logo {
+    width: 58px; height: 58px;
+    object-fit: contain;
+    border-radius: 10px;
+    display: block;
+    flex-shrink: 0;
+  }
+  .nav-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .nav-brand-title {
+    font-family: 'TitleFont', 'Inter', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: 0.3px;
+  }
+  .nav-brand-sub {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.4px;
+    margin-top: 1px;
+  }
+  .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .nav-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--dark);
+    font-size: 22px;
+    width: 46px; height: 46px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .nav-icon-btn:hover { background: var(--blue-l); color: var(--blue); }
+
+  /* HEADING (sama seperti Produk Populer di dashboard.html) */
+  .produk-populer-heading {
+    max-width: 900px;
+    margin: 24px auto 0;
+    padding: 0;
+    text-align: left;
+  }
+  .produk-populer-title {
+    font-family: 'LabelFont', 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .produk-populer-title i { color: #F97316; font-size: 0.72em; }
+</style>
+
+<style>
   .tutor-hero {
     background: linear-gradient(135deg, #064E3B 0%, #047857 50%, #065F46 100%);
     border-radius: 20px;
@@ -59,16 +162,18 @@
 <body>
 
 <nav class="top-nav">
-  <a class="nav-logo" href="/dashboard">
-    <div class="logo-icon">
-      <i class="fa-solid fa-store" style="color:#fff;font-size:14px"></i>
+  <div class="nav-brand">
+    <img src="../image/logo.png" alt="Logo" class="nav-brand-logo"/>
+    <div class="nav-brand-text">
+      <div class="nav-brand-title">RYUICHISTR</div>
+      <div class="nav-brand-sub">#BANYAKDISKONNYA</div>
     </div>
-    <div class="logo-text">Zal <span>Яyuichi</span></div>
-  </a>
-  <button class="btn-logout" onclick="logout()">
-    <i class="fa-solid fa-right-from-bracket"></i>
-    Logout
-  </button>
+  </div>
+  <div class="nav-icons">
+    <button class="nav-icon-btn" title="Kembali" onclick="history.back()">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+  </div>
 </nav>
 
 <main>
@@ -83,11 +188,10 @@
     </div>
   </div>
 
+  <div class="produk-populer-heading">
+    <div class="produk-populer-title">Video Tutorial <i class="fa-solid fa-video"></i></div>
+  </div>
   <div class="card">
-    <div class="page-head">
-      <i class="fa-solid fa-video"></i>
-      <div class="card-title">Video Tutorial</div>
-    </div>
     <div class="card-sub" style="margin-bottom:14px">Tonton video berikut untuk panduan lengkap cara pasang bot WhatsApp kamu.</div>
     <div class="video-wrap">
       <video controls playsinline preload="metadata">
@@ -103,28 +207,6 @@
 
 </main>
 
-<nav class="bottom-nav">
-  <a class="bnav-item" href="/dashboard">
-    <i class="fa-solid fa-house"></i>
-    <span class="bnav-label">Home</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/topup.html">
-    <i class="fa-solid fa-wallet"></i>
-    <span class="bnav-label">Top Up</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/produk.html">
-    <i class="fa-solid fa-bag-shopping"></i>
-    <span class="bnav-label">Produk</span>
-    <div class="bnav-dot"></div>
-  </a>
-  <a class="bnav-item" href="/home/history.html">
-    <i class="fa-solid fa-clock-rotate-left"></i>
-    <span class="bnav-label">History</span>
-    <div class="bnav-dot"></div>
-  </a>
-</nav>
 
 <script src="shared.js"></script>
 <script>
