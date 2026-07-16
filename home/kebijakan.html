@@ -2,131 +2,198 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>Kebijakan Privasi Page</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
-    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
-    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
-    --white:  #FFFFFF; --bg:     #F8FAFC;
-    --red:    #EF4444; --red-l:  #FEF2F2;
-    --green:  #10B981; --green-l:#ECFDF5;
-    --amber:  #F59E0B; --amber-l:#FFFBEB;
+    --bg-0:      #08090D;
+    --bg-1:      #0D0F15;
+    --bg-2:      #14161E;
+    --card:      #12141B;
+    --card-hi:   #171A23;
+    --border:    rgba(255, 255, 255, 0.07);
+    --border-hi: rgba(37, 99, 235, 0.45);
+    --gold:      #2563EB;
+    --gold-hi:   #60A5FA;
+    --gold-soft: rgba(37, 99, 235, 0.14);
+    --text:      #ECE9E2;
+    --text-dim:  #8B8F9B;
+    --text-mut:  #5C6070;
+    --radius:    14px;
+
+    --green:     #34D399;
+    --green-soft:rgba(52, 211, 153, 0.12);
+    --green-bd:  rgba(52, 211, 153, 0.35);
+    --amber:     #FBBF24;
+    --amber-soft:rgba(251, 191, 36, 0.12);
+    --amber-bd:  rgba(251, 191, 36, 0.35);
   }
+
   body {
     font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--dark);
+    background:
+      radial-gradient(circle at 15% 0%, rgba(37,99,235,0.10), transparent 45%),
+      radial-gradient(circle at 90% 20%, rgba(30,64,175,0.08), transparent 40%),
+      var(--bg-0);
+    color: var(--text);
     min-height: 100vh;
-    padding-bottom: 50px;
+    padding-bottom: 60px;
+    -webkit-font-smoothing: antialiased;
   }
 
   /* BACK BUTTON */
   .back-btn {
-    position: fixed; top: 16px; right: 16px; z-index: 50;
-    width: 38px; height: 38px; border-radius: 50%;
-    background: var(--white); border: 1px solid var(--border);
+    position: fixed; top: 16px; left: 16px; z-index: 50;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--card); border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    color: var(--dark); font-size: 14px; text-decoration: none;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: all 0.15s;
+    color: var(--text); font-size: 14px; text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    transition: all 0.2s ease;
   }
-  .back-btn:hover { background: var(--blue-l); color: var(--blue); border-color: var(--blue); }
+  .back-btn:hover { background: var(--gold-soft); color: var(--gold-hi); border-color: var(--border-hi); }
   .back-btn:active { transform: scale(0.92); }
 
   /* HERO */
   .page-hero {
-    max-width: 700px; margin: 0 auto; padding: 28px 20px 16px;
+    max-width: 720px; margin: 0 auto; text-align: center;
+    padding: 56px 20px 28px;
   }
   .page-hero-tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--blue-l); color: var(--blue);
-    font-size: 11px; font-weight: 700; letter-spacing: 0.4px;
-    padding: 5px 12px; border-radius: 20px; margin-bottom: 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--gold-hi);
+    margin-bottom: 16px;
   }
-  .page-hero-title { font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
-  .page-hero-meta { font-size: 11.5px; color: var(--slate); display: flex; align-items: center; gap: 6px; }
-  .page-hero-meta i { font-size: 10px; }
+  .page-hero-tag::before,
+  .page-hero-tag::after { content: ""; width: 20px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); }
+  .page-hero-tag::after { background: linear-gradient(90deg, var(--gold), transparent); }
+
+  .page-hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: 32px; font-weight: 600; letter-spacing: -0.01em;
+    color: var(--text); margin-bottom: 12px;
+  }
+  .page-hero-meta {
+    font-size: 12.5px; color: var(--text-dim);
+    display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+  }
+  .page-hero-meta i { font-size: 10px; color: var(--gold-hi); }
+  .page-hero-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-mut); }
 
   /* CONTENT */
-  .kbj-wrap { max-width: 700px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; gap: 14px; }
+  .kbj-wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; gap: 14px; }
 
   .kbj-card {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 16px; padding: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.25);
   }
 
   .kbj-section-title {
-    font-size: 13px; font-weight: 700; color: var(--dark);
-    display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
-    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    font-size: 14px; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    padding-bottom: 14px; border-bottom: 1px solid var(--border);
+    letter-spacing: 0.01em;
   }
   .kbj-num {
-    width: 24px; height: 24px; border-radius: 7px;
-    background: var(--blue-l); color: var(--blue);
-    font-size: 11px; font-weight: 800;
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--gold-soft); color: var(--gold-hi);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    font-size: 12px; font-weight: 800; font-family: 'Fraunces', serif;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
 
-  .kbj-body { display: flex; flex-direction: column; gap: 8px; }
+  .kbj-body { display: flex; flex-direction: column; gap: 12px; }
   .kbj-item {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 12.5px; color: var(--slate); line-height: 1.7;
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 13px; color: var(--text-dim); line-height: 1.7;
   }
-  .kbj-item i { font-size: 9px; color: var(--blue); margin-top: 5px; flex-shrink: 0; }
-  .kbj-item strong { color: var(--dark); font-weight: 600; }
+  .kbj-item-icon {
+    width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+    background: var(--gold-soft); color: var(--gold-hi);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12.5px; margin-top: 1px;
+  }
+  .kbj-item span { padding-top: 5px; }
+  .kbj-item strong { color: var(--text); font-weight: 600; }
 
   /* ALERT */
   .kbj-alert {
-    border-radius: 12px; padding: 14px 16px;
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 12px; line-height: 1.7;
+    border-radius: 12px; padding: 16px 18px;
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 12.5px; line-height: 1.7;
   }
-  .kbj-alert.blue  { background: var(--blue-l);  border: 1px solid rgba(37,99,235,0.2); color: #1E40AF; }
-  .kbj-alert.green { background: var(--green-l); border: 1px solid #A7F3D0; color: #065F46; }
-  .kbj-alert.amber { background: var(--amber-l); border: 1px solid #FDE68A; color: #92400E; }
-  .kbj-alert i { font-size: 13px; margin-top: 1px; flex-shrink: 0; }
-  .kbj-alert strong { font-weight: 700; }
+  .kbj-alert.blue  { background: var(--gold-soft);  border: 1px solid var(--border-hi); color: var(--text); }
+  .kbj-alert.green { background: var(--green-soft); border: 1px solid var(--green-bd); color: var(--text); }
+  .kbj-alert.amber { background: var(--amber-soft); border: 1px solid var(--amber-bd); color: var(--text); }
+  .kbj-alert i { font-size: 15px; margin-top: 2px; flex-shrink: 0; }
+  .kbj-alert.blue i  { color: var(--gold-hi); }
+  .kbj-alert.green i { color: var(--green); }
+  .kbj-alert.amber i { color: var(--amber); }
+  .kbj-alert strong { font-weight: 700; color: #fff; }
 
   /* DATA TABLE */
   .kbj-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
   .kbj-table th {
-    background: var(--bg); font-size: 11px; font-weight: 700;
-    color: var(--slate); text-transform: uppercase; letter-spacing: 0.4px;
-    padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border);
+    background: var(--bg-2); font-size: 11px; font-weight: 700;
+    color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border);
   }
+  .kbj-table th:first-child { border-radius: 8px 0 0 8px; }
+  .kbj-table th:last-child { border-radius: 0 8px 8px 0; }
   .kbj-table td {
-    font-size: 12px; color: var(--slate); padding: 9px 12px;
+    font-size: 12.5px; color: var(--text-dim); padding: 12px 14px;
     border-bottom: 1px solid var(--border); line-height: 1.6;
   }
   .kbj-table tr:last-child td { border-bottom: none; }
-  .kbj-table td strong { color: var(--dark); font-weight: 600; }
+  .kbj-table td strong { color: var(--gold-hi); font-weight: 600; }
 
   /* FOOTER */
-  .kbj-footer { max-width: 700px; margin: 6px auto 0; padding: 0 20px; }
+  .kbj-footer { max-width: 720px; margin: 6px auto 0; padding: 0 20px; }
   .kbj-footer-card {
-    background: linear-gradient(135deg, #0F172A, #1E293B);
-    border-radius: 14px; padding: 16px 20px; color: #fff;
-    display: flex; align-items: center; gap: 12px;
+    background: linear-gradient(135deg, #12141B, #171A23);
+    border: 1px solid var(--border-hi);
+    border-radius: var(--radius); padding: 20px 22px; color: var(--text);
+    display: flex; align-items: center; gap: 14px;
   }
-  .kbj-footer-card i { font-size: 18px; opacity: 0.8; }
-  .kbj-footer-text { font-size: 12px; line-height: 1.7; opacity: 0.85; }
-  .kbj-footer-text strong { font-weight: 700; color: #fff; }
+  .kbj-footer-icon {
+    width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+    background: var(--gold-soft); color: var(--gold-hi);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .kbj-footer-text { font-size: 12.5px; line-height: 1.7; color: var(--text-dim); }
+  .kbj-footer-text strong { font-weight: 700; color: var(--text); }
+
+  @media (max-width: 640px) {
+    .page-hero-title { font-size: 25px; }
+    .page-hero { padding: 48px 20px 22px; }
+    .kbj-card { padding: 18px; }
+  }
 </style>
 </head>
 <body>
 
-<a class="back-btn" href="/dashboard" title="Kembali">
+<button class="back-btn" onclick="if (document.referrer && history.length > 1) { history.back(); } else { window.location.href = '/dashboard'; }" title="Kembali Ke Halaman Sebelumnya">
   <i class="fa-solid fa-arrow-left"></i>
-</a>
+</button>
 
 <div class="page-hero">
-  <div class="page-hero-tag"><i class="fa-solid fa-shield-halved"></i> Kebijakan Privasi</div>
+  <div class="page-hero-tag">Kebijakan Privasi</div>
   <div class="page-hero-title">Kebijakan Privasi Pengguna</div>
-  <div class="page-hero-meta"><i class="fa-solid fa-calendar"></i> Berlaku sejak 1 Juni 2026 &nbsp;·&nbsp; <i class="fa-solid fa-globe"></i> Zal Яyuichi</div>
+  <div class="page-hero-meta">
+    <span><i class="fa-solid fa-calendar"></i> Berlaku Sejak 1 Juni 2026</span>
+    <span class="dot"></span>
+    <span><i class="fa-solid fa-globe"></i> Zal Яyuichi</span>
+  </div>
 </div>
 
 <div class="kbj-wrap">
@@ -134,12 +201,12 @@
   <!-- KOMITMEN -->
   <div class="kbj-alert blue">
     <i class="fa-solid fa-shield-halved"></i>
-    <span>Kami berkomitmen untuk <strong>melindungi privasi dan keamanan data</strong> setiap pengguna platform Zal Яyuichi. Kebijakan ini menjelaskan data apa yang kami kumpulkan, bagaimana kami menggunakannya, dan hak-hak kamu sebagai pengguna.</span>
+    <span>Kami Berkomitmen Untuk <strong>Melindungi Privasi Dan Keamanan Data</strong> Setiap Pengguna Platform Zal Яyuichi. Kebijakan Ini Menjelaskan Data Apa Yang Kami Kumpulkan, Bagaimana Kami Menggunakannya, Dan Hak-Hak Kamu Sebagai Pengguna.</span>
   </div>
 
   <!-- 1. DATA YANG DIKUMPULKAN -->
   <div class="kbj-card">
-    <div class="kbj-section-title"><div class="kbj-num">1</div> Data yang Kami Kumpulkan</div>
+    <div class="kbj-section-title"><div class="kbj-num">1</div> Data Yang Kami Kumpulkan</div>
     <table class="kbj-table">
       <tr>
         <th>Jenis Data</th>
@@ -147,19 +214,19 @@
       </tr>
       <tr>
         <td><strong>Data Akun</strong></td>
-        <td>Username, password (terenkripsi), dan role/tier yang dimiliki</td>
+        <td>Username, Password (Terenkripsi), Dan Role/Tier Yang Dimiliki</td>
       </tr>
       <tr>
         <td><strong>Data Transaksi</strong></td>
-        <td>Riwayat pembelian, nominal transaksi, waktu transaksi, dan status pembayaran</td>
+        <td>Riwayat Pembelian, Nominal Transaksi, Waktu Transaksi, Dan Status Pembayaran</td>
       </tr>
       <tr>
         <td><strong>Data Teknis</strong></td>
-        <td>Alamat IP, jenis perangkat, dan waktu akses untuk keperluan keamanan</td>
+        <td>Alamat IP, Jenis Perangkat, Dan Waktu Akses Untuk Keperluan Keamanan</td>
       </tr>
       <tr>
         <td><strong>Data Komunikasi</strong></td>
-        <td>Pesan yang dikirim ke CS kami melalui Telegram atau WhatsApp</td>
+        <td>Pesan Yang Dikirim Ke CS Kami Melalui Telegram Atau WhatsApp</td>
       </tr>
     </table>
   </div>
@@ -168,35 +235,35 @@
   <div class="kbj-card">
     <div class="kbj-section-title"><div class="kbj-num">2</div> Penggunaan Data</div>
     <div class="kbj-body">
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Memverifikasi identitas pengguna dan memproses transaksi secara otomatis.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Mengelola role, masa aktif, dan hak akses sesuai produk yang dibeli.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Mendeteksi dan mencegah aktivitas mencurigakan, penipuan, atau penyalahgunaan platform.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Memberikan dukungan teknis dan merespons pertanyaan atau keluhan pengguna.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Meningkatkan performa dan pengalaman penggunaan platform secara keseluruhan.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-user-check"></i></div><span>Memverifikasi Identitas Pengguna Dan Memproses Transaksi Secara Otomatis.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-user-shield"></i></div><span>Mengelola Role, Masa Aktif, Dan Hak Akses Sesuai Produk Yang Dibeli.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-magnifying-glass"></i></div><span>Mendeteksi Dan Mencegah Aktivitas Mencurigakan, Penipuan, Atau Penyalahgunaan Platform.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-headset"></i></div><span>Memberikan Dukungan Teknis Dan Merespons Pertanyaan Atau Keluhan Pengguna.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-gauge-high"></i></div><span>Meningkatkan Performa Dan Pengalaman Penggunaan Platform Secara Keseluruhan.</span></div>
     </div>
   </div>
 
   <!-- 3. PENYIMPANAN DATA -->
   <div class="kbj-card">
-    <div class="kbj-section-title"><div class="kbj-num">3</div> Penyimpanan & Keamanan Data</div>
+    <div class="kbj-section-title"><div class="kbj-num">3</div> Penyimpanan &amp; Keamanan Data</div>
     <div class="kbj-body">
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Data pengguna disimpan di server yang <strong>terenkripsi</strong> dan hanya dapat diakses oleh tim internal yang berwenang.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Password disimpan dalam bentuk <strong>hash terenkripsi</strong> — kami tidak pernah menyimpan password dalam bentuk teks biasa.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Data transaksi disimpan selama akun aktif dan minimal <strong>90 hari</strong> setelah akun dihapus untuk keperluan audit.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Kami tidak menjamin keamanan 100% dari ancaman siber di luar kendali kami, namun kami terus berupaya memperbarui sistem keamanan.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-lock"></i></div><span>Data Pengguna Disimpan Di Server Yang <strong>Terenkripsi</strong> Dan Hanya Dapat Diakses Oleh Tim Internal Yang Berwenang.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-key"></i></div><span>Password Disimpan Dalam Bentuk <strong>Hash Terenkripsi</strong> — Kami Tidak Pernah Menyimpan Password Dalam Bentuk Teks Biasa.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-clock-rotate-left"></i></div><span>Data Transaksi Disimpan Selama Akun Aktif Dan Minimal <strong>90 Hari</strong> Setelah Akun Dihapus Untuk Keperluan Audit.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-shield-halved"></i></div><span>Kami Tidak Menjamin Keamanan 100% Dari Ancaman Siber Di Luar Kendali Kami, Namun Kami Terus Berupaya Memperbarui Sistem Keamanan.</span></div>
     </div>
   </div>
 
   <!-- 4. BERBAGI DATA -->
   <div class="kbj-card">
-    <div class="kbj-section-title"><div class="kbj-num">4</div> Berbagi Data dengan Pihak Ketiga</div>
+    <div class="kbj-section-title"><div class="kbj-num">4</div> Berbagi Data Dengan Pihak Ketiga</div>
     <div class="kbj-body">
-      <div class="kbj-alert amber" style="margin-bottom:10px;">
+      <div class="kbj-alert amber" style="margin-bottom:4px;">
         <i class="fa-solid fa-triangle-exclamation"></i>
-        <span><strong>Kami tidak menjual, menyewakan, atau memperdagangkan data pribadi pengguna</strong> kepada pihak ketiga manapun.</span>
+        <span><strong>Kami Tidak Menjual, Menyewakan, Atau Memperdagangkan Data Pribadi Pengguna</strong> Kepada Pihak Ketiga Manapun.</span>
       </div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Data pembayaran diproses melalui gateway QRIS pihak ketiga. Kami tidak menyimpan detail pembayaran secara langsung.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Data dapat diungkapkan jika diwajibkan oleh hukum atau perintah pengadilan yang sah di Indonesia.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-credit-card"></i></div><span>Data Pembayaran Diproses Melalui Gateway QRIS Pihak Ketiga. Kami Tidak Menyimpan Detail Pembayaran Secara Langsung.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-gavel"></i></div><span>Data Dapat Diungkapkan Jika Diwajibkan Oleh Hukum Atau Perintah Pengadilan Yang Sah Di Indonesia.</span></div>
     </div>
   </div>
 
@@ -204,20 +271,20 @@
   <div class="kbj-card">
     <div class="kbj-section-title"><div class="kbj-num">5</div> Hak Pengguna</div>
     <div class="kbj-body">
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span><strong>Hak Akses:</strong> Kamu berhak meminta informasi tentang data pribadi yang kami simpan terkait akunmu.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span><strong>Hak Koreksi:</strong> Kamu berhak meminta koreksi jika ada data yang tidak akurat melalui CS kami.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span><strong>Hak Hapus:</strong> Kamu dapat meminta penghapusan akun beserta datanya. Namun data transaksi tetap disimpan sesuai ketentuan audit.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span><strong>Hak Keberatan:</strong> Jika kamu keberatan atas penggunaan datamu, hubungi kami dan kami akan meninjau permintaan tersebut.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-eye"></i></div><span><strong>Hak Akses:</strong> Kamu Berhak Meminta Informasi Tentang Data Pribadi Yang Kami Simpan Terkait Akunmu.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-pen"></i></div><span><strong>Hak Koreksi:</strong> Kamu Berhak Meminta Koreksi Jika Ada Data Yang Tidak Akurat Melalui CS Kami.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-trash"></i></div><span><strong>Hak Hapus:</strong> Kamu Dapat Meminta Penghapusan Akun Beserta Datanya. Namun Data Transaksi Tetap Disimpan Sesuai Ketentuan Audit.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-hand"></i></div><span><strong>Hak Keberatan:</strong> Jika Kamu Keberatan Atas Penggunaan Datamu, Hubungi Kami Dan Kami Akan Meninjau Permintaan Tersebut.</span></div>
     </div>
   </div>
 
   <!-- 6. COOKIES -->
   <div class="kbj-card">
-    <div class="kbj-section-title"><div class="kbj-num">6</div> Cookie & Penyimpanan Lokal</div>
+    <div class="kbj-section-title"><div class="kbj-num">6</div> Cookie &amp; Penyimpanan Lokal</div>
     <div class="kbj-body">
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Platform kami menggunakan cookie dan localStorage untuk menyimpan sesi login dan preferensi pengguna.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Cookie ini bersifat <strong>fungsional</strong> — tidak digunakan untuk pelacakan iklan atau analitik pihak ketiga.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Menghapus cookie browser akan mengakibatkan kamu perlu login ulang ke platform.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-cookie-bite"></i></div><span>Platform Kami Menggunakan Cookie Dan LocalStorage Untuk Menyimpan Sesi Login Dan Preferensi Pengguna.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-toggle-on"></i></div><span>Cookie Ini Bersifat <strong>Fungsional</strong> — Tidak Digunakan Untuk Pelacakan Iklan Atau Analitik Pihak Ketiga.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-arrow-rotate-left"></i></div><span>Menghapus Cookie Browser Akan Mengakibatkan Kamu Perlu Login Ulang Ke Platform.</span></div>
     </div>
   </div>
 
@@ -225,12 +292,19 @@
   <div class="kbj-card">
     <div class="kbj-section-title"><div class="kbj-num">7</div> Perubahan Kebijakan</div>
     <div class="kbj-body">
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Kami berhak mengubah kebijakan privasi ini kapan saja. Perubahan akan berlaku segera setelah dipublikasikan di platform.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Tanggal pembaruan terakhir akan selalu ditampilkan di bagian atas halaman ini.</span></div>
-      <div class="kbj-item"><i class="fa-solid fa-circle-dot"></i><span>Dengan terus menggunakan platform setelah perubahan dipublikasikan, kamu dianggap menyetujui kebijakan yang baru.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-file-pen"></i></div><span>Kami Berhak Mengubah Kebijakan Privasi Ini Kapan Saja. Perubahan Akan Berlaku Segera Setelah Dipublikasikan Di Platform.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-calendar-check"></i></div><span>Tanggal Pembaruan Terakhir Akan Selalu Ditampilkan Di Bagian Atas Halaman Ini.</span></div>
+      <div class="kbj-item"><div class="kbj-item-icon"><i class="fa-solid fa-circle-check"></i></div><span>Dengan Terus Menggunakan Platform Setelah Perubahan Dipublikasikan, Kamu Dianggap Menyetujui Kebijakan Yang Baru.</span></div>
     </div>
   </div>
 
+</div>
+
+<div class="kbj-footer">
+  <div class="kbj-footer-card">
+    <div class="kbj-footer-icon"><i class="fa-solid fa-circle-question"></i></div>
+    <div class="kbj-footer-text">Ada Pertanyaan Tentang Kebijakan Privasi Ini? <strong>Hubungi Tim CS</strong> Kami Melalui Telegram Atau WhatsApp Kapan Saja.</div>
+  </div>
 </div>
 
 </body>
