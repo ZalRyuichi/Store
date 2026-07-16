@@ -1081,7 +1081,7 @@
       <div class="role-card member" onclick="openDetail('member')">
         <div class="role-icon"><i class="fa-solid fa-user"></i></div>
         <div class="role-name">Member</div>
-        <div class="role-price">Rp 1.000</div>
+        <div class="role-price">Rp 25.000</div>
       </div>
       <div class="role-card vipnoupdate" onclick="openDetail('vip')">
         <div class="role-icon"><i class="fa-solid fa-star-half-stroke"></i></div>
@@ -1159,7 +1159,7 @@
         <div class="role-icon" style="background:#F1F5F9;color:#475569"><i class="fa-solid fa-user-clock"></i></div>
         <div class="role-name">Member</div>
         <div class="role-price" style="font-size:11px;color:var(--slate);font-weight:600;margin-bottom:2px">1 Bulan</div>
-        <div class="role-price">Rp 1.000</div>
+        <div class="role-price">Rp 25.000</div>
       </div>
       <div class="role-card" onclick="openDetail('xyz-member-permanen')">
         <div class="role-icon" style="background:#FFFBEB;color:#B45309"><i class="fa-solid fa-user"></i></div>
@@ -1614,12 +1614,12 @@ let onPaymentCompleted = null;
 let currentSaldoVal = 0;
 
 const ROLE_DATA = {
-  'member':           { name: 'Member',           price: 1000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar'], vip: false },
+  'member':           { name: 'Member',           price: 25000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar'], vip: false },
   'vip':    { name: 'Vip',    price: 50000,  app: 'ryuichi', benefit: ['Akses Fitur Dasar', 'Akses Sebagian Fitur Sadap/RAT'], vip: true, vipNote: 'Akses Sebagian Fitur Sadap' },
   'premium':  { name: 'Premium',  price: 100000, app: 'ryuichi', benefit: ['Akses Semua Fitur Aplikasi', 'Akses Full Fitur Sadap/RAT'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
   'reseller':         { name: 'Reseller',          price: 200000, app: 'ryuichi', benefit: ['Akses Semua Fitur Aplikasi', 'Akses Full Fitur Sadap/RAT', 'Bisa Jualan Role Member Dan Vip'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
   'owner':            { name: 'Owner',             price: 400000, app: 'ryuichi', benefit: ['Akses Full Fitur Aplikasi', 'Bisa Jualin Role Member, Vip, Premium Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Sadap/RAT' },
-  'xyz-member-1m':    { name: 'Member (1 Bulan)',  price: 1000,  app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Selama 1 Bulan'], vip: false },
+  'xyz-member-1m':    { name: 'Member (1 Bulan)',  price: 25000,  app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Selama 1 Bulan'], vip: false },
   'xyz-member-permanen': { name: 'Member (Permanen)', price: 50000, app: 'xyz',   benefit: ['Akses Fitur Aplikasi Xyz Permanen'], vip: false },
   'xyz-reseller':     { name: 'Reseller',          price: 130000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualan Role Member 1 Bulan Dan Permanen'], vip: false },
   'xyz-owner':        { name: 'Owner',             price: 230000, app: 'xyz',     benefit: ['Akses Fitur Aplikasi Xyz Permanen', 'Bisa Jualin Role Member Dan Reseller'], vip: true, vipNote: 'Akses Full Fitur Vip' },
@@ -2164,7 +2164,7 @@ async function submitAccountForm() {
     if (data.ok) {
       closeAccountForm();
       closeModal();
-      toast('Data Sudah Terkirim Ke Developer, Silahkan Chat Developer Untuk Meminta Data Akun', 'success');
+      toast('Sukses Membuat Akun, Silahkan Login Atau Download Aplikasi Diberanda.', 'success');
     } else {
       toast(data.message || 'Gagal Mengirim Data', 'error');
     }
@@ -2181,30 +2181,23 @@ let _accountTx = null;
     <div class="detail-title"><i class="fa-solid fa-user-shield" style="color:var(--blue);margin-right:8px"></i>Buat Akun Aplikasi</div>
     <div class="detail-sub" id="af-product-name">—</div>
 
-    <div class="detail-price-box" style="margin-bottom:14px;text-align:left">
-      <div style="font-size:12px;color:var(--blue);font-weight:600">
-        <i class="fa-solid fa-circle-info" style="margin-right:5px"></i>
-        Pembayaran Berhasil! Masukkan Username & Password Untuk Akun Aplikasi Kamu. Data Ini Akan Dikirim Ke Developer Untuk Pembuatan Akun.
-      </div>
-    </div>
-
     <div style="display:flex;flex-direction:column;gap:12px">
       <div>
-        <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:6px">
-          <i class="fa-solid fa-user" style="color:var(--blue);margin-right:5px"></i>Username Aplikasi
+        <label style="font-size:12px;font-weight:700;color:#fff;display:block;margin-bottom:6px">
+          <i class="fa-solid fa-user" style="color:#16A34A;margin-right:5px"></i>Username Aplikasi
         </label>
         <input id="af-username" type="text" placeholder="contoh: ryuichi123"
           style="width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"
           onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'">
       </div>
       <div>
-        <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:6px">
-          <i class="fa-solid fa-lock" style="color:var(--blue);margin-right:5px"></i>Password Aplikasi
+        <label style="font-size:12px;font-weight:700;color:#fff;display:block;margin-bottom:6px">
+          <i class="fa-solid fa-lock" style="color:#16A34A;margin-right:5px"></i>Password Aplikasi
         </label>
         <input id="af-password" type="text" placeholder="Buat Password"
           style="width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"
           onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'">
-        <div style="font-size:10px;color:var(--slate);margin-top:4px">Username & password ini dipakai untuk login ke aplikasi yang kamu beli.</div>
+        <div style="font-size:10px;color:var(--slate);margin-top:4px">Username & Password Ini Dipakai Untuk Login Ke Aplikasi Yang Kamu Beli.</div>
       </div>
     </div>
     <div style="height:80px"></div>
@@ -2213,7 +2206,7 @@ let _accountTx = null;
 <div style="position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--white);border-top:1px solid var(--border);padding:12px 16px;z-index:96;display:none" id="account-form-footer">
   <button id="af-submit-btn" onclick="submitAccountForm()"
     style="width:100%;background:var(--blue);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
-    <i class="fa-solid fa-paper-plane"></i> Kirim Data Akun
+    <i class="fa-solid fa-user-plus"></i> Buat Akun
   </button>
 </div>
 
