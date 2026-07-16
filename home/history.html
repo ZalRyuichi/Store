@@ -657,7 +657,7 @@ async function loadHistory() {
       <div style="border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;background:var(--white)">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
           <div style="display:flex;gap:10px;align-items:flex-start">
-            <div class="hist-type-icon ${tx.type==='topup' ? 'green' : 'blue'}">${typeIcon(tx)}</div>
+            <div class="hist-type-icon blue" style="background:#2563EB;color:#fff">${typeIcon(tx)}</div>
             <div>
               <div style="font-size:11px;font-family:monospace;color:var(--slate);margin-bottom:4px">${tx.order_id}</div>
               <div style="font-weight:700;font-size:13px;margin-bottom:2px">${typeLabel(tx)}</div>
