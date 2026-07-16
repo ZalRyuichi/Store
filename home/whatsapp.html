@@ -183,14 +183,15 @@
   .wa-session-val { font-size: 13px; font-weight: 700; color: var(--dark); }
 
   .btn-danger {
-    padding: 11px 22px; background: #FEF2F2; color: var(--red);
-    border: 1px solid #FECACA; border-radius: var(--radius);
+    padding: 11px 22px; background: var(--red); color: #ffffff;
+    border: 1px solid var(--red); border-radius: var(--radius);
     font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif;
     cursor: pointer; transition: all 0.2s;
     display: inline-flex; align-items: center; gap: 7px;
     width: 100%; justify-content: center; margin-top: 14px;
   }
-  .btn-danger:hover { background: #FEE2E2; }
+  .btn-danger i { color: #ffffff; }
+  .btn-danger:hover { background: #DC2626; }
   .btn-danger:disabled { opacity: 0.6; cursor: not-allowed; }
 
   .empty-box {
@@ -397,11 +398,10 @@
     </div>
 
     <!-- SESI AKTIF -->
+    <div class="produk-populer-heading" id="wa-session-heading" style="display:none">
+      <div class="produk-populer-title">Sesi Bot Kamu<i class="fa-solid fa-satellite-dish"></i></div>
+    </div>
     <div class="card" id="wa-session" style="display:none">
-      <div class="page-head">
-        <i class="fa-brands fa-whatsapp"></i>
-        <div class="card-title">Sesi Bot Kamu</div>
-      </div>
       <div class="card-sub">Kelola Nomor Bot WhatsApp Yang Sudah Terhubung Ke Akun Kamu.</div>
 
       <div class="wa-session-row">
@@ -513,6 +513,7 @@ function showActive(data) {
     document.getElementById('wa-form').style.display = 'none';
     document.getElementById('wa-form-heading').style.display = 'none';
     document.getElementById('wa-session').style.display = 'block';
+    document.getElementById('wa-session-heading').style.display = 'block';
 
     document.getElementById('wa-phone').textContent = '+' + data.session.phone;
 
@@ -522,6 +523,7 @@ function showActive(data) {
     badge.innerHTML = `<i class="fa-solid fa-circle"></i> ${isOnline ? 'Terhubung' : 'Tidak Terhubung'}`;
   } else {
     document.getElementById('wa-session').style.display = 'none';
+    document.getElementById('wa-session-heading').style.display = 'none';
     document.getElementById('wa-form').style.display = 'block';
     document.getElementById('wa-form-heading').style.display = 'block';
   }
