@@ -659,7 +659,6 @@ async function loadHistory() {
           <div style="display:flex;gap:10px;align-items:flex-start">
             <div class="hist-type-icon ${tx.type==='topup' || tx.type==='panel_topup' ? 'blue' : 'green'}">${typeIcon(tx)}</div>
             <div>
-              <div style="font-size:11px;font-family:monospace;color:var(--slate);margin-bottom:4px">${tx.order_id}</div>
               <div style="font-weight:700;font-size:13px;margin-bottom:2px">${typeLabel(tx)}</div>
             </div>
           </div>
@@ -668,7 +667,10 @@ async function loadHistory() {
             <div><span class="badge ${st.cls}"><i class="fa-solid ${st.icon}"></i> ${st.text}</span></div>
           </div>
         </div>
-        <div style="font-size:11px;color:var(--slate);margin-top:6px">${new Date(tx.created_at).toLocaleString('id-ID')}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+          <div style="font-size:11px;color:var(--slate)">${new Date(tx.created_at).toLocaleString('id-ID')}</div>
+          <div style="font-size:11px;font-family:monospace;color:var(--slate)">${tx.order_id}</div>
+        </div>
 
         ${isPanel ? `
         <div style="margin-top:10px;padding:10px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px">
