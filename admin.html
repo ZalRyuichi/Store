@@ -229,9 +229,11 @@
     font-size: 12px; font-weight: 600; cursor: pointer;
     background: var(--white); color: var(--slate);
     font-family: 'Inter', sans-serif; transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 7px; line-height: 1;
   }
   .tab-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
-  .tab-btn i.fa-whatsapp { font-size: 15px; }
+  .tab-btn i { font-size: 12px; display: inline-flex; align-items: center; }
+  .tab-btn i.fa-whatsapp { font-size: 17px; }
 
   /* MAIN TABS (top-level: Management Saldo / Management User) */
   .main-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
@@ -269,11 +271,11 @@
   }
   .btn-grant:hover { background: rgba(52,211,153,0.2); }
   .btn-grant-main {
-    padding: 7px 16px; background: var(--green); color: #fff;
-    border: none; border-radius: 10px; font-size: 13px; font-weight: 700;
+    padding: 6px 12px; background: var(--green); color: #0B1220;
+    border: 1px solid var(--green); border-radius: 8px; font-size: 12px; font-weight: 700;
     cursor: pointer; font-family: 'Inter', sans-serif;
     display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s;
-    margin-bottom: 12px;
+    margin-bottom: 12px; line-height: 1;
   }
   .btn-grant-main:hover { background: #059669; }
 
@@ -536,8 +538,8 @@
           <button class="btn-refresh" id="btn-refresh-sewabot" onclick="loadData()" style="margin-bottom:0">
             <i class="fa-solid fa-rotate-right"></i> Refresh
           </button>
-          <button class="btn-grant-main" onclick="openGrantModal()">
-            <i class="fa-solid fa-circle-plus"></i> Grant Sewa Bot ke User
+          <button class="btn-grant-main" onclick="openGrantModal()" style="margin-bottom:0">
+            <i class="fa-solid fa-circle-plus"></i> Add Sewa Bot
           </button>
         </div>
         <div class="search-wrap">
