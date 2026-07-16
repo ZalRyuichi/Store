@@ -888,6 +888,9 @@
     </div>
   </div>
   <div class="nav-icons">
+    <button class="nav-icon-btn" id="admin-panel-btn" title="Admin Panel" style="display:none" onclick="window.location.href='/admin.html'">
+      <i class="fa-solid fa-table-columns"></i>
+    </button>
     <button class="nav-icon-btn" title="Profil" onclick="window.location.href='/home/profil.html'">
       <i class="fa-solid fa-circle-user"></i>
     </button>
@@ -901,6 +904,22 @@
     </button>
   </div>
 </nav>
+<script>
+(function(){
+  var _admToken = localStorage.getItem('pg_token');
+  if (!_admToken) return;
+  var _admBase = (localStorage.getItem('pg_api_base') || '').trim();
+  fetch((_admBase ? _admBase : '') + '/api/admin/verify', { headers: { 'x-auth-token': _admToken } })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){
+      if (data && data.ok) {
+        var btn = document.getElementById('admin-panel-btn');
+        if (btn) btn.style.display = 'flex';
+      }
+    })
+    .catch(function(){});
+})();
+</script>
 
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="document.getElementById('sidebar').classList.remove('show'); this.classList.remove('show')"></div>
 
