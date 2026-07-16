@@ -9,11 +9,11 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
-    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
-    --white:  #FFFFFF; --bg:     #F8FAFC;
-    --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
-    --purple: #7C3AED; --purple-l: #F5F3FF;
+    --blue:   #3B82F6; --blue-d: #60A5FA; --blue-l: rgba(59,130,246,0.15);
+    --slate:  #94A3B8; --dark:   #F1F5F9; --border: #293548;
+    --white:  #16202E; --bg:     #0B1220;
+    --red:    #F87171; --green:  #34D399; --amber:  #FBBF24;
+    --purple: #A78BFA; --purple-l: rgba(167,139,250,0.15);
     --radius: 12px;
   }
   body {
@@ -62,21 +62,6 @@
     transition: all 0.15s;
   }
   .btn-back:hover { background: var(--bg); }
-  .btn-logout {
-    padding: 5px 12px;
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    color: var(--slate);
-    font-family: 'Inter', sans-serif;
-    display: flex; align-items: center; gap: 5px;
-    transition: all 0.15s;
-  }
-  .btn-logout:hover { background: #FEF2F2; color: var(--red); border-color: #FECACA; }
-
   /* MAIN */
   main {
     max-width: 960px;
@@ -99,7 +84,7 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
   }
   .stat-icon {
     width: 36px; height: 36px; border-radius: 10px;
@@ -148,7 +133,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
     margin-bottom: 24px;
     overflow-x: auto;
   }
@@ -165,12 +150,12 @@
     font-size: 12px; vertical-align: middle;
   }
   tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover td { background: #FAFBFF; }
+  tbody tr:hover td { background: rgba(255,255,255,0.03); }
 
   .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 600; }
-  .badge.completed { background: #DCFCE7; color: #166534; }
-  .badge.pending   { background: #FEF9C3; color: #854D0E; }
-  .badge.cancelled { background: #FEF2F2; color: #991B1B; }
+  .badge.completed { background: rgba(52,211,153,0.15); color: #34D399; }
+  .badge.pending   { background: rgba(251,191,36,0.15); color: #FBBF24; }
+  .badge.cancelled { background: rgba(248,113,113,0.15); color: #F87171; }
   .badge.topup     { background: var(--blue-l); color: var(--blue-d); }
   .badge.purchase  { background: var(--purple-l); color: var(--purple); }
 
@@ -195,7 +180,7 @@
   .gate-box {
     background: var(--white); border: 1px solid var(--border);
     border-radius: 20px; padding: 36px 32px; width: 100%; max-width: 360px;
-    text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   }
   .gate-icon {
     width: 56px; height: 56px; border-radius: 16px;
@@ -246,29 +231,43 @@
     font-family: 'Inter', sans-serif; transition: all 0.15s;
   }
   .tab-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+  .tab-btn i.fa-whatsapp { font-size: 15px; }
+
+  /* MAIN TABS (top-level: Management Saldo / Management User) */
+  .main-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .main-tab-btn {
+    padding: 10px 20px; border-radius: 12px; border: 1px solid var(--border);
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    background: var(--white); color: var(--slate);
+    font-family: 'Inter', sans-serif; transition: all 0.15s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .main-tab-btn i { font-size: 13px; }
+  .main-tab-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+  .main-tab-btn:not(.active):hover { border-color: var(--purple); color: var(--purple); }
 
   /* SEWA BOT */
-  .badge.online  { background: #DCFCE7; color: #166534; }
-  .badge.offline { background: #FEF2F2; color: #991B1B; }
+  .badge.online  { background: rgba(52,211,153,0.15); color: #34D399; }
+  .badge.offline { background: rgba(248,113,113,0.15); color: #F87171; }
   .btn-row-delete {
-    padding: 5px 10px; background: #FEF2F2; color: var(--red);
-    border: 1px solid #FECACA; border-radius: 8px;
+    padding: 5px 10px; background: rgba(248,113,113,0.1); color: var(--red);
+    border: 1px solid rgba(248,113,113,0.3); border-radius: 8px;
     font-size: 11px; font-weight: 600; cursor: pointer;
     font-family: 'Inter', sans-serif; transition: all 0.15s;
     display: inline-flex; align-items: center; gap: 5px;
   }
-  .btn-row-delete:hover { background: #FEE2E2; }
+  .btn-row-delete:hover { background: rgba(248,113,113,0.2); }
   .btn-row-delete:disabled { opacity: 0.6; cursor: not-allowed; }
 
   /* GRANT SEWABOT MODAL */
   .btn-grant {
-    padding: 5px 10px; background: #F0FDF4; color: #16A34A;
-    border: 1px solid #BBF7D0; border-radius: 8px;
+    padding: 5px 10px; background: rgba(52,211,153,0.1); color: var(--green);
+    border: 1px solid rgba(52,211,153,0.3); border-radius: 8px;
     font-size: 11px; font-weight: 600; cursor: pointer;
     font-family: 'Inter', sans-serif; transition: all 0.15s;
     display: inline-flex; align-items: center; gap: 5px;
   }
-  .btn-grant:hover { background: #DCFCE7; }
+  .btn-grant:hover { background: rgba(52,211,153,0.2); }
   .btn-grant-main {
     padding: 7px 16px; background: var(--green); color: #fff;
     border: none; border-radius: 10px; font-size: 13px; font-weight: 700;
@@ -328,8 +327,8 @@
     margin-top: 12px; padding: 10px 12px; border-radius: 10px;
     font-size: 12px; font-weight: 600; display: none;
   }
-  .grant-result.ok  { background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; }
-  .grant-result.err { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+  .grant-result.ok  { background: rgba(52,211,153,0.12); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
+  .grant-result.err { background: rgba(248,113,113,0.12); color: var(--red); border: 1px solid rgba(248,113,113,0.3); }
 
   /* NOTIFICATION OVERLAY */
   .notif-overlay {
@@ -352,15 +351,15 @@
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto 16px; font-size: 20px;
   }
-  .notif-icon.error   { background: #FEF2F2; }
-  .notif-icon.success { background: #F0FDF4; }
+  .notif-icon.error   { background: rgba(248,113,113,0.12); }
+  .notif-icon.success { background: rgba(52,211,153,0.12); }
   .notif-icon.info    { background: var(--blue-l); }
   .notif-msg {
     font-size: 15px; font-weight: 600; color: var(--dark);
     margin-bottom: 6px; line-height: 1.4;
   }
-  .notif-msg.error   { color: #991B1B; }
-  .notif-msg.success { color: #166534; }
+  .notif-msg.error   { color: var(--red); }
+  .notif-msg.success { color: var(--green); }
   .notif-msg.info    { color: var(--blue-d); }
   .notif-sub { font-size: 13px; color: var(--slate); margin-bottom: 24px; }
   .notif-ok {
@@ -414,143 +413,154 @@
       <a class="btn-back" href="/dashboard">
         <i class="fa-solid fa-arrow-left" style="font-size:11px;"></i> Dashboard
       </a>
-      <button class="btn-logout" onclick="logout()">
-        <i class="fa-solid fa-right-from-bracket" style="font-size:11px;"></i> Logout
-      </button>
     </div>
   </nav>
 
   <main>
 
-    <!-- STATS -->
-    <div class="stats-row" id="stats-row">
-      <div class="stat-card">
-        <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
-        <div class="stat-val" id="stat-total-users">—</div>
-        <div class="stat-label">Total User</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon green"><i class="fa-solid fa-arrow-trend-up"></i></div>
-        <div class="stat-val" id="stat-total-topup">—</div>
-        <div class="stat-label">Total Top Up</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon purple"><i class="fa-solid fa-bag-shopping"></i></div>
-        <div class="stat-val" id="stat-total-purchase">—</div>
-        <div class="stat-label">Total Pembelian</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon amber"><i class="fa-solid fa-circle-check"></i></div>
-        <div class="stat-val" id="stat-completed">—</div>
-        <div class="stat-label">Transaksi Sukses</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon red"><i class="fa-solid fa-money-bill-wave"></i></div>
-        <div class="stat-val" id="stat-revenue">—</div>
-        <div class="stat-label">Saldo Masuk</div>
-      </div>
-      <a href="/home/message_owner.html" class="stat-card link">
-        <div class="stat-icon green"><i class="fa-solid fa-message"></i></div>
-        <div class="stat-val">Chat</div>
-        <div class="stat-label">Message</div>
-      </a>
+    <!-- MAIN TABS -->
+    <div class="main-tabs">
+      <button class="main-tab-btn active" onclick="switchMainTab('saldo', this)"><i class="fa-solid fa-wallet"></i> Management Saldo</button>
+      <button class="main-tab-btn" onclick="switchMainTab('user', this)"><i class="fa-solid fa-user-gear"></i> Management User</button>
     </div>
 
-    <!-- TABS -->
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('users', this)"><i class="fa-solid fa-users"></i> Daftar User</button>
-      <button class="tab-btn" onclick="switchTab('transactions', this)"><i class="fa-solid fa-receipt"></i> Transaksi</button>
-      <button class="tab-btn" onclick="switchTab('sewabot', this)"><i class="fa-brands fa-whatsapp"></i> Sewa Bot</button>
-    </div>
-
-    <!-- USERS TAB -->
-    <div id="tab-users">
-      <div class="section-title"><i class="fa-solid fa-users"></i> Daftar User Terdaftar</div>
-      <button class="btn-refresh" id="btn-refresh-users" onclick="loadData()">
-        <i class="fa-solid fa-rotate-right"></i> Refresh
-      </button>
-      <div class="search-wrap">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="search-users" placeholder="Cari username..." oninput="renderUsers()"/>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Username</th>
-              <th>Saldo</th>
-              <th>Daftar</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-users">
-            <tr><td colspan="4"><div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i>Memuat data...</div></td></tr>
-          </tbody>
-        </table>
+    <!-- ================= MANAGEMENT SALDO ================= -->
+    <div id="main-tab-saldo">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="fa-solid fa-arrow-trend-up"></i></div>
+          <div class="stat-val" id="stat-total-topup">—</div>
+          <div class="stat-label">Total Top Up</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple"><i class="fa-solid fa-bag-shopping"></i></div>
+          <div class="stat-val" id="stat-total-purchase">—</div>
+          <div class="stat-label">Total Pembelian</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon amber"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="stat-val" id="stat-completed">—</div>
+          <div class="stat-label">Transaksi Sukses</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon red"><i class="fa-solid fa-money-bill-wave"></i></div>
+          <div class="stat-val" id="stat-revenue">—</div>
+          <div class="stat-label">Saldo Masuk</div>
+        </div>
       </div>
     </div>
 
-    <!-- TRANSACTIONS TAB -->
-    <div id="tab-transactions" style="display:none;">
-      <div class="section-title"><i class="fa-solid fa-receipt"></i> Riwayat Transaksi</div>
-      <button class="btn-refresh" id="btn-refresh-tx" onclick="loadData()">
-        <i class="fa-solid fa-rotate-right"></i> Refresh
-      </button>
-      <div class="search-wrap">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="search-tx" placeholder="Cari user, produk, order ID..." oninput="renderTx()"/>
+    <!-- ================= MANAGEMENT USER ================= -->
+    <div id="main-tab-user" style="display:none;">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+          <div class="stat-val" id="stat-total-users">—</div>
+          <div class="stat-label">Total User</div>
+        </div>
+        <a href="/home/message_owner.html" class="stat-card link">
+          <div class="stat-icon green"><i class="fa-solid fa-message"></i></div>
+          <div class="stat-val">Chat</div>
+          <div class="stat-label">Message</div>
+        </a>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>User</th>
-              <th>Tipe</th>
-              <th>Produk</th>
-              <th>Jumlah</th>
-              <th>Status</th>
-              <th>Tanggal</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-tx">
-            <tr><td colspan="7"><div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i>Memuat data...</div></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
-    <!-- SEWA BOT TAB -->
-    <div id="tab-sewabot" style="display:none;">
-      <div class="section-title"><i class="fa-brands fa-whatsapp"></i> Sesi Bot WhatsApp (Sewa Bot)</div>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
-        <button class="btn-refresh" id="btn-refresh-sewabot" onclick="loadData()" style="margin-bottom:0">
+      <!-- SUB TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('users', this)"><i class="fa-solid fa-users"></i> Daftar User</button>
+        <button class="tab-btn" onclick="switchTab('transactions', this)"><i class="fa-solid fa-receipt"></i> Transaksi</button>
+        <button class="tab-btn" onclick="switchTab('sewabot', this)"><i class="fa-brands fa-whatsapp"></i> Sewa Bot</button>
+      </div>
+
+      <!-- USERS TAB -->
+      <div id="tab-users">
+        <div class="section-title"><i class="fa-solid fa-users"></i> Daftar User Terdaftar</div>
+        <button class="btn-refresh" id="btn-refresh-users" onclick="loadData()">
           <i class="fa-solid fa-rotate-right"></i> Refresh
         </button>
-        <button class="btn-grant-main" onclick="openGrantModal()">
-          <i class="fa-solid fa-circle-plus"></i> Grant Sewa Bot ke User
+        <div class="search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="search-users" placeholder="Cari username..." oninput="renderUsers()"/>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Saldo</th>
+                <th>Daftar</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-users">
+              <tr><td colspan="4"><div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i>Memuat data...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TRANSACTIONS TAB -->
+      <div id="tab-transactions" style="display:none;">
+        <div class="section-title"><i class="fa-solid fa-receipt"></i> Riwayat Transaksi</div>
+        <button class="btn-refresh" id="btn-refresh-tx" onclick="loadData()">
+          <i class="fa-solid fa-rotate-right"></i> Refresh
         </button>
+        <div class="search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="search-tx" placeholder="Cari user, produk, order ID..." oninput="renderTx()"/>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>User</th>
+                <th>Tipe</th>
+                <th>Produk</th>
+                <th>Jumlah</th>
+                <th>Status</th>
+                <th>Tanggal</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-tx">
+              <tr><td colspan="7"><div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i>Memuat data...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="search-wrap">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="search-sewabot" placeholder="Cari user atau nomor..." oninput="renderSewabot()"/>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>User</th>
-              <th>Nomor</th>
-              <th>Status</th>
-              <th>Terhubung</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-sewabot">
-            <tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i>Memuat data...</div></td></tr>
-          </tbody>
-        </table>
+
+      <!-- SEWA BOT TAB -->
+      <div id="tab-sewabot" style="display:none;">
+        <div class="section-title"><i class="fa-brands fa-whatsapp"></i> Sesi Bot WhatsApp (Sewa Bot)</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
+          <button class="btn-refresh" id="btn-refresh-sewabot" onclick="loadData()" style="margin-bottom:0">
+            <i class="fa-solid fa-rotate-right"></i> Refresh
+          </button>
+          <button class="btn-grant-main" onclick="openGrantModal()">
+            <i class="fa-solid fa-circle-plus"></i> Grant Sewa Bot ke User
+          </button>
+        </div>
+        <div class="search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="search-sewabot" placeholder="Cari user atau nomor..." oninput="renderSewabot()"/>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Nomor</th>
+                <th>Status</th>
+                <th>Terhubung</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-sewabot">
+              <tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i>Memuat data...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -699,10 +709,12 @@ async function gateLogin() {
   }
 }
 
-function logout() {
-  localStorage.removeItem('pg_token');
-  localStorage.removeItem('pg_user');
-  window.location.href = '/login';
+// ---- MAIN TAB (Management Saldo / Management User) ----
+function switchMainTab(tab, btn) {
+  document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('main-tab-saldo').style.display = tab === 'saldo' ? 'block' : 'none';
+  document.getElementById('main-tab-user').style.display  = tab === 'user'  ? 'block' : 'none';
 }
 
 // ---- TAB ----
