@@ -126,7 +126,7 @@
 <body>
 
 <div class="top-nav">
-  <a href="/dashboard/produk"><i class="fa-solid fa-arrow-left"></i></a>
+  <a href="/home/produk"><i class="fa-solid fa-arrow-left"></i></a>
   <div class="top-nav-title">Alight Motion Premium</div>
 </div>
 
@@ -207,7 +207,7 @@
 
 <script src="shared.js"></script>
 <script>
-// === Session / Auth Guard ===
+
 async function checkAuth() {
   const token = localStorage.getItem('pg_token');
   if (!token) {
@@ -223,7 +223,6 @@ async function checkAuth() {
       window.location.href = 'login.html';
     }
   } catch (err) {
-    // Gangguan koneksi, jangan langsung logout paksa
     console.error('Auth check gagal:', err);
   }
 }
@@ -248,7 +247,6 @@ function setBtnLoading(btn, loading, label) {
   btn.querySelector('span').textContent = loading ? 'Memproses...' : label;
 }
 
-// Sesi habis / token invalid (server restart, dsb) -> paksa login ulang
 function handleAuthError(res, data) {
   if (res.status === 401 || data?.message === 'Unauthorized') {
     localStorage.removeItem('pg_token');
