@@ -395,13 +395,14 @@ function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
   async function onGoogleCredential(response) {
     const credential = response.credential;
     const mode = googleModalMode;
+    const linkCreds = googleLinkCreds; // simpan dulu sebelum closeGoogleModal() me-reset variabelnya
     closeGoogleModal();
     if (!credential) return;
 
     if (mode === 'register') {
       enterGoogleRegisterMode(credential);
     } else if (mode === 'link') {
-      await finishGoogleLink(credential, googleLinkCreds);
+      await finishGoogleLink(credential, linkCreds);
     }
   }
 
