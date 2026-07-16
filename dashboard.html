@@ -31,7 +31,7 @@
     background: var(--bg);
     color: var(--dark);
     min-height: 100vh;
-    padding-bottom: 24px;
+    padding-bottom: 84px;
   }
 
   .top-nav {
@@ -1051,6 +1051,37 @@
     font-size: 12px; font-weight: 600; cursor: pointer;
     font-family: 'Inter', sans-serif; padding: 8px;
   }
+
+/* ===== BOTTOM NAVIGATION ===== */
+.bottom-navbar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 58px;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  background: transparent;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border-top: 1px solid rgba(148,163,184,0.12);
+  z-index: 999;
+}
+.bottom-navbar a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  color: #A3A3A3;
+  font-size: 20px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.bottom-navbar a.active,
+.bottom-navbar a:hover {
+  color: #FFFFFF;
+}
 </style>
 </head>
 <body>
@@ -1511,5 +1542,12 @@ updateGreeting();
 setInterval(updateGreeting, 60000);
 
 </script>
+<nav class="bottom-navbar">
+  <a href="/dashboard.html" class="active"><i class="fa-solid fa-house"></i></a>
+  <a href="/home/topup.html" class=""><i class="fa-solid fa-wallet"></i></a>
+  <a href="/home/produk.html" class=""><i class="fa-solid fa-box-open"></i></a>
+  <a href="/home/history.html" class=""><i class="fa-solid fa-clock-rotate-left"></i></a>
+  <a href="/tools.html" class=""><i class="fa-solid fa-screwdriver-wrench"></i></a>
+</nav>
 </body>
 </html>
