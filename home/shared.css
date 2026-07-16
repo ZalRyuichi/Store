@@ -321,8 +321,8 @@
 
   .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
   .badge.pending   { background: #FEF9C3; color: #854D0E; }
-  .badge.completed { background: #111111; color: #ffffff; }
-  .badge.cancelled { background: #111111; color: #ffffff; }
+  .badge.completed { background: #111111; color: #22C55E; }
+  .badge.cancelled { background: #111111; color: #EF4444; }
   .badge-type { background: var(--bg); color: var(--slate); border: 1px solid var(--border); }
 
   .empty-state { text-align: center; padding: 40px 0; color: var(--slate); }
