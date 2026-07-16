@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Voucher</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @font-face {
+    font-family: 'TitleFont';
+    src: url('/font/title.ttf') format('truetype');
+    font-display: swap;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --pink:    #EC4899;
+    --pink-d:  #BE185D;
+    --pink-l:  #FBCFE8;
+    --pink-deep: #9D174D;
+    --dark:    #FFFFFF;
+    --border:  #27272A;
+    --white:   #000000;
+    --bg:      #000000;
+    --slate:   #94A3B8;
+    --radius:  16px;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .top-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 8px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--dark);
+    font-size: 20px;
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { background: rgba(236,72,153,0.12); color: var(--pink); }
+  .top-nav-title {
+    font-family: 'TitleFont', 'Inter', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px 60px;
+  }
+
+  .voucher-card {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    border-radius: var(--radius);
+    padding: 44px 28px 38px;
+    text-align: center;
+    background: radial-gradient(120% 120% at 15% 10%, var(--pink-l) 0%, var(--pink) 45%, var(--pink-deep) 100%);
+    box-shadow: 0 10px 40px rgba(236,72,153,0.25);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .voucher-card::before,
+  .voucher-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 26px; height: 26px;
+    background: var(--bg);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+  .voucher-card::before { left: -13px; }
+  .voucher-card::after  { right: -13px; }
+
+  .voucher-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+  .voucher-decor i {
+    position: absolute;
+    color: rgba(255,255,255,0.4);
+    text-shadow: 0 6px 10px rgba(157,23,77,0.55), 0 2px 0 rgba(255,255,255,0.25);
+  }
+  .voucher-decor i.v1 { top: -16px; left: -14px; font-size: 58px; opacity: 0.75; animation: floatV1 3.4s ease-in-out infinite; }
+  .voucher-decor i.v2 { bottom: -20px; right: -16px; font-size: 72px; opacity: 0.6; animation: floatV2 4.1s ease-in-out infinite; animation-delay: 0.3s; }
+  .voucher-decor i.v3 { top: 10%; right: -12px; font-size: 34px; opacity: 0.8; animation: floatV3 2.9s ease-in-out infinite; animation-delay: 0.6s; }
+  .voucher-decor i.v4 { bottom: 14%; left: -10px; font-size: 30px; opacity: 0.65; animation: floatV4 3.6s ease-in-out infinite; animation-delay: 0.2s; }
+  .voucher-decor i.v5 { top: 48%; left: 46%; font-size: 90px; opacity: 0.22; animation: floatV5 4.4s ease-in-out infinite; animation-delay: 0.1s; }
+  .voucher-decor i.v6 { top: 6%; left: 20%; font-size: 20px; opacity: 0.55; animation: floatV6 2.6s ease-in-out infinite; animation-delay: 0.5s; }
+  .voucher-decor i.v7 { bottom: 8%; right: 22%; font-size: 24px; opacity: 0.6; animation: floatV7 3.1s ease-in-out infinite; animation-delay: 0.8s; }
+  .voucher-decor i.v8 { top: 30%; left: 4%; font-size: 18px; opacity: 0.5; animation: floatV8 3.8s ease-in-out infinite; animation-delay: 0.4s; }
+
+  @keyframes floatV1 { 0%,100% { transform: rotate(-16deg) translateY(0); } 50% { transform: rotate(-16deg) translateY(-10px); } }
+  @keyframes floatV2 { 0%,100% { transform: rotate(14deg) translateY(0); } 50% { transform: rotate(14deg) translateY(10px); } }
+  @keyframes floatV3 { 0%,100% { transform: rotate(10deg) translateY(0); } 50% { transform: rotate(10deg) translateY(-8px); } }
+  @keyframes floatV4 { 0%,100% { transform: rotate(-18deg) translateY(0); } 50% { transform: rotate(-18deg) translateY(9px); } }
+  @keyframes floatV5 { 0%,100% { transform: translate(-50%,-50%) rotate(-6deg) translateY(0); } 50% { transform: translate(-50%,-50%) rotate(-6deg) translateY(-12px); } }
+  @keyframes floatV6 { 0%,100% { transform: rotate(8deg) translateY(0); } 50% { transform: rotate(8deg) translateY(-6px); } }
+  @keyframes floatV7 { 0%,100% { transform: rotate(-10deg) translateY(0); } 50% { transform: rotate(-10deg) translateY(7px); } }
+  @keyframes floatV8 { 0%,100% { transform: rotate(12deg) translateY(0); } 50% { transform: rotate(12deg) translateY(-7px); } }
+
+  .voucher-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .voucher-icon {
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(2px);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 36px;
+    color: #fff;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35);
+  }
+  .voucher-icon i { animation: spin-slow 6s linear infinite; }
+  @keyframes spin-slow {
+    0%, 85% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .voucher-title {
+    font-family: 'TitleFont', 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.3px;
+    margin-bottom: 10px;
+  }
+  .voucher-sub {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.92);
+    line-height: 1.55;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .voucher-divider {
+    border-top: 2px dashed rgba(255,255,255,0.45);
+    margin: 26px 0 22px;
+  }
+
+  .voucher-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 7px 16px;
+    border-radius: 999px;
+    letter-spacing: 0.4px;
+  }
+  .voucher-badge i { font-size: 10px; }
+
+  .voucher-footnote {
+    margin-top: 26px;
+    font-size: 12px;
+    color: var(--slate);
+    text-align: center;
+    max-width: 320px;
+  }
+
+  .btn-back-home {
+    margin-top: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--pink), var(--pink-d));
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(236,72,153,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-back-home:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(236,72,153,0.45); }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <button class="back-btn" onclick="goBack()" aria-label="Kembali">
+    <i class="fa-solid fa-arrow-left"></i>
+  </button>
+  <div class="top-nav-title">Voucher</div>
+</div>
+
+<main>
+  <div class="voucher-card">
+    <div class="voucher-decor">
+      <i class="fa-solid fa-ticket v1"></i>
+      <i class="fa-solid fa-gift v2"></i>
+      <i class="fa-solid fa-percent v3"></i>
+      <i class="fa-solid fa-tags v4"></i>
+      <i class="fa-solid fa-ticket-simple v5"></i>
+      <i class="fa-solid fa-hourglass-half v6"></i>
+      <i class="fa-solid fa-star v7"></i>
+      <i class="fa-solid fa-bell v8"></i>
+    </div>
+    <div class="voucher-content">
+      <div class="voucher-icon"><i class="fa-solid fa-ticket"></i></div>
+      <div class="voucher-title">Sedang Update</div>
+      <div class="voucher-sub">Fitur Voucher Masih Dalam Perkembangan. Kami Sedang Menyiapkan Promo Terbaik Untuk Kamu, Pantau Terus Ya!</div>
+      <div class="voucher-divider"></div>
+      <span class="voucher-badge"><i class="fa-solid fa-hourglass-half"></i> Coming Soon</span>
+    </div>
+  </div>
+</main>
+
+
+<script>
+  function goBack() {
+    if (document.referrer && document.referrer.includes(window.location.host)) {
+      window.history.back();
+    } else if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/dashboard.html';
+    }
+  }
+</script>
+
+</body>
+</html>
