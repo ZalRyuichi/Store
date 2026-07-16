@@ -22,6 +22,16 @@
     font-display: swap;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .sewabot-fab {
+    position: fixed; left: 16px; bottom: calc(58px + env(safe-area-inset-bottom, 0) + 12px);
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: #fff; border: none; cursor: pointer; text-decoration: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    z-index: 50; transition: transform 0.2s;
+  }
+  .sewabot-fab:active { transform: scale(0.94); }
   :root {
     --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #1E293B;
     --slate:  #94A3B8; --dark:   #FFFFFF; --border: #27272A;
@@ -443,6 +453,55 @@ function logout() {
   localStorage.removeItem('pg_user');
   window.location.href = '/login';
 }
+
+const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
+let API_BASE = "";
+async function loadApiBase() {
+  const CACHE_TTL = 1 * 60 * 1000;
+  try {
+    const cached   = localStorage.getItem("pg_api_base");
+    const cachedAt = parseInt(localStorage.getItem("pg_api_base_ts") || "0");
+    if (cached && (Date.now() - cachedAt < CACHE_TTL)) API_BASE = cached.trim();
+    const r = await fetch(API_TXT_URL + "?t=" + Date.now());
+    if (r.ok) {
+      const u = (await r.text()).trim();
+      if (u && u.startsWith("http")) {
+        API_BASE = u;
+        localStorage.setItem("pg_api_base", u);
+        localStorage.setItem("pg_api_base_ts", Date.now().toString());
+      }
+    }
+  } catch { const c = localStorage.getItem("pg_api_base"); if (c) API_BASE = c.trim(); }
+}
+function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
+const H = { 'Content-Type': 'application/json', 'x-auth-token': TOKEN };
+
+async function refreshSewaBotFloating(retry = 2) {
+  try {
+    const res = await fetch(apiUrl('/api/sewabot/info'), { headers: H });
+    if (res.status === 401 || res.status === 403) return;
+    const data = await res.json();
+
+    let fab = document.getElementById('sewabot-fab');
+    if (data.ok && data.active) {
+      if (!fab) {
+        fab = document.createElement('a');
+        fab.id = 'sewabot-fab';
+        fab.className = 'sewabot-fab';
+        fab.title = 'Sewa Bot WhatsApp';
+        fab.innerHTML = '<i class="fa-brands fa-whatsapp"></i>';
+        fab.href = '/home/whatsapp.html';
+        document.body.appendChild(fab);
+      }
+    } else if (fab) {
+      fab.remove();
+    }
+  } catch {
+    if (retry > 0) return refreshSewaBotFloating(retry - 1);
+  }
+}
+
+loadApiBase().then(() => { refreshSewaBotFloating(); });
 
 (function(){
   const slides = Array.from(document.querySelectorAll('#banner-slides .banner-slide'));
