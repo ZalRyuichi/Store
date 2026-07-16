@@ -2462,8 +2462,8 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
   }, { passive: true });
 
-  const AUTO_SLIDE_MS = 3000;
-  const AUTO_SLIDE_ANIM_MS = 2000;
+  const AUTO_SLIDE_MS = 2000;
+  const AUTO_SLIDE_ANIM_MS = 1500;
   let autoSlideTimer = null;
   let autoSlidePaused = false;
   let pauseResumeTimer = null;
