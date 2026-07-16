@@ -505,81 +505,6 @@
   .pay-saldo-val { font-size: 12px; font-weight: 700; color: #2563EB; margin-top: 3px; }
   .pay-method-arrow { color: var(--slate); font-size: 12px; }
 
-  .bug-overlay {
-    display:none;position:fixed;inset:0;z-index:999;
-    background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
-    align-items:flex-end;justify-content:center;
-  }
-  .bug-overlay.active { display:flex; }
-  .bug-sheet {
-    background:var(--white);width:100%;max-width:480px;
-    border-radius:20px 20px 0 0;padding:20px 18px 32px;
-    animation:slideUp .25s ease;max-height:90vh;overflow-y:auto;
-  }
-  @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-  .bug-sheet-title {
-    font-size:16px;font-weight:700;margin-bottom:4px;
-    display:flex;align-items:center;gap:8px;
-  }
-  .bug-sheet-sub { font-size:12px;color:var(--slate);margin-bottom:18px; }
-  .bug-tab-row {
-    display:flex;gap:8px;margin-bottom:16px;
-    background:var(--bg);border-radius:10px;padding:4px;
-  }
-  .bug-tab {
-    flex:1;padding:9px;border-radius:8px;border:none;
-    background:transparent;font-size:12px;font-weight:600;
-    cursor:pointer;color:var(--slate);transition:.2s;
-  }
-  .bug-tab.active { background:var(--white);color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,.08); }
-  .bug-type-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px; }
-  .bug-type-card {
-    border:2px solid var(--border);border-radius:12px;
-    padding:14px 12px;cursor:pointer;transition:.2s;text-align:center;
-    background:var(--white);
-  }
-  .bug-type-card:hover { border-color:var(--blue);box-shadow:0 2px 10px rgba(37,99,235,.1); }
-  .bug-type-card.selected { border-color:var(--blue);background:var(--blue-l); }
-  .bug-type-icon {
-    width:40px;height:40px;border-radius:10px;
-    background:var(--blue-l);color:var(--blue);
-    display:flex;align-items:center;justify-content:center;
-    font-size:16px;margin:0 auto 8px;
-  }
-  .bug-type-name { font-size:12px;font-weight:700;margin-bottom:2px; }
-  .bug-type-desc { font-size:10px;color:var(--slate); }
-  .bug-input-wrap { margin-bottom:14px; }
-  .bug-input-label { font-size:11px;font-weight:600;color:var(--slate);margin-bottom:6px;display:block; }
-  .bug-input {
-    width:100%;border:1.5px solid var(--border);border-radius:10px;
-    padding:11px 13px;font-size:14px;outline:none;transition:.2s;
-    background:var(--bg);
-  }
-  .bug-input:focus { border-color:var(--blue);background:var(--white); }
-  .bug-sender-status {
-    display:flex;align-items:center;gap:6px;
-    font-size:11px;padding:8px 12px;border-radius:8px;margin-bottom:14px;
-  }
-  .bug-sender-status.online { background:#ECFDF5;color:#059669;border:1px solid #BBF7D0; }
-  .bug-sender-status.offline { background:#FEF2F2;color:#DC2626;border:1px solid #FECACA; }
-  .bug-btn-row { display:flex;gap:8px;margin-top:6px; }
-  .bug-btn-cancel {
-    flex:1;padding:12px;border-radius:10px;border:1.5px solid var(--border);
-    background:var(--white);font-size:13px;font-weight:600;cursor:pointer;color:var(--slate);
-  }
-  .bug-btn-next {
-    flex:2;padding:12px;border-radius:10px;border:none;
-    background:var(--blue);color:#fff;font-size:13px;font-weight:700;cursor:pointer;
-  }
-  .bug-btn-next:disabled { opacity:.5;cursor:not-allowed; }
-  .bug-step-bar {
-    display:flex;align-items:center;gap:6px;margin-bottom:16px;
-  }
-  .bug-step {
-    flex:1;height:3px;border-radius:2px;background:var(--border);transition:.3s;
-  }
-  .bug-step.done { background:var(--blue); }
-
   .sidebar {
     position: fixed; right: 0; top: 0; width: 280px; height: 100vh;
     background: linear-gradient(180deg, #0B0E14 0%, #000000 100%);
@@ -606,27 +531,27 @@
   }
 
   .sidebar-content {
-    padding: 20px 12px;
-    display: flex; flex-direction: column; gap: 16px;
+    padding: 14px 12px;
+    display: flex; flex-direction: column; gap: 10px;
   }
 
   .sidebar-section {
-    display: flex; flex-direction: column; gap: 6px;
+    display: flex; flex-direction: column; gap: 3px;
   }
 
   .sidebar-section-title {
     font-size: 10px; font-weight: 700; color: var(--slate);
     text-transform: uppercase; letter-spacing: 0.6px;
-    padding: 8px 14px; opacity: 0.7;
+    padding: 6px 14px; opacity: 0.7;
   }
 
   .sidebar-menu {
-    display: flex; flex-direction: column; gap: 4px;
+    display: flex; flex-direction: column; gap: 2px;
   }
 
   .sidebar-item {
     display: flex; align-items: center; gap: 12px;
-    padding: 12px 14px; border-radius: 11px;
+    padding: 9px 14px; border-radius: 11px;
     text-decoration: none; color: var(--dark);
     font-size: 13px; font-weight: 500;
     transition: all 0.2s;
@@ -650,11 +575,11 @@
 
   .sidebar-divider {
     height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent);
-    margin: 8px 0;
+    margin: 6px 0;
   }
 
   .sidebar-btn {
-    padding: 12px 14px; border: none; border-radius: 11px;
+    padding: 10px 14px; border: none; border-radius: 11px;
     font-size: 13px; font-weight: 600; cursor: pointer;
     font-family: 'Inter', sans-serif; transition: all 0.2s;
     display: flex; align-items: center; gap: 10px;
@@ -663,7 +588,7 @@
   .sidebar-btn.logout {
     background: rgba(239,68,68,0.08);
     color: var(--red); border: 1px solid rgba(239,68,68,0.3);
-    width: 100%; justify-content: center; margin-top: 12px;
+    width: 100%; justify-content: center; margin-top: 6px;
   }
 
   .sidebar-btn.logout:hover {
@@ -1056,7 +981,6 @@
     <div class="produk-dot" data-i="2"></div>
     <div class="produk-dot" data-i="3"></div>
     <div class="produk-dot" data-i="4"></div>
-    <div class="produk-dot" data-i="5"></div>
   </div>
 
   <div class="produk3d-viewport">
@@ -1391,38 +1315,7 @@
   </div>
   </div>
 
-  <div class="produk-slide">
-  <!-- ── JASA BUG ──────────────────────────────── -->
-  <div class="card" id="jasabug" style="margin-top:14px">
-    <div class="apk-banner" style="background:linear-gradient(135deg,#7C3AED 0%,#4F46E5 100%)">
-      <div class="apk-banner-top">
-        <div class="apk-banner-icon"><i class="fa-solid fa-bug"></i></div>
-        <div>
-          <div class="apk-banner-label">Jasa Bug WhatsApp</div>
-          <div class="apk-banner-sub">Bug Nomer & Bug Group · Proses Otomatis</div>
-        </div>
-      </div>
-      <div class="apk-banner-pills">
-        <div class="apk-banner-pill"><i class="fa-solid fa-mobile-screen"></i>Bug Nomer</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-users"></i>Bug Group</div>
-        <div class="apk-banner-pill"><i class="fa-solid fa-bolt"></i>Instan</div>
-      </div>
-    </div>
 
-    <div class="role-grid" style="grid-template-columns:1fr">
-      <div class="role-card" onclick="openBugOrder()" style="display:flex;align-items:center;gap:14px;text-align:left">
-        <div class="role-icon" style="background:#F5F3FF;color:#7C3AED;flex-shrink:0">
-          <i class="fa-solid fa-bug"></i>
-        </div>
-        <div style="flex:1">
-          <div class="role-name">Jasa Bug WhatsApp</div>
-          <div style="font-size:11px;color:var(--slate);margin-top:2px">Bug Nomer & Group</div>
-        </div>
-        <div class="role-price">Rp 4.000</div>
-      </div>
-    </div>
-  </div>
-  </div>
 
 </div>
 </div>
@@ -2394,281 +2287,7 @@ let _panelProduct = null;
 </div>
 
 
-<!-- ── MODAL JASA BUG ──────────────────────────── -->
-<div class="bug-overlay" id="bug-overlay" onclick="if(event.target===this)closeBugOrder()">
-  <div class="bug-sheet">
-    <div class="bug-step-bar">
-      <div class="bug-step done" id="bstep1"></div>
-      <div class="bug-step" id="bstep2"></div>
-      <div class="bug-step" id="bstep3"></div>
-    </div>
-
-    <!-- STEP 1: Bayar -->
-    <div id="bug-step1">
-      <div class="bug-sheet-title"><i class="fa-solid fa-bug" style="color:#7C3AED"></i> Jasa Bug WhatsApp</div>
-      <div class="bug-sheet-sub">Rp 4.000 · Pilih metode pembayaran</div>
-      <!-- Status Sender Step 1 -->
-      <div class="bug-sender-status" id="bug-sender-status-step1" style="margin-bottom:14px">
-        <i class="fa-solid fa-circle-notch fa-spin"></i> Mengecek ketersediaan sender...
-      </div>
-      <div class="pay-methods" id="bug-pay-methods">
-        <button class="pay-method-btn saldo" onclick="bugPaySaldo()">
-          <div class="pay-method-icon"><i class="fa-solid fa-wallet"></i></div>
-          <div class="pay-method-info">
-            <div class="pay-method-name">Bayar Pakai Saldo</div>
-            <div class="pay-method-desc">Otomatis potong saldo kamu</div>
-            <div class="pay-saldo-val" id="bug-saldo-preview">Saldo: —</div>
-          </div>
-          <i class="fa-solid fa-chevron-right pay-method-arrow"></i>
-        </button>
-        <button class="pay-method-btn qris" onclick="bugPayQris()">
-          <div class="pay-method-icon"><i class="fa-solid fa-qrcode"></i></div>
-          <div class="pay-method-info">
-            <div class="pay-method-name">Bayar Pakai QRIS</div>
-            <div class="pay-method-desc">Buat QRIS Dan Bayar Langsung</div>
-          </div>
-          <i class="fa-solid fa-chevron-right pay-method-arrow"></i>
-        </button>
-      </div>
-      <div class="bug-btn-row" style="margin-top:14px">
-        <button class="bug-btn-cancel" onclick="closeBugOrder()">Batal</button>
-      </div>
-    </div>
-
-    <!-- STEP 2: Pilih Tipe -->
-    <div id="bug-step2" style="display:none">
-      <div class="bug-sheet-title"><i class="fa-solid fa-list" style="color:#7C3AED"></i> Pilih Jenis Bug</div>
-      <div class="bug-sheet-sub">Pilih target: Nomer atau Group</div>
-      <div class="bug-tab-row">
-        <button class="bug-tab active" id="btab-nomer" onclick="selectBugTab('nomer')">
-          <i class="fa-solid fa-mobile-screen"></i> Bug Nomer
-        </button>
-        <button class="bug-tab" id="btab-group" onclick="selectBugTab('group')">
-          <i class="fa-solid fa-users"></i> Bug Group
-        </button>
-      </div>
-
-      <!-- Nomer Types -->
-      <div id="bug-nomer-types">
-        <div class="bug-type-grid">
-          <div class="bug-type-card" id="btype-spam_invisible" onclick="selectBugType('spam_invisible')">
-            <div class="bug-type-icon"><i class="fa-solid fa-eye-slash"></i></div>
-            <div class="bug-type-name">Spam Invisible</div>
-            <div class="bug-type-desc">Spam pesan tak terlihat</div>
-          </div>
-          <div class="bug-type-card" id="btype-crash_iphone" onclick="selectBugType('crash_iphone')">
-            <div class="bug-type-icon"><i class="fa-brands fa-apple"></i></div>
-            <div class="bug-type-name">Crash iPhone</div>
-            <div class="bug-type-desc">Force close WA iPhone</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Group Types -->
-      <div id="bug-group-types" style="display:none">
-        <div class="bug-type-grid">
-          <div class="bug-type-card" id="btype-delay_hard" onclick="selectBugType('delay_hard')">
-            <div class="bug-type-icon"><i class="fa-solid fa-hourglass-half"></i></div>
-            <div class="bug-type-name">Delay Hard</div>
-            <div class="bug-type-desc">Delay berat di grup</div>
-          </div>
-          <div class="bug-type-card" id="btype-blank_group" onclick="selectBugType('blank_group')">
-            <div class="bug-type-icon"><i class="fa-regular fa-square"></i></div>
-            <div class="bug-type-name">Blank Group</div>
-            <div class="bug-type-desc">Blank message di grup</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="bug-btn-row">
-        <button class="bug-btn-cancel" onclick="closeBugOrder()">Batal</button>
-        <button class="bug-btn-next" id="bug-btn-next2" onclick="bugGoStep3()" disabled>Lanjutkan</button>
-      </div>
-    </div>
-
-    <!-- STEP 3: Input Target -->
-    <div id="bug-step3" style="display:none">
-      <div class="bug-sheet-title"><i class="fa-solid fa-crosshairs" style="color:#7C3AED"></i> Masukkan Target</div>
-      <div class="bug-sheet-sub" id="bug-step3-sub">—</div>
-
-      <!-- Input Nomer -->
-      <div class="bug-input-wrap" id="bug-input-nomer-wrap" style="display:none">
-        <label class="bug-input-label">Nomor Target (awali 62, tanpa +)</label>
-        <input class="bug-input" id="bug-input-nomer" type="tel" placeholder="628xxxxxxxxx" oninput="this.value=this.value.replace(/[^0-9]/g,'')"/>
-      </div>
-
-      <!-- Input Group -->
-      <div class="bug-input-wrap" id="bug-input-group-wrap" style="display:none">
-        <label class="bug-input-label">Link Grup WhatsApp</label>
-        <input class="bug-input" id="bug-input-group" type="text" placeholder="https://chat.whatsapp.com/xxxxx"/>
-      </div>
-
-      <div class="bug-btn-row">
-        <button class="bug-btn-cancel" onclick="closeBugOrder()">Batal</button>
-        <button class="bug-btn-next" id="bug-btn-execute" onclick="bugExecute()">
-          <i class="fa-solid fa-bolt"></i> Eksekusi Bug
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
-const BUG_PRODUCT_ID  = 'jasa-bug';
-const BUG_SENDER      = '6283168092874';
-let _bugTab           = 'nomer';
-let _bugType          = null;
-let _bugPaid          = false;
-let _bugOrderId       = null;
-let _bugSenderOnline  = false;
-
-async function openBugOrder() {
-  _bugTab = 'nomer'; _bugType = null; _bugPaid = false; _bugOrderId = null;
-  _bugSenderOnline = false;
-  bugSetStep(1);
-
-  const sBox = document.getElementById('bug-sender-status-step1');
-  sBox.className = 'bug-sender-status';
-  sBox.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Mengecek Ketersediaan Sender...';
-
-  const btnSaldo = document.querySelector('#bug-step1 .pay-method-btn.saldo');
-  const btnQris  = document.querySelector('#bug-step1 .pay-method-btn.qris');
-  if (btnSaldo) btnSaldo.disabled = true;
-  if (btnQris)  btnQris.disabled  = true;
-
-  document.getElementById('bug-saldo-preview').textContent = 'Saldo: Memuat...';
-  document.getElementById('bug-overlay').classList.add('active');
-
-  const [saldoRes, senderRes] = await Promise.allSettled([
-    fetch(apiUrl('/api/user/saldo'), { headers: H }).then(r => r.json()),
-    fetch(apiUrl('/api/bug/sender/status'), { headers: H }).then(r => r.json()),
-  ]);
-
-  if (saldoRes.status === 'fulfilled') {
-    currentSaldoVal = saldoRes.value.saldo || 0;
-    document.getElementById('bug-saldo-preview').textContent = 'Saldo: ' + rupiah(currentSaldoVal);
-  } else {
-    document.getElementById('bug-saldo-preview').textContent = 'Saldo: Gagal Memuat';
-  }
-
-  if (senderRes.status === 'fulfilled' && senderRes.value.online) {
-    _bugSenderOnline = true;
-    sBox.className = 'bug-sender-status online';
-    sBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> Sender Online';
-    if (btnSaldo) btnSaldo.disabled = false;
-    if (btnQris)  btnQris.disabled  = false;
-  } else {
-    _bugSenderOnline = false;
-    sBox.className = 'bug-sender-status offline';
-    sBox.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Sender Offline, Order Tidak Tersedia Saat Ini';    
-  }
-}
-
-function closeBugOrder() {
-  document.getElementById('bug-overlay').classList.remove('active');
-}
-
-function bugSetStep(n) {
-  [1,2,3].forEach(i => {
-    document.getElementById('bug-step'+i).style.display = i === n ? '' : 'none';
-    document.getElementById('bstep'+i).classList.toggle('done', i <= n);
-  });
-}
-
-async function bugPaySaldo() {
-  const btn = event.currentTarget;
-  btn.disabled = true;
-  try {
-    const res  = await fetch(apiUrl('/api/bug/pay/saldo'), { method:'POST', headers:H });
-    const data = await res.json();
-    if (data.ok) {
-      _bugPaid = true; _bugOrderId = data.order_id;
-      bugSetStep(2);
-    } else {
-      toast(data.message || 'Gagal Bayar', 'error');
-    }
-  } catch { toast('Koneksi Gagal', 'error'); }
-  finally { btn.disabled = false; }
-}
-
-async function bugPayQris() {
-  try {
-    const res  = await fetch(apiUrl('/api/buy'), { method:'POST', headers:H, body:JSON.stringify({ product_id: BUG_PRODUCT_ID }) });
-    const data = await res.json();
-    if (!data.ok) return toast(data.message || 'Gagal Buat QRIS', 'error');
-    closeBugOrder();
-    onPaymentCompleted = async (tx) => {
-      _bugPaid = true; _bugOrderId = tx.order_id;
-      document.getElementById('bug-overlay').classList.add('active');
-      bugSetStep(2);
-    };
-    openModal(data.transaction, 'Jasa Bug WhatsApp', 'Scan QRIS Untuk Melanjutkan');
-  } catch { toast('Koneksi gagal', 'error'); }
-}
-
-function selectBugTab(tab) {
-  _bugTab = tab; _bugType = null;
-  document.getElementById('btab-nomer').classList.toggle('active', tab==='nomer');
-  document.getElementById('btab-group').classList.toggle('active', tab==='group');
-  document.getElementById('bug-nomer-types').style.display = tab==='nomer' ? '' : 'none';
-  document.getElementById('bug-group-types').style.display = tab==='group' ? '' : 'none';
-  document.querySelectorAll('.bug-type-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('bug-btn-next2').disabled = true;
-}
-
-function selectBugType(type) {
-  _bugType = type;
-  document.querySelectorAll('.bug-type-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('btype-' + type)?.classList.add('selected');
-  document.getElementById('bug-btn-next2').disabled = false;
-}
-
-async function bugGoStep3() {
-  if (!_bugType) return;
-  bugSetStep(3);
-
-  const labels = {
-    spam_invisible: 'Spam Invisible — Masukkan Nomor target',
-    crash_iphone:   'Crash iPhone — Masukkan Nomor target',
-    delay_hard:     'Delay Hard — Masukkan Link Grup Target',
-    blank_group:    'Blank Group — Masukkan Link Grup Target',
-  };
-  document.getElementById('bug-step3-sub').textContent = labels[_bugType] || '—';
-
-  const isNomer = ['spam_invisible','crash_iphone'].includes(_bugType);
-  document.getElementById('bug-input-nomer-wrap').style.display = isNomer ? '' : 'none';
-  document.getElementById('bug-input-group-wrap').style.display = isNomer ? 'none' : '';
-}
-
-async function bugExecute() {
-  const isNomer = ['spam_invisible','crash_iphone'].includes(_bugType);
-  const target  = isNomer
-    ? document.getElementById('bug-input-nomer').value.trim()
-    : document.getElementById('bug-input-group').value.trim();
-
-  if (!target) return toast('Isi target dulu!', 'error');
-  if (isNomer && !/^62\d{8,14}$/.test(target)) return toast('Format Nomor Salah! Awali 62', 'error');
-  if (!isNomer && !target.includes('chat.whatsapp.com')) return toast('Link grup tidak valid!', 'error');
-
-  const btn = document.getElementById('bug-btn-execute');
-  btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...';
-
-  try {
-    const res  = await fetch(apiUrl('/api/bug/execute'), {
-      method:'POST', headers:H,
-      body: JSON.stringify({ order_id: _bugOrderId, bug_type: _bugType, target })
-    });
-    const data = await res.json();
-    if (data.ok) {
-      closeBugOrder();
-      toast('Bug ' + _bugType.replace('_',' ') + ' berhasil dikirim ke target!', 'success');
-    } else {
-      toast(data.message || 'Gagal Eksekusi', 'error');
-    }
-  } catch { toast('Koneksi gagal', 'error'); }
-  finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Eksekusi Bug'; }
-}
-
 let saldoText = 'Rp 0';
 const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
 </script>
@@ -2687,10 +2306,6 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
 
   const viewport = slider.closest('.produk3d-viewport') || slider.parentElement;
 
-  // Ukur tinggi asli tiap slide SEKALI di awal (bukan tiap kali sync), supaya nilainya
-  // tidak goyah akibat transform 3D (rotateY/scale) yang aktif terus di slide yang sedang
-  // bergerak. scrollHeight yang dibaca langsung dari elemen ter-transform bisa berubah-ubah
-  // sedikit antar frame, dan itu yang bikin "Aksi Lainnya" ikut lompat-lompat sendiri.
   const heightCache = new Map();
   function measureNaturalHeight(slide) {
     const prevTransform = slide.style.transform;
@@ -2724,11 +2339,6 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     return closest;
   }
 
-  // Update tinggi viewport HANYA saat scroll benar-benar berhenti (bukan tiap frame saat drag),
-  // dan target-nya wrapper luar yang tidak ikut di-scroll — bukan #produkSlider itu sendiri.
-  // Kalau di-set di elemen yang sedang di-scroll, resize itu memicu reflow yang menggeser
-  // scrollLeft/offsetLeft slide lain, jadi ikut "menarik" posisi scroll (itu bug sebelumnya).
-  // Tinggi diambil dari cache (bukan scrollHeight langsung) supaya stabil dan tidak lompat.
   function syncHeightToActive(centerSlide) {
     if (!centerSlide || !viewport) return;
     const activeHeight = heightCache.get(centerSlide) || measureNaturalHeight(centerSlide);
@@ -2798,8 +2408,6 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
   window.addEventListener('load', () => { cacheAllHeights(); const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); }, { once: true });
   window.addEventListener('resize', () => { cacheAllHeights(); const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); });
 
-  // Recalc sekali lagi setelah gambar banner (misal AM Prem/Ryuichi) selesai load,
-  // karena tinggi asli slide baru diketahui setelah gambar punya ukuran.
   slider.querySelectorAll('img').forEach(img => {
     if (!img.complete) img.addEventListener('load', () => { cacheAllHeights(); const c = applyCoverflow(); syncDots(c); syncHeightToActive(c); }, { once: true });
   });
@@ -2836,7 +2444,6 @@ const _origLoadSaldo = typeof loadSaldo === 'function' ? loadSaldo : null;
     scrollEndTimer = setTimeout(syncCurrentIndexFromScroll, 120);
   }, { passive: true });
 
-  // Auto-slide setiap 3 detik (transisi 3D dibuat lebih pelan dari slide manual)
   const AUTO_SLIDE_MS = 3000;
   const AUTO_SLIDE_ANIM_MS = 2000;
   let autoSlideTimer = null;
