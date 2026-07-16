@@ -296,6 +296,21 @@
   .country-item:hover { background: #F0FDF4; }
   .country-item.selected { background: #ECFDF5; color: #047857; font-weight: 700; }
   .country-item-code { font-weight: 700; color: #047857; font-size: 13px; }
+
+  /* Override: background input nomor hitam */
+  #wa-form .input-prefix-wrap { background: #000000; }
+  #wa-form .input-prefix-wrap:focus-within { background: #000000; }
+
+  /* Cara Pasang Bot: biru, icon & teks putih */
+  .btn-tutorial {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 11px 0; background: var(--blue); border: none;
+    border-radius: var(--radius); font-size: 13px; font-weight: 700;
+    color: #ffffff; text-decoration: none; width: 100%; margin-top: 12px;
+    transition: background 0.2s;
+  }
+  .btn-tutorial:hover { background: var(--blue-d); }
+  .btn-tutorial i { color: #ffffff; }
 </style>
 </head>
 <body>
@@ -329,7 +344,6 @@
       <div class="wa-hero-icon"><i class="fa-brands fa-whatsapp"></i></div>
       <div>
         <div class="wa-hero-title">Sewa Bot WhatsApp</div>
-        <div class="wa-hero-sub">Bot Pribadi · 1 Nomor / User · Fitur Stiker</div>
       </div>
     </div>
     <div class="wa-hero-status">
@@ -355,7 +369,7 @@
 
     <!-- FORM PAIRING (Belum Punya Sesi) -->
     <div class="produk-populer-heading" id="wa-form-heading" style="display:none">
-      <div class="produk-populer-title">Hubungkan Nomor WhatsApp <i class="fa-solid fa-link"></i></div>
+      <div class="produk-populer-title">Tautkan Nomor<i class="fa-solid fa-link"></i></div>
     </div>
     <div class="card" id="wa-form" style="display:none">
       <div class="card-sub">Masukkan Nomor WhatsApp Yang Mau Dijadikan Bot. Setiap User Hanya Bisa Menghubungkan <b>1 Nomor</b>.</div>
@@ -376,6 +390,10 @@
         <i class="fa-solid fa-link"></i>
         <span id="btn-pairing-text">Hubungkan Sekarang</span>
       </button>
+
+      <a href="/home/tutor.html" class="btn-tutorial">
+        <i class="fa-solid fa-circle-play"></i> Cara Pasang Bot
+      </a>
     </div>
 
     <!-- SESI AKTIF -->
@@ -399,12 +417,6 @@
         <i class="fa-solid fa-trash"></i>
         <span id="btn-delete-text">Hapus Sesi & Putuskan Bot</span>
       </button>
-    </div>
-
-    <div class="card">
-      <a href="/home/tutor.html" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 0;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:var(--radius);font-size:13px;font-weight:700;color:#1D4ED8;text-decoration:none;">
-        <i class="fa-solid fa-circle-play"></i> Cara Pasang Bot
-      </a>
     </div>
 
   </div>

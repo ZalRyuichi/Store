@@ -97,7 +97,8 @@ async function loadSaldo(retry = 2) {
 // sesuai status masa aktif sewa bot user. Dipanggil otomatis saat
 // halaman dimuat, dan juga bisa dipanggil ulang setelah pembelian.
 async function refreshSewaBotFloating() {
-  if (location.pathname.toLowerCase().endsWith('whatsapp.html')) return;
+  const _p = location.pathname.toLowerCase();
+  if (_p.endsWith('whatsapp.html') || _p.endsWith('tutor.html')) return;
   try {
     const res = await fetch(apiUrl('/api/sewabot/info'), { headers: H });
     if (!res.ok) return;
