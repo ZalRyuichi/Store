@@ -2,16 +2,17 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>Customer Service Page</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
-    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
-    --white:  #FFFFFF; --bg:     #F8FAFC;
+    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #1E293B;
+    --slate:  #94A3B8; --dark:   #FFFFFF; --border: #27272A;
+    --white:  #0A0A0A; --bg:     #000000;
   }
   body {
     font-family: 'Inter', sans-serif;
@@ -28,9 +29,9 @@
     background: var(--white); border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
     color: var(--dark); font-size: 14px; text-decoration: none;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: all 0.15s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4); transition: all 0.15s;
   }
-  .back-btn:hover { background: var(--blue-l); color: var(--blue); border-color: var(--blue); }
+  .back-btn:hover { background: var(--blue-l); color: #60A5FA; border-color: var(--blue); }
   .back-btn:active { transform: scale(0.92); }
 
   /* HERO */
@@ -39,12 +40,26 @@
     text-align: center;
   }
   .page-hero-tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--blue-l); color: var(--blue);
-    font-size: 11px; font-weight: 700; letter-spacing: 0.4px;
-    padding: 5px 12px; border-radius: 20px; margin-bottom: 14px;
+    display: inline-flex; align-items: center; gap: 7px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.18), rgba(96,165,250,0.06));
+    color: #93C5FD;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.3px;
+    text-transform: uppercase;
+    padding: 7px 16px 7px 12px; border-radius: 20px; margin-bottom: 14px;
+    border: 1px solid rgba(96,165,250,0.35);
+    box-shadow: 0 0 0 1px rgba(96,165,250,0.08) inset, 0 4px 14px rgba(37,99,235,0.18);
   }
-  .page-hero-title { font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+  .page-hero-tag i {
+    font-size: 10px; color: #60A5FA;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(96,165,250,0.15);
+  }
+  .page-hero-title {
+    font-family: 'Orbitron', 'Inter', sans-serif;
+    font-size: 22px; font-weight: 800; color: var(--dark);
+    letter-spacing: 0.4px; margin-bottom: 8px;
+  }
   .page-hero-sub { font-size: 13px; color: var(--slate); line-height: 1.6; }
 
   /* CONTACT CARDS */
@@ -58,13 +73,13 @@
     border-radius: 16px; padding: 18px 20px;
     display: flex; align-items: center; gap: 16px;
     text-decoration: none; color: inherit;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     transition: all 0.18s;
   }
   .contact-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-    border-color: var(--accent-color);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    border-color: rgba(255,255,255,0.25);
   }
   .contact-card:active { transform: scale(0.98); }
 
@@ -90,25 +105,32 @@
     max-width: 600px; margin: 20px auto 0; padding: 0 20px;
   }
   .cs-note-card {
-    background: var(--blue-l); border: 1px solid rgba(37,99,235,0.2);
-    border-radius: 14px; padding: 14px 16px;
-    display: flex; align-items: flex-start; gap: 10px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.14), rgba(15,23,42,0.6));
+    border: 1px solid rgba(96,165,250,0.28);
+    border-radius: 16px; padding: 16px 18px;
+    display: flex; align-items: flex-start; gap: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
   }
-  .cs-note-card i { color: var(--blue); font-size: 13px; margin-top: 2px; flex-shrink: 0; }
-  .cs-note-text { font-size: 12px; color: var(--blue); line-height: 1.6; }
-  .cs-note-text strong { font-weight: 700; }
+  .cs-note-icon {
+    width: 28px; height: 28px; border-radius: 9px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(96,165,250,0.15); border: 1px solid rgba(96,165,250,0.3);
+  }
+  .cs-note-icon i { color: #60A5FA; font-size: 12px; }
+  .cs-note-text { font-size: 12.5px; color: #B6C7E8; line-height: 1.7; padding-top: 4px; }
+  .cs-note-text strong { font-weight: 700; color: #DBEAFE; }
 </style>
 </head>
 <body>
 
-<a class="back-btn" href="/dashboard" title="Kembali">
+<a class="back-btn" href="/dashboard" onclick="history.length>1?(event.preventDefault(),history.back()):null" title="Kembali">
   <i class="fa-solid fa-arrow-left"></i>
 </a>
 
 <div class="page-hero">
   <div class="page-hero-tag"><i class="fa-solid fa-headset"></i> Customer Service</div>
   <div class="page-hero-title">Hubungi Kami</div>
-  <div class="page-hero-sub">Butuh bantuan? Pilih platform yang paling mudah buat kamu dan kami siap bantu secepatnya.</div>
+  <div class="page-hero-sub">Butuh Bantuan? Pilih Platform Yang Paling Mudah Buat Kamu Dan Kami Siap Bantu Secepatnya.</div>
 </div>
 
 <div class="contacts-wrap">
@@ -134,8 +156,17 @@
   <a class="contact-card" href="https://www.tiktok.com/@zal_ryuichi" target="_blank">
     <div class="contact-icon tiktok"><i class="fa-brands fa-tiktok"></i></div>
     <div class="contact-info">
-      <div class="contact-platform">TikTok</div>
+      <div class="contact-platform">TikTok · Owner</div>
       <div class="contact-handle">@zal_ryuichi</div>
+    </div>
+    <i class="fa-solid fa-arrow-right contact-arrow"></i>
+  </a>
+
+  <a class="contact-card" href="https://www.tiktok.com/@neshieluv" target="_blank">
+    <div class="contact-icon tiktok"><i class="fa-brands fa-tiktok"></i></div>
+    <div class="contact-info">
+      <div class="contact-platform">TikTok · My Bini</div>
+      <div class="contact-handle">@neshieluv</div>
     </div>
     <i class="fa-solid fa-arrow-right contact-arrow"></i>
   </a>
@@ -162,8 +193,8 @@
 
 <div class="cs-note">
   <div class="cs-note-card">
-    <i class="fa-solid fa-circle-exclamation"></i>
-    <div class="cs-note-text"><strong>Respon Tercepat:</strong> Telegram & WhatsApp. Untuk urusan order, bug, atau kendala teknis silakan hubungi via salah satu platform di atas.</div>
+    <div class="cs-note-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+    <div class="cs-note-text"><strong>Respon Tercepat:</strong> Telegram & WhatsApp. Untuk Urusan Order, Bug, Atau Kendala Teknis, Silakan Hubungi Via Salah Satu Platform Di Atas.</div>
   </div>
 </div>
 

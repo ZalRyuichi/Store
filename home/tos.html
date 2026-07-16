@@ -2,119 +2,160 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>Terms of Service Page</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
-    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
-    --white:  #FFFFFF; --bg:     #F8FAFC;
-    --red:    #EF4444; --red-l:  #FEF2F2;
-    --green:  #10B981; --green-l:#ECFDF5;
+    --cyan:    #22D3EE; --cyan-glow: rgba(34,211,238,0.35);
+    --purple:  #A855F7; --purple-glow: rgba(168,85,247,0.35);
+    --pink:    #EC4899;
+    --bg-0:    #05070D; --bg-1: #0A0E1A; --bg-2: #0F1424;
+    --card:    rgba(255,255,255,0.03);
+    --border:  rgba(255,255,255,0.08);
+    --border-hi: rgba(34,211,238,0.25);
+    --text:    #E7ECF5; --muted: #7C8BA8;
+    --red:     #FB7185; --red-l: rgba(251,113,133,0.08);
+    --green:   #34D399; --green-l: rgba(52,211,153,0.08);
   }
   body {
     font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--dark);
+    background:
+      radial-gradient(circle at 15% 0%, rgba(34,211,238,0.10), transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(168,85,247,0.10), transparent 40%),
+      var(--bg-0);
+    color: var(--text);
     min-height: 100vh;
-    padding-bottom: 50px;
+    padding-bottom: 60px;
   }
 
   /* BACK BUTTON */
   .back-btn {
     position: fixed; top: 16px; right: 16px; z-index: 50;
-    width: 38px; height: 38px; border-radius: 50%;
-    background: var(--white); border: 1px solid var(--border);
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    color: var(--dark); font-size: 14px; text-decoration: none;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: all 0.15s;
+    color: var(--text); font-size: 14px; text-decoration: none;
+    box-shadow: 0 0 0 rgba(34,211,238,0); transition: all 0.2s;
+    cursor: pointer;
   }
-  .back-btn:hover { background: var(--blue-l); color: var(--blue); border-color: var(--blue); }
+  .back-btn:hover { border-color: var(--border-hi); color: var(--cyan); box-shadow: 0 0 18px var(--cyan-glow); }
   .back-btn:active { transform: scale(0.92); }
 
   /* HERO */
   .page-hero {
-    max-width: 700px; margin: 0 auto; padding: 28px 20px 16px;
+    max-width: 700px; margin: 0 auto; padding: 32px 20px 18px;
   }
   .page-hero-tag {
     display: inline-flex; align-items: center; gap: 6px;
-    background: var(--blue-l); color: var(--blue);
-    font-size: 11px; font-weight: 700; letter-spacing: 0.4px;
-    padding: 5px 12px; border-radius: 20px; margin-bottom: 14px;
+    background: rgba(34,211,238,0.08); color: var(--cyan);
+    border: 1px solid rgba(34,211,238,0.25);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 20px; margin-bottom: 16px;
   }
-  .page-hero-title { font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
-  .page-hero-meta { font-size: 11.5px; color: var(--slate); display: flex; align-items: center; gap: 6px; }
-  .page-hero-meta i { font-size: 10px; }
+  .page-hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 22px; font-weight: 800; letter-spacing: 0.3px;
+    background: linear-gradient(90deg, #F1F5F9, var(--cyan) 70%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin-bottom: 10px;
+  }
+  .page-hero-meta { font-size: 11.5px; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .page-hero-meta i { font-size: 10px; color: var(--purple); }
 
   /* CONTENT */
   .tos-wrap { max-width: 700px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; gap: 14px; }
 
   .tos-card {
-    background: var(--white); border: 1px solid var(--border);
+    background: var(--card);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--border);
     border-radius: 16px; padding: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    transition: border-color 0.2s;
   }
+  .tos-card:hover { border-color: var(--border-hi); }
 
   .tos-section-title {
-    font-size: 13px; font-weight: 700; color: var(--dark);
-    display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
-    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12.5px; font-weight: 700; color: var(--text); letter-spacing: 0.4px;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--border);
   }
   .tos-section-title .tos-num {
-    width: 24px; height: 24px; border-radius: 7px;
-    background: var(--blue-l); color: var(--blue);
+    width: 26px; height: 26px; border-radius: 8px;
+    background: linear-gradient(135deg, rgba(34,211,238,0.18), rgba(168,85,247,0.18));
+    border: 1px solid var(--border-hi);
+    color: var(--cyan);
     font-size: 11px; font-weight: 800;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
 
-  .tos-body { display: flex; flex-direction: column; gap: 8px; }
+  .tos-body { display: flex; flex-direction: column; gap: 10px; }
 
   .tos-item {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 12.5px; color: var(--slate); line-height: 1.7;
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 12.5px; color: var(--muted); line-height: 1.7;
   }
-  .tos-item i { font-size: 9px; color: var(--blue); margin-top: 5px; flex-shrink: 0; }
-  .tos-item strong { color: var(--dark); font-weight: 600; }
+  .tos-item .tos-ic {
+    width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; margin-top: 1px;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  }
+  .tos-item strong { color: var(--text); font-weight: 600; }
+
+  /* per-item accent colors, cycling for visual variety */
+  .tos-item:nth-child(4n+1) .tos-ic { color: var(--cyan);   border-color: rgba(34,211,238,0.3); }
+  .tos-item:nth-child(4n+2) .tos-ic { color: var(--purple); border-color: rgba(168,85,247,0.3); }
+  .tos-item:nth-child(4n+3) .tos-ic { color: var(--pink);   border-color: rgba(236,72,153,0.3); }
+  .tos-item:nth-child(4n+4) .tos-ic { color: var(--green);  border-color: rgba(52,211,153,0.3); }
 
   /* ALERT CARDS */
   .tos-alert {
     border-radius: 12px; padding: 14px 16px;
     display: flex; align-items: flex-start; gap: 10px;
     font-size: 12px; line-height: 1.7;
+    backdrop-filter: blur(10px);
   }
-  .tos-alert.red   { background: var(--red-l);   border: 1px solid #FECACA; color: #991B1B; }
-  .tos-alert.green { background: var(--green-l);  border: 1px solid #A7F3D0; color: #065F46; }
+  .tos-alert.red   { background: var(--red-l);   border: 1px solid rgba(251,113,133,0.3); color: #FCA5AF; }
+  .tos-alert.green { background: var(--green-l);  border: 1px solid rgba(52,211,153,0.3); color: #6EE7B7; }
   .tos-alert i { font-size: 13px; margin-top: 1px; flex-shrink: 0; }
-  .tos-alert strong { font-weight: 700; }
+  .tos-alert.red i { color: var(--red); }
+  .tos-alert.green i { color: var(--green); }
+  .tos-alert strong { font-weight: 700; color: #fff; }
 
   /* FOOTER NOTE */
   .tos-footer {
     max-width: 700px; margin: 6px auto 0; padding: 0 20px;
   }
   .tos-footer-card {
-    background: linear-gradient(135deg, #0F172A, #1E293B);
+    background: linear-gradient(135deg, rgba(34,211,238,0.08), rgba(168,85,247,0.08));
+    border: 1px solid var(--border-hi);
     border-radius: 14px; padding: 16px 20px; color: #fff;
     display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 0 24px rgba(34,211,238,0.08);
   }
-  .tos-footer-card i { font-size: 18px; opacity: 0.8; }
-  .tos-footer-text { font-size: 12px; line-height: 1.7; opacity: 0.85; }
-  .tos-footer-text strong { font-weight: 700; opacity: 1; color: #fff; }
+  .tos-footer-card i { font-size: 18px; color: var(--cyan); }
+  .tos-footer-text { font-size: 12px; line-height: 1.7; color: var(--muted); }
+  .tos-footer-text strong { font-weight: 700; color: #fff; }
 </style>
 </head>
 <body>
 
-<a class="back-btn" href="/dashboard" title="Kembali">
+<a class="back-btn" onclick="history.back()" title="Kembali">
   <i class="fa-solid fa-arrow-left"></i>
 </a>
 
 <div class="page-hero">
-  <div class="page-hero-tag"><i class="fa-solid fa-scroll"></i> Terms of Service</div>
+  <div class="page-hero-tag"><i class="fa-solid fa-scroll"></i> Terms Of Service</div>
   <div class="page-hero-title">Syarat & Ketentuan Layanan</div>
-  <div class="page-hero-meta"><i class="fa-solid fa-calendar"></i> Berlaku sejak 1 Juli 2026 &nbsp;·&nbsp; <i class="fa-solid fa-globe"></i> Zal Яyuichi</div>
+  <div class="page-hero-meta"><i class="fa-solid fa-calendar"></i> Berlaku Sejak 1 Juli 2026 &nbsp;·&nbsp; <i class="fa-solid fa-globe"></i> Zal Яyuichi</div>
 </div>
 
 <div class="tos-wrap">
@@ -123,10 +164,10 @@
   <div class="tos-card">
     <div class="tos-section-title"><div class="tos-num">1</div> Ketentuan Umum</div>
     <div class="tos-body">
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Dengan menggunakan platform Zal Яyuichi, kamu dianggap telah membaca, memahami, dan menyetujui seluruh syarat & ketentuan yang berlaku.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Platform ini menyediakan layanan berupa penjualan role/membership aplikasi, sewa bot, dan jasa digital lainnya.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Kami berhak mengubah, memperbarui, atau menambahkan ketentuan kapan saja tanpa pemberitahuan sebelumnya. Versi terbaru selalu berlaku.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Pengguna bertanggung jawab penuh atas keamanan akun dan kata sandi masing-masing.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-file-contract"></i></div><span>Dengan Menggunakan Platform Zal Яyuichi, Kamu Dianggap Telah Membaca, Memahami, Dan Menyetujui Seluruh Syarat & Ketentuan Yang Berlaku.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-store"></i></div><span>Platform Ini Menyediakan Layanan Berupa Penjualan Role/Membership Aplikasi, Sewa Bot, Dan Jasa Digital Lainnya.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-arrows-rotate"></i></div><span>Kami Berhak Mengubah, Memperbarui, Atau Menambahkan Ketentuan Kapan Saja Tanpa Pemberitahuan Sebelumnya. Versi Terbaru Selalu Berlaku.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-user-shield"></i></div><span>Pengguna Bertanggung Jawab Penuh Atas Keamanan Akun Dan Kata Sandi Masing-Masing.</span></div>
     </div>
   </div>
 
@@ -134,10 +175,10 @@
   <div class="tos-card">
     <div class="tos-section-title"><div class="tos-num">2</div> Pembayaran & Transaksi</div>
     <div class="tos-body">
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span><strong>Metode pembayaran yang diterima hanya QRIS.</strong> Tidak ada metode lain yang didukung saat ini.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Pembayaran diproses secara <strong>otomatis dan instan</strong>. Role/layanan akan aktif segera setelah pembayaran berhasil dikonfirmasi sistem.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Pastikan nominal yang dibayarkan sesuai dengan yang tertera pada halaman checkout. Kekurangan atau kelebihan bayar menjadi tanggung jawab pengguna.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Transaksi yang sudah berhasil diproses tidak dapat dibatalkan secara sepihak oleh pengguna.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-qrcode"></i></div><span><strong>Metode Pembayaran Yang Diterima Hanya QRIS.</strong> Tidak Ada Metode Lain Yang Didukung Saat Ini.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-bolt"></i></div><span>Pembayaran Diproses Secara <strong>Otomatis Dan Instan</strong>. Role/Layanan Akan Aktif Segera Setelah Pembayaran Berhasil Dikonfirmasi Sistem.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-money-check-dollar"></i></div><span>Pastikan Nominal Yang Dibayarkan Sesuai Dengan Yang Tertera Pada Halaman Checkout. Kekurangan Atau Kelebihan Bayar Menjadi Tanggung Jawab Pengguna.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-ban"></i></div><span>Transaksi Yang Sudah Berhasil Diproses Tidak Dapat Dibatalkan Secara Sepihak Oleh Pengguna.</span></div>
     </div>
   </div>
 
@@ -145,21 +186,22 @@
   <div class="tos-card">
     <div class="tos-section-title"><div class="tos-num">3</div> Kebijakan Refund & Pengembalian</div>
     <div class="tos-body">
-      <div class="tos-alert red" style="margin-bottom:10px;">
+      <div class="tos-alert red">
         <i class="fa-solid fa-triangle-exclamation"></i>
-        <span><strong>Tidak ada refund</strong> untuk pembelian yang sudah berhasil diproses, kecuali terjadi kesalahan teknis dari pihak kami yang terverifikasi.</span>
+        <span><strong>Tidak Ada Refund</strong> Untuk Pembelian Yang Sudah Berhasil Diproses, Kecuali Terjadi Kesalahan Teknis Dari Pihak Kami Yang Terverifikasi.</span>
       </div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Jika role/layanan tidak aktif setelah pembayaran berhasil, segera hubungi CS kami dengan menyertakan bukti pembayaran.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-headset"></i></div><span>Jika Role/Layanan Tidak Aktif Setelah Pembayaran Berhasil, Segera Hubungi CS Kami Dengan Menyertakan Bukti Pembayaran.</span></div>
+    </div>
   </div>
 
   <!-- 4. PENGGUNAAN -->
   <div class="tos-card">
     <div class="tos-section-title"><div class="tos-num">4</div> Penggunaan Layanan</div>
     <div class="tos-body">
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Akun bersifat <strong>personal</strong> dan tidak boleh dipindahtangankan, dijual, atau dibagikan kepada pihak lain tanpa izin.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Dilarang menggunakan layanan kami untuk aktivitas yang melanggar hukum yang berlaku di Indonesia.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Dilarang melakukan penyalahgunaan sistem, eksploitasi bug, atau tindakan yang merugikan pengguna lain maupun platform.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Pengguna dengan role Reseller atau Admin wajib mematuhi ketentuan tambahan yang berlaku untuk tier tersebut.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-user-lock"></i></div><span>Akun Bersifat <strong>Personal</strong> Dan Tidak Boleh Dipindahtangankan, Dijual, Atau Dibagikan Kepada Pihak Lain Tanpa Izin.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-gavel"></i></div><span>Dilarang Menggunakan Layanan Kami Untuk Aktivitas Yang Melanggar Hukum Yang Berlaku Di Indonesia.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-bug-slash"></i></div><span>Dilarang Melakukan Penyalahgunaan Sistem, Eksploitasi Bug, Atau Tindakan Yang Merugikan Pengguna Lain Maupun Platform.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-user-tie"></i></div><span>Pengguna Dengan Role Reseller Atau Admin Wajib Mematuhi Ketentuan Tambahan Yang Berlaku Untuk Tier Tersebut.</span></div>
     </div>
   </div>
 
@@ -167,10 +209,10 @@
   <div class="tos-card">
     <div class="tos-section-title"><div class="tos-num">5</div> Masa Aktif & Perpanjangan</div>
     <div class="tos-body">
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Role/membership dengan masa aktif terbatas (harian, mingguan, bulanan) akan <strong>otomatis nonaktif</strong> setelah waktu habis.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Tidak ada notifikasi otomatis sebelum masa aktif berakhir. Pengguna bertanggung jawab memantau masa aktif sendiri.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Perpanjangan dapat dilakukan kapan saja melalui halaman produk. Masa aktif baru dihitung dari waktu perpanjangan dilakukan.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Role permanen tidak memerlukan perpanjangan dan berlaku selamanya selama platform masih aktif.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-hourglass-half"></i></div><span>Role/Membership Dengan Masa Aktif Terbatas (Harian, Mingguan, Bulanan) Akan <strong>Otomatis Nonaktif</strong> Setelah Waktu Habis.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-bell-slash"></i></div><span>Tidak Ada Notifikasi Otomatis Sebelum Masa Aktif Berakhir. Pengguna Bertanggung Jawab Memantau Masa Aktif Sendiri.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-rotate"></i></div><span>Perpanjangan Dapat Dilakukan Kapan Saja Melalui Halaman Produk. Masa Aktif Baru Dihitung Dari Waktu Perpanjangan Dilakukan.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-infinity"></i></div><span>Role Permanen Tidak Memerlukan Perpanjangan Dan Berlaku Selamanya Selama Platform Masih Aktif.</span></div>
     </div>
   </div>
 
@@ -178,9 +220,9 @@
   <div class="tos-card">
     <div class="tos-section-title"><div class="tos-num">6</div> Suspend & Pemblokiran Akun</div>
     <div class="tos-body">
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Kami berhak melakukan suspend atau pemblokiran akun tanpa pemberitahuan jika terbukti melanggar ToS ini.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Akun yang disuspend tidak berhak atas pengembalian saldo atau role yang masih aktif.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Pelanggaran berat seperti penipuan, chargeback tanpa alasan valid, atau penyebaran akses ilegal dapat berujung pada banned permanen.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-ban"></i></div><span>Kami Berhak Melakukan Suspend Atau Pemblokiran Akun Tanpa Pemberitahuan Jika Terbukti Melanggar ToS Ini.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-wallet"></i></div><span>Akun Yang Disuspend Tidak Berhak Atas Pengembalian Saldo Atau Role Yang Masih Aktif.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-scale-balanced"></i></div><span>Pelanggaran Berat Seperti Penipuan, Chargeback Tanpa Alasan Valid, Atau Penyebaran Akses Ilegal Dapat Berujung Pada Banned Permanen.</span></div>
     </div>
   </div>
 
@@ -188,16 +230,16 @@
   <div class="tos-card">
     <div class="tos-section-title"><div class="tos-num">7</div> Hak Platform</div>
     <div class="tos-body">
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Kami berhak mengubah harga, produk, atau fitur layanan kapan saja tanpa pemberitahuan sebelumnya.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Kami tidak bertanggung jawab atas kerugian yang timbul akibat downtime, pemeliharaan sistem, atau gangguan teknis di luar kendali kami.</span></div>
-      <div class="tos-item"><i class="fa-solid fa-circle-dot"></i><span>Kami berhak menghentikan layanan kapan saja dengan atau tanpa pemberitahuan sebelumnya.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-tags"></i></div><span>Kami Berhak Mengubah Harga, Produk, Atau Fitur Layanan Kapan Saja Tanpa Pemberitahuan Sebelumnya.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-server"></i></div><span>Kami Tidak Bertanggung Jawab Atas Kerugian Yang Timbul Akibat Downtime, Pemeliharaan Sistem, Atau Gangguan Teknis Di Luar Kendali Kami.</span></div>
+      <div class="tos-item"><div class="tos-ic"><i class="fa-solid fa-power-off"></i></div><span>Kami Berhak Menghentikan Layanan Kapan Saja Dengan Atau Tanpa Pemberitahuan Sebelumnya.</span></div>
     </div>
   </div>
 
   <!-- AGREEMENT -->
   <div class="tos-alert green">
     <i class="fa-solid fa-circle-check"></i>
-    <span>Dengan melakukan pembelian atau menggunakan platform ini, kamu dianggap telah <strong>membaca dan menyetujui</strong> seluruh Terms of Service di atas.</span>
+    <span>Dengan Melakukan Pembelian Atau Menggunakan Platform Ini, Kamu Dianggap Telah <strong>Membaca Dan Menyetujui</strong> Seluruh Terms Of Service Di Atas.</span>
   </div>
 
 </div>

@@ -2,146 +2,192 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>FAQ Page</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
-    --blue:   #2563EB; --blue-d: #1D4ED8; --blue-l: #EFF6FF;
-    --slate:  #64748B; --dark:   #0F172A; --border: #E2E8F0;
-    --white:  #FFFFFF; --bg:     #F8FAFC;
-    --red:    #EF4444; --green:  #10B981; --amber:  #F59E0B;
-    --radius: 12px;
+    --bg-0:     #08090D;
+    --bg-1:     #0D0F15;
+    --bg-2:     #14161E;
+    --card:     #12141B;
+    --card-hi:  #171A23;
+    --border:   rgba(255, 255, 255, 0.07);
+    --border-hi:rgba(37, 99, 235, 0.45);
+    --gold:     #2563EB;
+    --gold-hi:  #60A5FA;
+    --gold-soft:rgba(37, 99, 235, 0.14);
+    --text:     #ECE9E2;
+    --text-dim: #8B8F9B;
+    --text-mut: #5C6070;
+    --radius:   14px;
   }
-  
+
   body {
     font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--dark);
+    background:
+      radial-gradient(circle at 15% 0%, rgba(37,99,235,0.10), transparent 45%),
+      radial-gradient(circle at 90% 20%, rgba(30,64,175,0.08), transparent 40%),
+      var(--bg-0);
+    color: var(--text);
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
 
   .faq-wrapper {
     max-width: 800px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 20px 60px;
   }
 
+  /* Header */
   .faq-header {
     text-align: center;
-    padding: 32px 0 24px;
+    padding: 56px 0 28px;
   }
 
+  .faq-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  .faq-eyebrow::before,
+  .faq-eyebrow::after {
+    content: "";
+    width: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+
+  .faq-eyebrow::after { background: linear-gradient(90deg, var(--gold), transparent); }
+
   .faq-title {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--dark);
-    margin-bottom: 8px;
+    font-family: 'Fraunces', serif;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 10px;
   }
 
   .faq-subtitle {
     font-size: 14px;
-    color: var(--slate);
+    color: var(--text-dim);
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.6;
   }
 
+  /* Search */
   .faq-search {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     position: relative;
   }
 
   .search-input {
     width: 100%;
-    padding: 12px 16px 12px 40px;
+    padding: 14px 16px 14px 42px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     font-family: 'Inter', sans-serif;
     font-size: 14px;
-    background: var(--white);
-    transition: all 0.2s;
+    background: var(--card);
+    color: var(--text);
+    transition: all 0.25s ease;
   }
+
+  .search-input::placeholder { color: var(--text-mut); }
 
   .search-input:focus {
     outline: none;
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px var(--blue-l);
+    border-color: var(--border-hi);
+    background: var(--card-hi);
+    box-shadow: 0 0 0 3px var(--gold-soft);
   }
 
   .search-icon {
     position: absolute;
-    left: 12px;
+    left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--slate);
-    font-size: 16px;
+    color: var(--text-mut);
+    font-size: 14px;
   }
 
+  /* Categories */
   .faq-categories {
     display: flex;
     gap: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     padding-bottom: 4px;
   }
 
-  .faq-categories::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  .faq-categories::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .faq-categories::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 2px;
-  }
+  .faq-categories::-webkit-scrollbar { height: 3px; }
+  .faq-categories::-webkit-scrollbar-track { background: transparent; }
+  .faq-categories::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
   .category-btn {
-    padding: 8px 14px;
+    padding: 9px 16px;
     border: 1px solid var(--border);
     border-radius: 20px;
-    background: var(--white);
-    color: var(--dark);
+    background: var(--card);
+    color: var(--text-dim);
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
     scroll-snap-align: start;
     font-family: 'Inter', sans-serif;
   }
 
   .category-btn:hover {
-    border-color: var(--blue);
-    color: var(--blue);
+    border-color: var(--border-hi);
+    color: var(--gold-hi);
   }
 
   .category-btn.active {
-    background: var(--blue);
-    color: var(--white);
-    border-color: var(--blue);
+    background: linear-gradient(135deg, #2563EB, #1E40AF);
+    color: #F5F7FF;
+    border-color: transparent;
+    font-weight: 600;
   }
 
+  /* Items */
   .faq-items {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 
   .faq-item {
-    background: var(--white);
+    background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    transition: all 0.2s;
+    transition: all 0.25s ease;
   }
 
   .faq-item:hover {
-    border-color: var(--blue-l);
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+    border-color: var(--border-hi);
+    background: var(--card-hi);
+  }
+
+  .faq-item.open {
+    border-color: var(--border-hi);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--gold-soft);
   }
 
   .faq-question {
@@ -149,41 +195,39 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 16px;
+    padding: 18px;
     cursor: pointer;
     user-select: none;
-    transition: all 0.2s;
-  }
-
-  .faq-question:hover {
-    background: var(--bg);
+    transition: all 0.2s ease;
   }
 
   .question-content {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 14px;
     flex: 1;
   }
 
   .question-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: var(--blue-l);
-    color: var(--blue);
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: var(--gold-soft);
+    color: var(--gold-hi);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
     flex-shrink: 0;
-    margin-top: 2px;
+    margin-top: 1px;
+    border: 1px solid rgba(37, 99, 235, 0.25);
   }
 
   .question-text {
-    font-size: 14px;
+    font-size: 14.5px;
     font-weight: 600;
-    color: var(--dark);
+    color: var(--text);
+    line-height: 1.5;
   }
 
   .toggle-arrow {
@@ -192,119 +236,116 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--slate);
-    font-size: 14px;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    color: var(--text-mut);
+    font-size: 13px;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
     flex-shrink: 0;
   }
 
   .faq-item.open .toggle-arrow {
     transform: rotate(180deg);
+    color: var(--gold-hi);
   }
 
   .faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .faq-item.open .faq-answer {
-    max-height: 500px;
+    max-height: 600px;
   }
 
   .answer-content {
-    padding: 0 16px 16px;
-    padding-left: calc(12px + 32px + 12px);
-    font-size: 13px;
-    color: var(--slate);
-    line-height: 1.6;
+    padding: 0 18px 20px;
+    padding-left: calc(14px + 34px + 14px);
+    font-size: 13.5px;
+    color: var(--text-dim);
+    line-height: 1.7;
   }
 
   .answer-content strong {
-    color: var(--dark);
+    color: var(--gold-hi);
     font-weight: 600;
   }
 
   .answer-content ul,
   .answer-content ol {
-    margin-top: 8px;
-    margin-left: 20px;
+    margin-top: 10px;
+    margin-left: 18px;
   }
 
   .answer-content li {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    padding-left: 4px;
   }
 
   .answer-content a {
-    color: var(--blue);
+    color: var(--gold-hi);
     text-decoration: none;
     font-weight: 500;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.45);
   }
 
-  .answer-content a:hover {
-    text-decoration: underline;
-  }
+  .answer-content a:hover { border-color: var(--gold-hi); }
 
   .faq-empty {
     text-align: center;
-    padding: 40px 20px;
+    padding: 48px 20px;
   }
 
   .empty-icon {
-    font-size: 48px;
-    color: var(--border);
-    margin-bottom: 12px;
+    font-size: 40px;
+    color: var(--text-mut);
+    margin-bottom: 14px;
   }
 
   .empty-text {
     font-size: 14px;
-    color: var(--slate);
+    color: var(--text-dim);
   }
 
   @media (max-width: 640px) {
-    .faq-title {
-      font-size: 22px;
-    }
-
-    .faq-header {
-      padding: 24px 0 20px;
-    }
-
-    .answer-content {
-      padding: 0 16px 16px 16px;
-      padding-left: 16px;
-    }
+    .faq-title { font-size: 26px; }
+    .faq-header { padding: 48px 0 22px; }
+    .answer-content { padding: 0 16px 18px 16px; }
   }
+
+  /* Back button */
   .back-btn {
-    position: fixed; top: 16px; right: 16px; z-index: 50;
-    width: 38px; height: 38px; border-radius: 50%;
-    background: var(--white); border: 1px solid var(--border);
+    position: fixed; top: 16px; left: 16px; z-index: 50;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--card); border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    color: var(--dark); font-size: 14px; text-decoration: none;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: all 0.15s;
+    color: var(--text); font-size: 14px; text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    transition: all 0.2s ease;
   }
-  .back-btn:hover { background: var(--blue-l); color: var(--blue); border-color: var(--blue); }
+  .back-btn:hover { background: var(--gold-soft); color: var(--gold-hi); border-color: var(--border-hi); }
   .back-btn:active { transform: scale(0.92); }
 </style>
 </head>
 <body>
 
-<a class="back-btn" href="/dashboard" title="Kembali">
+<button class="back-btn" onclick="if (document.referrer && history.length > 1) { history.back(); } else { window.location.href = '/dashboard'; }" title="Kembali Ke Halaman Sebelumnya">
   <i class="fa-solid fa-arrow-left"></i>
-</a>
+</button>
 
 <!-- Main Content -->
 <div class="faq-wrapper">
   <!-- Header -->
   <div class="faq-header">
-    <h1 class="faq-title">FAQ</h1>
-    <p class="faq-subtitle">Pertanyaan yang sering diajukan - Temukan jawaban di sini</p>
+    <div class="faq-eyebrow">Pusat Bantuan</div>
+    <h1 class="faq-title">Pertanyaan Yang Sering Diajukan</h1>
+    <p class="faq-subtitle">Temukan Jawaban Cepat Dan Jelas Untuk Setiap Pertanyaan Anda</p>
   </div>
 
   <!-- Search -->
   <div class="faq-search">
     <i class="fas fa-search search-icon"></i>
-    <input type="text" class="search-input" id="searchInput" placeholder="Cari pertanyaan...">
+    <input type="text" class="search-input" id="searchInput" placeholder="Cari Pertanyaan...">
   </div>
 
   <!-- Categories -->
@@ -325,18 +366,19 @@
           <div class="question-icon">
             <i class="fas fa-user"></i>
           </div>
-          <div class="question-text">Bagaimana cara membuat akun?</div>
+          <div class="question-text">Bagaimana Cara Membuat Akun?</div>
         </div>
         <div class="toggle-arrow"><i class="fas fa-chevron-down"></i></div>
       </div>
       <div class="faq-answer">
         <div class="answer-content">
-          Untuk membuat akun baru, ikuti langkah berikut:
+          Untuk Membuat Akun Baru, Ikuti Langkah Berikut:
           <ol>
-            <li>Klik tombol "Daftar" di halaman login</li>
-            <li>Masukkan username yang Anda inginkan</li>
-            <li>Masukkan password yang kuat</li>
-            <li>Selesai! Akun Anda sudah siap digunakan</li>
+            <li>Klik Tombol "Lanjutkan Dengan Google" Di Halaman Login</li>
+            <li>Pilih Akun Google Yang Belum Terdaftar Pada Situs Ini</li>
+            <li>Masukkan Username Yang Anda Inginkan</li>
+            <li>Masukkan Password Yang Kuat</li>
+            <li>Selesai! Akun Anda Sudah Siap Digunakan</li>
           </ol>
         </div>
       </div>
@@ -349,20 +391,20 @@
           <div class="question-icon">
             <i class="fas fa-box"></i>
           </div>
-          <div class="question-text">Apa perbedaan antara membership yang berbeda?</div>
+          <div class="question-text">Apa Perbedaan Antara Role Yang Berbeda?</div>
         </div>
         <div class="toggle-arrow"><i class="fas fa-chevron-down"></i></div>
       </div>
       <div class="faq-answer">
         <div class="answer-content">
-          Kami menawarkan berbagai tipe membership dengan keuntungan berbeda:
+          Kami Menawarkan Berbagai Tipe Membership Dengan Keuntungan Berbeda:
           <ul>
-            <li><strong>Member Basic:</strong> Akses dasar ke semua produk</li>
-            <li><strong>VIP No Update:</strong> Diskon khusus tanpa update fitur</li>
-            <li><strong>VIP Full:</strong> Akses premium dengan update berkala</li>
-            <li><strong>Reseller:</strong> Khusus untuk reseller dengan margin keuntungan</li>
+            <li><strong>Member Basic:</strong> Akses Dasar Fitur Aplikasi</li>
+            <li><strong>VIP:</strong> Akses Sebagian Fitur RAT/Sadap</li>
+            <li><strong>Premium:</strong> Akses Semua Fitur Pada Aplikasi</li>
+            <li><strong>Reseller:</strong> Bisa Jualan Role Pada Aplikasi Dan Akses Semua Fitur Pada Aplikasi</li>
           </ul>
-          Pilih yang sesuai dengan kebutuhan Anda!
+          Pilih Yang Sesuai Dengan Kebutuhan Anda!
         </div>
       </div>
     </div>
@@ -373,19 +415,19 @@
           <div class="question-icon">
             <i class="fas fa-download"></i>
           </div>
-          <div class="question-text">Bagaimana cara mengunduh aplikasi yang dibeli?</div>
+          <div class="question-text">Bagaimana Cara Mengunduh Aplikasi Yang Dibeli?</div>
         </div>
         <div class="toggle-arrow"><i class="fas fa-chevron-down"></i></div>
       </div>
       <div class="faq-answer">
         <div class="answer-content">
-          Setelah membeli:
+          Setelah Membeli:
           <ol>
-            <li>Masuk ke Dashboard Anda</li>
-            <li>Cari <strong>"Download Card Aplikasi Ryuichi"</strong></li>
-            <li>Klik card untuk membuka detail aplikasi</li>
-            <li>Klik tombol "Download" untuk mengunduh file</li>
-            <li>File akan langsung diunduh ke perangkat Anda</li>
+            <li>Masuk Ke Dashboard Anda</li>
+            <li>Cari <strong>"Download Aplikasi"</strong></li>
+            <li>Klik Card Untuk Membuka Detail Aplikasi</li>
+            <li>Klik Tombol "Download" Untuk Mengunduh File</li>
+            <li>File Akan Langsung Diunduh Ke Perangkat Anda</li>
           </ol>
         </div>
       </div>
@@ -398,17 +440,17 @@
           <div class="question-icon">
             <i class="fas fa-credit-card"></i>
           </div>
-          <div class="question-text">Metode pembayaran apa yang tersedia?</div>
+          <div class="question-text">Metode Pembayaran Apa Yang Tersedia?</div>
         </div>
         <div class="toggle-arrow"><i class="fas fa-chevron-down"></i></div>
       </div>
       <div class="faq-answer">
         <div class="answer-content">
-          Kami menerima pembayaran melalui:
+          Kami Menerima Pembayaran Melalui:
           <ul>
-            <li><strong>QRIS</strong> - Untuk semua jenis pembayaran (transfer bank, e-wallet, pulsa, dll)</li>
+            <li><strong>QRIS</strong> — Untuk Semua Jenis Pembayaran (Transfer Bank, E-Wallet, Pulsa, Dll)</li>
           </ul>
-          QRIS adalah metode pembayaran yang fleksibel dan dapat digunakan untuk semua jenis transaksi. Scan kode QRIS dengan aplikasi pilihan Anda untuk menyelesaikan pembayaran.
+          QRIS Adalah Metode Pembayaran Yang Fleksibel Dan Dapat Digunakan Untuk Semua Jenis Transaksi. Scan Kode QRIS Dengan Aplikasi Pilihan Anda Untuk Menyelesaikan Pembayaran.
         </div>
       </div>
     </div>
@@ -419,13 +461,13 @@
           <div class="question-icon">
             <i class="fas fa-hourglass-end"></i>
           </div>
-          <div class="question-text">Berapa lama waktu pembayaran diproses?</div>
+          <div class="question-text">Berapa Lama Waktu Pembayaran Diproses?</div>
         </div>
         <div class="toggle-arrow"><i class="fas fa-chevron-down"></i></div>
       </div>
       <div class="faq-answer">
         <div class="answer-content">
-          Pembayaran diproses secara <strong>instant</strong>. Setelah Anda melakukan scan QRIS dan transaksi berhasil, akses Anda akan langsung diaktifkan tanpa perlu menunggu konfirmasi tambahan.
+          Pembayaran Diproses Secara <strong>Instant</strong>. Setelah Anda Melakukan Scan QRIS Dan Transaksi Berhasil, Akses Anda Akan Langsung Diaktifkan Tanpa Perlu Menunggu Konfirmasi Tambahan.
         </div>
       </div>
     </div>
@@ -437,20 +479,17 @@
           <div class="question-icon">
             <i class="fas fa-tools"></i>
           </div>
-          <div class="question-text">Aplikasi tidak bisa diunduh, apa solusinya?</div>
+          <div class="question-text">Aplikasi Tidak Bisa Diunduh, Apa Solusinya?</div>
         </div>
         <div class="toggle-arrow"><i class="fas fa-chevron-down"></i></div>
       </div>
       <div class="faq-answer">
         <div class="answer-content">
-          Coba solusi berikut:
+          Coba Solusi Berikut:
           <ol>
-            <li>Pastikan koneksi internet Anda stabil</li>
-            <li>Bersihkan cache browser Anda</li>
-            <li>Coba gunakan browser yang berbeda</li>
-            <li>Pastikan storage device Anda cukup</li>
-            <li>Matikan VPN jika sedang aktif</li>
-            <li>Jika masih bermasalah, hubungi owner</li>
+            <li>Pastikan Matikan Play Protect Pada Play Store</li>
+            <li>Pastikan Storage Device Anda Cukup</li>
+            <li>Jika Masih Bermasalah, Hubungi Owner</li>
           </ol>
         </div>
       </div>
@@ -462,7 +501,7 @@
           <div class="question-icon">
             <i class="fas fa-laptop"></i>
           </div>
-          <div class="question-text">Apakah ada syarat system minimum untuk menjalankan aplikasi?</div>
+          <div class="question-text">Apakah Ada Syarat System Minimum Untuk Menjalankan Aplikasi?</div>
         </div>
         <div class="toggle-arrow"><i class="fas fa-chevron-down"></i></div>
       </div>
@@ -470,15 +509,21 @@
         <div class="answer-content">
           <strong>Syarat Minimum:</strong>
           <ul>
-            <li><strong>Android:</strong> Version 5.0+ (minimum RAM 2GB)</li>
-            <li><strong>Windows:</strong> Windows 7 SP1+ (64-bit, minimal RAM 2GB)</li>
-            <li><strong>Mac:</strong> macOS 10.12+ (minimal RAM 2GB)</li>
-            <li><strong>Internet:</strong> Koneksi stabil untuk verifikasi lisensi</li>
+            <li><strong>Android:</strong> Version 5.0+ (Minimum RAM 2GB)</li>
+            <li><strong>Windows:</strong> Windows 7 SP1+ (64-Bit, Minimal RAM 2GB)</li>
+            <li><strong>Mac:</strong> macOS 10.12+ (Minimal RAM 2GB)</li>
+            <li><strong>Internet:</strong> Koneksi Stabil Untuk Verifikasi Lisensi</li>
           </ul>
-          Untuk pengalaman terbaik, gunakan device dengan spesifikasi lebih tinggi!
+          Untuk Pengalaman Terbaik, Gunakan Device Dengan Spesifikasi Lebih Tinggi!
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Empty state (hidden by default, shown via JS) -->
+  <div class="faq-empty" id="faqEmpty" style="display:none;">
+    <div class="empty-icon"><i class="fas fa-magnifying-glass"></i></div>
+    <div class="empty-text">Tidak Ada Hasil Yang Cocok Dengan Pencarian Anda</div>
   </div>
 </div>
 
@@ -499,6 +544,7 @@
   // Category Filter
   const categoryBtns = document.querySelectorAll('.category-btn');
   const searchInput = document.getElementById('searchInput');
+  const faqEmpty = document.getElementById('faqEmpty');
 
   categoryBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -514,6 +560,7 @@
   function filterFAQ() {
     const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
     const searchTerm = searchInput.value.toLowerCase();
+    let visibleCount = 0;
 
     faqItems.forEach(item => {
       const category = item.getAttribute('data-category');
@@ -522,9 +569,13 @@
 
       const matchesCategory = activeCategory === 'semua' || category === activeCategory;
       const matchesSearch = questionText.includes(searchTerm) || answerText.includes(searchTerm);
+      const isVisible = matchesCategory && matchesSearch;
 
-      item.style.display = matchesCategory && matchesSearch ? 'block' : 'none';
+      item.style.display = isVisible ? 'block' : 'none';
+      if (isVisible) visibleCount++;
     });
+
+    faqEmpty.style.display = visibleCount === 0 ? 'block' : 'none';
 
     // Close all items when filtering
     faqItems.forEach(item => item.classList.remove('open'));
