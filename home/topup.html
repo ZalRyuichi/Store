@@ -301,7 +301,7 @@
 
   /* FAB WhatsApp: no shadow/glow, posisi lebih bawah seperti dashboard.html */
   .sewabot-fab {
-    position: fixed; left: 16px; bottom: 20px;
+    position: fixed; left: 16px; bottom: calc(58px + env(safe-area-inset-bottom, 0) + 12px);
     box-shadow: none !important;
     animation: none !important;
   }

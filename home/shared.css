@@ -604,7 +604,7 @@
 
   /* Sewa Bot floating button */
   .sewabot-fab {
-    position: fixed; left: 16px; bottom: 20px;
+    position: fixed; left: 16px; bottom: calc(58px + env(safe-area-inset-bottom, 0) + 12px);
     width: 48px; height: 48px; border-radius: 50%;
     background: linear-gradient(135deg, #25D366, #128C7E);
     color: #fff; border: none; cursor: pointer; text-decoration: none;
