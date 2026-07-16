@@ -98,7 +98,7 @@ async function loadSaldo(retry = 2) {
 // halaman dimuat, dan juga bisa dipanggil ulang setelah pembelian.
 async function refreshSewaBotFloating() {
   const _p = location.pathname.toLowerCase();
-  if (_p.endsWith('whatsapp.html') || _p.endsWith('tutor.html')) return;
+  if (_p.endsWith('whatsapp') || _p.endsWith('tutor')) return;
   try {
     const res = await fetch(apiUrl('/api/sewabot/info'), { headers: H });
     if (!res.ok) return;
