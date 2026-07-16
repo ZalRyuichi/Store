@@ -460,7 +460,7 @@
     position: fixed; inset: 0;
     background: rgba(15,23,42,0.5);
     display: none; align-items: flex-end; justify-content: center;
-    z-index: 100; backdrop-filter: blur(4px);
+    z-index: 1001; backdrop-filter: blur(4px);
   }
   .pay-method-overlay.show { display: flex; animation: fadeIn 0.2s ease; }
   .pay-method-sheet {
@@ -1235,57 +1235,57 @@
     </div>
 
     <div class="ptero-grid">
-      <div class="ptero-card" onclick="openDetail('ptero-1gb')">
+      <div class="ptero-card" onclick="showPanelStokHabis()">
         <div class="ptero-icon"><i class="fa-solid fa-microchip"></i></div>
         <div class="ptero-ram">1 GB</div>
         <div class="ptero-price">Rp 1.000</div>
       </div>
-      <div class="ptero-card" onclick="openDetail('ptero-2gb')">
+      <div class="ptero-card" onclick="showPanelStokHabis()">
         <div class="ptero-icon"><i class="fa-solid fa-microchip"></i></div>
         <div class="ptero-ram">2 GB</div>
         <div class="ptero-price">Rp 2.000</div>
       </div>
-      <div class="ptero-card" onclick="openDetail('ptero-3gb')">
+      <div class="ptero-card" onclick="showPanelStokHabis()">
         <div class="ptero-icon"><i class="fa-solid fa-microchip"></i></div>
         <div class="ptero-ram">3 GB</div>
         <div class="ptero-price">Rp 3.000</div>
       </div>
-      <div class="ptero-card" onclick="openDetail('ptero-4gb')">
+      <div class="ptero-card" onclick="showPanelStokHabis()">
         <div class="ptero-icon"><i class="fa-solid fa-microchip"></i></div>
         <div class="ptero-ram">4 GB</div>
         <div class="ptero-price">Rp 4.000</div>
       </div>
-      <div class="ptero-card" onclick="openDetail('ptero-5gb')">
+      <div class="ptero-card" onclick="showPanelStokHabis()">
         <div class="ptero-icon"><i class="fa-solid fa-microchip"></i></div>
         <div class="ptero-ram">5 GB</div>
         <div class="ptero-price">Rp 5.000</div>
       </div>
-      <div class="ptero-card" onclick="openDetail('ptero-6gb')">
+      <div class="ptero-card" onclick="showPanelStokHabis()">
         <div class="ptero-icon"><i class="fa-solid fa-microchip"></i></div>
         <div class="ptero-ram">6 GB</div>
         <div class="ptero-price">Rp 6.000</div>
       </div>
-      <div class="ptero-card" onclick="openDetail('ptero-7gb')">
+      <div class="ptero-card" onclick="showPanelStokHabis()">
         <div class="ptero-icon"><i class="fa-solid fa-microchip"></i></div>
         <div class="ptero-ram">7 GB</div>
         <div class="ptero-price">Rp 8.000</div>
       </div>
-      <div class="ptero-card" onclick="openDetail('ptero-8gb')">
+      <div class="ptero-card" onclick="showPanelStokHabis()">
         <div class="ptero-icon"><i class="fa-solid fa-microchip"></i></div>
         <div class="ptero-ram">8 GB</div>
         <div class="ptero-price">Rp 8.000</div>
       </div>
-      <div class="ptero-card" onclick="openDetail('ptero-9gb')">
+      <div class="ptero-card" onclick="showPanelStokHabis()">
         <div class="ptero-icon"><i class="fa-solid fa-microchip"></i></div>
         <div class="ptero-ram">9 GB</div>
         <div class="ptero-price">Rp 9.000</div>
       </div>
-      <div class="ptero-card" onclick="openDetail('ptero-10gb')">
+      <div class="ptero-card" onclick="showPanelStokHabis()">
         <div class="ptero-icon"><i class="fa-solid fa-microchip"></i></div>
         <div class="ptero-ram">10 GB</div>
         <div class="ptero-price">Rp 10.000</div>
       </div>
-      <div class="ptero-card unlimited" onclick="openDetail('ptero-unlimited')">
+      <div class="ptero-card unlimited" onclick="showPanelStokHabis()">
         <div class="ptero-badge">Hemat</div>
         <div class="ptero-icon"><i class="fa-solid fa-infinity"></i></div>
         <div class="ptero-ram">Unlimited</div>
@@ -1830,6 +1830,17 @@ function renderFeaturePills(container, list) {
   container.innerHTML = list.map(([name, icon]) => `
     <div class="feature-pill"><i class="${icon}"></i>${name}</div>
   `).join('');
+}
+
+function showPanelStokHabis() {
+  const iconWrap = document.getElementById('notif-icon-wrap');
+  const okBtn = document.getElementById('notif-btn-ok');
+  iconWrap.className = 'notif-icon-wrap info';
+  iconWrap.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+  okBtn.className = 'notif-btn-ok info';
+  document.getElementById('notif-title').textContent = 'Info';
+  document.getElementById('notif-desc').textContent = 'Stok Panel Pterodactyl Sedang Habis';
+  document.getElementById('notif-overlay').classList.add('show');
 }
 
 function openDetail(id) {
