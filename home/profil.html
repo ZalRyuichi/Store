@@ -150,9 +150,14 @@
   .info-row-label i {
     width: 20px;
     text-align: center;
-    color: var(--blue);
     font-size: 14px;
   }
+  .icon-blue   { color: #60A5FA; }
+  .icon-amber  { color: #FCD34D; }
+  .icon-green  { color: #34D399; }
+  .icon-purple { color: #C4B5FD; }
+  .icon-cyan   { color: #67E8F9; }
+  .icon-red    { color: #FCA5A5; }
   .info-row-value {
     font-size: 13.5px;
     font-weight: 600;
@@ -223,7 +228,7 @@
 <body>
 
 <nav class="top-nav">
-  <button class="top-nav-back" onclick="window.location.href='/dashboard.html'">
+  <button class="top-nav-back" onclick="goBack()">
     <i class="fa-solid fa-arrow-left"></i>
   </button>
   <div class="top-nav-title">Profil Saya</div>
@@ -244,11 +249,11 @@
 
 <div class="info-akun-box">
   <div class="info-row">
-    <div class="info-row-label"><i class="fa-solid fa-user"></i> Username</div>
+    <div class="info-row-label"><i class="fa-solid fa-user icon-blue"></i> Username</div>
     <div class="info-row-value" id="val-username">—</div>
   </div>
   <div class="info-row">
-    <div class="info-row-label"><i class="fa-solid fa-lock"></i> Password</div>
+    <div class="info-row-label"><i class="fa-solid fa-lock icon-red"></i> Password</div>
     <div class="info-row-value">
       <span class="pw-dots" id="val-password">••••••••</span>
       <button class="pw-toggle-btn" id="pw-toggle-btn" onclick="togglePassword()">
@@ -257,19 +262,19 @@
     </div>
   </div>
   <div class="info-row">
-    <div class="info-row-label"><i class="fa-solid fa-envelope"></i> Email</div>
+    <div class="info-row-label"><i class="fa-solid fa-envelope icon-amber"></i> Email</div>
     <div class="info-row-value" id="val-email">—</div>
   </div>
   <div class="info-row">
-    <div class="info-row-label"><i class="fa-solid fa-wallet"></i> Saldo</div>
+    <div class="info-row-label"><i class="fa-solid fa-wallet icon-green"></i> Saldo</div>
     <div class="info-row-value" id="val-saldo">—</div>
   </div>
   <div class="info-row">
-    <div class="info-row-label"><i class="fa-brands fa-whatsapp"></i> Sewa Bot</div>
+    <div class="info-row-label"><i class="fa-brands fa-whatsapp icon-cyan"></i> Sewa Bot</div>
     <div class="info-row-value" id="val-sewabot">—</div>
   </div>
   <div class="info-row">
-    <div class="info-row-label"><i class="fa-solid fa-calendar-days"></i> Akun Di Buat</div>
+    <div class="info-row-label"><i class="fa-solid fa-calendar-days icon-purple"></i> Akun Di Buat</div>
     <div class="info-row-value" id="val-created">—</div>
   </div>
 </div>
@@ -301,6 +306,16 @@ const TOKEN = localStorage.getItem('pg_token');
 if (!TOKEN) window.location.href = '/login';
 
 const H = { 'Content-Type':'application/json', 'x-auth-token': TOKEN };
+
+function goBack() {
+  if (document.referrer && document.referrer.includes(window.location.host)) {
+    window.history.back();
+  } else if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    window.location.href = '/dashboard.html';
+  }
+}
 
 function logout() {
   localStorage.removeItem('pg_token');
