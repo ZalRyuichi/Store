@@ -835,6 +835,9 @@ function renderChatList() {
 function cssId(s) { return String(s).replace(/[^a-zA-Z0-9_-]/g, '_'); }
 
 function avatarHtml(c) {
+  if (c.avatar) {
+    return `<div class="avatar${c.online ? ' online' : ''}" style="background:url('${escapeHtml(c.avatar)}') center/cover no-repeat"></div>`;
+  }
   if (c.isOwner) {
     return `<div class="avatar" style="background:url('../image/owner_pp.jpg') center/cover no-repeat"></div>`;
   }
