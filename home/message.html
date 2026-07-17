@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sedang Maintenance</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --grad: linear-gradient(135deg, #2563eb, #1e40af);
+    --bg: #05070d;
+    --panel: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --text: #e6ebf5;
+    --muted: #7d8aa8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    background:
+      radial-gradient(circle at 20% 20%, rgba(37,99,235,0.18), transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(30,64,175,0.18), transparent 50%),
+      var(--bg);
+    color:var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    overflow:hidden;
+    position:relative;
+  }
+
+  /* subtle grid background */
+  body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(37,99,235,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37,99,235,0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+    pointer-events:none;
+  }
+
+  .card{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:480px;
+    margin:24px;
+    padding:48px 36px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:24px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    text-align:center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  .back-btn{
+    position:absolute;
+    top:22px;
+    left:22px;
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background: rgba(255,255,255,0.04);
+    border:1px solid var(--border);
+    color:var(--muted);
+    cursor:pointer;
+    transition: all 0.25s ease;
+    z-index:3;
+  }
+  .back-btn:hover{
+    background: var(--grad);
+    color:#fff;
+    border-color: transparent;
+    transform: translateX(-3px);
+  }
+
+  .icon-ring{
+    position:relative;
+    width:110px;
+    height:110px;
+    margin:0 auto 32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .icon-ring::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    background: var(--grad);
+    opacity:0.18;
+    filter: blur(18px);
+  }
+  .icon-ring .ring-border{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    border:2px solid transparent;
+    background: linear-gradient(var(--bg), var(--bg)) padding-box,
+                var(--grad) border-box;
+    animation: spin 6s linear infinite;
+  }
+  .icon-ring .ring-border::after{
+    content:"";
+    position:absolute;
+    top:-3px;
+    left:50%;
+    width:8px;
+    height:8px;
+    background:#60a5fa;
+    border-radius:50%;
+    box-shadow: 0 0 12px 3px rgba(96,165,250,0.9);
+    transform: translateX(-50%);
+  }
+  .icon-ring i{
+    font-size:36px;
+    background: var(--grad);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation: turn 3.2s ease-in-out infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @keyframes turn{
+    0%,100%{ transform:rotate(0deg); }
+    50%{ transform:rotate(90deg); }
+  }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 14px;
+    border-radius:999px;
+    background: rgba(37,99,235,0.12);
+    border:1px solid rgba(37,99,235,0.3);
+    color:#93c5fd;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    margin-bottom:20px;
+  }
+  .badge i{ font-size:8px; color:#60a5fa; animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse{
+    0%,100%{ opacity:1; }
+    50%{ opacity:0.25; }
+  }
+
+  h1{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:12px;
+    letter-spacing:-0.02em;
+  }
+  p.desc{
+    color:var(--muted);
+    font-size:14.5px;
+    line-height:1.6;
+    margin-bottom:28px;
+  }
+
+  .progress-wrap{
+    text-align:left;
+    margin-bottom:28px;
+  }
+  .progress-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+  .progress-track{
+    width:100%;
+    height:8px;
+    border-radius:999px;
+    background: rgba(255,255,255,0.06);
+    overflow:hidden;
+    border:1px solid var(--border);
+  }
+  .progress-bar{
+    height:100%;
+    width:68%;
+    border-radius:999px;
+    background: var(--grad);
+    box-shadow: 0 0 14px rgba(37,99,235,0.6);
+    animation: grow 2.4s ease-out;
+  }
+  @keyframes grow{ from{ width:0%; } to{ width:68%; } }
+
+  .info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:30px;
+  }
+  .info-item{
+    background: rgba(255,255,255,0.03);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 12px;
+    text-align:left;
+  }
+  .info-item i{
+    color:#60a5fa;
+    font-size:14px;
+    margin-bottom:6px;
+    display:block;
+  }
+  .info-item .label{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px; }
+  .info-item .value{ font-size:13.5px; font-weight:600; color:var(--text); }
+
+  .socials{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+  }
+  .socials a{
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background: rgba(255,255,255,0.04);
+    border:1px solid var(--border);
+    color:var(--muted);
+    text-decoration:none;
+    transition: all 0.25s ease;
+  }
+  .socials a:hover{
+    background: var(--grad);
+    color:#fff;
+    border-color: transparent;
+    transform: translateY(-3px);
+  }
+
+  footer.note{
+    margin-top:24px;
+    font-size:11.5px;
+    color:#4b5670;
+  }
+
+  @media (max-width:480px){
+    .card{ padding:36px 22px; }
+    h1{ font-size:22px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="back-btn" onclick="history.back()" title="Kembali">
+      <i class="fa-solid fa-arrow-left"></i>
+    </div>
+
+    <div class="icon-ring">
+      <div class="ring-border"></div>
+      <i class="fa-solid fa-gear"></i>
+    </div>
+
+    <div class="badge"><i class="fa-solid fa-circle"></i> Sedang Maintenance</div>
+
+    <h1>Lagi Ada Perbaikan Sistem</h1>
+    <p class="desc">
+      Kami Sedang Upgrade Beberapa Komponen Biar Makin Stabil Dan Cepat.
+      Sabar Ya, Sebentar Lagi Juga Selesai Kok.
+    </p>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progress Perbaikan</span>
+        <span>68%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar"></div>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <i class="fa-solid fa-clock"></i>
+        <div class="label">Estimasi Selesai</div>
+        <div class="value">3 Hari Lagi</div>
+      </div>
+      <div class="info-item">
+        <i class="fa-solid fa-signal"></i>
+        <div class="label">Status</div>
+        <div class="value">On Progress</div>
+      </div>
+    </div>
+
+    <div class="socials">
+      <a href="#" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+      <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="#" title="Discord"><i class="fa-brands fa-discord"></i></a>
+    </div>
+
+    <footer class="note">© 2026 Ryuichi — Thanks For Your Patience 🙏</footer>
+  </div>
+
+</body>
+</html>
