@@ -90,6 +90,7 @@
     overflow: hidden;
     background: #0A0A0A;
     box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    cursor: pointer;
   }
   .profil-avatar img {
     width: 100%;
@@ -97,6 +98,53 @@
     object-fit: cover;
     display: block;
   }
+  .avatar-edit-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border: 2px solid #000;
+    pointer-events: none;
+  }
+  .avatar-loading {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 22px;
+  }
+  .avatar-toast {
+    position: fixed;
+    bottom: 76px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    white-space: nowrap;
+    max-width: 90vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .avatar-toast.show { opacity: 1; }
+  .avatar-toast.success { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+  .avatar-toast.error { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
 
   /* ===== INFORMASI AKUN HEADING ===== */
   .info-akun-heading {
@@ -237,11 +285,15 @@
 <div class="profil-banner-wrapper">
   <div class="profil-banner">
     <img src="../image/bg_profil.jpg" alt="Banner Profil"/>
-    <div class="profil-avatar">
-      <img src="../image/profil.jpg" alt="Foto Profil"/>
+    <div class="profil-avatar" id="avatar-wrap">
+      <img src="../image/profil.jpg" alt="Foto Profil" id="avatar-img"/>
+      <div class="avatar-edit-btn"><i class="fa-solid fa-camera"></i></div>
+      <div class="avatar-loading" id="avatar-loading"><i class="fa-solid fa-spinner fa-spin"></i></div>
     </div>
   </div>
 </div>
+<input type="file" id="avatar-input" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none;"/>
+<div class="avatar-toast" id="avatar-toast"></div>
 
 <div class="info-akun-heading">
   <div class="info-akun-title"><i class="fa-solid fa-address-card"></i> Informasi Akun</div>
@@ -365,6 +417,9 @@ async function loadProfile(retry = 2) {
       if (data.password) {
         realPassword = data.password;
       }
+      if (data.avatar) {
+        avatarImg.src = data.avatar + '?t=' + Date.now();
+      }
     }
   } catch {
     document.getElementById('val-username').textContent = localStorage.getItem('pg_user') || '—';
@@ -409,6 +464,110 @@ async function loadSewaBot(retry = 2) {
     if (retry > 0) return loadSewaBot(retry - 1);
   }
 }
+
+// ===== FOTO PROFIL =====
+const AVATAR_MAX_BYTES = 2 * 1024 * 1024; // 2 MB
+const avatarImg     = document.getElementById('avatar-img');
+const avatarWrap    = document.getElementById('avatar-wrap');
+const avatarInput   = document.getElementById('avatar-input');
+const avatarLoading = document.getElementById('avatar-loading');
+const avatarToast   = document.getElementById('avatar-toast');
+let avatarToastTimer = null;
+
+avatarWrap.addEventListener('click', () => avatarInput.click());
+
+function showAvatarToast(msg, type) {
+  clearTimeout(avatarToastTimer);
+  avatarToast.textContent = msg;
+  avatarToast.className = 'avatar-toast show ' + type;
+  avatarToastTimer = setTimeout(() => { avatarToast.className = 'avatar-toast'; }, 2800);
+}
+
+function base64Size(dataUrl) {
+  const b64 = dataUrl.slice(dataUrl.indexOf(',') + 1);
+  const padding = (b64.match(/=+$/) || [''])[0].length;
+  return Math.floor((b64.length * 3) / 4) - padding;
+}
+
+// Resize + kompres foto di browser biar muat di bawah 2MB sebelum dikirim ke server
+function compressImage(file, maxBytes, maxDim = 1024) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) { height = Math.round(height * maxDim / width); width = maxDim; }
+          else { width = Math.round(width * maxDim / height); height = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        let quality = 0.9;
+        const tryCompress = () => {
+          const dataUrl = canvas.toDataURL('image/jpeg', quality);
+          if (base64Size(dataUrl) <= maxBytes || quality <= 0.3) {
+            resolve(dataUrl);
+          } else {
+            quality -= 0.1;
+            tryCompress();
+          }
+        };
+        tryCompress();
+      };
+      img.onerror = () => reject(new Error('Gagal Memuat Gambar'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error('Gagal Membaca File'));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function uploadAvatar(file) {
+  if (!file.type.startsWith('image/')) {
+    showAvatarToast('File Harus Berupa Gambar', 'error');
+    return;
+  }
+
+  const prevSrc = avatarImg.src;
+  avatarLoading.style.display = 'flex';
+
+  try {
+    const dataUrl = await compressImage(file, AVATAR_MAX_BYTES);
+    if (base64Size(dataUrl) > AVATAR_MAX_BYTES) {
+      throw new Error('Ukuran Foto Terlalu Besar, Maksimal 2 MB');
+    }
+
+    avatarImg.src = dataUrl; // preview optimis sambil nunggu upload
+
+    const res = await fetch(apiUrl('/api/user/avatar'), {
+      method: 'POST',
+      headers: H,
+      body: JSON.stringify({ image: dataUrl }),
+    });
+    if (res.status === 401 || res.status === 403) { logout(); return; }
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.message || 'Gagal Upload Foto Profil');
+
+    avatarImg.src = data.avatar + '?t=' + Date.now();
+    showAvatarToast('Foto Profil Berhasil Diperbarui', 'success');
+  } catch (err) {
+    avatarImg.src = prevSrc;
+    showAvatarToast(err.message || 'Gagal Upload Foto Profil', 'error');
+  } finally {
+    avatarLoading.style.display = 'none';
+  }
+}
+
+avatarInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) uploadAvatar(file);
+  avatarInput.value = '';
+});
 
 loadApiBase().then(() => {
   loadProfile();
