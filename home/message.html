@@ -514,9 +514,6 @@ async function loadApiBase() {
 }
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
 
-const DIRECT_EXPIRY_MS = 24 * 60 * 60 * 1000;
-const GROUP_EXPIRY_MS  = 48 * 60 * 60 * 1000;
-
 function showToast(text, type = 'info') {
   const el = document.getElementById('toast');
   el.className = `toast show ${type}`;
@@ -569,12 +566,6 @@ function initials(name) {
   if (!s) return '?';
   return s[0].toUpperCase();
 }
-function filterExpired(messages, maxAgeMs) {
-  if (!maxAgeMs || !isFinite(maxAgeMs)) return messages;
-  const cutoff = Date.now() - maxAgeMs;
-  return messages.filter(m => new Date(m.time).getTime() >= cutoff);
-}
-
 let contacts = [];
 let groupSummary = null;
 let currentTab = 'chat';
@@ -1002,8 +993,6 @@ async function loadThread(scrollToBottom) {
     if (!data.ok) throw new Error(data.message || 'Gagal memuat pesan');
 
     let messages = data.messages || [];
-    const expiresAfterMs = ('expiresAfterMs' in data) ? data.expiresAfterMs : (activeType === 'group' ? GROUP_EXPIRY_MS : (activeIsOwner ? null : DIRECT_EXPIRY_MS));
-    if (expiresAfterMs) messages = filterExpired(messages, expiresAfterMs);
 
     const sig = messages.map(m => m.id).join(',');
     if (sig === lastMsgSignature && !scrollToBottom) return;
