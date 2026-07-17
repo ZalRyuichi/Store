@@ -400,7 +400,7 @@ function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
     if (!credential) return;
 
     if (mode === 'register') {
-      enterGoogleRegisterMode(credential);
+      await checkGoogleEmailThenRegister(credential);
     } else if (mode === 'link') {
       await finishGoogleLink(credential, linkCreds);
     }
@@ -409,6 +409,35 @@ function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
   // ---------- Mode Daftar Akun Baru Via Google ----------
   function startGoogleRegister() {
     openGoogleModal('register');
+  }
+
+  // Cek dulu apakah email Google ini sudah pernah dipakai daftar sebelum lanjut isi form,
+  // supaya 1 email tidak bisa dipakai untuk 2 akun.
+  async function checkGoogleEmailThenRegister(credential) {
+    setLoading(true);
+    await loadApiBase();
+    try {
+      const res = await fetch(apiUrl('/api/auth/google/check'), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential })
+      });
+      const data = await res.json();
+      setLoading(false);
+
+      if (!data.ok) {
+        if (data.exists) {
+          showNotif('Email Sudah Terdaftar', 'error', 'Akun Google Ini Sudah Terhubung Ke Akun Lain, Silakan Login.');
+        } else {
+          showNotif(data.message || 'Verifikasi Google Gagal', 'error', 'Silakan Coba Lagi.');
+        }
+        return;
+      }
+
+      enterGoogleRegisterMode(credential);
+    } catch {
+      setLoading(false);
+      showNotif('Tidak Dapat Terhubung Ke Server', 'error', 'Periksa Koneksi Internet Anda.');
+    }
   }
 
   function enterGoogleRegisterMode(credential) {
