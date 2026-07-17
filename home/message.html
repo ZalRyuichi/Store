@@ -364,7 +364,7 @@
     <div class="search-wrap">
       <div class="search-box">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" id="searchInput" placeholder="Cari chat atau kontak...">
+        <input type="text" id="searchInput" placeholder="Cari Chat Atau Kontak...">
       </div>
     </div>
 
@@ -402,8 +402,8 @@
     <div class="messages" id="messages">
       <div class="chat-empty-state">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path></svg>
-        <strong>Pilih kontak untuk mulai chat</strong>
-        <p>Semua kontak dan pesan dimuat langsung dari server secara real-time.</p>
+        <strong>Pilih Kontak Untuk Mulai Chat</strong>
+        <p>Semua Kontak Dan Pesan Dimuat Langsung Dari Server</p>
       </div>
     </div>
     <div class="img-preview-bar" id="imgPreviewBar">
@@ -443,7 +443,7 @@ function logout() {
   window.location.href = '/login';
 }
 function confirmLogout() {
-  if (confirm('Keluar dari akun ini?')) logout();
+  if (confirm('Keluar Dari Akun Ini?')) logout();
 }
 
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
@@ -606,8 +606,8 @@ function renderChatList() {
       const isUnreadEmpty = filterMode === 'unread' && !q;
       chatListEl.innerHTML = `<div class="empty-tab">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path></svg>
-        <strong>${q ? 'Tidak ditemukan' : (isUnreadEmpty ? 'Tidak ada pesan belum dibaca' : 'Belum ada kontak')}</strong>
-        <p>${q ? 'Coba kata kunci lain.' : (isUnreadEmpty ? 'Semua chat sudah dibaca.' : 'Kontak akan muncul di sini secara otomatis.')}</p>
+        <strong>${q ? 'Tidak Ditemukan' : (isUnreadEmpty ? 'Tidak Ada Pesan Belum Dibaca' : 'Belum ada kontak')}</strong>
+        <p>${q ? 'Coba Kata Kunci Lain.' : (isUnreadEmpty ? 'Semua Chat Sudah Dibaca.' : 'Kontak Akan Muncul Di Sini Secara Otomatis.')}</p>
       </div>`;
       return;
     }
@@ -623,11 +623,11 @@ function renderChatList() {
     const name = groupSummary?.name || 'Ryuichi Group';
     const lastText = (groupSummary?.last?.text || '').toLowerCase();
     if (q && !name.toLowerCase().includes(q) && !lastText.includes(q)) {
-      chatListEl.innerHTML = `<div class="empty-tab"><strong>Tidak ditemukan</strong><p>Coba kata kunci lain.</p></div>`;
+      chatListEl.innerHTML = `<div class="empty-tab"><strong>Tidak ditemukan</strong><p>Coba Kata Kunci Lain.</p></div>`;
       return;
     }
     if (filterMode === 'unread' && !(groupSummary?.unread > 0)) {
-      chatListEl.innerHTML = `<div class="empty-tab"><strong>Tidak ada pesan belum dibaca</strong><p>Semua chat sudah dibaca.</p></div>`;
+      chatListEl.innerHTML = `<div class="empty-tab"><strong>Tidak Ada Pesan Belum Dibaca</strong><p>Semua Chat Sudah Dibaca.</p></div>`;
       return;
     }
     chatListEl.innerHTML = groupItemHtml(groupSummary);
@@ -639,7 +639,7 @@ function renderChatList() {
   const empties = {
     pembaruan: {
       icon:'<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5" stroke-dasharray="3.6 3.4"></circle><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"></circle></svg>',
-      title:'Belum ada pembaruan', desc:'Status dan cerita dari kontak kamu bakal tampil di sini.'
+      title:'Belum Ada Pembaruan', desc:'Status Dan Cerita Dari Kontak Kamu Bakal Tampil Di Sini.'
     }
   };
   const state = empties[currentTab];
@@ -702,7 +702,7 @@ function groupItemHtml(g) {
 document.querySelectorAll('.nav-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     if (tab.dataset.tab === 'beranda') {
-      window.location.href = 'dashboard.html';
+      window.location.href = '/dashboard';
       return;
     }
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -766,7 +766,7 @@ function openGroup() {
   renderBadges();
   renderChatHeader({
     name: groupSummary?.name || 'Ryuichi Group',
-    statusText: 'Grup semua pengguna',
+    statusText: 'Grup Semua Pengguna',
     online: false,
     avatarHtml: `<div class="avatar" style="background:linear-gradient(135deg,#2563eb,#1e40af)">RG</div>`,
   });
@@ -903,7 +903,7 @@ async function sendMessage() {
     const res = await fetch(apiUrl(endpoint), { method: 'POST', headers: H, body: JSON.stringify(body) });
     if (res.status === 401 || res.status === 403) { logout(); return; }
     const data = await res.json();
-    if (!data.ok) throw new Error(data.message || 'Gagal mengirim pesan');
+    if (!data.ok) throw new Error(data.message || 'Gagal Mengirim Pesan');
 
     composerInput.value = '';
     composerInput.style.height = 'auto';
@@ -911,7 +911,7 @@ async function sendMessage() {
     await loadThread(true);
     await loadContacts();
   } catch (e) {
-    showToast(e.message || 'Gagal mengirim pesan', 'error');
+    showToast(e.message || 'Gagal Mengirim Pesan', 'error');
   } finally {
     sendBtn.disabled = false;
   }
