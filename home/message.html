@@ -931,6 +931,7 @@ function openDirect(c) {
   activeType = 'direct';
   activeUser = c.username;
   activeIsOwner = !!c.isOwner;
+  lastMsgSignature = '';
   c.unread = 0;
   clearReplyTarget();
   renderChatList();
@@ -952,6 +953,7 @@ function openGroup() {
   activeType = 'group';
   activeUser = null;
   activeIsOwner = false;
+  lastMsgSignature = '';
   if (groupSummary) groupSummary.unread = 0;
   clearReplyTarget();
   renderChatList();
@@ -986,14 +988,22 @@ function renderChatHeader({ name, statusText, online, avatarHtml }) {
   document.getElementById('backBtn').addEventListener('click', () => appEl.classList.remove('chat-open'));
 }
 
+let threadRequestId = 0;
 async function loadThread(scrollToBottom) {
   if (!activeType) return;
+  const myReqId = ++threadRequestId;
+  const targetType = activeType;
+  const targetUser = activeUser;
   try {
-    const endpoint = activeType === 'direct' ? `/api/chat/direct/${encodeURIComponent(activeUser)}` : '/api/chat/group';
+    const endpoint = targetType === 'direct' ? `/api/chat/direct/${encodeURIComponent(targetUser)}` : '/api/chat/group';
     const res = await fetch(apiUrl(endpoint), { headers: H });
     if (res.status === 401 || res.status === 403) { logout(); return; }
     const data = await res.json();
     if (!data.ok) throw new Error(data.message || 'Gagal memuat pesan');
+
+    // Kalau chat udah dipindah atau ada request lain yang lebih baru sebelum
+    // response ini nyampe, buang aja hasilnya biar nggak nimpa chat yang aktif sekarang.
+    if (myReqId !== threadRequestId || activeType !== targetType || activeUser !== targetUser) return;
 
     let messages = data.messages || [];
 
@@ -1002,6 +1012,7 @@ async function loadThread(scrollToBottom) {
     lastMsgSignature = sig;
     renderMessages(messages, scrollToBottom);
   } catch (e) {
+    if (myReqId !== threadRequestId || activeType !== targetType || activeUser !== targetUser) return;
     if (scrollToBottom) {
       messagesEl.innerHTML = `<div class="loading-msgs">Gagal memuat pesan: ${escapeHtml(e.message)}</div>`;
     }
