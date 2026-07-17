@@ -306,6 +306,12 @@
   .chat-empty-state strong{ font-family:'Sora',sans-serif; font-size:15px; color:var(--text-secondary); font-weight:700; }
   .chat-empty-state p{ font-size:12.5px; max-width:280px; }
   .loading-msgs{ margin:auto; text-align:center; color:var(--text-faint); font-size:13px; }
+  .chat-loading-state{
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:var(--text-faint); gap:12px; padding:20px; text-align:center;
+  }
+  .chat-loading-state .spinner{ width:30px; height:30px; border-width:3px; margin:0; }
+  .chat-loading-state span{ font-size:13px; }
 
   .composer{
     display:flex; align-items:center; gap:10px; padding:14px 22px;
@@ -927,6 +933,10 @@ document.addEventListener('click', function (e) {
   }
 });
 
+function showThreadLoading() {
+  messagesEl.innerHTML = `<div class="chat-loading-state"><div class="spinner"></div><span>Memuat pesan...</span></div>`;
+}
+
 function openDirect(c) {
   activeType = 'direct';
   activeUser = c.username;
@@ -944,6 +954,7 @@ function openDirect(c) {
   });
   composerWrap.style.display = 'flex';
   appEl.classList.add('chat-open');
+  showThreadLoading();
   loadThread(true);
   markDirectRead(c.username);
   restartThreadPoll();
@@ -966,6 +977,7 @@ function openGroup() {
   });
   composerWrap.style.display = 'flex';
   appEl.classList.add('chat-open');
+  showThreadLoading();
   loadThread(true);
   markGroupRead();
   restartThreadPoll();
