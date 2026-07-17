@@ -65,14 +65,11 @@
   .logo-mark span:nth-child(4){height:20px; animation-delay:.45s;}
   .logo-mark span:nth-child(5){height:7px; animation-delay:.6s;}
   @keyframes wave{ 0%,100%{transform:scaleY(0.55);} 50%{transform:scaleY(1);} }
-  .logo-text-wrap{ min-width:0; }
   .logo-text{
-    font-family:'Sora',sans-serif; font-weight:700; font-size:17px;
+    font-family:'Sora',sans-serif; font-weight:700; font-size:18px;
     letter-spacing:0.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  .logo-sub{ font-size:10.5px; color:var(--text-faint); font-weight:600; letter-spacing:.3px; text-transform:uppercase; }
 
-  /* ===================== SIDEBAR ===================== */
   .sidebar{
     width:360px; min-width:320px;
     background:var(--bg-panel);
@@ -83,6 +80,23 @@
     padding:20px 20px 14px;
     display:flex; align-items:center; justify-content:space-between; gap:10px;
   }
+  .menu-wrap{ position:relative; }
+  .dropdown-menu{
+    position:absolute; top:46px; right:0; min-width:190px;
+    background:var(--bg-panel-hover); border:1px solid var(--divider); border-radius:14px;
+    padding:6px; display:none; flex-direction:column; gap:2px; z-index:50;
+    box-shadow:0 12px 30px rgba(0,0,0,0.45);
+  }
+  .dropdown-menu.show{ display:flex; }
+  .dropdown-item{
+    display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px;
+    background:none; border:none; color:var(--text-primary); font-family:'Inter',sans-serif;
+    font-size:13.5px; cursor:pointer; text-align:left; width:100%;
+  }
+  .dropdown-item:hover{ background:var(--bg-panel); }
+  .dropdown-item.danger{ color:var(--accent-coral); }
+  .dropdown-item svg{ flex-shrink:0; opacity:.85; }
+
   .search-wrap{ padding:0 20px 16px; }
   .search-box{
     display:flex; align-items:center; gap:10px;
@@ -156,7 +170,32 @@
     display:flex;align-items:center;justify-content:center; padding:0 5px; flex-shrink:0;
   }
 
-  /* ===================== CHAT AREA ===================== */
+  .nav-tabs{
+    display:flex; flex-shrink:0; padding:6px 8px;
+    border-top:1px solid var(--divider); background:var(--bg-panel);
+  }
+  .nav-tab{
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:5px;
+    background:none; border:none; color:var(--text-faint);
+    padding:9px 4px 8px; cursor:pointer; position:relative;
+    font-family:'Inter',sans-serif; border-radius:12px;
+    transition:color .15s ease, background .15s ease;
+  }
+  .nav-tab span{ font-size:11px; font-weight:600; letter-spacing:0.1px; }
+  .nav-tab:hover{color:var(--text-secondary); background:var(--bg-panel-hover);}
+  .nav-tab.active{color:var(--bubble-sent-1);}
+  .nav-tab.active::before{
+    content:""; position:absolute; left:22px; right:22px; top:-6px; height:2.5px;
+    border-radius:0 0 3px 3px;
+    background:linear-gradient(90deg,var(--bubble-sent-1),var(--bubble-sent-2));
+  }
+  .nav-tab .tab-badge{
+    position:absolute; top:6px; right:calc(50% - 20px);
+    background:var(--accent-coral); color:#1a0a08; font-size:9.5px; font-weight:700;
+    min-width:16px; height:16px; border-radius:9px;
+    display:flex;align-items:center;justify-content:center; padding:0 4px;
+  }
+
   .chat-area{
     flex:1; display:flex; flex-direction:column; background:var(--bg-chat);
     background-image:
@@ -191,6 +230,9 @@
   .msg-row{ display:flex; max-width:66%; margin-bottom:4px; flex-direction:column; }
   .msg-row.in{align-self:flex-start;}
   .msg-row.out{align-self:flex-end;}
+  .msg-sender{
+    font-size:11.5px; font-weight:700; color:var(--bubble-sent-1); margin:0 0 3px 4px;
+  }
 
   .bubble{ padding:9px 13px 8px; font-size:14.2px; line-height:1.45; position:relative; max-width:100%; width:fit-content; }
   .msg-row.in .bubble{
@@ -249,7 +291,6 @@
     background:var(--bg-panel-hover); color:var(--accent-coral); cursor:pointer; font-size:14px;
   }
 
-  /* ===================== LIGHTBOX / TOAST ===================== */
   .lightbox{
     position:fixed; inset:0; background:rgba(10,12,18,0.92);
     display:none; align-items:center; justify-content:center; z-index:100; padding:30px;
@@ -270,7 +311,6 @@
   .toast.error{ border-color:#5b2a2a; color:#ff8a80; }
   .toast.success{ border-color:#204a3a; color:#5eead4; }
 
-  /* ===================== RESPONSIVE ===================== */
   @media (max-width:760px){
     body{padding:0;}
     .app{ max-width:100%; max-height:100vh; max-height:100dvh; border-radius:0; }
@@ -286,19 +326,27 @@
 
 <div class="app" id="app">
 
-  <!-- ===== SIDEBAR ===== -->
   <aside class="sidebar">
     <div class="sidebar-top">
       <div class="logo">
         <div class="logo-mark"><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="logo-text-wrap">
-          <div class="logo-text">Ryuichi Chat</div>
-          <div class="logo-sub">Admin</div>
+        <div class="logo-text">Ryuichi Chat</div>
+      </div>
+      <div class="menu-wrap">
+        <button class="icon-btn" id="menuBtn" title="Menu">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="19" r="1.6"></circle></svg>
+        </button>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <button class="dropdown-item" id="menuSettings">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"></path></svg>
+            <span>Pengaturan</span>
+          </button>
+          <button class="dropdown-item danger" onclick="confirmLogout()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Keluar</span>
+          </button>
         </div>
       </div>
-      <button class="icon-btn" title="Keluar" onclick="confirmLogout()">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="19" r="1.6"></circle></svg>
-      </button>
     </div>
 
     <div class="search-wrap">
@@ -309,18 +357,38 @@
     </div>
 
     <div class="chat-list" id="chatList">
-      <div class="loading-tab"><div class="spinner"></div>Memuat kontak...</div>
+      <div class="loading-tab"><div class="spinner"></div>Memuat Kontak...</div>
+    </div>
+
+    <div class="nav-tabs" id="navTabs">
+      <button class="nav-tab active" data-tab="chat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path><line x1="8" y1="9" x2="16" y2="9"></line><line x1="8" y1="13" x2="13" y2="13"></line></svg>
+        <span>Chat</span>
+        <span class="tab-badge" id="badgeChat" style="display:none;"></span>
+      </button>
+      <button class="nav-tab" data-tab="grup">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3.13a4 4 0 010 7.75"></path><path d="M17 21v-2a4 4 0 00-3-3.87"></path><circle cx="9" cy="7" r="4"></circle><path d="M1 21v-2a4 4 0 014-4h8a4 4 0 014 4v2"></path></svg>
+        <span>Grup</span>
+        <span class="tab-badge" id="badgeGrup" style="display:none;"></span>
+      </button>
+      <button class="nav-tab" data-tab="pembaruan">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5" stroke-dasharray="3.6 3.4"></circle><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"></circle></svg>
+        <span>Pembaruan</span>
+      </button>
+      <button class="nav-tab" data-tab="beranda">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Beranda</span>
+      </button>
     </div>
   </aside>
 
-  <!-- ===== CHAT AREA ===== -->
   <section class="chat-area">
     <div id="chatHeaderWrap"></div>
     <div class="messages" id="messages">
       <div class="chat-empty-state">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path></svg>
-        <strong>Belum ada percakapan dipilih</strong>
-        <p>Pilih salah satu kontak di sebelah kiri untuk mulai membalas pesan.</p>
+        <strong>Belum Ada Percakapan Dipilih</strong>
+        <p>Pilih Salah Satu Kontak Untuk Mulai Membalas Pesan.</p>
       </div>
     </div>
     <div class="img-preview-bar" id="imgPreviewBar">
@@ -349,23 +417,6 @@
 <div class="toast" id="toast"><span id="toastText"></span></div>
 
 <script>
-/* =========================================================================
-   Halaman admin ini memakai endpoint /api/chat/* yang sama dengan chat user
-   (message.html), supaya percakapan owner <-> user selalu sinkron real-time
-   dari satu sumber data yang sama. Semua data kontak & pesan diambil dari
-   server, tidak ada yang di-hardcode di file ini.
-
-   GET  /api/chat/contacts        -> { ok, contacts:[{username,isOwner,online,last,unread}], group:{...} }
-     Saat login sebagai owner, "contacts" otomatis berisi SEMUA user
-     terdaftar (server tidak menyertakan entri diri sendiri).
-   GET  /api/chat/direct/:username    -> { ok, messages:[...], expiresAfterMs }
-   POST /api/chat/direct/:username    -> body {type:'text',text} | {type:'image',image,mime,text}
-   POST /api/chat/direct/:username/read -> { ok }
-
-   Thread owner dengan user manapun tidak pernah kedaluwarsa
-   (expiresAfterMs selalu null di sisi owner).
-========================================================================= */
-
 const TOKEN = localStorage.getItem('pg_token');
 if (!TOKEN) window.location.href = '/login';
 const H = { 'Content-Type': 'application/json', 'x-auth-token': TOKEN };
@@ -380,9 +431,6 @@ function confirmLogout() {
   if (confirm('Keluar dari akun ini?')) logout();
 }
 
-/* ---------------------------------------------------------
-   API base loader (konvensi yang sama di seluruh proyek)
---------------------------------------------------------- */
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
 let API_BASE = "";
 async function loadApiBase() {
@@ -404,9 +452,6 @@ async function loadApiBase() {
 }
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
 
-/* ---------------------------------------------------------
-   Guard: halaman ini khusus owner
---------------------------------------------------------- */
 async function verifySession() {
   try {
     await loadApiBase();
@@ -416,15 +461,12 @@ async function verifySession() {
     if (data.user) { ME = data.user; localStorage.setItem('pg_user', ME); }
     return true;
   } catch {
-    return true; // gangguan jaringan sesaat, jangan langsung logout
+    return true;
   }
 }
 
-/* ---------------------------------------------------------
-   Helpers
---------------------------------------------------------- */
-const MIN_IMAGE_BYTES = 1024;              // 1 KB
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024;   // 5 MB
+const MIN_IMAGE_BYTES = 1024;
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
 function showToast(text, type = 'info') {
   const el = document.getElementById('toast');
@@ -486,15 +528,13 @@ function avatarColor(key) {
 function initials(name) {
   const s = String(name || '').trim();
   if (!s) return '?';
-  const parts = s.split(/[\s._-]+/).filter(Boolean);
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return (parts[0][0] + parts[1][0]).toUpperCase();
+  return s[0].toUpperCase();
 }
 
-/* ---------------------------------------------------------
-   State
---------------------------------------------------------- */
 let contactsCache = [];
+let groupSummary = null;
+let currentTab = 'chat';
+let activeType = null;
 let activeUser = null;
 let pickedImage = null;
 let lastMsgSignature = '';
@@ -509,8 +549,9 @@ const composerWrap = document.getElementById('composerWrap');
 const composerInput= document.getElementById('composerInput');
 const sendBtn       = document.getElementById('sendBtn');
 const searchInput  = document.getElementById('searchInput');
+const menuBtn      = document.getElementById('menuBtn');
+const dropdownMenu = document.getElementById('dropdownMenu');
 
-/* ---------------- Contact list ---------------- */
 async function loadContacts(silent = false) {
   try {
     const res  = await fetch(apiUrl('/api/chat/contacts'), { headers: H });
@@ -518,7 +559,9 @@ async function loadContacts(silent = false) {
     const data = await res.json();
     if (!data.ok) throw new Error(data.message || 'Gagal memuat kontak');
     contactsCache = data.contacts || [];
-    renderContacts();
+    groupSummary = data.group || null;
+    renderChatList();
+    renderBadges();
   } catch (e) {
     if (!silent) {
       chatListEl.innerHTML = `<div class="empty-tab">
@@ -529,29 +572,66 @@ async function loadContacts(silent = false) {
   }
 }
 
-function renderContacts() {
-  const q = (searchInput.value || '').toLowerCase().trim();
-  let list = [...contactsCache].sort((a, b) => {
-    const ta = a.last ? new Date(a.last.time).getTime() : 0;
-    const tb = b.last ? new Date(b.last.time).getTime() : 0;
-    return tb - ta;
-  });
-  if (q) list = list.filter(c => c.username.toLowerCase().includes(q));
+function renderBadges() {
+  const chatUnread = contactsCache.reduce((s, c) => s + (c.unread || 0), 0);
+  const grupUnread = groupSummary?.unread || 0;
+  const bChat = document.getElementById('badgeChat');
+  const bGrup = document.getElementById('badgeGrup');
+  bChat.style.display = chatUnread > 0 ? 'flex' : 'none';
+  bChat.textContent = chatUnread > 99 ? '99+' : chatUnread;
+  bGrup.style.display = grupUnread > 0 ? 'flex' : 'none';
+  bGrup.textContent = grupUnread > 99 ? '99+' : grupUnread;
+}
 
-  if (!list.length) {
-    chatListEl.innerHTML = `<div class="empty-tab">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path></svg>
-      <strong>${q ? 'Tidak ditemukan' : 'Belum ada pesan masuk'}</strong>
-      <p>${q ? 'Coba kata kunci lain.' : 'Pesan dari user akan muncul di sini secara otomatis.'}</p>
-    </div>`;
+function renderChatList() {
+  const q = (searchInput.value || '').toLowerCase().trim();
+
+  if (currentTab === 'chat') {
+    let list = [...contactsCache].sort((a, b) => {
+      const ta = a.last ? new Date(a.last.time).getTime() : 0;
+      const tb = b.last ? new Date(b.last.time).getTime() : 0;
+      return tb - ta;
+    });
+    if (q) list = list.filter(c => c.username.toLowerCase().includes(q));
+
+    if (!list.length) {
+      chatListEl.innerHTML = `<div class="empty-tab">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path></svg>
+        <strong>${q ? 'Tidak ditemukan' : 'Belum ada pesan masuk'}</strong>
+        <p>${q ? 'Coba kata kunci lain.' : 'Pesan dari user akan muncul di sini secara otomatis.'}</p>
+      </div>`;
+      return;
+    }
+
+    chatListEl.innerHTML = list.map(c => contactItemHtml(c)).join('');
+    list.forEach(c => {
+      const el = document.getElementById(`ci-${cssId(c.username)}`);
+      if (el) el.addEventListener('click', () => openChat(c.username));
+    });
     return;
   }
 
-  chatListEl.innerHTML = list.map(c => contactItemHtml(c)).join('');
-  list.forEach(c => {
-    const el = document.getElementById(`ci-${cssId(c.username)}`);
-    if (el) el.addEventListener('click', () => openChat(c.username));
-  });
+  if (currentTab === 'grup') {
+    const name = groupSummary?.name || 'Ryuichi Group';
+    const lastText = (groupSummary?.last?.text || '').toLowerCase();
+    if (q && !name.toLowerCase().includes(q) && !lastText.includes(q)) {
+      chatListEl.innerHTML = `<div class="empty-tab"><strong>Tidak ditemukan</strong><p>Coba kata kunci lain.</p></div>`;
+      return;
+    }
+    chatListEl.innerHTML = groupItemHtml(groupSummary);
+    const el = document.getElementById('ci-group');
+    if (el) el.addEventListener('click', openGroup);
+    return;
+  }
+
+  const empties = {
+    pembaruan: {
+      icon:'<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5" stroke-dasharray="3.6 3.4"></circle><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"></circle></svg>',
+      title:'Belum ada pembaruan', desc:'Status dan cerita dari kontak kamu bakal tampil di sini.'
+    }
+  };
+  const state = empties[currentTab];
+  if (state) chatListEl.innerHTML = `<div class="empty-tab">${state.icon}<strong>${state.title}</strong><p>${state.desc}</p></div>`;
 }
 
 function cssId(s) { return String(s).replace(/[^a-zA-Z0-9_-]/g, '_'); }
@@ -561,7 +641,7 @@ function contactItemHtml(c) {
   const lastText = last ? (last.type === 'image' ? '📷 Gambar' + (last.text ? `: ${last.text}` : '') : (last.text || '')) : 'Belum ada pesan';
   const time = last ? relTime(last.time) : '';
   return `
-    <div class="chat-item${c.unread ? ' unread' : ''}${activeUser === c.username ? ' active' : ''}" id="ci-${cssId(c.username)}">
+    <div class="chat-item${c.unread ? ' unread' : ''}${activeType === 'direct' && activeUser === c.username ? ' active' : ''}" id="ci-${cssId(c.username)}">
       <div class="avatar${c.online ? ' online' : ''}" style="background:${avatarColor(c.username)}">${initials(c.username)}</div>
       <div class="chat-item-body">
         <div class="chat-item-top">
@@ -576,10 +656,59 @@ function contactItemHtml(c) {
     </div>`;
 }
 
-searchInput.addEventListener('input', renderContacts);
+function groupItemHtml(g) {
+  const name = g?.name || 'Ryuichi Group';
+  const last = g?.last;
+  const lastText = last ? (last.type === 'image' ? '📷 Gambar' + (last.text ? `: ${last.text}` : '') : (last.text || '')) : 'Belum ada pesan';
+  const time = last ? relTime(last.time) : '';
+  const unread = g?.unread || 0;
+  return `
+    <div class="chat-item${unread ? ' unread' : ''}${activeType === 'group' ? ' active' : ''}" id="ci-group">
+      <div class="avatar" style="background:url('../image/pp_group.jpg') center/cover no-repeat"></div>
+      <div class="chat-item-body">
+        <div class="chat-item-top">
+          <div class="chat-item-name">${escapeHtml(name)}</div>
+          <div class="chat-item-time">${time}</div>
+        </div>
+        <div class="chat-item-bottom">
+          <div class="chat-item-msg">${escapeHtml(lastText)}</div>
+          ${unread > 0 ? `<div class="badge">${unread > 99 ? '99+' : unread}</div>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
 
-/* ---------------- Chat thread ---------------- */
-async function openChat(username) {
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    if (tab.dataset.tab === 'beranda') {
+      window.location.href = 'dashboard.html';
+      return;
+    }
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentTab = tab.dataset.tab;
+    renderChatList();
+  });
+});
+
+searchInput.addEventListener('input', renderChatList);
+
+menuBtn.addEventListener('click', function (e) {
+  e.stopPropagation();
+  dropdownMenu.classList.toggle('show');
+});
+document.getElementById('menuSettings').addEventListener('click', function () {
+  dropdownMenu.classList.remove('show');
+  window.location.href = 'profil.html';
+});
+document.addEventListener('click', function (e) {
+  if (!dropdownMenu.contains(e.target) && e.target !== menuBtn) {
+    dropdownMenu.classList.remove('show');
+  }
+});
+
+function openChat(username) {
+  activeType = 'direct';
   activeUser = username;
   lastMsgSignature = '';
 
@@ -594,13 +723,37 @@ async function openChat(username) {
   messagesEl.innerHTML = `<div class="loading-msgs"><div class="spinner"></div>Memuat pesan...</div>`;
   composerWrap.style.display = 'flex';
 
-  renderContacts();
+  renderChatList();
   clearImagePick();
-  await loadMessages(true);
+  loadThread(true);
   markRead(username);
 
   clearInterval(chatPollTimer);
-  chatPollTimer = setInterval(() => loadMessages(false), 3500);
+  chatPollTimer = setInterval(() => loadThread(false), 3500);
+}
+
+function openGroup() {
+  activeType = 'group';
+  activeUser = null;
+  lastMsgSignature = '';
+
+  appEl.classList.add('chat-open');
+  renderChatHeader({
+    name: groupSummary?.name || 'Ryuichi Group',
+    statusText: 'Grup semua pengguna',
+    online: false,
+    avatarHtml: `<div class="avatar" style="background:url('../image/pp_group.jpg') center/cover no-repeat"></div>`,
+  });
+  messagesEl.innerHTML = `<div class="loading-msgs"><div class="spinner"></div>Memuat pesan...</div>`;
+  composerWrap.style.display = 'flex';
+
+  renderChatList();
+  clearImagePick();
+  loadThread(true);
+  markGroupRead();
+
+  clearInterval(chatPollTimer);
+  chatPollTimer = setInterval(() => loadThread(false), 3500);
 }
 
 function renderChatHeader({ name, statusText, online, avatarHtml }) {
@@ -620,14 +773,16 @@ function renderChatHeader({ name, statusText, online, avatarHtml }) {
   document.getElementById('backBtn').addEventListener('click', () => {
     appEl.classList.remove('chat-open');
     clearInterval(chatPollTimer);
+    activeType = null;
     activeUser = null;
   });
 }
 
-async function loadMessages(scrollToBottom) {
-  if (!activeUser) return;
+async function loadThread(scrollToBottom) {
+  if (!activeType) return;
   try {
-    const res  = await fetch(apiUrl(`/api/chat/direct/${encodeURIComponent(activeUser)}`), { headers: H });
+    const endpoint = activeType === 'direct' ? `/api/chat/direct/${encodeURIComponent(activeUser)}` : '/api/chat/group';
+    const res  = await fetch(apiUrl(endpoint), { headers: H });
     if (res.status === 401 || res.status === 403) { logout(); return; }
     const data = await res.json();
     if (!data.ok) throw new Error(data.message || 'Gagal memuat pesan');
@@ -663,11 +818,13 @@ function renderMessages(messages, scrollToBottom) {
     const day = fmtDay(m.time);
     if (day !== lastDay) { html += `<div class="date-divider">${day}</div>`; lastDay = day; }
     const side = m.from === ME ? 'out' : 'in';
+    const senderLabel = (activeType === 'group' && side === 'in') ? `<div class="msg-sender">${escapeHtml(m.from)}</div>` : '';
     const bodyHtml = m.type === 'image'
       ? `<img class="bubble-img" src="${m.image}" onclick="openLightbox('${m.image}')">${m.text ? `<div class="bubble-text">${escapeHtml(cleanMsgText(m.text))}</div>` : ''}`
       : `<div class="bubble-text">${escapeHtml(cleanMsgText(m.text))}</div>`;
     html += `
       <div class="msg-row ${side}">
+        ${senderLabel}
         <div class="bubble">${bodyHtml}<div class="bubble-meta">${fmtTime(m.time)}</div></div>
       </div>`;
   });
@@ -684,11 +841,19 @@ async function markRead(username) {
     await fetch(apiUrl(`/api/chat/direct/${encodeURIComponent(username)}/read`), { method: 'POST', headers: H });
     const c = contactsCache.find(c => c.username === username);
     if (c) c.unread = 0;
-    renderContacts();
+    renderChatList();
+    renderBadges();
+  } catch {}
+}
+async function markGroupRead() {
+  try {
+    await fetch(apiUrl('/api/chat/group/read'), { method: 'POST', headers: H });
+    if (groupSummary) groupSummary.unread = 0;
+    renderChatList();
+    renderBadges();
   } catch {}
 }
 
-/* ---------------- Sending ---------------- */
 composerInput.addEventListener('input', function () {
   this.style.height = 'auto';
   this.style.height = Math.min(this.scrollHeight, 100) + 'px';
@@ -722,7 +887,7 @@ function clearImagePick() {
 }
 
 async function sendMessage() {
-  if (!activeUser) return;
+  if (!activeType) return;
   const text = cleanMsgText(composerInput.value);
   if (!text && !pickedImage) return;
 
@@ -732,9 +897,8 @@ async function sendMessage() {
       ? { type: 'image', image: pickedImage.dataUrl, mime: pickedImage.mime, text }
       : { type: 'text', text };
 
-    const res  = await fetch(apiUrl(`/api/chat/direct/${encodeURIComponent(activeUser)}`), {
-      method: 'POST', headers: H, body: JSON.stringify(body)
-    });
+    const endpoint = activeType === 'direct' ? `/api/chat/direct/${encodeURIComponent(activeUser)}` : '/api/chat/group';
+    const res  = await fetch(apiUrl(endpoint), { method: 'POST', headers: H, body: JSON.stringify(body) });
     if (res.status === 401 || res.status === 403) { logout(); return; }
     const data = await res.json();
     if (!data.ok) throw new Error(data.message || 'Gagal mengirim pesan');
@@ -742,7 +906,7 @@ async function sendMessage() {
     composerInput.value = '';
     composerInput.style.height = 'auto';
     clearImagePick();
-    await loadMessages(true);
+    await loadThread(true);
     loadContacts(true);
   } catch (e) {
     showToast(e.message || 'Gagal mengirim pesan', 'error');
@@ -751,7 +915,6 @@ async function sendMessage() {
   }
 }
 
-/* ---------------- Lightbox ---------------- */
 function openLightbox(src) {
   document.getElementById('lightboxImg').src = src;
   document.getElementById('lightbox').classList.add('show');
@@ -761,7 +924,6 @@ function closeLightbox(e) {
   document.getElementById('lightbox').classList.remove('show');
 }
 
-/* ---------------- Init ---------------- */
 (async function init() {
   const ok = await verifySession();
   if (!ok) return;
