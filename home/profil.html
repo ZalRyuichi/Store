@@ -30,10 +30,8 @@
     background: var(--bg);
     color: var(--dark);
     min-height: 100vh;
-    padding-bottom: 84px;
   }
 
-  /* ===== TOP NAV ===== */
   .top-nav {
     background: var(--white);
     border-bottom: 1px solid var(--border);
@@ -61,7 +59,6 @@
     letter-spacing: 0.3px;
   }
 
-  /* ===== BANNER ===== */
   .profil-banner-wrapper {
     width: 100%;
     margin: 0 0 44px;
@@ -152,7 +149,6 @@
   .avatar-toast.success { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
   .avatar-toast.error { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
 
-  /* ===== INFORMASI AKUN HEADING ===== */
   .info-akun-heading {
     max-width: 900px;
     margin: 0 auto;
@@ -173,7 +169,6 @@
   }
   .info-akun-title i { color: #F97316; font-size: 0.72em; }
 
-  /* ===== INFORMASI AKUN BOX ===== */
   .info-akun-box {
     max-width: 900px;
     margin: 14px auto 0;
@@ -247,36 +242,6 @@
   .sewabot-badge.active { background: rgba(16,185,129,0.12); color: var(--green); }
   .sewabot-badge.inactive { background: rgba(148,163,184,0.12); color: var(--slate); }
 
-  /* ===== BOTTOM NAVIGATION ===== */
-  .bottom-navbar {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 58px;
-    padding-bottom: env(safe-area-inset-bottom, 0);
-    background: transparent;
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
-    border-top: 1px solid rgba(148,163,184,0.12);
-    z-index: 999;
-  }
-  .bottom-navbar a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 46px;
-    height: 46px;
-    color: #A3A3A3;
-    font-size: 20px;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-  .bottom-navbar a.active,
-  .bottom-navbar a:hover {
-    color: #FFFFFF;
-  }
 </style>
 </head>
 <body>
@@ -411,8 +376,6 @@ function togglePassword() {
   }
 }
 
-// NOTE: endpoint /api/user/profile belum ada di index.js kalau ini masih baru.
-// Perlu ditambahin route yang return { ok, username, email, password, created_at }
 async function loadProfile(retry = 2) {
   try {
     const res = await fetch(apiUrl('/api/user/profile'), { headers: H });
@@ -473,8 +436,7 @@ async function loadSewaBot(retry = 2) {
   }
 }
 
-// ===== FOTO PROFIL =====
-const AVATAR_MAX_BYTES = 2 * 1024 * 1024; // 2 MB
+const AVATAR_MAX_BYTES = 2 * 1024 * 1024;
 const avatarImg     = document.getElementById('avatar-img');
 const avatarWrap    = document.getElementById('avatar-wrap');
 const avatarInput   = document.getElementById('avatar-input');
@@ -497,7 +459,6 @@ function base64Size(dataUrl) {
   return Math.floor((b64.length * 3) / 4) - padding;
 }
 
-// Resize + kompres foto di browser biar muat di bawah 2MB sebelum dikirim ke server
 function compressImage(file, maxBytes, maxDim = 1024) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -550,7 +511,7 @@ async function uploadAvatar(file) {
       throw new Error('Ukuran Foto Terlalu Besar, Maksimal 2 MB');
     }
 
-    avatarImg.src = dataUrl; // preview optimis sambil nunggu upload
+    avatarImg.src = dataUrl;
 
     const res = await fetch(apiUrl('/api/user/avatar'), {
       method: 'POST',
@@ -584,12 +545,5 @@ loadApiBase().then(() => {
 });
 </script>
 
-<nav class="bottom-navbar">
-  <a href="/dashboard.html" class=""><i class="fa-solid fa-house"></i></a>
-  <a href="/home/topup.html" class=""><i class="fa-solid fa-wallet"></i></a>
-  <a href="/home/produk.html" class=""><i class="fa-solid fa-box-open"></i></a>
-  <a href="/home/history.html" class=""><i class="fa-solid fa-clock-rotate-left"></i></a>
-  <a href="/tools.html" class=""><i class="fa-solid fa-wrench"></i></a>
-</nav>
 </body>
 </html>
