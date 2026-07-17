@@ -706,6 +706,7 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
     currentTab = tab.dataset.tab;
+    document.getElementById('filterTabs').style.display = currentTab === 'chat' ? 'flex' : 'none';
     renderChatList();
   });
 });
