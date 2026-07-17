@@ -52,7 +52,6 @@
     box-shadow:0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04);
   }
 
-  /* ===== Signature logo mark ===== */
   .logo{ display:flex; align-items:center; gap:10px; min-width:0; }
   .logo-mark{ display:flex; align-items:flex-end; gap:3px; height:22px; flex-shrink:0; }
   .logo-mark span{
@@ -71,7 +70,6 @@
     letter-spacing:0.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
 
-  /* ===================== SIDEBAR ===================== */
   .sidebar{
     width:360px; min-width:320px;
     background:var(--bg-panel);
@@ -82,7 +80,24 @@
     padding:20px 20px 14px;
     display:flex; align-items:center; justify-content:space-between; gap:10px;
   }
-  .search-wrap{ padding:0 20px 16px; }
+  .menu-wrap{ position:relative; }
+  .dropdown-menu{
+    position:absolute; top:46px; right:0; min-width:190px;
+    background:var(--bg-panel-hover); border:1px solid var(--divider); border-radius:14px;
+    padding:6px; display:none; flex-direction:column; gap:2px; z-index:50;
+    box-shadow:0 12px 30px rgba(0,0,0,0.45);
+  }
+  .dropdown-menu.show{ display:flex; }
+  .dropdown-item{
+    display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px;
+    background:none; border:none; color:var(--text-primary); font-family:'Inter',sans-serif;
+    font-size:13.5px; cursor:pointer; text-align:left; width:100%;
+  }
+  .dropdown-item:hover{ background:var(--bg-panel); }
+  .dropdown-item.danger{ color:var(--accent-coral); }
+  .dropdown-item svg{ flex-shrink:0; opacity:.85; }
+
+  .search-wrap{ padding:0 20px 12px; }
   .search-box{
     display:flex; align-items:center; gap:10px;
     background:#191d29; border:1px solid var(--divider); border-radius:12px;
@@ -94,6 +109,15 @@
     font-family:'Inter',sans-serif; font-size:14px; width:100%;
   }
   .search-box input::placeholder{color:var(--text-faint);}
+
+  .filter-tabs{ display:flex; gap:8px; padding:0 20px 14px; }
+  .filter-pill{
+    padding:7px 16px; border-radius:20px; border:1px solid var(--divider); background:transparent;
+    color:var(--text-secondary); font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600;
+    cursor:pointer; transition:all .15s ease;
+  }
+  .filter-pill.active{ background:var(--bubble-sent-1); border-color:var(--bubble-sent-1); color:#fff; }
+  .filter-pill:hover:not(.active){ background:var(--bg-panel-hover); color:var(--text-primary); }
 
   .nav-tabs{
     display:flex; flex-shrink:0; padding:6px 8px;
@@ -182,7 +206,6 @@
     display:flex;align-items:center;justify-content:center; padding:0 5px; flex-shrink:0;
   }
 
-  /* ===================== CHAT AREA ===================== */
   .chat-area{
     flex:1; display:flex; flex-direction:column; background:var(--bg-chat);
     background-image:
@@ -280,7 +303,6 @@
     background:var(--bg-panel-hover); color:var(--accent-coral); cursor:pointer; font-size:14px;
   }
 
-  /* ===================== LIGHTBOX / TOAST ===================== */
   .lightbox{
     position:fixed; inset:0; background:rgba(10,12,18,0.92);
     display:none; align-items:center; justify-content:center; z-index:100; padding:30px;
@@ -301,7 +323,6 @@
   .toast.error{ border-color:#5b2a2a; color:#ff8a80; }
   .toast.success{ border-color:#204a3a; color:#5eead4; }
 
-  /* ===================== RESPONSIVE ===================== */
   @media (max-width:760px){
     body{padding:0;}
     .app{ max-width:100%; max-height:100vh; max-height:100dvh; border-radius:0; }
@@ -317,16 +338,27 @@
 
 <div class="app" id="app">
 
-  <!-- ===== SIDEBAR ===== -->
   <aside class="sidebar">
     <div class="sidebar-top">
       <div class="logo">
         <div class="logo-mark"><span></span><span></span><span></span><span></span><span></span></div>
         <div class="logo-text">Ryuichi Chat</div>
       </div>
-      <button class="icon-btn" title="Keluar" onclick="confirmLogout()">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="19" r="1.6"></circle></svg>
-      </button>
+      <div class="menu-wrap">
+        <button class="icon-btn" id="menuBtn" title="Menu">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="19" r="1.6"></circle></svg>
+        </button>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <button class="dropdown-item" id="menuSettings">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"></path></svg>
+            <span>Pengaturan</span>
+          </button>
+          <button class="dropdown-item danger" onclick="confirmLogout()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Keluar</span>
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="search-wrap">
@@ -334,6 +366,11 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" id="searchInput" placeholder="Cari chat atau kontak...">
       </div>
+    </div>
+
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-pill active" data-filter="all">Semua</button>
+      <button class="filter-pill" data-filter="unread">Belum Dibaca</button>
     </div>
 
     <div class="chat-list" id="chatList"></div>
@@ -353,14 +390,13 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5" stroke-dasharray="3.6 3.4"></circle><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"></circle></svg>
         <span>Pembaruan</span>
       </button>
-      <button class="nav-tab" data-tab="notifikasi">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 01-3.46 0"></path></svg>
-        <span>Notifikasi</span>
+      <button class="nav-tab" data-tab="beranda">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Beranda</span>
       </button>
     </div>
   </aside>
 
-  <!-- ===== CHAT AREA ===== -->
   <section class="chat-area">
     <div id="chatHeaderWrap"></div>
     <div class="messages" id="messages">
@@ -396,48 +432,6 @@
 <div class="toast" id="toast"><span id="toastText"></span></div>
 
 <script>
-/* =========================================================================
-   API CONTRACT (frontend only for now — diimplementasikan di index.js
-   pada langkah berikutnya). Semua data kontak & pesan WAJIB real-time dari
-   server, tidak ada data statis/dummy di file ini.
-
-   GET  /api/chat/contacts   (auth)
-     -> { ok, contacts: [
-            { username, name, isOwner, online, last:{type,text,time}|null, unread }, ...
-          ],
-          group: { name:'Ryuichi Group', last:{type,text,time}|null, unread } }
-     - contacts SELALU menyertakan akun owner (isOwner:true). Frontend akan
-       menyematkan owner di posisi paling atas apapun urutan dari server.
-
-   GET  /api/chat/direct/:username   (auth)
-     -> { ok, messages:[ {id, from, to, type, text, image, mime, time, read}, ... ],
-          expiresAfterMs: null | 86400000 }
-     - from/to berupa username. Server menghapus otomatis pesan yang lebih
-       tua dari 24 jam untuk thread ini (expiresAfterMs:86400000), KECUALI
-       jika :username adalah akun owner (expiresAfterMs:null -> tidak
-       pernah kedaluwarsa).
-
-   POST /api/chat/direct/:username   (auth)
-     body: {type:'text', text} | {type:'image', image(base64), mime, text}
-     -> { ok, message }
-
-   POST /api/chat/direct/:username/read   (auth) -> { ok }
-
-   GET  /api/chat/group   (auth)
-     -> { ok, messages:[ {id, from, type, text, image, mime, time}, ... ],
-          expiresAfterMs: 172800000 }
-     - Server menghapus otomatis pesan yang lebih tua dari 48 jam.
-
-   POST /api/chat/group   (auth)
-     body: {type:'text', text} | {type:'image', image(base64), mime, text}
-     -> { ok, message }
-
-   POST /api/chat/group/read   (auth) -> { ok }
-
-   Username pengirim diambil dari x-auth-token, sama seperti endpoint lain
-   di project ini.
-========================================================================= */
-
 const TOKEN = localStorage.getItem('pg_token');
 if (!TOKEN) window.location.href = '/login';
 const H  = { 'Content-Type': 'application/json', 'x-auth-token': TOKEN };
@@ -452,9 +446,6 @@ function confirmLogout() {
   if (confirm('Keluar dari akun ini?')) logout();
 }
 
-/* ---------------------------------------------------------
-   API base loader (konvensi yang sama di seluruh proyek)
---------------------------------------------------------- */
 const API_TXT_URL = "https://raw.githubusercontent.com/ZalRyuichi/Store/main/api.txt";
 let API_BASE = "";
 async function loadApiBase() {
@@ -476,11 +467,8 @@ async function loadApiBase() {
 }
 function apiUrl(p) { return API_BASE ? `${API_BASE}${p}` : p; }
 
-/* ---------------------------------------------------------
-   Helpers
---------------------------------------------------------- */
-const DIRECT_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 jam (non-owner)
-const GROUP_EXPIRY_MS  = 48 * 60 * 60 * 1000; // 48 jam
+const DIRECT_EXPIRY_MS = 24 * 60 * 60 * 1000;
+const GROUP_EXPIRY_MS  = 48 * 60 * 60 * 1000;
 
 function showToast(text, type = 'info') {
   const el = document.getElementById('toast');
@@ -542,14 +530,12 @@ function filterExpired(messages, maxAgeMs) {
   return messages.filter(m => new Date(m.time).getTime() >= cutoff);
 }
 
-/* ---------------------------------------------------------
-   State
---------------------------------------------------------- */
-let contacts = [];          // dari /api/chat/contacts
-let groupSummary = null;    // dari /api/chat/contacts (field group)
+let contacts = [];
+let groupSummary = null;
 let currentTab = 'chat';
-let activeType = null;      // 'direct' | 'group'
-let activeUser = null;      // username aktif (untuk direct)
+let filterMode = 'all';
+let activeType = null;
+let activeUser = null;
 let activeIsOwner = false;
 let pickedImage = null;
 let listPollTimer = null;
@@ -564,10 +550,9 @@ const composerWrap = document.getElementById('composerWrap');
 const composerInput= document.getElementById('composerInput');
 const sendBtn       = document.getElementById('sendBtn');
 const searchInput  = document.getElementById('searchInput');
+const menuBtn      = document.getElementById('menuBtn');
+const dropdownMenu = document.getElementById('dropdownMenu');
 
-/* ---------------------------------------------------------
-   Load kontak + ringkasan grup (real-time, polling)
---------------------------------------------------------- */
 async function loadContacts() {
   try {
     const res = await fetch(apiUrl('/api/chat/contacts'), { headers: H });
@@ -604,20 +589,25 @@ function renderBadges() {
   bGrup.textContent = grupUnread > 99 ? '99+' : grupUnread;
 }
 
-/* ---------------------------------------------------------
-   Render daftar kontak / grup sesuai tab aktif
---------------------------------------------------------- */
 function renderChatList() {
   const q = (searchInput.value || '').trim().toLowerCase();
 
   if (currentTab === 'chat') {
     let list = contacts;
-    if (q) list = list.filter(c => (c.name || c.username).toLowerCase().includes(q));
+    if (q) {
+      list = list.filter(c => {
+        const name = (c.name || c.username || '').toLowerCase();
+        const lastText = (c.last && c.last.text ? c.last.text : '').toLowerCase();
+        return name.includes(q) || lastText.includes(q);
+      });
+    }
+    if (filterMode === 'unread') list = list.filter(c => (c.unread || 0) > 0);
     if (!list.length) {
+      const isUnreadEmpty = filterMode === 'unread' && !q;
       chatListEl.innerHTML = `<div class="empty-tab">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path></svg>
-        <strong>${q ? 'Tidak ditemukan' : 'Belum ada kontak'}</strong>
-        <p>${q ? 'Coba kata kunci lain.' : 'Kontak akan muncul di sini secara otomatis.'}</p>
+        <strong>${q ? 'Tidak ditemukan' : (isUnreadEmpty ? 'Tidak ada pesan belum dibaca' : 'Belum ada kontak')}</strong>
+        <p>${q ? 'Coba kata kunci lain.' : (isUnreadEmpty ? 'Semua chat sudah dibaca.' : 'Kontak akan muncul di sini secara otomatis.')}</p>
       </div>`;
       return;
     }
@@ -631,8 +621,13 @@ function renderChatList() {
 
   if (currentTab === 'grup') {
     const name = groupSummary?.name || 'Ryuichi Group';
-    if (q && !name.toLowerCase().includes(q)) {
+    const lastText = (groupSummary?.last?.text || '').toLowerCase();
+    if (q && !name.toLowerCase().includes(q) && !lastText.includes(q)) {
       chatListEl.innerHTML = `<div class="empty-tab"><strong>Tidak ditemukan</strong><p>Coba kata kunci lain.</p></div>`;
+      return;
+    }
+    if (filterMode === 'unread' && !(groupSummary?.unread > 0)) {
+      chatListEl.innerHTML = `<div class="empty-tab"><strong>Tidak ada pesan belum dibaca</strong><p>Semua chat sudah dibaca.</p></div>`;
       return;
     }
     chatListEl.innerHTML = groupItemHtml(groupSummary);
@@ -645,14 +640,10 @@ function renderChatList() {
     pembaruan: {
       icon:'<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5" stroke-dasharray="3.6 3.4"></circle><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"></circle></svg>',
       title:'Belum ada pembaruan', desc:'Status dan cerita dari kontak kamu bakal tampil di sini.'
-    },
-    notifikasi: {
-      icon:'<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 01-3.46 0"></path></svg>',
-      title:'Belum ada notifikasi', desc:'Notifikasi terbaru bakal muncul di sini.'
     }
   };
   const state = empties[currentTab];
-  chatListEl.innerHTML = `<div class="empty-tab">${state.icon}<strong>${state.title}</strong><p>${state.desc}</p></div>`;
+  if (state) chatListEl.innerHTML = `<div class="empty-tab">${state.icon}<strong>${state.title}</strong><p>${state.desc}</p></div>`;
 }
 
 function cssId(s) { return String(s).replace(/[^a-zA-Z0-9_-]/g, '_'); }
@@ -708,22 +699,44 @@ function groupItemHtml(g) {
     </div>`;
 }
 
-/* ---------------------------------------------------------
-   Nav tabs
---------------------------------------------------------- */
 document.querySelectorAll('.nav-tab').forEach(tab => {
   tab.addEventListener('click', () => {
+    if (tab.dataset.tab === 'beranda') {
+      window.location.href = 'dashboard.html';
+      return;
+    }
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
     currentTab = tab.dataset.tab;
     renderChatList();
   });
 });
+
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    filterMode = pill.dataset.filter;
+    renderChatList();
+  });
+});
+
 searchInput.addEventListener('input', renderChatList);
 
-/* ---------------------------------------------------------
-   Buka thread direct / grup
---------------------------------------------------------- */
+menuBtn.addEventListener('click', function (e) {
+  e.stopPropagation();
+  dropdownMenu.classList.toggle('show');
+});
+document.getElementById('menuSettings').addEventListener('click', function () {
+  dropdownMenu.classList.remove('show');
+  window.location.href = 'profil.html';
+});
+document.addEventListener('click', function (e) {
+  if (!dropdownMenu.contains(e.target) && e.target !== menuBtn) {
+    dropdownMenu.classList.remove('show');
+  }
+});
+
 function openDirect(c) {
   activeType = 'direct';
   activeUser = c.username;
@@ -777,18 +790,10 @@ function renderChatHeader({ name, statusText, online, avatarHtml }) {
           <div class="chat-header-status${online ? '' : ' offline'}">${escapeHtml(statusText)}</div>
         </div>
       </div>
-      <div class="header-icons">
-        <button class="icon-btn" title="Telepon">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.902.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.908.338 1.85.573 2.81.7A2 2 0 0122 16.92z"></path></svg>
-        </button>
-      </div>
     </div>`;
   document.getElementById('backBtn').addEventListener('click', () => appEl.classList.remove('chat-open'));
 }
 
-/* ---------------------------------------------------------
-   Load & render pesan thread aktif
---------------------------------------------------------- */
 async function loadThread(scrollToBottom) {
   if (!activeType) return;
   try {
@@ -799,9 +804,6 @@ async function loadThread(scrollToBottom) {
     if (!data.ok) throw new Error(data.message || 'Gagal memuat pesan');
 
     let messages = data.messages || [];
-    // Server adalah sumber kebenaran soal kedaluwarsa (expiresAfterMs: null = tidak pernah
-    // hilang / owner terlibat, angka = ms maksimum umur pesan). Difilter lagi di client
-    // sebagai jaring pengaman terhadap jam yang sedikit berbeda antara request.
     const expiresAfterMs = ('expiresAfterMs' in data) ? data.expiresAfterMs : (activeType === 'group' ? GROUP_EXPIRY_MS : (activeIsOwner ? null : DIRECT_EXPIRY_MS));
     if (expiresAfterMs) messages = filterExpired(messages, expiresAfterMs);
 
@@ -857,9 +859,6 @@ async function markGroupRead() {
   try { await fetch(apiUrl('/api/chat/group/read'), { method: 'POST', headers: H }); } catch {}
 }
 
-/* ---------------------------------------------------------
-   Kirim pesan
---------------------------------------------------------- */
 composerInput.addEventListener('input', function () {
   this.style.height = 'auto';
   this.style.height = Math.min(this.scrollHeight, 100) + 'px';
@@ -918,9 +917,6 @@ async function sendMessage() {
   }
 }
 
-/* ---------------------------------------------------------
-   Lightbox
---------------------------------------------------------- */
 function openLightbox(src) {
   document.getElementById('lightboxImg').src = src;
   document.getElementById('lightbox').classList.add('show');
@@ -930,17 +926,11 @@ function closeLightbox(e) {
   document.getElementById('lightbox').classList.remove('show');
 }
 
-/* ---------------------------------------------------------
-   Polling real-time
---------------------------------------------------------- */
 function restartThreadPoll() {
   clearInterval(threadPollTimer);
   threadPollTimer = setInterval(() => loadThread(false), 3500);
 }
 
-/* ---------------------------------------------------------
-   Init
---------------------------------------------------------- */
 (async function init() {
   await loadApiBase();
   await loadContacts();
