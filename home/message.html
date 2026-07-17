@@ -683,7 +683,7 @@ function groupItemHtml(g) {
   const unread = g?.unread || 0;
   return `
     <div class="chat-item${activeType === 'group' ? ' active' : ''}" id="ci-group">
-      <div class="avatar" style="background:url('https://files.catbox.moe/09mp42.jpg') center/cover no-repeat"></div>
+      <div class="avatar" style="background:url('../image/pp_group.jpg') center/cover no-repeat"></div>
       <div class="chat-item-body">
         <div class="chat-item-top">
           <div class="chat-item-name">${escapeHtml(name)}</div>
@@ -766,7 +766,7 @@ function openGroup() {
     name: groupSummary?.name || 'Ryuichi Group',
     statusText: 'Grup Semua Pengguna',
     online: false,
-    avatarHtml: `<div class="avatar" style="background:url('https://files.catbox.moe/09mp42.jpg') center/cover no-repeat"></div>`,
+    avatarHtml: `<div class="avatar" style="background:url('../image/pp_group.jpg') center/cover no-repeat"></div>`,
   });
   composerWrap.style.display = 'flex';
   appEl.classList.add('chat-open');
