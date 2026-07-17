@@ -110,6 +110,15 @@
   }
   .search-box input::placeholder{color:var(--text-faint);}
 
+  .filter-tabs{ display:flex; gap:8px; padding:0 20px 14px; }
+  .filter-pill{
+    padding:7px 16px; border-radius:20px; border:1px solid var(--divider); background:transparent;
+    color:var(--text-secondary); font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600;
+    cursor:pointer; transition:all .15s ease;
+  }
+  .filter-pill.active{ background:var(--bubble-sent-1); border-color:var(--bubble-sent-1); color:#fff; }
+  .filter-pill:hover:not(.active){ background:var(--bg-panel-hover); color:var(--text-primary); }
+
   .chat-list{ flex:1; overflow-y:auto; padding:4px 8px 12px; }
   .chat-list::-webkit-scrollbar{width:6px;}
   .chat-list::-webkit-scrollbar-thumb{background:#232838; border-radius:10px;}
@@ -234,7 +243,7 @@
     font-size:11.5px; font-weight:700; color:var(--bubble-sent-1); margin:0 0 3px 4px;
   }
 
-  .bubble{ padding:9px 13px 8px; font-size:14.2px; line-height:1.45; position:relative; max-width:100%; width:fit-content; }
+  .bubble{ padding:9px 13px 8px; font-size:14.2px; line-height:1.45; position:relative; max-width:100%; width:fit-content; touch-action:pan-y; }
   .msg-row.in .bubble{
     background:var(--bubble-recv); color:var(--text-primary);
     border-radius:var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-sm);
@@ -249,6 +258,42 @@
   .bubble-meta{ display:flex; align-items:center; gap:4px; justify-content:flex-end; margin-top:3px; font-size:10.5px; }
   .msg-row.in .bubble-meta{color:var(--text-faint);}
   .msg-row.out .bubble-meta{color:rgba(255,255,255,0.75);}
+
+  .swipe-reply-icon{
+    position:fixed; width:30px;height:30px;border-radius:50%;
+    background:var(--bg-panel-hover); border:1px solid var(--divider);
+    display:flex;align-items:center;justify-content:center; color:var(--bubble-sent-1);
+    opacity:0; transform:scale(0.5); transition:opacity .1s linear; pointer-events:none; z-index:60;
+  }
+  .reply-popup{
+    position:fixed; background:var(--bg-panel-hover); border:1px solid var(--divider); border-radius:12px;
+    padding:6px; display:none; gap:2px; z-index:80; box-shadow:0 12px 30px rgba(0,0,0,.45);
+  }
+  .reply-popup button{
+    display:flex; align-items:center; gap:8px; padding:9px 14px; border-radius:9px; background:none; border:none;
+    color:var(--text-primary); font-family:'Inter',sans-serif; font-size:13.5px; cursor:pointer; white-space:nowrap;
+  }
+  .reply-popup button:hover{ background:var(--bg-panel); }
+  .reply-quote{
+    background:rgba(255,255,255,0.08); border-left:3px solid var(--bubble-sent-1); border-radius:8px;
+    padding:6px 10px; margin-bottom:6px; cursor:pointer; max-width:100%;
+  }
+  .msg-row.out .reply-quote{ background:rgba(255,255,255,0.18); border-left-color:#fff; }
+  .reply-quote-name{ font-size:11.5px; font-weight:700; color:var(--bubble-sent-1); margin-bottom:2px; }
+  .msg-row.out .reply-quote-name{ color:#fff; }
+  .reply-quote-text{ font-size:12.5px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .msg-row.out .reply-quote-text{ color:rgba(255,255,255,0.85); }
+  .msg-row.flash .bubble{ animation:flashHighlight 1s ease; }
+  @keyframes flashHighlight{ 0%{box-shadow:0 0 0 2px var(--bubble-sent-1);} 100%{box-shadow:0 0 0 0 transparent;} }
+  .reply-preview{
+    display:none; align-items:center; gap:10px; padding:9px 22px;
+    background:rgba(37,99,235,0.10); border-top:1px solid var(--divider); border-left:3px solid var(--bubble-sent-1);
+  }
+  .reply-preview.show{ display:flex; }
+  .reply-preview-body{ flex:1; min-width:0; }
+  .reply-preview-name{ font-size:12px; font-weight:700; color:var(--bubble-sent-1); margin-bottom:2px; }
+  .reply-preview-text{ font-size:12.5px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .reply-preview-close{ width:26px;height:26px; border-radius:50%; border:none; background:var(--bg-panel-hover); color:var(--text-secondary); cursor:pointer; font-size:14px; flex-shrink:0; }
 
   .chat-empty-state{
     flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -356,6 +401,11 @@
       </div>
     </div>
 
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-pill active" data-filter="all">Semua</button>
+      <button class="filter-pill" data-filter="unread">Belum Dibaca</button>
+    </div>
+
     <div class="chat-list" id="chatList">
       <div class="loading-tab"><div class="spinner"></div>Memuat Kontak...</div>
     </div>
@@ -391,6 +441,7 @@
         <p>Pilih Salah Satu Kontak Untuk Mulai Membalas Pesan.</p>
       </div>
     </div>
+    <div class="reply-preview" id="replyPreviewBar"></div>
     <div class="img-preview-bar" id="imgPreviewBar">
       <img id="imgPreviewThumb" src="">
       <div class="img-preview-info" id="imgPreviewInfo">gambar.jpg</div>
@@ -415,6 +466,16 @@
 </div>
 
 <div class="toast" id="toast"><span id="toastText"></span></div>
+
+<div class="swipe-reply-icon" id="swipeReplyIcon">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 00-4-4H4"></path></svg>
+</div>
+<div class="reply-popup" id="replyPopup">
+  <button id="replyPopupBtn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 00-4-4H4"></path></svg>
+    <span>Balas</span>
+  </button>
+</div>
 
 <script>
 const TOKEN = localStorage.getItem('pg_token');
@@ -534,12 +595,15 @@ function initials(name) {
 let contactsCache = [];
 let groupSummary = null;
 let currentTab = 'chat';
+let filterMode = 'all';
 let activeType = null;
 let activeUser = null;
 let pickedImage = null;
 let lastMsgSignature = '';
 let contactPollTimer = null;
 let chatPollTimer = null;
+let replyTarget = null;
+let popupTarget = null;
 
 const appEl        = document.getElementById('app');
 const chatListEl   = document.getElementById('chatList');
@@ -551,6 +615,151 @@ const sendBtn       = document.getElementById('sendBtn');
 const searchInput  = document.getElementById('searchInput');
 const menuBtn      = document.getElementById('menuBtn');
 const dropdownMenu = document.getElementById('dropdownMenu');
+const replyPreviewBar = document.getElementById('replyPreviewBar');
+const swipeReplyIcon  = document.getElementById('swipeReplyIcon');
+const replyPopup      = document.getElementById('replyPopup');
+
+function cssEscape(s) {
+  return (window.CSS && CSS.escape) ? CSS.escape(String(s)) : String(s).replace(/["\\]/g, '\\$&');
+}
+function senderDisplayName(username) {
+  return username === ME ? 'Anda' : username;
+}
+function setReplyTarget(m) {
+  if (!m) return;
+  replyTarget = {
+    id: m.id,
+    from: m.from,
+    senderName: senderDisplayName(m.from),
+    text: m.type === 'image' ? (m.text ? m.text : '📷 Gambar') : cleanMsgText(m.text || ''),
+    type: m.type || 'text',
+  };
+  renderReplyPreview();
+  composerInput.focus();
+}
+function clearReplyTarget() {
+  replyTarget = null;
+  renderReplyPreview();
+}
+function renderReplyPreview() {
+  if (!replyTarget) { replyPreviewBar.classList.remove('show'); replyPreviewBar.innerHTML = ''; return; }
+  replyPreviewBar.innerHTML = `
+    <div class="reply-preview-body">
+      <div class="reply-preview-name">Membalas ${escapeHtml(replyTarget.senderName)}</div>
+      <div class="reply-preview-text">${escapeHtml(replyTarget.text)}</div>
+    </div>
+    <button class="reply-preview-close" type="button" onclick="clearReplyTarget()">✕</button>`;
+  replyPreviewBar.classList.add('show');
+}
+
+function showReplyPopup(x, y) {
+  replyPopup.style.display = 'flex';
+  const rect = replyPopup.getBoundingClientRect();
+  const pw = rect.width || 110, ph = rect.height || 44;
+  let left = x - pw / 2, top = y - ph - 14;
+  left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+  top = Math.max(8, top);
+  replyPopup.style.left = left + 'px';
+  replyPopup.style.top = top + 'px';
+  if (navigator.vibrate) navigator.vibrate(8);
+}
+function hideReplyPopup() {
+  replyPopup.style.display = 'none';
+  popupTarget = null;
+}
+document.getElementById('replyPopupBtn').addEventListener('click', () => {
+  if (popupTarget) setReplyTarget(popupTarget);
+  hideReplyPopup();
+});
+document.addEventListener('pointerdown', (e) => {
+  if (replyPopup.style.display !== 'none' && !replyPopup.contains(e.target)) hideReplyPopup();
+});
+
+function updateSwipeIcon(bubble, dx, thresh) {
+  const rect = bubble.getBoundingClientRect();
+  const progress = Math.min(dx / thresh, 1);
+  swipeReplyIcon.style.left = (rect.left - 34) + 'px';
+  swipeReplyIcon.style.top = (rect.top + rect.height / 2 - 15) + 'px';
+  swipeReplyIcon.style.opacity = progress;
+  swipeReplyIcon.style.transform = `scale(${0.5 + progress * 0.5})`;
+}
+function hideSwipeIcon() {
+  swipeReplyIcon.style.opacity = 0;
+  swipeReplyIcon.style.transform = 'scale(0.5)';
+}
+
+function wireSwipeAndHold(row, bubble, m) {
+  const THRESH = 56;
+  let startX = 0, startY = 0, dragging = false, moved = false, longPressTimer = null;
+
+  function onDown(e) {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    startX = e.clientX; startY = e.clientY; moved = false; dragging = false;
+    clearTimeout(longPressTimer);
+    longPressTimer = setTimeout(() => {
+      if (!moved) { popupTarget = m; showReplyPopup(startX, startY); }
+    }, 480);
+  }
+  function onMove(e) {
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    if (Math.abs(dx) > 6 || Math.abs(dy) > 6) moved = true;
+    if (!dragging && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) {
+      dragging = true;
+      clearTimeout(longPressTimer);
+      hideReplyPopup();
+    }
+    if (dragging) {
+      const clamped = Math.max(0, Math.min(dx, 80));
+      bubble.style.transition = 'none';
+      bubble.style.transform = `translateX(${clamped}px)`;
+      updateSwipeIcon(bubble, clamped, THRESH);
+      if (e.cancelable) e.preventDefault();
+    }
+  }
+  function onUp(e) {
+    clearTimeout(longPressTimer);
+    if (dragging) {
+      const dx = e.clientX - startX;
+      bubble.style.transition = 'transform .18s ease';
+      bubble.style.transform = 'translateX(0)';
+      hideSwipeIcon();
+      if (dx > THRESH) {
+        setReplyTarget(m);
+        if (navigator.vibrate) navigator.vibrate(12);
+      }
+    }
+    dragging = false;
+  }
+
+  bubble.addEventListener('pointerdown', onDown);
+  bubble.addEventListener('pointermove', onMove);
+  bubble.addEventListener('pointerup', onUp);
+  bubble.addEventListener('pointercancel', onUp);
+  bubble.addEventListener('pointerleave', (e) => { if (dragging) onUp(e); });
+}
+
+function scrollToMessage(id) {
+  if (!id) return;
+  const el = messagesEl.querySelector(`.msg-row[data-mid="${cssEscape(id)}"]`);
+  if (!el) { showToast('Pesan asli tidak ditemukan', 'info'); return; }
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 1000);
+}
+
+function attachMessageInteractions(messages) {
+  const byId = new Map(messages.map(m => [String(m.id), m]));
+  messagesEl.querySelectorAll('.msg-row').forEach(row => {
+    const m = byId.get(row.dataset.mid);
+    const bubble = row.querySelector('.bubble');
+    if (!bubble || !m) return;
+    wireSwipeAndHold(row, bubble, m);
+  });
+  messagesEl.querySelectorAll('.reply-quote').forEach(q => {
+    q.addEventListener('click', () => scrollToMessage(q.dataset.jump));
+  });
+}
 
 async function loadContacts(silent = false) {
   try {
@@ -593,12 +802,14 @@ function renderChatList() {
       return tb - ta;
     });
     if (q) list = list.filter(c => c.username.toLowerCase().includes(q));
+    if (filterMode === 'unread') list = list.filter(c => (c.unread || 0) > 0);
 
     if (!list.length) {
+      const isUnreadEmpty = filterMode === 'unread' && !q;
       chatListEl.innerHTML = `<div class="empty-tab">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path></svg>
-        <strong>${q ? 'Tidak ditemukan' : 'Belum ada pesan masuk'}</strong>
-        <p>${q ? 'Coba kata kunci lain.' : 'Pesan dari user akan muncul di sini secara otomatis.'}</p>
+        <strong>${q ? 'Tidak ditemukan' : (isUnreadEmpty ? 'Tidak Ada Pesan Belum Dibaca' : 'Belum ada pesan masuk')}</strong>
+        <p>${q ? 'Coba kata kunci lain.' : (isUnreadEmpty ? 'Semua Chat Sudah Dibaca.' : 'Pesan dari user akan muncul di sini secara otomatis.')}</p>
       </div>`;
       return;
     }
@@ -616,6 +827,10 @@ function renderChatList() {
     const lastText = (groupSummary?.last?.text || '').toLowerCase();
     if (q && !name.toLowerCase().includes(q) && !lastText.includes(q)) {
       chatListEl.innerHTML = `<div class="empty-tab"><strong>Tidak ditemukan</strong><p>Coba kata kunci lain.</p></div>`;
+      return;
+    }
+    if (filterMode === 'unread' && !(groupSummary?.unread > 0)) {
+      chatListEl.innerHTML = `<div class="empty-tab"><strong>Tidak Ada Pesan Belum Dibaca</strong><p>Semua Chat Sudah Dibaca.</p></div>`;
       return;
     }
     chatListEl.innerHTML = groupItemHtml(groupSummary);
@@ -687,6 +902,16 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
     currentTab = tab.dataset.tab;
+    document.getElementById('filterTabs').style.display = currentTab === 'chat' ? 'flex' : 'none';
+    renderChatList();
+  });
+});
+
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    filterMode = pill.dataset.filter;
     renderChatList();
   });
 });
@@ -725,6 +950,7 @@ function openChat(username) {
 
   renderChatList();
   clearImagePick();
+  clearReplyTarget();
   loadThread(true);
   markRead(username);
 
@@ -749,6 +975,7 @@ function openGroup() {
 
   renderChatList();
   clearImagePick();
+  clearReplyTarget();
   loadThread(true);
   markGroupRead();
 
@@ -819,16 +1046,22 @@ function renderMessages(messages, scrollToBottom) {
     if (day !== lastDay) { html += `<div class="date-divider">${day}</div>`; lastDay = day; }
     const side = m.from === ME ? 'out' : 'in';
     const senderLabel = (activeType === 'group' && side === 'in') ? `<div class="msg-sender">${escapeHtml(m.from)}</div>` : '';
+    const replyHtml = m.replyTo ? `
+      <div class="reply-quote" data-jump="${escapeHtml(String(m.replyTo.id || ''))}">
+        <div class="reply-quote-name">${escapeHtml(m.replyTo.senderName || m.replyTo.from || '')}</div>
+        <div class="reply-quote-text">${escapeHtml(m.replyTo.type === 'image' ? (m.replyTo.text || '📷 Gambar') : (m.replyTo.text || ''))}</div>
+      </div>` : '';
     const bodyHtml = m.type === 'image'
       ? `<img class="bubble-img" src="${m.image}" onclick="openLightbox('${m.image}')">${m.text ? `<div class="bubble-text">${escapeHtml(cleanMsgText(m.text))}</div>` : ''}`
       : `<div class="bubble-text">${escapeHtml(cleanMsgText(m.text))}</div>`;
     html += `
-      <div class="msg-row ${side}">
+      <div class="msg-row ${side}" data-mid="${escapeHtml(String(m.id || ''))}">
         ${senderLabel}
-        <div class="bubble">${bodyHtml}<div class="bubble-meta">${fmtTime(m.time)}</div></div>
+        <div class="bubble">${replyHtml}${bodyHtml}<div class="bubble-meta">${fmtTime(m.time)}</div></div>
       </div>`;
   });
   messagesEl.innerHTML = html;
+  attachMessageInteractions(messages);
   if (scrollToBottom) messagesEl.scrollTop = messagesEl.scrollHeight;
   else {
     const nearBottom = messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight < 120;
@@ -896,6 +1129,15 @@ async function sendMessage() {
     const body = pickedImage
       ? { type: 'image', image: pickedImage.dataUrl, mime: pickedImage.mime, text }
       : { type: 'text', text };
+    if (replyTarget) {
+      body.replyTo = {
+        id: replyTarget.id,
+        from: replyTarget.from,
+        senderName: replyTarget.senderName,
+        text: replyTarget.text,
+        type: replyTarget.type,
+      };
+    }
 
     const endpoint = activeType === 'direct' ? `/api/chat/direct/${encodeURIComponent(activeUser)}` : '/api/chat/group';
     const res  = await fetch(apiUrl(endpoint), { method: 'POST', headers: H, body: JSON.stringify(body) });
@@ -906,6 +1148,7 @@ async function sendMessage() {
     composerInput.value = '';
     composerInput.style.height = 'auto';
     clearImagePick();
+    clearReplyTarget();
     await loadThread(true);
     loadContacts(true);
   } catch (e) {
