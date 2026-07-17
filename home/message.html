@@ -520,9 +520,7 @@ function avatarColor(key) {
 function initials(name) {
   const s = String(name || '').trim();
   if (!s) return '?';
-  const parts = s.split(/[\s._-]+/).filter(Boolean);
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return (parts[0][0] + parts[1][0]).toUpperCase();
+  return s[0].toUpperCase();
 }
 function filterExpired(messages, maxAgeMs) {
   if (!maxAgeMs || !isFinite(maxAgeMs)) return messages;
@@ -685,7 +683,7 @@ function groupItemHtml(g) {
   const unread = g?.unread || 0;
   return `
     <div class="chat-item${activeType === 'group' ? ' active' : ''}" id="ci-group">
-      <div class="avatar" style="background:linear-gradient(135deg,#2563eb,#1e40af)">RG</div>
+      <div class="avatar" style="background:url('https://files.catbox.moe/09mp42.jpg') center/cover no-repeat"></div>
       <div class="chat-item-body">
         <div class="chat-item-top">
           <div class="chat-item-name">${escapeHtml(name)}</div>
@@ -768,7 +766,7 @@ function openGroup() {
     name: groupSummary?.name || 'Ryuichi Group',
     statusText: 'Grup Semua Pengguna',
     online: false,
-    avatarHtml: `<div class="avatar" style="background:linear-gradient(135deg,#2563eb,#1e40af)">RG</div>`,
+    avatarHtml: `<div class="avatar" style="background:url('https://files.catbox.moe/09mp42.jpg') center/cover no-repeat"></div>`,
   });
   composerWrap.style.display = 'flex';
   appEl.classList.add('chat-open');
