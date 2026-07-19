@@ -45,6 +45,7 @@ window.fetch = function (input, init) {
   });
 };
 let pollInterval = null;
+let pollHandled = false;
 let timerInterval = null;
 let currentTx = null;
 let _notifCallback = null;
@@ -218,20 +219,25 @@ function setModalStatus(s) {
 
 function startPolling(order_id) {
   stopPolling();
+  pollHandled = false;
   pollInterval = setInterval(async () => {
+    if (pollHandled) return;
     try {
       const res = await fetch(apiUrl(`/api/status/${order_id}`), { headers: H });
       const data = await res.json();
+      if (pollHandled) return; // tick lain sudah lebih dulu menangani hasilnya
       if (data.ok) {
         if (data.transaction.status === 'completed') {
+          pollHandled = true;
+          stopPolling(); stopTimer();
           setModalStatus('done');
           toast('Pembayaran Berhasil Diterima!', 'success');
-          stopPolling(); stopTimer();
           document.getElementById('btn-cancel').disabled = true;
           document.getElementById('timer-box').className = 'timer-box done';
           loadSaldo();
           if (typeof onPaymentCompleted === 'function') onPaymentCompleted(data.transaction);
         } else if (data.transaction.status === 'cancelled') {
+          pollHandled = true;
           setModalStatus('cancelled');
           stopPolling(); stopTimer();
           document.getElementById('btn-cancel').disabled = true;
